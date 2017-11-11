@@ -84,7 +84,7 @@ public class Gr4spUI extends GUIState
         BufferedImage b = display.getGraphicsConfiguration().createCompatibleImage(i.getWidth(null), i.getHeight(null));
         Graphics g = b.getGraphics();
         g.drawImage(i,0,0,i.getWidth(null),i.getHeight(null),null);
-        g.dispose();
+        g.dispose();	
         display.setBackdrop(new TexturePaint(b, new Rectangle(0,0,i.getWidth(null),i.getHeight(null))));
                 
         

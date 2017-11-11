@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/bsh-2.0b4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/itext-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/j3dcore.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/j3dutils.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/jcommon-1.0.21.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/jfreechart-1.0.17.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/jmf.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/jogamp-fat.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/portfolio.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/vecmath.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/libraries/mason.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/bsh-2.0b4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/itext-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/j3dcore.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/j3dutils.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/jcommon-1.0.21.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/jfreechart-1.0.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/jmf.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/jogamp-fat.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/mason.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/portfolio.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/vecmath.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
