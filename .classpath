@@ -9,7 +9,7 @@
 	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/jfreechart-1.0.17.jar"/>
 	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/jmf.jar"/>
 	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/jogamp-fat.jar"/>
-	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/mason.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/mason.19.jar" sourcepath="/mason"/>
 	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/portfolio.jar"/>
 	<classpathentry kind="lib" path="C:/Users/angel/eclipse-workspace/gr4sp/libraries/vecmath.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

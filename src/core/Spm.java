@@ -19,41 +19,155 @@ public class Spm extends SimplePortrayal2D implements Steppable
     private static final long serialVersionUID = 1;
 
     //Generators
-    public Bag generators;
+    private Bag generators;
     
-    //Distribution Networdk
-    public EnergyGrid gridType;
-    public Network GridNetwork;
+    //Distribution Network
+    private EnergyGrid gridType;
+    private Network gridNetwork;
     
     //Storage
-    public Storage storageType;
-    public boolean hasStorage;
+    private Storage storageType;
+    private boolean hasStorage;
     
     //Interface: Connection Point
-    public ConnectionPoint connectionPoint;
+    private ConnectionPoint connectionPoint;
     
     //Efficiency
-    public double efficiency;
+    private double efficiency;
     
     //Embodied GHG Emissions
-    public double embGHG;
+    private double embGHG;
     
     //Costs
-    public double installCosts;
-    public double maintenanceCosts;
+    private double installCosts;
+    private double maintenanceCosts;
         
     
     //Ownerships
     //TODO: add list of owners
         
     
-    public Spm()
-        {
+    public Spm(Bag generators, EnergyGrid gridType, Network gridNetwork, boolean hasStorage, Storage storageType, 
+    		ConnectionPoint connectionPoint, double efficiency, double embGHG){
+    	this.generators = generators;
+    	this.gridType = gridType;
+    	this.gridNetwork = gridNetwork;
+    	this.hasStorage = hasStorage;
+    	this.storageType = storageType;
+    	this.connectionPoint = connectionPoint;
+    	this.efficiency = efficiency;
+    	this.embGHG = embGHG;
+    	
         
         }
-
+    
         
-    public void step(SimState state)
+    public Bag getGenerators() {
+		return generators;
+	}
+
+
+	public void setGenerators(Bag generators) {
+		this.generators = generators;
+	}
+
+
+	public EnergyGrid getGridType() {
+		return gridType;
+	}
+
+
+	public void setGridType(EnergyGrid gridType) {
+		this.gridType = gridType;
+	}
+
+
+	public Network getgridNetwork() {
+		return gridNetwork;
+	}
+
+
+	public void setgridNetwork(Network gridNetwork) {
+		this.gridNetwork = gridNetwork;
+	}
+
+
+	public Storage getStorageType() {
+		return storageType;
+	}
+
+
+	public void setStorageType(Storage storageType) {
+		this.storageType = storageType;
+	}
+
+
+	public boolean isHasStorage() {
+		return hasStorage;
+	}
+
+
+	public void setHasStorage(boolean hasStorage) {
+		this.hasStorage = hasStorage;
+	}
+
+
+	public ConnectionPoint getConnectionPoint() {
+		return connectionPoint;
+	}
+
+
+	public void setConnectionPoint(ConnectionPoint connectionPoint) {
+		this.connectionPoint = connectionPoint;
+	}
+
+
+	public double getEfficiency() {
+		return efficiency;
+	}
+
+
+	public void setEfficiency(double efficiency) {
+		this.efficiency = efficiency;
+	}
+
+
+	public double getEmbGHG() {
+		return embGHG;
+	}
+
+
+	public void setEmbGHG(double embGHG) {
+		this.embGHG = embGHG;
+	}
+
+
+	public double getInstallCosts() {
+		return installCosts;
+	}
+
+
+	public void setInstallCosts(double installCosts) {
+		this.installCosts = installCosts;
+	}
+
+
+	public double getMaintenanceCosts() {
+		return maintenanceCosts;
+	}
+
+
+	public void setMaintenanceCosts(double maintenanceCosts) {
+		this.maintenanceCosts = maintenanceCosts;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public void step(SimState state)
         {
         DataManager tut = (DataManager) state;
         

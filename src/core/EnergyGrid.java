@@ -6,10 +6,10 @@ public class EnergyGrid implements java.io.Serializable
 {
 	private static final long serialVersionUID = 1;
 	
-	public int type;
-	public String description;
-	public double efficiency;
-	public int nodes;
+	private int type;
+	private String description;
+	private double efficiency;
+	private int nodes;
 	
 	//TODO: Ownership and Management
 	
@@ -22,5 +22,59 @@ public class EnergyGrid implements java.io.Serializable
 	
 	
 	
+	public int getType() {
+		return type;
+	}
+
+
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+
+	public double getEfficiency() {
+		return efficiency;
+	}
+
+
+
+	public void setEfficiency(double efficiency) {
+		this.efficiency = efficiency;
+	}
+
+
+
+	public int getNodes() {
+		return nodes;
+	}
+
+
+
+	public void setNodes(int nodes) {
+		this.nodes = nodes;
+	}
+
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
 	public String toString() { return "" + description; }
 }

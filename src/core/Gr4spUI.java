@@ -23,11 +23,11 @@ import java.awt.image.BufferedImage;
 
 public class Gr4spUI extends GUIState
     {
-    public Display2D display;
-    public JFrame displayFrame;
-    public ContinuousPortrayal2D mapPortrayal;
-    public double width;
-    public double height;
+	private Display2D display;
+	private JFrame displayFrame;
+	private ContinuousPortrayal2D mapPortrayal;
+	private double width;
+	private double height;
     
     
     
