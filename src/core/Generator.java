@@ -9,8 +9,8 @@ public class Generator implements java.io.Serializable
 	private int id;//tech id
 	private String fuelSource; //fossil fuel, renewable, biomass, waste, surplus, other.
 	private String name;//name of power plant
-	private String ownership;//public, private, PPP, Cooperative?
 	private String fuelSourceDescriptor; //fuel source descriptor: according to AEMO it can be: brown coal, black coal, natural gas, Diesel, waste coal mine gas, landfill methane, etc. 
+	private String ownership;//public, private, PPP, Cooperative?
 	private String techTypeDescriptor; //combustion steam-subcritical, combustion Open Cycle Gas turbines (OCGT) phtovoltaic flat panet, hydro-gravity, hydro-run of river, solar PV, wind onshore/offshore,
 	private double maxCapacity; //maximum capacity in kW
 	private double unitSize;//unit size in MW
@@ -186,11 +186,6 @@ public class Generator implements java.io.Serializable
 	}
 
 
-
-	public String toString() { return "" + description; }
-
-
-
 	public String getOwnership() {
 		return ownership;
 	}
@@ -236,4 +231,7 @@ public class Generator implements java.io.Serializable
 	public void setUnitSize(double unitSize) {
 		this.unitSize = unitSize;
 	}
+	
+	public String toString() { return "" + fuelSourceDescriptor; }
+
 }

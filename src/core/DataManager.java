@@ -11,7 +11,7 @@ import sim.util.Double2D;
 public class DataManager extends SimState {
 	private static final long serialVersionUID = 1;
 	
-	//It's a counter that we are going to use to create unique id everytime a generator is created
+	//It's a counter that we are going to use to create unique id every time a generator is created
 	private int numGenerators;
 	
 	private Continuous2D layout;
@@ -29,13 +29,19 @@ public class DataManager extends SimState {
 				"waste coal mine gas", "landfill methane", "solar", "wind", "hydro" };
 		String[] fuelSource = {"fossil fuel", "renewable", "biomass", "waste", "surplus", "other"};
 		double size;
-		String[] name = {};
+		String[] name = {"name from database"};
+		String[] ownership = {"public", "private", "public private partnership"};//need something to specify the organization it belongs to if it does.
+		String [] techTypeDescriptor = {"combustion steam-subcritical",}; 
 		
 		
 		
 		// generate a random number btw 0 and 9 to choose the desc randomly
 		int idDesc = random.nextInt( fuelSourceDescriptions.length );
 		int idfuelSource = random.nextInt( fuelSource.length );
+		int idName = random.nextInt( name.length );
+		int idOwnership = random.nextInt( ownership.length );
+		
+		
 		
 		//Generator gen = new Generator(id, fuelSourceDescriptions[idDesc],fuelSource[idfuelSource],name,);
 		Generator gen ;
