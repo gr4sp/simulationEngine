@@ -13,21 +13,21 @@ public class Generator implements java.io.Serializable
 	private String ownership;//public, private, PPP, Cooperative?
 	private String techTypeDescriptor; //combustion steam-subcritical, combustion Open Cycle Gas turbines (OCGT) phtovoltaic flat panet, hydro-gravity, hydro-run of river, solar PV, wind onshore/offshore,
 	private double maxCapacity; //maximum capacity in kW
-	private double unitSize;//unit size in MW
+	private double unitSize;//unit size - dimensions. Depending on the range can fall into small/medium or large generation unit. //TODO: find the possible ranges!
 	private double efficiency; //0-1 efficiency of conversion
 	private int lifecycle; //life cycle in years
 	private double constructionPeriod;//construction period
-	private double capex; //capital costs in AUD/capacity unit (kW)
+	//private double capex; //capital costs in AUD/capacity unit (kW)
 	private double fixedCosts; //fixed costs operation and maintenance in AUD/capacity unit per year
 	private double peakContribFactor; //peak contribution factor in percentage
 	
 	private Double2D location;//coordinates where the generation is located
-	
-	//TODO: Ownership and Management
+
+	//TODO: Ownership and Management definition
 	
 	public Generator(int id, String fuelSourceDescriptor, String fuelSource, String name, 
-			double maxCapacity, double efficiency, int lifecycle, double constructionPeriod,
-			double capex, double fixedCosts, double peakContribFactor){
+			String ownership, String techTypeDescriptor, double maxCapacity, String size, double efficiency, int lifecycle, double constructionPeriod,
+			double fixedCosts, double peakContribFactor){
 		this.id = id;
 		this.fuelSourceDescriptor = fuelSourceDescriptor;
 		this.fuelSource = fuelSource;
@@ -36,12 +36,33 @@ public class Generator implements java.io.Serializable
 		this.efficiency = efficiency;		
 		this.lifecycle = lifecycle;
 		this.constructionPeriod = constructionPeriod;
-		this.capex = capex;
+		//this.capex = capex;
 		this.fixedCosts = fixedCosts;
 		this.peakContribFactor = peakContribFactor;
 	}
+	public Generator(int id, String name, double maxCapacity, double efficiency){
+		this.id = id;
+		//this.fuelSourceDescriptor = fuelSourceDescriptor;
+		//this.fuelSource = fuelSource;
+		this.name = name;
+		this.maxCapacity = maxCapacity;
+		this.efficiency = efficiency;
+		//this.lifecycle = lifecycle;
+		//this.constructionPeriod = constructionPeriod;
+		//this.capex = capex;
+		//this.fixedCosts = fixedCosts;
+		//this.peakContribFactor = peakContribFactor;
+	}
 	
-	
+	@Override
+	public String toString() {
+		return "Generator [id=" + id + ", fuelSource=" + fuelSource + ", name=" + name + ", fuelSourceDescriptor="
+				+ fuelSourceDescriptor + ", ownership=" + ownership + ", techTypeDescriptor=" + techTypeDescriptor
+				+ ", maxCapacity=" + maxCapacity + ", unitSize=" + unitSize + ", efficiency=" + efficiency
+				+ ", lifecycle=" + lifecycle + ", constructionPeriod=" + constructionPeriod + ", fixedCosts=" + fixedCosts + ", " +
+				"peakContribFactor=" + peakContribFactor + ", location=" + location
+				+ "]";//need to include capex in this constructor if used
+	}
 	
 	public int getId() {
 		return id;
@@ -139,15 +160,13 @@ public class Generator implements java.io.Serializable
 
 
 
-	public double getCapex() {
-		return capex;
-	}
+	//public double getCapex() {
+	//	return capex;
+	//}
 
-
-
-	public void setCapex(double capex) {
-		this.capex = capex;
-	}
+	//public void setCapex(double capex) {
+	//	this.capex = capex;
+	//}
 
 
 
@@ -232,6 +251,5 @@ public class Generator implements java.io.Serializable
 		this.unitSize = unitSize;
 	}
 	
-	public String toString() { return "" + fuelSourceDescriptor; }
 
 }

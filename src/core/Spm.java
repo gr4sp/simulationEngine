@@ -19,20 +19,25 @@ public class Spm extends SimplePortrayal2D implements Steppable
     {
     private static final long serialVersionUID = 1;
 
+    private int idSpm;
+    //For the Technical layout
     //Generators
     private Bag generators;
     
     //Distribution Network
-    private EnergyGrid gridType;
-    private Network gridNetwork;
+    private Bag grid;
     
     //Storage
-    private Storage storageType;
+    private Bag storages;
     private boolean hasStorage;
     
     //Interface: Connection Point
     private ConnectionPoint connectionPoint;
-    
+    //For the societal layout
+
+	private Bag organisations;
+
+	//Some performance metrics
     //Efficiency
     private double efficiency;
     
@@ -48,14 +53,15 @@ public class Spm extends SimplePortrayal2D implements Steppable
     //TODO: add list of owners
         
     
-    public Spm(Bag generators, EnergyGrid gridType, Network gridNetwork, boolean hasStorage, Storage storageType, 
-    		ConnectionPoint connectionPoint, double efficiency, double embGHG){
+    public Spm(int idSpm, Bag generators, Bag grid, Bag storages, ConnectionPoint connectionPoint,
+			   Bag organisations,double efficiency, double embGHG){
+    	this.idSpm = idSpm;
     	this.generators = generators;
-    	this.gridType = gridType;
-    	this.gridNetwork = gridNetwork;
-    	this.hasStorage = hasStorage;
-    	this.storageType = storageType;
+    	this.grid = grid;
+    	this.hasStorage =  ( storages.isEmpty() == false );
+    	this.storages = storages;
     	this.connectionPoint = connectionPoint;
+    	this.organisations = organisations;
     	this.efficiency = efficiency;
     	this.embGHG = embGHG;
     	
@@ -63,7 +69,16 @@ public class Spm extends SimplePortrayal2D implements Steppable
         }
     
         
-    public Bag getGenerators() {
+    @Override
+	public String toString() {
+		return "Spm [idSpm=" + idSpm + ", generators=" + generators + ", grid=" + grid + ", storages=" + storages
+				+ ", hasStorage=" + hasStorage + ", connectionPoint=" + connectionPoint + ", organisations=" + organisations+"," +
+				"efficiency=" + efficiency + ", embGHG=" + embGHG + ", installCosts=" + installCosts + ", maintenanceCosts=" + maintenanceCosts
+				+ "]";
+	}
+
+
+	public Bag getGenerators() {
 		return generators;
 	}
 
@@ -73,33 +88,23 @@ public class Spm extends SimplePortrayal2D implements Steppable
 	}
 
 
-	public EnergyGrid getGridType() {
-		return gridType;
+	public Bag getGrid() {
+		return grid;
 	}
 
 
-	public void setGridType(EnergyGrid gridType) {
-		this.gridType = gridType;
+	public void setGrid(Bag grid) {
+		this.grid = grid;
 	}
 
 
-	public Network getgridNetwork() {
-		return gridNetwork;
+	public Bag getStorages() {
+		return storages;
 	}
 
 
-	public void setgridNetwork(Network gridNetwork) {
-		this.gridNetwork = gridNetwork;
-	}
-
-
-	public Storage getStorageType() {
-		return storageType;
-	}
-
-
-	public void setStorageType(Storage storageType) {
-		this.storageType = storageType;
+	public void setStorages(Bag storages) {
+		this.storages = storages;
 	}
 
 
@@ -122,6 +127,9 @@ public class Spm extends SimplePortrayal2D implements Steppable
 		this.connectionPoint = connectionPoint;
 	}
 
+	public Bag getOrganisations() {return organisations;}
+
+	public void setOrganisations(Bag organisations) {this.organisations = organisations;}
 
 	public double getEfficiency() {
 		return efficiency;
@@ -170,9 +178,9 @@ public class Spm extends SimplePortrayal2D implements Steppable
 
 	public void step(SimState state)
         {
-        DataManager tut = (DataManager) state;
+        Gr4spSim data = (Gr4spSim) state;
         
-        
+        System.out.println(this);
         // position = position + velocity
         //Double2D pos = tut.balls.getObjectLocation(this);
         //Double2D newpos = new Double2D(pos.x+velocityx, pos.y + velocityy);
@@ -180,6 +188,7 @@ public class Spm extends SimplePortrayal2D implements Steppable
         
         }
     
+	
     
     public void draw(Object object, Graphics2D graphics, DrawInfo2D info)
         {

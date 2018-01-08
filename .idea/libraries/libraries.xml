@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="libraries">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libraries/jfreechart-1.0.17.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/bsh-2.0b4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/itext-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/vecmath.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/jogamp-fat.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/j3dcore.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/portfolio.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/j3dutils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/jcommon-1.0.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/mason.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/jmf.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

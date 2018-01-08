@@ -41,7 +41,7 @@ public class Gr4spUI extends GUIState
      * creates the DataManager, which extends the SimState class.
      */
     public Gr4spUI() { 
-    	super(new DataManager( System.currentTimeMillis())); 
+    	super(new Gr4spSim( System.currentTimeMillis()));
     	
     	width = 600;
     	height = 600;
@@ -72,7 +72,7 @@ public class Gr4spUI extends GUIState
 
     public void setupPortrayals() {
 
-        DataManager data = (DataManager) state;
+        Gr4spSim data = (Gr4spSim) state;
              
         
        
@@ -102,14 +102,14 @@ public class Gr4spUI extends GUIState
     
     /** Gets an image relative to the DataManager directory */
     public static Image loadImage(String filename) { 
-        return new ImageIcon(DataManager.class.getResource(filename)).getImage(); 
+        return new ImageIcon(Gr4spSim.class.getResource(filename)).getImage();
     }
 
     public void init(Controller c)
         {
         super.init(c);
 
-        DataManager data = (DataManager) state;
+        Gr4spSim data = (Gr4spSim) state;
         
         
         // make the displayer

@@ -5,45 +5,44 @@ import sim.util.Double2D;
 public class EnergyGrid implements java.io.Serializable
 {
 	private static final long serialVersionUID = 1;
-	
-	private int type;
-	private String description;
+	private int gridId;
+	private String type;
 	private double efficiency;
+	private double gridLosses;
 	private int nodes;
 	
 	//TODO: Ownership and Management
 	
-	public EnergyGrid(int type, String description, double efficiency, int nodes){
+	public EnergyGrid(int gridId, String type, double efficiency, double gridLosses, int nodes){
+		this.gridId = gridId;
 		this.type = type;
-		this.description = description;
-		this.efficiency = efficiency;		
+		this.efficiency = efficiency;	
 		this.nodes = nodes;
 	}
 	
 	
 	
-	public int getType() {
+	public int getGridId() {
+		return gridId;
+	}
+
+
+
+	public void setGridId(int gridId) {
+		this.gridId = gridId;
+	}
+
+
+
+	public String getType() {
 		return type;
 	}
 
 
 
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
-
-
-
-	public String getDescription() {
-		return description;
-	}
-
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 
 
 	public double getEfficiency() {
@@ -54,6 +53,18 @@ public class EnergyGrid implements java.io.Serializable
 
 	public void setEfficiency(double efficiency) {
 		this.efficiency = efficiency;
+	}
+
+
+
+	public double getGridLosses() {
+		return gridLosses;
+	}
+
+
+
+	public void setGridLosses(double gridLosses) {
+		this.gridLosses = gridLosses;
 	}
 
 
@@ -76,5 +87,9 @@ public class EnergyGrid implements java.io.Serializable
 
 
 
-	public String toString() { return "" + description; }
+	@Override
+	public String toString() {
+		return "EnergyGrid [gridId=" + gridId + ", type=" + type + ", efficiency=" + efficiency + ", gridLosses="
+				+ gridLosses + ", nodes=" + nodes + "]";
+	}
 }
