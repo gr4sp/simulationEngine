@@ -6,18 +6,19 @@ public class EnergyGrid implements java.io.Serializable
 {
 	private static final long serialVersionUID = 1;
 	private int gridId;
-	private String type;
+	private int type;
 	private double efficiency;
 	private double gridLosses;
-	private int nodes;
+	private int ownership;
+	private int nodes;//not used for now
 	
 	//TODO: Ownership and Management
 	
-	public EnergyGrid(int gridId, String type, double efficiency, double gridLosses, int nodes){
+	public EnergyGrid(int gridId, int type, double efficiency, double gridLosses, int ownership){
 		this.gridId = gridId;
 		this.type = type;
 		this.efficiency = efficiency;	
-		this.nodes = nodes;
+		this.ownership = ownership;
 	}
 	
 	
@@ -34,13 +35,13 @@ public class EnergyGrid implements java.io.Serializable
 
 
 
-	public String getType() {
+	public int getType() {
 		return type;
 	}
 
 
 
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 
@@ -69,14 +70,14 @@ public class EnergyGrid implements java.io.Serializable
 
 
 
-	public int getNodes() {
-		return nodes;
+	public int getOwnership() {
+		return ownership;
 	}
 
 
 
-	public void setNodes(int nodes) {
-		this.nodes = nodes;
+	public void setOwnership(int ownership) {
+		this.ownership = ownership;
 	}
 
 

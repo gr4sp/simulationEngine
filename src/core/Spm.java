@@ -32,10 +32,8 @@ public class Spm extends SimplePortrayal2D implements Steppable
     private boolean hasStorage;
     
     //Interface: Connection Point
-    private ConnectionPoint connectionPoint;
+    private Bag connectionPoint;
     //For the societal layout
-
-	private Bag organisations;
 
 	//Some performance metrics
     //Efficiency
@@ -53,18 +51,14 @@ public class Spm extends SimplePortrayal2D implements Steppable
     //TODO: add list of owners
         
     
-    public Spm(int idSpm, Bag generators, Bag grid, Bag storages, ConnectionPoint connectionPoint,
-			   Bag organisations,double efficiency, double embGHG){
+    public Spm(int idSpm, Bag generators, Bag grid, Bag storages, Bag connectionPoint){
     	this.idSpm = idSpm;
     	this.generators = generators;
     	this.grid = grid;
     	this.hasStorage =  ( storages.isEmpty() == false );
     	this.storages = storages;
     	this.connectionPoint = connectionPoint;
-    	this.organisations = organisations;
-    	this.efficiency = efficiency;
-    	this.embGHG = embGHG;
-    	
+
         
         }
     
@@ -72,7 +66,7 @@ public class Spm extends SimplePortrayal2D implements Steppable
     @Override
 	public String toString() {
 		return "Spm [idSpm=" + idSpm + ", generators=" + generators + ", grid=" + grid + ", storages=" + storages
-				+ ", hasStorage=" + hasStorage + ", connectionPoint=" + connectionPoint + ", organisations=" + organisations+"," +
+				+ ", hasStorage=" + hasStorage + ", connectionPoint=" + connectionPoint +
 				"efficiency=" + efficiency + ", embGHG=" + embGHG + ", installCosts=" + installCosts + ", maintenanceCosts=" + maintenanceCosts
 				+ "]";
 	}
@@ -118,18 +112,15 @@ public class Spm extends SimplePortrayal2D implements Steppable
 	}
 
 
-	public ConnectionPoint getConnectionPoint() {
+	public Bag getConnectionPoint() {
 		return connectionPoint;
 	}
 
 
-	public void setConnectionPoint(ConnectionPoint connectionPoint) {
+	public void setConnectionPoint(Bag connectionPoint) {
 		this.connectionPoint = connectionPoint;
 	}
 
-	public Bag getOrganisations() {return organisations;}
-
-	public void setOrganisations(Bag organisations) {this.organisations = organisations;}
 
 	public double getEfficiency() {
 		return efficiency;
