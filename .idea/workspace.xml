@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e8ba6deb-f3ba-4bf5-b009-4304c675f142" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/core/Gr4spSimUI.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4a5ed0ed-32e1-463f-833f-e4b76701578c.xml" afterPath="$PROJECT_DIR$/.idea/dataSources/4a5ed0ed-32e1-463f-833f-e4b76701578c.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Spm_archetypes.db" afterPath="$PROJECT_DIR$/Spm_archetypes.db" />
-      <change beforePath="$PROJECT_DIR$/src/core/Enduse.java" afterPath="$PROJECT_DIR$/src/core/Enduse.java" />
       <change beforePath="$PROJECT_DIR$/src/core/Gr4spSim.java" afterPath="$PROJECT_DIR$/src/core/Gr4spSim.java" />
-      <change beforePath="$PROJECT_DIR$/src/core/NetworkAssets.java" afterPath="$PROJECT_DIR$/src/core/NetworkAssets.java" />
-      <change beforePath="$PROJECT_DIR$/src/core/Spm.java" afterPath="$PROJECT_DIR$/src/core/Spm.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -63,95 +56,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="Bag.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/util/Bag.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-11700">
-              <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-              <folding>
-                <element signature="e#2650#2651#0" expanded="true" />
-                <element signature="e#2705#2706#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Ball.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/tutorial5/Ball.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="151" column="55" lean-forward="true" selection-start-line="151" selection-start-column="40" selection-end-line="151" selection-end-column="55" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Double2D.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/util/Double2D.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="237" column="0" lean-forward="false" selection-start-line="237" selection-start-column="0" selection-end-line="237" selection-end-column="0" />
-              <folding>
-                <element signature="e#6636#6637#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DrawInfo2D.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/portrayal/DrawInfo2D.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FieldPortrayal2D.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/portrayal/FieldPortrayal2D.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-              <folding>
-                <element signature="e#1705#1706#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Gr4spSim.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Gr4spSim.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="518" column="60" lean-forward="true" selection-start-line="518" selection-start-column="60" selection-end-line="518" selection-end-column="60" />
+            <state relative-caret-position="602">
+              <caret line="506" column="18" lean-forward="false" selection-start-line="506" selection-start-column="18" selection-end-line="506" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1518441616756" expanded="true" signature="1229:1370" ph="SELECT id, n... Technology" />
-                <marker date="1518441616756" expanded="true" signature="1229:1392" ph="SELECT id, n... Technology" />
-                <marker date="1518441616756" expanded="true" signature="1229:1407" ph="SELECT id, n... Technology" />
-                <marker date="1518441616756" expanded="true" signature="1229:1408" ph="SELECT id, n... Technology" />
-                <marker date="1518441616756" expanded="true" signature="1229:1409" ph="SELECT id, n... Technology" />
-                <marker date="1518441616756" expanded="true" signature="1229:1422" ph="SELECT id, n... Technology" />
-                <marker date="1518441616756" expanded="true" signature="1229:1423" ph="SELECT id, P... " />
-                <marker date="1518441616756" expanded="true" signature="4228:4407" ph="SELECT id, n... Storage" />
-                <marker date="1518441616756" expanded="true" signature="6708:7083" ph="SELECT id, N... NetworkAssets" />
-                <marker date="1518441616756" expanded="true" signature="6979:7083" ph="SELECT id, G... Grid" />
-                <marker date="1518441616756" expanded="true" signature="9893:10055" ph="SELECT id, G... Grid" />
-                <marker date="1518441616756" expanded="true" signature="12943:12993" ph="SELECT Spm_c... Spm_contains" />
-                <marker date="1518441616756" expanded="true" signature="12943:12994" ph="SELECT Spm_c... Spm_contains" />
-                <marker date="1518441616756" expanded="true" signature="12943:13043" ph="SELECT Spm_c... Spm_contains" />
-                <marker date="1518441616756" expanded="true" signature="14182:14454" ph="SELECT Spm.i... Spm" />
-                <marker date="1518441616756" expanded="true" signature="14324:14454" ph="SELECT Spm.i... Spm" />
-                <marker date="1518441616756" expanded="true" signature="15276:15544" ph="SELECT Spm.i... Spm" />
-                <marker date="1518441616756" expanded="true" signature="16367:16648" ph="SELECT Spm.i... Spm" />
-                <marker date="1518441616756" expanded="true" signature="17486:17792" ph="SELECT Spm.i... Spm" />
-                <marker date="1518441616756" expanded="true" signature="17486:17793" ph="SELECT Spm.i... " />
-                <marker date="1518441616756" expanded="true" signature="19468:19582" ph="SELECT Spm.i... " />
-                <marker date="1518441616756" expanded="true" signature="19468:19583" ph="SELECT Spm.i... missingValue" />
-                <marker date="1518441616756" expanded="true" signature="19468:19595" ph="SELECT Spm.i... Spm" />
+                <marker date="1518441906981" expanded="true" signature="1229:1370" ph="SELECT id, n... Technology" />
+                <marker date="1518441906981" expanded="true" signature="1229:1392" ph="SELECT id, n... Technology" />
+                <marker date="1518441906981" expanded="true" signature="1229:1407" ph="SELECT id, n... Technology" />
+                <marker date="1518441906981" expanded="true" signature="1229:1408" ph="SELECT id, n... Technology" />
+                <marker date="1518441906981" expanded="true" signature="1229:1409" ph="SELECT id, n... Technology" />
+                <marker date="1518441906981" expanded="true" signature="1229:1422" ph="SELECT id, n... Technology" />
+                <marker date="1518441906981" expanded="true" signature="1229:1423" ph="SELECT id, P... " />
+                <marker date="1518441906981" expanded="true" signature="4228:4407" ph="SELECT id, n... Storage" />
+                <marker date="1518441906981" expanded="true" signature="6708:7083" ph="SELECT id, N... NetworkAssets" />
+                <marker date="1518441906981" expanded="true" signature="6979:7083" ph="SELECT id, G... Grid" />
+                <marker date="1518441906981" expanded="true" signature="9893:10055" ph="SELECT id, G... Grid" />
+                <marker date="1518441906981" expanded="true" signature="12943:12993" ph="SELECT Spm_c... Spm_contains" />
+                <marker date="1518441906981" expanded="true" signature="12943:12994" ph="SELECT Spm_c... Spm_contains" />
+                <marker date="1518441906981" expanded="true" signature="12943:13043" ph="SELECT Spm_c... Spm_contains" />
+                <marker date="1518441906981" expanded="true" signature="14182:14454" ph="SELECT Spm.i... Spm" />
+                <marker date="1518441906981" expanded="true" signature="14324:14454" ph="SELECT Spm.i... Spm" />
+                <marker date="1518441906981" expanded="true" signature="15276:15544" ph="SELECT Spm.i... Spm" />
+                <marker date="1518441906981" expanded="true" signature="16367:16648" ph="SELECT Spm.i... Spm" />
+                <marker date="1518441906981" expanded="true" signature="17486:17792" ph="SELECT Spm.i... Spm" />
+                <marker date="1518441906981" expanded="true" signature="17486:17793" ph="SELECT Spm.i... " />
+                <marker date="1518441906981" expanded="true" signature="19468:19582" ph="SELECT Spm.i... " />
+                <marker date="1518441906981" expanded="true" signature="19468:19583" ph="SELECT Spm.i... missingValue" />
+                <marker date="1518441906981" expanded="true" signature="19468:19595" ph="SELECT Spm.i... Spm" />
               </folding>
             </state>
           </provider>
@@ -167,27 +101,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GUIState.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/display/GUIState.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="153" column="0" lean-forward="false" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimplePortrayal2D.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/portrayal/SimplePortrayal2D.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="20" column="63" lean-forward="false" selection-start-line="20" selection-start-column="57" selection-end-line="20" selection-end-column="67" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Spm.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Spm.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/Spm.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1468">
@@ -278,8 +192,8 @@
         <option value="$PROJECT_DIR$/src/core/NetworkAssets.java" />
         <option value="$PROJECT_DIR$/src/core/Enduse.java" />
         <option value="$PROJECT_DIR$/src/core/Gr4spSimUI.java" />
-        <option value="$PROJECT_DIR$/src/core/Gr4spSim.java" />
         <option value="$PROJECT_DIR$/src/core/Spm.java" />
+        <option value="$PROJECT_DIR$/src/core/Gr4spSim.java" />
       </list>
     </option>
   </component>
@@ -631,12 +545,12 @@
       <workItem from="1516595538538" duration="179000" />
       <workItem from="1516597233144" duration="270000" />
       <workItem from="1517037810557" duration="11423000" />
-      <workItem from="1518404083555" duration="22203000" />
+      <workItem from="1518404083555" duration="22349000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="130441000" />
+    <option name="totallyTimeSpent" value="130587000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -668,7 +582,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16548042" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290507" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Learn" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33487543" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16156584" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16156584" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24982207" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -724,7 +638,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/core/Gr4spSim.java</url>
-          <line>503</line>
+          <line>507</line>
           <properties />
           <option name="timeStamp" value="68" />
         </line-breakpoint>
@@ -1468,51 +1382,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="518" column="60" lean-forward="true" selection-start-line="518" selection-start-column="60" selection-end-line="518" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1518441616756" expanded="true" signature="1229:1370" ph="SELECT id, n... Technology" />
-            <marker date="1518441616756" expanded="true" signature="1229:1392" ph="SELECT id, n... Technology" />
-            <marker date="1518441616756" expanded="true" signature="1229:1407" ph="SELECT id, n... Technology" />
-            <marker date="1518441616756" expanded="true" signature="1229:1408" ph="SELECT id, n... Technology" />
-            <marker date="1518441616756" expanded="true" signature="1229:1409" ph="SELECT id, n... Technology" />
-            <marker date="1518441616756" expanded="true" signature="1229:1422" ph="SELECT id, n... Technology" />
-            <marker date="1518441616756" expanded="true" signature="1229:1423" ph="SELECT id, P... " />
-            <marker date="1518441616756" expanded="true" signature="4228:4407" ph="SELECT id, n... Storage" />
-            <marker date="1518441616756" expanded="true" signature="6708:7083" ph="SELECT id, N... NetworkAssets" />
-            <marker date="1518441616756" expanded="true" signature="6979:7083" ph="SELECT id, G... Grid" />
-            <marker date="1518441616756" expanded="true" signature="9893:10055" ph="SELECT id, G... Grid" />
-            <marker date="1518441616756" expanded="true" signature="12943:12993" ph="SELECT Spm_c... Spm_contains" />
-            <marker date="1518441616756" expanded="true" signature="12943:12994" ph="SELECT Spm_c... Spm_contains" />
-            <marker date="1518441616756" expanded="true" signature="12943:13043" ph="SELECT Spm_c... Spm_contains" />
-            <marker date="1518441616756" expanded="true" signature="14182:14454" ph="SELECT Spm.i... Spm" />
-            <marker date="1518441616756" expanded="true" signature="14324:14454" ph="SELECT Spm.i... Spm" />
-            <marker date="1518441616756" expanded="true" signature="15276:15544" ph="SELECT Spm.i... Spm" />
-            <marker date="1518441616756" expanded="true" signature="16367:16648" ph="SELECT Spm.i... Spm" />
-            <marker date="1518441616756" expanded="true" signature="17486:17792" ph="SELECT Spm.i... Spm" />
-            <marker date="1518441616756" expanded="true" signature="17486:17793" ph="SELECT Spm.i... " />
-            <marker date="1518441616756" expanded="true" signature="19468:19582" ph="SELECT Spm.i... " />
-            <marker date="1518441616756" expanded="true" signature="19468:19583" ph="SELECT Spm.i... missingValue" />
-            <marker date="1518441616756" expanded="true" signature="19468:19595" ph="SELECT Spm.i... Spm" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/display/GUIState.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
           <caret line="153" column="0" lean-forward="false" selection-start-line="153" selection-start-column="0" selection-end-line="153" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSimUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="58" column="36" lean-forward="true" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
           <folding />
         </state>
       </provider>
@@ -1557,6 +1430,47 @@
             <element signature="e#3756#3757#0" expanded="true" />
             <element signature="e#3802#3803#0" expanded="true" />
             <element signature="e#3832#3833#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSimUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="58" column="36" lean-forward="true" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="602">
+          <caret line="506" column="18" lean-forward="false" selection-start-line="506" selection-start-column="18" selection-end-line="506" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1518441906981" expanded="true" signature="1229:1370" ph="SELECT id, n... Technology" />
+            <marker date="1518441906981" expanded="true" signature="1229:1392" ph="SELECT id, n... Technology" />
+            <marker date="1518441906981" expanded="true" signature="1229:1407" ph="SELECT id, n... Technology" />
+            <marker date="1518441906981" expanded="true" signature="1229:1408" ph="SELECT id, n... Technology" />
+            <marker date="1518441906981" expanded="true" signature="1229:1409" ph="SELECT id, n... Technology" />
+            <marker date="1518441906981" expanded="true" signature="1229:1422" ph="SELECT id, n... Technology" />
+            <marker date="1518441906981" expanded="true" signature="1229:1423" ph="SELECT id, P... " />
+            <marker date="1518441906981" expanded="true" signature="4228:4407" ph="SELECT id, n... Storage" />
+            <marker date="1518441906981" expanded="true" signature="6708:7083" ph="SELECT id, N... NetworkAssets" />
+            <marker date="1518441906981" expanded="true" signature="6979:7083" ph="SELECT id, G... Grid" />
+            <marker date="1518441906981" expanded="true" signature="9893:10055" ph="SELECT id, G... Grid" />
+            <marker date="1518441906981" expanded="true" signature="12943:12993" ph="SELECT Spm_c... Spm_contains" />
+            <marker date="1518441906981" expanded="true" signature="12943:12994" ph="SELECT Spm_c... Spm_contains" />
+            <marker date="1518441906981" expanded="true" signature="12943:13043" ph="SELECT Spm_c... Spm_contains" />
+            <marker date="1518441906981" expanded="true" signature="14182:14454" ph="SELECT Spm.i... Spm" />
+            <marker date="1518441906981" expanded="true" signature="14324:14454" ph="SELECT Spm.i... Spm" />
+            <marker date="1518441906981" expanded="true" signature="15276:15544" ph="SELECT Spm.i... Spm" />
+            <marker date="1518441906981" expanded="true" signature="16367:16648" ph="SELECT Spm.i... Spm" />
+            <marker date="1518441906981" expanded="true" signature="17486:17792" ph="SELECT Spm.i... Spm" />
+            <marker date="1518441906981" expanded="true" signature="17486:17793" ph="SELECT Spm.i... " />
+            <marker date="1518441906981" expanded="true" signature="19468:19582" ph="SELECT Spm.i... " />
+            <marker date="1518441906981" expanded="true" signature="19468:19583" ph="SELECT Spm.i... missingValue" />
+            <marker date="1518441906981" expanded="true" signature="19468:19595" ph="SELECT Spm.i... Spm" />
           </folding>
         </state>
       </provider>

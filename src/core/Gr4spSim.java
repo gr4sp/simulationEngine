@@ -495,12 +495,16 @@ public class Gr4spSim extends SimState {
 
                 Enduse eu = new Enduse(endUseId,locationCode,spmEndUse, spmName, categoryType, dwellingType);
 
+                //Add Random Location of EU in the layout
                 Double2D euLoc = new Double2D(random.nextDouble() * 1000, random.nextDouble() * 1000);
                 layout.setObjectLocation(eu, euLoc);
 
+                //Use same Loc for the SPM
                 Double2D spmLoc = new Double2D(euLoc.x + 0,euLoc.y + 0);
                 Spm spmeu = eu.getSpm_end_use();
 
+                //Add all SPMs location for this EU recursively, decreasing the diameter and
+                //shifting when more than one smp is contained
                 addSPMLocation(spmeu,spmLoc, spmeu.diameter);
 
 
