@@ -9,10 +9,10 @@ package core;
 import sim.engine.*;
 import sim.portrayal.*;
 import sim.util.*;
-import sim.field.network.*;
-import sim.field.continuous.*;
+
 import java.awt.*;
-import java.awt.geom.*;
+import java.awt.geom.Ellipse2D;
+
 
 
 public class Spm extends SimplePortrayal2D implements Steppable
@@ -28,14 +28,14 @@ public class Spm extends SimplePortrayal2D implements Steppable
     private Bag spms_contained;
 
     //Distribution Network
-    private Bag grid;
+    private Bag network_assets;
     
     //Storage
     private Bag storages;
     private boolean hasStorage;
     
     //Interface: Connection Point
-    private Bag connectionPoint;
+    private Bag spm_interface;
     //For the societal layout
 
 	//Some performance metrics
@@ -49,35 +49,52 @@ public class Spm extends SimplePortrayal2D implements Steppable
     private double installCosts;
     private double maintenanceCosts;
         
-    
+    //Visualization Parameters
+	public double diameter;
+
     //Ownerships
     //TODO: add list of owners
         
     
-    public Spm(int idSpm, Bag spms_contained, Bag generators, Bag grid, Bag storages, Bag connectionPoint){
+    public Spm(int idSpm, Bag spms_contained, Bag generators, Bag network_assets, Bag storages, Bag spm_interface){
     	this.idSpm = idSpm;
     	this.spms_contained = spms_contained;
     	this.generators = generators;
-    	this.grid = grid;
+    	this.network_assets = network_assets;
     	this.hasStorage =  ( storages.isEmpty() == false );
     	this.storages = storages;
-    	this.connectionPoint = connectionPoint;
-
+    	this.spm_interface = spm_interface;
+		this.diameter=50.0;
         
         }
     
         
     @Override
 	public String toString() {
-		return "Spm [idSpm=" + idSpm + ", spms_contained=" + spms_contained + ", generators=" + generators + ", grid=" + grid + ", storages=" + storages
-				+ ", hasStorage=" + hasStorage + ", connectionPoint=" + connectionPoint +
+		return "Spm [idSpm=" + idSpm + ", spms_contained=" + spms_contained + ", generators=" + generators + ", network_assets=" + network_assets + ", storages=" + storages
+				+ ", hasStorage=" + hasStorage + ", spm_interface=" + spm_interface +
 				"efficiency=" + efficiency + ", embGHG=" + embGHG + ", installCosts=" + installCosts + ", maintenanceCosts=" + maintenanceCosts
 				+ "]";
 	}
 
+	public int getIdSpm() {
+		return idSpm;
+	}
+
+	public void setIdSpm(int idSpm) {
+		this.idSpm = idSpm;
+	}
+
+	public Bag getSpms_contained() {
+			return spms_contained;
+	}
+
+	public void setSpms_contained(Bag spms_contained) {
+		this.spms_contained = spms_contained;
+	}
 
 	public Bag getGenerators() {
-		return generators;
+			return generators;
 	}
 
 
@@ -86,18 +103,18 @@ public class Spm extends SimplePortrayal2D implements Steppable
 	}
 
 
-	public Bag getGrid() {
-		return grid;
+	public Bag getNetwork_assets() {
+		return network_assets;
 	}
 
 
-	public void setGrid(Bag grid) {
-		this.grid = grid;
+	public void setNetwork_assets(Bag network_assets) {
+		this.network_assets = network_assets;
 	}
 
 
 	public Bag getStorages() {
-		return storages;
+    		return storages;
 	}
 
 
@@ -116,13 +133,13 @@ public class Spm extends SimplePortrayal2D implements Steppable
 	}
 
 
-	public Bag getConnectionPoint() {
-		return connectionPoint;
+	public Bag getSpm_interface() {
+			return spm_interface;
 	}
 
 
-	public void setConnectionPoint(Bag connectionPoint) {
-		this.connectionPoint = connectionPoint;
+	public void setSpm_interface(Bag spm_interface) {
+		this.spm_interface = spm_interface;
 	}
 
 
@@ -171,8 +188,7 @@ public class Spm extends SimplePortrayal2D implements Steppable
 	}
 
 
-	public void step(SimState state)
-        {
+	public void step(SimState state){
         Gr4spSim data = (Gr4spSim) state;
         
         System.out.println(this);
@@ -181,26 +197,63 @@ public class Spm extends SimplePortrayal2D implements Steppable
         //Double2D newpos = new Double2D(pos.x+velocityx, pos.y + velocityy);
         //tut.balls.setObjectLocation(this,newpos);
         
-        }
-    
-	
-    
-    public void draw(Object object, Graphics2D graphics, DrawInfo2D info)
-        {
-        final double width = info.draw.width;
-        final double height = info.draw.height;
+    }
 
-        graphics.setColor(Color.blue);
+	private Color getColorForValue(int idSpm) {
 
-        final int x = (int)(info.draw.x - width / 2.0);
-        final int y = (int)(info.draw.y - height / 2.0);
-        final int w = (int)(width);
-        final int h = (int)(height);
+		switch (idSpm) {
+			case 1:
+				return Color.red;
+			case 2:
+				return Color.green;
+			case 3:
+				return Color.orange;
+			case 4:
+				return Color.blue;
+			case 5:
+				return Color.GRAY;
+			case 6:
+				return Color.LIGHT_GRAY;
+			case 7:
+				return Color.magenta;
+			case 8:
+				return Color.yellow;
+			case 9:
+				return Color.black;
+			case 10:
+				return Color.darkGray;
+			case 11:
+				return Color.cyan;
+			case 12:
+				return Color.pink;
+		}
+		return Color.white;
+	}
 
-        // draw centered on the origin
-        graphics.fillOval(x,y,w,h);
-        }
-    
-    
+	public void draw(Object object, Graphics2D graphics, DrawInfo2D info) {
+		double width = info.draw.width * this.diameter;
+		double height = info.draw.height * this.diameter;
+
+		Color c = new Color( getColorForValue( idSpm ).getRed(), getColorForValue( idSpm ).getGreen(), getColorForValue( idSpm ).getBlue(), 200);
+		graphics.setColor( c );
+
+		int x = (int)(info.draw.x - width / 2.0D);
+		int y = (int)(info.draw.y - height / 2.0D);
+		int w = (int)width;
+		int h = (int)height;
+		graphics.fillOval(x, y, w, h);
+
+
+
+	}
+
+	public boolean hitObject(Object object, DrawInfo2D range) {
+		double SLOP = 1.0D;
+		double width = range.draw.width * this.diameter;
+		double height = range.draw.height * this.diameter;
+		Ellipse2D.Double ellipse = new Ellipse2D.Double(range.draw.x - width / 2.0D - 1.0D, range.draw.y - height / 2.0D - 1.0D, width + 2.0D, height + 2.0D);
+		return ellipse.intersects(range.clip.x, range.clip.y, range.clip.width, range.clip.height);
+	}
+
     }
     

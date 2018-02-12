@@ -30,7 +30,7 @@ public class NetworkAssets implements java.io.Serializable
 		this.gridVoltate = gridVoltage;
 		this.owner = owner;
 
-		if(!location_MB.isEmpty()) {
+		if(location_MB != null) {
 			String[] coord = location_MB.split("\\,");
 			this.location = new Double2D(Double.parseDouble(coord[0]), Double.parseDouble(coord[1]));
 		}

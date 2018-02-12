@@ -28,14 +28,14 @@
     <table id="22" parent="2" name="Spm_connection_mapping"/>
     <table id="23" parent="2" name="Spm_contains"/>
     <table id="24" parent="2" name="Spm_gen_mapping"/>
-    <table id="25" parent="2" name="Spm_network_mapping"/>
-    <table id="26" parent="2" name="Spm_ownership_mapping"/>
-    <table id="27" parent="2" name="Spm_storage_mapping"/>
-    <table id="28" parent="2" name="State"/>
-    <table id="29" parent="2" name="Storage"/>
-    <table id="30" parent="2" name="StorateType"/>
-    <table id="31" parent="2" name="TechnologyTypeGen"/>
-    <table id="32" parent="2" name="VictoriaTerminaStations2017"/>
+    <table id="25" parent="2" name="Spm_networkTimaru_mapping"/>
+    <table id="26" parent="2" name="Spm_network_mapping"/>
+    <table id="27" parent="2" name="Spm_ownership_mapping"/>
+    <table id="28" parent="2" name="Spm_storage_mapping"/>
+    <table id="29" parent="2" name="State"/>
+    <table id="30" parent="2" name="Storage"/>
+    <table id="31" parent="2" name="StorateType"/>
+    <table id="32" parent="2" name="TechnologyTypeGen"/>
     <table id="33" parent="2" name="case_studySA1"/>
     <table id="34" parent="2" name="sqlite_master">
       <System>1</System>
@@ -558,7 +558,7 @@
       <Position>4</Position>
       <DataType>TEXT|0</DataType>
     </column>
-    <column id="157" parent="21" name="grid">
+    <column id="157" parent="21" name="network_assets">
       <Position>5</Position>
       <DataType>TEXT|0</DataType>
     </column>
@@ -618,7 +618,7 @@
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
     </column>
-    <column id="172" parent="26" name="ownershipId">
+    <column id="172" parent="26" name="network_assetId">
       <Position>2</Position>
       <DataType>INTEGER|0</DataType>
     </column>
@@ -626,110 +626,112 @@
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
     </column>
-    <column id="174" parent="27" name="storageId">
+    <column id="174" parent="27" name="ownershipId">
       <Position>2</Position>
       <DataType>INTEGER|0</DataType>
     </column>
-    <column id="175" parent="28" name="id_State">
+    <column id="175" parent="28" name="spmId">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
     </column>
-    <column id="176" parent="28" name="State_name">
+    <column id="176" parent="28" name="storageId">
+      <Position>2</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="177" parent="29" name="id_State">
+      <Position>1</Position>
+      <DataType>INTEGER|0</DataType>
+    </column>
+    <column id="178" parent="29" name="State_name">
       <Position>2</Position>
       <DataType>TEXT|0</DataType>
     </column>
-    <column id="177" parent="28" name="id_GCCSA">
+    <column id="179" parent="29" name="id_GCCSA">
       <Position>3</Position>
       <DataType>INTEGER|0</DataType>
     </column>
-    <column id="178" parent="28" name="GCCSA_name">
+    <column id="180" parent="29" name="GCCSA_name">
       <Position>4</Position>
       <DataType>TEXT|0</DataType>
     </column>
-    <column id="179" parent="28" name="Spm_name">
+    <column id="181" parent="29" name="Spm_name">
       <Position>5</Position>
       <DataType>TEXT|0</DataType>
     </column>
-    <column id="180" parent="28" name="State_area">
+    <column id="182" parent="29" name="State_area">
       <Position>6</Position>
       <DataType>REAL|0</DataType>
     </column>
-    <column id="181" parent="28" name="ownership">
+    <column id="183" parent="29" name="ownership">
       <Position>7</Position>
       <DataType>TEXT|0</DataType>
     </column>
-    <column id="182" parent="29" name="storage_id">
+    <column id="184" parent="30" name="storage_id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="183" parent="29" name="storage_name">
+    <column id="185" parent="30" name="storage_name">
       <Position>2</Position>
       <DataType>TEXT|0</DataType>
     </column>
-    <column id="184" parent="29" name="StorageType">
+    <column id="186" parent="30" name="StorageType">
       <Position>3</Position>
       <DataType>INTEGER|0</DataType>
     </column>
-    <column id="185" parent="29" name="storageOutputCap">
+    <column id="187" parent="30" name="storageOutputCap">
       <Position>4</Position>
       <DataType>REAL|0</DataType>
     </column>
-    <column id="186" parent="29" name="storageCapacity">
+    <column id="188" parent="30" name="storageCapacity">
       <Position>5</Position>
       <DataType>REAL|0</DataType>
     </column>
-    <column id="187" parent="29" name="Ownership">
+    <column id="189" parent="30" name="Ownership">
       <Position>6</Position>
       <DataType>INTEGER|0</DataType>
     </column>
-    <column id="188" parent="29" name="storage_cycleLife">
+    <column id="190" parent="30" name="storage_cycleLife">
       <Position>7</Position>
       <DataType>REAL|0</DataType>
     </column>
-    <column id="189" parent="29" name="storage_costRange">
+    <column id="191" parent="30" name="storage_costRange">
       <Position>8</Position>
       <DataType>REAL|0</DataType>
     </column>
-    <key id="190" parent="29">
+    <key id="192" parent="30">
       <ColNames>storage_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="191" parent="30" name="id">
+    <column id="193" parent="31" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="192" parent="30" name="name">
+    <column id="194" parent="31" name="name">
       <Position>2</Position>
       <DataType>TEXT|0</DataType>
     </column>
-    <key id="193" parent="30">
+    <key id="195" parent="31">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="194" parent="31" name="id">
+    <column id="196" parent="32" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="195" parent="31" name="Name">
+    <column id="197" parent="32" name="Name">
       <Position>2</Position>
       <DataType>TEXT|0</DataType>
     </column>
-    <key id="196" parent="31">
+    <key id="198" parent="32">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="197" parent="32" name="LOCATIONID">
-      <Position>1</Position>
-    </column>
-    <column id="198" parent="32" name="VOLTAGE">
-      <Position>2</Position>
-    </column>
     <column id="199" parent="33" name="id_MB">
       <Position>1</Position>
       <DataType>INTEGER|0</DataType>

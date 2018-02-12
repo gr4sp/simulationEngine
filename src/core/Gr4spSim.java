@@ -17,7 +17,7 @@ public class Gr4spSim extends SimState {
 	private static final long serialVersionUID = 1;
 
 
-	private Continuous2D layout;
+	public Continuous2D layout;
     HashMap< Integer, Vector<Spm> > spm_register;
 
 
@@ -169,9 +169,9 @@ public class Gr4spSim extends SimState {
         String url = "jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT id, NetworkAssetType.type as type, NetworkAssetType.subtype as subtype, NetworkAssetType.grid as grid, assetName, grid_node_name, " +
+        String sql = "SELECT NetworkAssets.id as netId, NetworkAssetType.type as type, NetworkAssetType.subtype as subtype, NetworkAssetType.grid as grid, assetName, grid_node_name, " +
                 "location_MB, gridLosses, gridVoltage, owner  FROM NetworkAssets JOIN NetworkAssetType " +
-                "WHERE NetworkAssets.assetType = NetworkAssetType.id and id = '" + id + "' ";
+                "WHERE NetworkAssets.assetType = NetworkAssetType.id and NetworkAssets.id = '" + id + "' ";
         Bag nets = new Bag();
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -179,7 +179,7 @@ public class Gr4spSim extends SimState {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getInt("id") + "\t" +
+                System.out.println("\t" + rs.getInt("netId") + "\t" +
                         rs.getString("type") + "\t" +
                         rs.getString("subtype")+"\t"+
                         rs.getString("grid")+"\t"+
@@ -190,7 +190,7 @@ public class Gr4spSim extends SimState {
                         rs.getInt("gridVoltage") + "\t" +
                         rs.getString("owner"));
 
-                NetworkAssets grid = createNetworkAssets( rs.getInt("id"),
+                NetworkAssets grid = createNetworkAssets( rs.getInt("netId"),
                         rs.getString("type"),
                         rs.getString("subtype"),
                         rs.getString("grid"),
@@ -397,8 +397,8 @@ public class Gr4spSim extends SimState {
         /**
          * Get list of NetworkAssets from DB
          */
-        String spmGridSql = "SELECT Spm.id, Spm.name, NetworkAssets.id as netId FROM Spm as Spm JOIN Spm_network_mapping join NetworkAssets " +
-                "on NetworkAssets.id = Spm_network_mapping.network_assetId and Spm.id = Spm_network_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
+        String spmGridSql = "SELECT Spm.id, Spm.name, NetworkAssets.id as netId FROM Spm as Spm JOIN Spm_networkTimaru_mapping join NetworkAssets " +
+                "on NetworkAssets.id = Spm_networkTimaru_mapping.network_assetId and Spm.id = Spm_networkTimaru_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
         Bag networkAssets = new Bag();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -494,7 +494,15 @@ public class Gr4spSim extends SimState {
                 Spm spmEndUse = createSpm(idSpm);
 
                 Enduse eu = new Enduse(endUseId,locationCode,spmEndUse, spmName, categoryType, dwellingType);
-                layout.setObjectLocation(eu, new Double2D(random.nextDouble() * 100, random.nextDouble() * 100));
+
+                Double2D euLoc = new Double2D(random.nextDouble() * 1000, random.nextDouble() * 1000);
+                layout.setObjectLocation(eu, euLoc);
+
+                Double2D spmLoc = new Double2D(euLoc.x + 0,euLoc.y + 0);
+                Spm spmeu = eu.getSpm_end_use();
+
+                addSPMLocation(spmeu,spmLoc, spmeu.diameter);
+
 
 
             }
@@ -508,6 +516,17 @@ public class Gr4spSim extends SimState {
         }
     }
 
+    void addSPMLocation(Spm s, Double2D loc, double diameter){
+        layout.setObjectLocation(s, loc);
+        Double2D shift = new Double2D(10,10);
+        for (int i = 0; i < s.getSpms_contained().numObjs; i++){
+            Spm spmc = (Spm) s.getSpms_contained().getValue(i);
+            spmc.diameter = diameter-10;
+            addSPMLocation(spmc,loc,spmc.diameter);
+            loc = loc.add(shift);
+
+        }
+    }
     public void start()
     {
 	    super.start();  
