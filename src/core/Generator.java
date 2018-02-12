@@ -11,7 +11,9 @@ public class Generator implements java.io.Serializable
 	private String name;//name of power plant
 	private String fuelSourceDescriptor; //fuel source descriptor: according to AEMO it can be: brown coal, black coal, natural gas, Diesel, waste coal mine gas, landfill methane, etc. 
 	private String ownership;//public, private, PPP, Cooperative?
+	private String ownerName;//name of the owner
 	private String techTypeDescriptor; //combustion steam-subcritical, combustion Open Cycle Gas turbines (OCGT) phtovoltaic flat panet, hydro-gravity, hydro-run of river, solar PV, wind onshore/offshore,
+	private String dispatchTypeDescriptor; // scheduled or non-scheduled
 	private double maxCapacity; //maximum capacity in kW
 	private double unitSize;//unit size - dimensions. Depending on the range can fall into small/medium or large generation unit. //TODO: find the possible ranges!
 	private double efficiency; //0-1 efficiency of conversion
@@ -24,7 +26,23 @@ public class Generator implements java.io.Serializable
 	private Double2D location;//coordinates where the generation is located
 
 	//TODO: Ownership and Management definition
-	
+
+	public  Generator( int genId, String genName, String owner, Double gencap, String techType, String fuelType, String dispachType, String locationCoord){
+		this.id = genId;
+		this.name = genName;
+		this.ownerName = owner;
+		this.maxCapacity = gencap;
+		this.techTypeDescriptor = techType;
+		this.dispatchTypeDescriptor = dispachType;
+
+		if(locationCoord != null) {
+			String[] coord = locationCoord.split("\\,");
+			this.location = new Double2D(Double.parseDouble(coord[0]), Double.parseDouble(coord[1]));
+		}
+		else
+			this.location = null;
+
+	}
 	public Generator(int id, String fuelSourceDescriptor, String fuelSource, String name, 
 			String ownership, String techTypeDescriptor, double maxCapacity, String size, double efficiency, int lifecycle, double constructionPeriod,
 			double fixedCosts, double peakContribFactor){

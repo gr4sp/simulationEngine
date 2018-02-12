@@ -23,7 +23,10 @@ public class Spm extends SimplePortrayal2D implements Steppable
     //For the Technical layout
     //Generators
     private Bag generators;
-    
+
+    //Contained SPMs
+    private Bag spms_contained;
+
     //Distribution Network
     private Bag grid;
     
@@ -51,8 +54,9 @@ public class Spm extends SimplePortrayal2D implements Steppable
     //TODO: add list of owners
         
     
-    public Spm(int idSpm, Bag generators, Bag grid, Bag storages, Bag connectionPoint){
+    public Spm(int idSpm, Bag spms_contained, Bag generators, Bag grid, Bag storages, Bag connectionPoint){
     	this.idSpm = idSpm;
+    	this.spms_contained = spms_contained;
     	this.generators = generators;
     	this.grid = grid;
     	this.hasStorage =  ( storages.isEmpty() == false );
@@ -65,7 +69,7 @@ public class Spm extends SimplePortrayal2D implements Steppable
         
     @Override
 	public String toString() {
-		return "Spm [idSpm=" + idSpm + ", generators=" + generators + ", grid=" + grid + ", storages=" + storages
+		return "Spm [idSpm=" + idSpm + ", spms_contained=" + spms_contained + ", generators=" + generators + ", grid=" + grid + ", storages=" + storages
 				+ ", hasStorage=" + hasStorage + ", connectionPoint=" + connectionPoint +
 				"efficiency=" + efficiency + ", embGHG=" + embGHG + ", installCosts=" + installCosts + ", maintenanceCosts=" + maintenanceCosts
 				+ "]";

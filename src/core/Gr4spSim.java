@@ -1,7 +1,6 @@
 package core;
 
 
-import sim.app.tutorial5.Ball;
 import sim.engine.*;
 import sim.field.continuous.Continuous2D;
 import sim.util.Bag;
@@ -11,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.*;
 
 
 public class Gr4spSim extends SimState {
@@ -18,6 +18,8 @@ public class Gr4spSim extends SimState {
 
 
 	private Continuous2D layout;
+    HashMap< Integer, Vector<Spm> > spm_register;
+
 
 	//Counter for the unique id each time a storage unit is created and other storage related variables
 	private int numGenerators;
@@ -42,10 +44,12 @@ public class Gr4spSim extends SimState {
 	 * select all rows in the Generation Technologies table
 	 */
 	public Bag selectGenTech( String name) {
-        String url = "jdbc:sqlite:technologies.db";
+        String url = "jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT gen_id, gen_name, gen_maxcap, gen_efficiency  FROM Generators WHERE gen_name = '" + name + "' ";
+        String sql = "SELECT id, PowerStation, Owner, InstalledCapacity_MW, TechnologyType, FuelType, DispatchType, location_Coordinates" +
+                " FROM GenerationAssets WHERE PowerStation = '" + name + "' ";
+
         Bag gens = new Bag();
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -53,12 +57,27 @@ public class Gr4spSim extends SimState {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println( "\t" + rs.getInt("gen_id") + "\t" +
-                        rs.getString("gen_name") + "\t" +
-                        rs.getDouble("gen_maxcap")+"\t"+
-                        rs.getDouble("gen_efficiency"));
+                System.out.println( "\t" + rs.getInt("id") + "\t" +
+                        rs.getString("PowerStation") + "\t" +
+                        rs.getString("Owner")+"\t"+
+                        rs.getDouble("InstalledCapacity_MW")+"\t"+
+                        rs.getString("TechnologyType")+"\t"+
+                        rs.getString("FuelType")+"\t"+
+                        rs.getString("DispatchType")+"\t"+
+                        rs.getString("location_Coordinates")
+                );
 
-                Generator gen = createGenerator( rs.getInt("gen_id"), rs.getString("gen_name"), rs.getDouble("gen_maxcap"), rs.getDouble("gen_efficiency") );
+
+                Generator gen = createGenerator( rs.getInt("id"),
+                        rs.getString("PowerStation"),
+                        rs.getString("Owner"),
+                        rs.getDouble("InstalledCapacity_MW"),
+                        rs.getString("TechnologyType"),
+                        rs.getString("FuelType"),
+                        rs.getString("DispatchType"),
+                        rs.getString("location_Coordinates")
+                );
+
                 gens.add(gen);
 
             }
@@ -67,19 +86,13 @@ public class Gr4spSim extends SimState {
         }
         return gens;
 	}
-	Generator createGenerator(int genId, String genName, Double gencap, Double genefficiency) { //create generator with random data
+
+	Generator createGenerator(int genId, String genName, String owner, Double gencap, String techType, String fuelType, String dispachType, String locationCoord ) {
 		//capex = 50; //capital costs in AUD/capacity unit (kW)
 		// numGen is the number of generators
 		int numGen = numGenerators;
 
-		String[] fuelSource = {"fossil fuel", "renewable", "biomass", "waste", "surplus", "other"};
-		String[] name = {"name from database"};
-		String[] fuelSourceDescriptions = {"brown coal", "black coal", "natural gas", "Diesel",
-				"waste coal mine gas", "landfill methane", "solar", "wind", "hydro"};
-		String[] ownership = {"public", "private", "public private partnership"};//need something to specify the organization it belongs to if it does.
-		String[] techTypeDescriptor = {"combustion steam-subcritical", "combustion Open Cycle Gas turbines (OCGT)", "photovoltaic flat panel",
-				"hydro-gravity", "hydro-run of river", "solar PV", "wind onshore/offshore"};
-		double maxCap = 100;
+
 		String[] size = {"Small", "Medium", "Large"};
 		double effi = 0.75;
 		int lifeC = 20;//life cycle in years
@@ -87,19 +100,12 @@ public class Gr4spSim extends SimState {
 		double fixC = 10; //fixed costs operation and maintenance in AUD/capacity unit per year;
 		double peakF = 55; //peak contribution factor in percentage;
 
-		// generate a random number to choose the description, the fuel source, the name, ownership, technology description randomly
-		int idDesc = random.nextInt(fuelSourceDescriptions.length);
-		int idfuelSource = random.nextInt(fuelSource.length);
-		int idName = random.nextInt(name.length);
-		int idOwnership = random.nextInt(ownership.length);
-		int idtechTypeDescriptor = random.nextInt(techTypeDescriptor.length);
-		int idSize = random.nextInt(size.length);
+
 
 		//TODO: smart meters? considered as the connection of the socio-technical system, it can be an enabler for empower consumers to be active participants!
-		//Creation of new generator type gen, it wont include for the moment the capex.
-		//Generator gen = new Generator(numGen, fuelSourceDescriptions[idDesc], fuelSource[idfuelSource], name[idName], ownership[idOwnership],
-		//		techTypeDescriptor[idtechTypeDescriptor], maxCap, size[idSize], effi, lifeC, constPer, fixC, peakF);
-        Generator gen =  new Generator(genId, genName, gencap, genefficiency);
+
+        //Creation of new generator type gen, it wont include for the moment the capex.
+        Generator gen =  new Generator(genId, genName, owner, gencap, techType, fuelType, dispachType, locationCoord);
 		//increase counter number of generators
 		numGenerators += 1;
 
@@ -107,8 +113,9 @@ public class Gr4spSim extends SimState {
 		//It's a counter that we are going to use to create unique id every time a generator is created
 		//Counter for the unique id each time a storage unit is created and other storage related variables
 	}
+
     public Bag selectStorage( String name) {
-        String url = "jdbc:sqlite:technologies.db";
+        String url = "jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT storage_id, storage_name, StorageType, storageOutputCap , storageCapacity, Ownership, storage_cycleLife, storage_costRange  FROM Storage WHERE storage_name = '" + name + "' ";
@@ -158,35 +165,51 @@ public class Gr4spSim extends SimState {
 	}
 
 	//creation of type of energy grid
-    public Bag selectGrid( String id) {
-        String url = "jdbc:sqlite:technologies.db";
+    public Bag selectNetwork( String id) {
+        String url = "jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT grid_id, Grid_Type, gridEfficiency, gridLosses, ownership  FROM Grid WHERE grid_id = '" + id + "' ";
-        Bag grids = new Bag();
+        String sql = "SELECT id, NetworkAssetType.type as type, NetworkAssetType.subtype as subtype, NetworkAssetType.grid as grid, assetName, grid_node_name, " +
+                "location_MB, gridLosses, gridVoltage, owner  FROM NetworkAssets JOIN NetworkAssetType " +
+                "WHERE NetworkAssets.assetType = NetworkAssetType.id and id = '" + id + "' ";
+        Bag nets = new Bag();
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getInt("grid_id") + "\t" +
-                        rs.getInt("Grid_Type") + "\t" +
-                        rs.getDouble("gridEfficiency")+"\t"+
+                System.out.println("\t" + rs.getInt("id") + "\t" +
+                        rs.getString("type") + "\t" +
+                        rs.getString("subtype")+"\t"+
+                        rs.getString("grid")+"\t"+
+                        rs.getString("assetName")+"\t"+
+                        rs.getString("grid_node_name")+"\t"+
+                        rs.getString("location_MB")+"\t"+
                         rs.getDouble("gridLosses")+ "\t" +
-                        rs.getInt("Ownership"));
+                        rs.getInt("gridVoltage") + "\t" +
+                        rs.getString("owner"));
 
-                EnergyGrid grid = createEnergyGrid( rs.getInt("grid_id"), rs.getInt("Grid_Type"), rs.getDouble("gridEfficiency"),
-                        rs.getDouble("gridLosses"), rs.getInt("Ownership") );
-                grids.add(grid);
+                NetworkAssets grid = createNetworkAssets( rs.getInt("id"),
+                        rs.getString("type"),
+                        rs.getString("subtype"),
+                        rs.getString("grid"),
+                        rs.getString("assetName"),
+                        rs.getString("grid_node_name"),
+                        rs.getString("location_MB"),
+                        rs.getDouble("gridLosses"),
+                        rs.getInt("gridVoltage"),
+                        rs.getString("owner") );
+                nets.add(grid);
 
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return grids;
+        return nets;
     }
-	EnergyGrid createEnergyGrid(int gridId, int gridType, double gridEff, double gridLoss, int gridOwner) {
+	NetworkAssets createNetworkAssets(int NetId, String type, String subtype, String grid, String assetName, String grid_node_name, String location_MB,
+                                   double gridLosses, int gridVoltage, String owner) {
 		int numG = numGrid;
 		/*String[] GType = {"Transmission", "Distribution", "Microgrid", "Building"};
 		double GridEff = 0.75;
@@ -195,7 +218,7 @@ public class Gr4spSim extends SimState {
 		int typeId = random.nextInt(GType.length);*/
 
 
-		EnergyGrid Grid = new EnergyGrid(gridId, gridType, gridEff, gridLoss, gridOwner);
+		NetworkAssets Grid = new NetworkAssets(NetId, type, subtype, grid, assetName, grid_node_name, location_MB, gridLosses, gridVoltage, owner);
 
 		return Grid;
 
@@ -206,7 +229,7 @@ public class Gr4spSim extends SimState {
 	//it is basically the closest point where supply meets demand without going through any significant extra technological "treatment"
 	//TODO knowledge and energy hubs within prosumer communities, where to include them?
     public Bag selectConnectionPoint( String name) {
-        String url = "jdbc:sqlite:technologies.db";
+        String url = "jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT cpoint_id, cpoint_name, CPoint_type, distanceToDemand, cpoint_locationCode, cpoint_owner, Ownership FROM ConnectionPoint WHERE cpoint_name = '" + name + "' ";
@@ -274,43 +297,51 @@ public class Gr4spSim extends SimState {
 	}
 
 
-    public void createSpm (String name)
+    Spm createSpm (int idSpmEndUse)
     {
+
         /**
-         * Get the SPM id
+         *  Get list of SPMs recursively from DB. Base case when there's no spm_contains.contained_id
          */
-                
-        String url = "jdbc:sqlite:technologies.db";
 
-        String spmSql = "SELECT Spm.id, Spm.name, Spm.description FROM Spm WHERE Spm.name = '" + name + "' ";
+        String url = "jdbc:sqlite:Spm_archetypes.db";
 
-        int spmId = 0;
+        String spmGenSql = "SELECT Spm_contains.contained_id FROM Spm_contains WHERE Spm_contains.id_Spm = '" + idSpmEndUse + "' ";
+
+        Bag spms_contained = new Bag();
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(spmSql)) {
+             ResultSet rs = stmt.executeQuery(spmGenSql)) {
 
-           // loop through the result set
+            // loop through the result set
             while (rs.next()) {
 
-                spmId = rs.getInt("id");
+                int contained_id = rs.getInt("contained_id");
 
-                System.out.println("SPM '" + rs.getInt("id") + "' SPM: ");
+                //Create SPM if contained_id is different than NULL
+                //Base Case of recursivity
+                if( contained_id != 0 ) {
+                    System.out.println("SPM '" + idSpmEndUse + "' contains:" + rs.getInt("contained_id"));
 
+                    // Recursive call to load the contained SPMs before creating the current SPM with idSpmEndUse
+                    Spm spm_returned = createSpm(rs.getInt("contained_id"));
+
+                    // Add Spms created to the Bag
+                    spms_contained.add(spm_returned);
                 }
-
             }
-        catch (SQLException e){
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
 
+        }
 
-        System.out.println(e.getMessage());
-
-    }
         /**
          *  Get list of Generators from DB
          */
-        String spmGenSql = "SELECT Spm.id, Spm.name, Generators.gen_id, Generators. gen_name FROM Spm as Spm JOIN Spm_gen_mapping join Generators on " +
-                "Generators.gen_id = Spm_gen_mapping.genId and Spm.id = Spm_gen_mapping.spmId and Spm.name = '" + name + "' ";
+
+        spmGenSql = "SELECT Spm.id, Spm.name, GenerationAssets.id, GenerationAssets.PowerStation FROM Spm as Spm JOIN Spm_gen_mapping join GenerationAssets on " +
+                "GenerationAssets.id = Spm_gen_mapping.genId and Spm.id = Spm_gen_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
 
         Bag gens = new Bag();
 
@@ -327,7 +358,7 @@ public class Gr4spSim extends SimState {
                     printed=true;
                 }
 
-                Bag genSpm = selectGenTech( rs.getString("gen_name") );
+                Bag genSpm = selectGenTech( rs.getString("PowerStation") );
                 gens.addAll(genSpm);
             }
         } catch (SQLException e) {
@@ -340,7 +371,7 @@ public class Gr4spSim extends SimState {
          * Get list of STORAGES from DB
          */
         String spmStrSql = "SELECT Spm.id, Spm.name, Storage.storage_id, Storage.storage_name FROM Spm as Spm JOIN Spm_storage_mapping join Storage " +
-                "on Storage.storage_id = Spm_storage_mapping.storageId and Spm.id = Spm_storage_mapping.spmId and Spm.name = '" + name + "' ";
+                "on Storage.storage_id = Spm_storage_mapping.storageId and Spm.id = Spm_storage_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
         Bag strs = new Bag();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -364,11 +395,11 @@ public class Gr4spSim extends SimState {
             System.out.println(e.getMessage());
         }
         /**
-         * Get list of GRIDS from DB
+         * Get list of NetworkAssets from DB
          */
-        String spmGridSql = "SELECT Spm.id, Spm.name, Grid.grid_id, Grid.Grid_Type FROM Spm as Spm JOIN Spm_grid_mapping join Grid " +
-                "on Grid.grid_id = Spm_grid_mapping.gridId and Spm.id = Spm_grid_mapping.spmId and Spm.name = '" + name + "' ";
-        Bag grids = new Bag();
+        String spmGridSql = "SELECT Spm.id, Spm.name, NetworkAssets.id as netId FROM Spm as Spm JOIN Spm_network_mapping join NetworkAssets " +
+                "on NetworkAssets.id = Spm_network_mapping.network_assetId and Spm.id = Spm_network_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
+        Bag networkAssets = new Bag();
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -381,36 +412,36 @@ public class Gr4spSim extends SimState {
                     System.out.println("SPM '" + rs.getString("name") + "' Grids:");
                     printed = true;
                 }
-                Bag SpmGrid = selectGrid(rs.getString("grid_id"));
-                grids.addAll(SpmGrid);
+                Bag SpmNet = selectNetwork(rs.getString("netId"));
+                networkAssets.addAll(SpmNet);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        /**
-         * Get list of CONNECTION POINTS from DB
-         */
-        String spmCptSql = "SELECT Spm.id, Spm.name, ConnectionPoint.cpoint_id, ConnectionPoint.cpoint_name FROM Spm as Spm JOIN Spm_connection_mapping join ConnectionPoint " +
-                "on ConnectionPoint.cpoint_id = Spm_connection_mapping.connectionId and Spm.id = Spm_connection_mapping.spmId and Spm.name = '" + name + "' ";
-        Bag cpoints = new Bag();
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(spmCptSql)) {
-            Boolean printed = false;
-            // loop through the result set
-            while (rs.next()) {
-                if (!printed) {
-                    System.out.println("SPM '" + rs.getString("name") + "' Connection Points:");
-                    printed = true;
-                }
-                Bag SpmCpoints = selectConnectionPoint( rs.getString("cpoint_name"));
-                cpoints.addAll(SpmCpoints);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+//        /**
+//         * Get list of CONNECTION POINTS from DB
+//         */
+//        String spmCptSql = "SELECT Spm.id, Spm.name, ConnectionPoint.cpoint_id, ConnectionPoint.cpoint_name FROM Spm as Spm JOIN Spm_connection_mapping join ConnectionPoint " +
+//                "on ConnectionPoint.cpoint_id = Spm_connection_mapping.connectionId and Spm.id = Spm_connection_mapping.spmId and Spm.name = '" + name + "' ";
+//        Bag cpoints = new Bag();
+//
+//        try (Connection conn = DriverManager.getConnection(url);
+//             Statement stmt = conn.createStatement();
+//             ResultSet rs = stmt.executeQuery(spmCptSql)) {
+//            Boolean printed = false;
+//            // loop through the result set
+//            while (rs.next()) {
+//                if (!printed) {
+//                    System.out.println("SPM '" + rs.getString("name") + "' Connection Points:");
+//                    printed = true;
+//                }
+//                Bag SpmCpoints = selectConnectionPoint( rs.getString("cpoint_name"));
+//                cpoints.addAll(SpmCpoints);
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
 
 
 
@@ -421,21 +452,73 @@ public class Gr4spSim extends SimState {
         /**
          * Create new SPM
          */
-        Spm spmx = new Spm(spmId, gens, grids, strs, cpoints);
-        layout.setObjectLocation(spmx, new Double2D(random.nextDouble() * 100, random.nextDouble() * 100));
+        Spm spmx = new Spm(idSpmEndUse, spms_contained, gens, networkAssets, strs, null);
+
+        //Get from Map the vector of SPM with key = idSpmEndUse, and add the new spm to the vector
+        if( ! spm_register.containsKey(idSpmEndUse) )
+            spm_register.put(idSpmEndUse, new Vector<Spm>());
+
+        spm_register.get( idSpmEndUse ).add(spmx);
+
+        return spmx;
 
 
     }
 
+    public void loadCaseStudy( String tableName){
+        /**
+         * Get the SPMs for EndUse Case study
+         */
+
+        String url = "jdbc:sqlite:Spm_archetypes.db";
+
+        String spmSql = "SELECT id, location_code, id_spm, spm_name, location_area, " +
+                "category_type, dwelling_type  FROM "+ tableName;
+
+        int spmId = 0;
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(spmSql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+
+                int endUseId = rs.getInt("id");
+                String locationCode= rs.getString("location_code");
+                int idSpm = rs.getInt("id_spm");
+                String spmName= rs.getString("Spm_name");
+                String categoryType = rs.getString("Category_type");
+                String dwellingType= rs.getString("Dwelling_type");
+
+                Spm spmEndUse = createSpm(idSpm);
+
+                Enduse eu = new Enduse(endUseId,locationCode,spmEndUse, spmName, categoryType, dwellingType);
+                layout.setObjectLocation(eu, new Double2D(random.nextDouble() * 100, random.nextDouble() * 100));
+
+
+            }
+
+        }
+        catch (SQLException e) {
+
+
+            System.out.println(e.getMessage());
+
+        }
+    }
 
     public void start()
     {
 	    super.start();  
         layout = new Continuous2D(10.0, 600.0, 600.0);
-        createSpm( "inner city");
+        spm_register = new HashMap<Integer, Vector<Spm>>();
+        loadCaseStudy("SPMsTimaruSt");
+        /*createSpm( "inner city");
         createSpm("individual");
-        createSpm("primary");
+        createSpm("primary");*/
         System.out.println(layout.toString());
+        loadCaseStudy("SPMsTimaruSt");
     }
     
     public static void main(String[] args)
