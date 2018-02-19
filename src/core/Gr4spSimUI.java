@@ -29,7 +29,7 @@ public class Gr4spSimUI extends GUIState {
     }
 
     public static String getName() {
-        return "Gr4spSim: Let's change the World!";
+        return "Gr4spSim: Generic Recursive Representation of Systems for Service Provision";
     }
 
     public Object getSimulationInspectedObject() {

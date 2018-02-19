@@ -320,7 +320,7 @@ public class Gr4spSim extends SimState {
                 int contained_id = rs.getInt("contained_id");
 
                 //Create SPM if contained_id is different than NULL
-                //Base Case of recursivity
+                //Base Case of recursion
                 if( contained_id != 0 ) {
                     System.out.println("SPM '" + idSpmEndUse + "' contains:" + rs.getInt("contained_id"));
 
