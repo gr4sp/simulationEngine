@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="bsh-2.0b4.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/bsh-2.0b4.jar!/"/>
+	</lib>
+	<lib name="itext-1.2.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/itext-1.2.jar!/"/>
+	</lib>
+	<lib name="j3dcore.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/j3dcore.jar!/"/>
+	</lib>
+	<lib name="j3dutils.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/j3dutils.jar!/"/>
+	</lib>
+	<lib name="jcommon-1.0.21.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/jcommon-1.0.21.jar!/"/>
+	</lib>
+	<lib name="jfreechart-1.0.17.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/jfreechart-1.0.17.jar!/"/>
+	</lib>
+	<lib name="jmf.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/jmf.jar!/"/>
+	</lib>
+	<lib name="jogamp-fat.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/jogamp-fat.jar!/"/>
+	</lib>
+	<lib name="mason.19.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/mason.19.jar!/"/>
+	</lib>
+	<lib name="portfolio.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/portfolio.jar!/"/>
+	</lib>
+	<lib name="vecmath.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/libraries/vecmath.jar!/"/>
+	</lib>
+</component>

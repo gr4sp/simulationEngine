@@ -12,6 +12,7 @@
       <root url="jar://$PROJECT_DIR$/libraries/jcommon-1.0.21.jar!/" />
       <root url="jar://$PROJECT_DIR$/libraries/mason.19.jar!/" />
       <root url="jar://$PROJECT_DIR$/libraries/jmf.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

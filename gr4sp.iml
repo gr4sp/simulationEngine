@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/libraries/bsh-2.0b4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/itext-1.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/j3dcore.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/j3dutils.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/jcommon-1.0.21.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/jfreechart-1.0.17.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/jmf.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/jogamp-fat.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/mason.19.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/portfolio.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libraries/vecmath.jar!/" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/bsh-2.0b4.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/itext-1.2.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/j3dcore.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/j3dutils.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jcommon-1.0.21.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jfreechart-1.0.17.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jmf.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jogamp-fat.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/mason.19.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/portfolio.jar" />
+    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/vecmath.jar" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+    </src_description>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
