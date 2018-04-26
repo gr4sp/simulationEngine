@@ -507,8 +507,6 @@ public class Gr4spSim extends SimState {
                 //shifting when more than one smp is contained
                 addSPMLocation(spmeu,spmLoc, spmeu.diameter);
 
-
-
             }
 
         }
