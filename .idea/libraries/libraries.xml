@@ -1,20 +1,13 @@
 <component name="libraryTable">
   <library name="libraries">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libraries/jfreechart-1.0.17.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/bsh-2.0b4.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/itext-1.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/vecmath.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/jogamp-fat.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/j3dcore.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/portfolio.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/j3dutils.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/jcommon-1.0.21.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/mason.19.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/jmf.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/" />
+      <root url="file://$PROJECT_DIR$/libraries" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/libraries" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/libraries" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/libraries" recursive="false" type="SOURCES" />
   </library>
 </component>
