@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90880ae2-9667-4e99-ba18-82531448e185" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ea76b6be-2485-423d-9ab8-c29fea81c828/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/angelara.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/libraries.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/libraries.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/core/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gr4sp.eml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gr4sp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gr4sp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/images/Parkville_SA1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/index.html" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -61,11 +52,13 @@
     <session id="-542513336">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.21" value="1" />
           <entry key="project.open.time.22" value="1" />
+          <entry key="project.open.time.48" value="1" />
+          <entry key="project.open.time.63" value="1" />
           <entry key="project.open.time.70" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -85,10 +78,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1649">
+            <state relative-caret-position="644">
               <caret line="106" column="86" selection-start-line="106" selection-start-column="86" selection-end-line="106" selection-end-column="86" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -102,33 +95,6 @@
                 <marker date="1524530036210" expanded="true" signature="16365:16646" ph="SELECT Spm.i... Spm" />
                 <marker date="1524530036210" expanded="true" signature="19466:19581" ph="SELECT id, l... missingValue" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="das://864aee2c-61b3-4d64-8179-1d6d0acdd088/schema/main/table/spm_networktimaru_mapping">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="das://864aee2c-61b3-4d64-8179-1d6d0acdd088/schema/main/table/generationassets">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/core/ConnectionPoint.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -155,8 +121,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -179,7 +143,9 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -296,11 +262,13 @@
       <workItem from="1535692561850" duration="1318000" />
       <workItem from="1536031103718" duration="3027000" />
       <workItem from="1536105297940" duration="86000" />
+      <workItem from="1536106574203" duration="63000" />
+      <workItem from="1536106767961" duration="13000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9943000" />
+    <option name="totallyTimeSpent" value="10019000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -314,7 +282,7 @@
   <component name="ToolWindowManager">
     <frame x="1672" y="-8" width="1936" height="1216" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12313433" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12526652" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Learn" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -328,7 +296,7 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info active="true" anchor="bottom" id="TODO" order="6" visible="true" weight="0.32963988" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32963988" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32963988" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
@@ -353,25 +321,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1649">
-          <caret line="106" column="86" selection-start-line="106" selection-start-column="86" selection-end-line="106" selection-end-column="86" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1524530036210" expanded="true" signature="1229:1422" ph="SELECT id, P... GenerationAssets" />
-            <marker date="1524530036210" expanded="true" signature="4228:4407" ph="SELECT stora... Storage" />
-            <marker date="1524530036210" expanded="true" signature="6708:7083" ph="SELECT Netwo... NetworkAssets" />
-            <marker date="1524530036210" expanded="true" signature="9893:10055" ph="SELECT cpoin... ConnectionPoint" />
-            <marker date="1524530036210" expanded="true" signature="12943:13043" ph="SELECT Spm_c... Spm_contains" />
-            <marker date="1524530036210" expanded="true" signature="14180:14452" ph="SELECT Spm.i... Spm" />
-            <marker date="1524530036210" expanded="true" signature="15274:15542" ph="SELECT Spm.i... Spm" />
-            <marker date="1524530036210" expanded="true" signature="16365:16646" ph="SELECT Spm.i... Spm" />
-            <marker date="1524530036210" expanded="true" signature="19466:19581" ph="SELECT id, l... missingValue" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="das://864aee2c-61b3-4d64-8179-1d6d0acdd088/schema/main/table/spm_networktimaru_mapping">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -390,6 +339,25 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="131">
           <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="106" column="86" selection-start-line="106" selection-start-column="86" selection-end-line="106" selection-end-column="86" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1524530036210" expanded="true" signature="1229:1422" ph="SELECT id, P... GenerationAssets" />
+            <marker date="1524530036210" expanded="true" signature="4228:4407" ph="SELECT stora... Storage" />
+            <marker date="1524530036210" expanded="true" signature="6708:7083" ph="SELECT Netwo... NetworkAssets" />
+            <marker date="1524530036210" expanded="true" signature="9893:10055" ph="SELECT cpoin... ConnectionPoint" />
+            <marker date="1524530036210" expanded="true" signature="12943:13043" ph="SELECT Spm_c... Spm_contains" />
+            <marker date="1524530036210" expanded="true" signature="14180:14452" ph="SELECT Spm.i... Spm" />
+            <marker date="1524530036210" expanded="true" signature="15274:15542" ph="SELECT Spm.i... Spm" />
+            <marker date="1524530036210" expanded="true" signature="16365:16646" ph="SELECT Spm.i... Spm" />
+            <marker date="1524530036210" expanded="true" signature="19466:19581" ph="SELECT id, l... missingValue" />
+          </folding>
         </state>
       </provider>
     </entry>
