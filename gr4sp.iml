@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
   <component name="EclipseModuleManager">
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/bsh-2.0b4.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/itext-1.2.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/j3dcore.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/j3dutils.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jcommon-1.0.21.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jfreechart-1.0.17.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jmf.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jogamp-fat.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/mason.19.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/portfolio.jar" />
-    <libelement value="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/vecmath.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/bsh-2.0b4.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/itext-1.2.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/j3dcore.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/j3dutils.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/jcommon-1.0.21.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/jfreechart-1.0.17.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/jmf.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/jogamp-fat.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/mason.19.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/portfolio.jar" />
+    <libelement value="file://$MODULE_DIR$/libraries/vecmath.jar" />
     <src_description expected_position="0">
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
     </src_description>
@@ -23,11 +23,11 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="10" jdkType="JavaSDK" />
     <orderEntry type="module-library">
       <library name="bsh-2.0b4.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/bsh-2.0b4.jar" />
+          <root url="file://$MODULE_DIR$/libraries/bsh-2.0b4.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -36,7 +36,7 @@
     <orderEntry type="module-library">
       <library name="itext-1.2.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/itext-1.2.jar" />
+          <root url="file://$MODULE_DIR$/libraries/itext-1.2.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -45,7 +45,7 @@
     <orderEntry type="module-library">
       <library name="j3dcore.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/j3dcore.jar" />
+          <root url="file://$MODULE_DIR$/libraries/j3dcore.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -54,7 +54,7 @@
     <orderEntry type="module-library">
       <library name="j3dutils.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/j3dutils.jar" />
+          <root url="file://$MODULE_DIR$/libraries/j3dutils.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -63,7 +63,7 @@
     <orderEntry type="module-library">
       <library name="jcommon-1.0.21.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jcommon-1.0.21.jar" />
+          <root url="file://$MODULE_DIR$/libraries/jcommon-1.0.21.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -72,7 +72,7 @@
     <orderEntry type="module-library">
       <library name="jfreechart-1.0.17.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jfreechart-1.0.17.jar" />
+          <root url="file://$MODULE_DIR$/libraries/jfreechart-1.0.17.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -81,7 +81,7 @@
     <orderEntry type="module-library">
       <library name="jmf.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jmf.jar" />
+          <root url="file://$MODULE_DIR$/libraries/jmf.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -90,7 +90,7 @@
     <orderEntry type="module-library">
       <library name="jogamp-fat.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/jogamp-fat.jar" />
+          <root url="file://$MODULE_DIR$/libraries/jogamp-fat.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -99,7 +99,7 @@
     <orderEntry type="module-library">
       <library name="mason.19.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/mason.19.jar" />
+          <root url="file://$MODULE_DIR$/libraries/mason.19.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
@@ -110,7 +110,7 @@
     <orderEntry type="module-library">
       <library name="portfolio.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/portfolio.jar" />
+          <root url="file://$MODULE_DIR$/libraries/portfolio.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -119,7 +119,7 @@
     <orderEntry type="module-library">
       <library name="vecmath.jar">
         <CLASSES>
-          <root url="file://C:/Users/angel/eclipse-workspace/gr4sp/libraries/vecmath.jar" />
+          <root url="file://$MODULE_DIR$/libraries/vecmath.jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

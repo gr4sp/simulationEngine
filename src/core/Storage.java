@@ -29,10 +29,11 @@ public class Storage implements java.io.Serializable
 		this.cycleLife = cycleLife;
 		this.costRange = costRange;
 	}
-	
-	
-	
-
+	@Override
+	public String toString() {
+		return "Storage [id=" + id + ", name=" + storageName +", type=" + type + ", outputCapacity=" + outputCapacity + ", storageCapacity="
+				+ storageCapacity + ", cycleLife=" + cycleLife + ", costRange=" + costRange + "]";
+	}
 
 	public int getId() {
 		return id;
@@ -94,9 +95,4 @@ public class Storage implements java.io.Serializable
 		return serialVersionUID;
 	}
 
-	@Override
-	public String toString() {
-		return "Storage [id=" + id + ", name=" + storageName +", type=" + type + ", outputCapacity=" + outputCapacity + ", storageCapacity="
-				+ storageCapacity + ", cycleLife=" + cycleLife + ", costRange=" + costRange + "]";
-	 }
-}
+	}

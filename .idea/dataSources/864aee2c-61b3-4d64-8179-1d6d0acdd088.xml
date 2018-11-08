@@ -161,7 +161,6 @@
     <index id="66" parent="13" name="sqlite_autoindex_EnergyType_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="67" parent="13">
@@ -302,13 +301,11 @@
     <index id="98" parent="16" name="sqlite_autoindex_Generators_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>gen_id</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <index id="99" parent="16" name="sqlite_autoindex_Generators_2">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>locationCoord</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="100" parent="16">
