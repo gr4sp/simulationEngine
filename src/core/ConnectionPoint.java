@@ -2,7 +2,9 @@ package core;
 
 import sim.util.Double2D;
 
-public class ConnectionPoint implements java.io.Serializable
+import java.util.ArrayList;
+
+public class ConnectionPoint implements java.io.Serializable, Asset
 {
 	private static final long serialVersionUID = 1;
 	
@@ -17,8 +19,10 @@ public class ConnectionPoint implements java.io.Serializable
 	private Double2D coordinates;
 	
 	//TODO: Ownership and Management
-	
-	public ConnectionPoint (int id, String name, int type, Double distanceTodemand, int locationCode, String owner, int ownership){
+    ArrayList<ActorAssetRelationship> assetRelationships;
+
+
+    public ConnectionPoint (int id, String name, int type, Double distanceTodemand, int locationCode, String owner, int ownership){
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -26,9 +30,27 @@ public class ConnectionPoint implements java.io.Serializable
 		this.locationCode = locationCode;
 		this.owner = owner;
 		this.ownership = ownership;
-	}
+        this.assetRelationships = new ArrayList<>();
 
-	public int getId() {
+    }
+
+    @Override
+    public double electricityIn() {
+        return 0;
+    }
+
+    @Override
+    public double electricityOut() {
+        return 0;
+    }
+
+    @Override
+    public void addAssetRelationship( ActorAssetRelationship newAssetRel){
+        this.assetRelationships.add(newAssetRel);
+    }
+
+
+    public int getId() {
 		return id;
 	}
 

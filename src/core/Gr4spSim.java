@@ -20,6 +20,7 @@ public class Gr4spSim extends SimState {
 
     public Continuous2D layout;
     HashMap<Integer, Vector<Spm>> spm_register;
+    ArrayList<ConsumptionActor> consumptionActors = new ArrayList<ConsumptionActor>(); //this is the array to be traverse to get the total consumption
 
 
     //Counter for the unique id each time a storage unit is created and other storage related variables
@@ -400,7 +401,7 @@ public class Gr4spSim extends SimState {
 
         //Get from Map the vector of SPM with key = idSpmEndUse, and add the new spm to the vector
         if (!spm_register.containsKey(idSpmEndUse))
-            spm_register.put(idSpmEndUse, new Vector<Spm>());
+            spm_register.put(idSpmEndUse, new Vector<>());
 
         spm_register.get(idSpmEndUse).add(spmx);
 
@@ -472,16 +473,54 @@ public class Gr4spSim extends SimState {
         }
     }
 
+    void loadActorConsumption() {
+        Household householdA = new Household(1, "core.Household", "core.Household A", "Rule follower", "household",1, 0, false,
+                662, "residential", 82.6);
+        //662 from 2016ABS census for Australia (http://quickstats.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/036)
+        //82.6 kWh weekly average from "Household energy expenditure as proportion of gross income by family composition" data (4670.0 Household Energy consumption survey, 2012)
+        consumptionActors.add(householdA);
+
+        Household householdB = new Household(1, "core.Household", "core.Household B", "Rule follower", "household",1, 1, true,
+                662, "residential", 82.6 * 1.2);
+        consumptionActors.add(householdB);
+
+        addNewActorActorRel(householdA, householdB, ActorActorRelationshipType.P2P);
+
+        addNewActorAssetRel(householdA, spm_register.get(1).firstElement(), ActorAssetRelationshipType.OWN, 100);
+
+        ElectricityProducer electricityProducerA = new ElectricityProducer(1, "Electricity producer", "AGL Energy Limited", "Rule follower",
+                "Public company", "Large");
+
+    }
+
+    void addNewActorActorRel(Actor act1, Actor act2, ActorActorRelationshipType type) {
+
+        ActorActorRelationship newRel = new ActorActorRelationship(act1, act2, type);
+
+        act1.addContract(newRel);
+        act2.addContract(newRel);
+    }
+
+    void addNewActorAssetRel(Actor actor, Asset asset, ActorAssetRelationshipType type, double percentage) {
+
+        ActorAssetRelationship newRel = new ActorAssetRelationship(actor, asset, type, percentage);
+
+        actor.addAssetRelationship(newRel);
+        asset.addAssetRelationship(newRel);
+    }
+
     public void start() {
         super.start();
         layout = new Continuous2D(10.0, 600.0, 600.0);
-        spm_register = new HashMap<Integer, Vector<Spm>>();
+        spm_register = new HashMap<>();
         loadCaseStudy("SPMsTimaruSt");
         /*createSpm( "inner city");
         createSpm("individual");
         createSpm("primary");*/
         System.out.println(layout.toString());
-        loadCaseStudy("SPMsTimaruSt");
+        //loadCaseStudy("SPMsTimaruSt");
+
+        loadActorConsumption();
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,9 @@
 package core;
 
-public class Asset {
+public interface Asset {
+    double electricityIn();
+    double electricityOut();
+    void addAssetRelationship( ActorAssetRelationship newAssetRel);
+
+
 }
