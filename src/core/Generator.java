@@ -2,9 +2,11 @@ package core;
 
 import sim.util.Double2D;
 
+import java.util.ArrayList;
+
 /*** Definition of the class generator ****/
 
-public class Generator implements java.io.Serializable {
+public class Generator implements java.io.Serializable, Asset{
     private static final long serialVersionUID = 1;
 
     private int id;//tech id
@@ -27,8 +29,10 @@ public class Generator implements java.io.Serializable {
     private Double2D location;//coordinates where the generation is located
 
     //TODO: Ownership and Management definition
+    ArrayList<ActorAssetRelationship> assetRelationships;
 
- /**Create here other constructors that call the main constructor to include fix values to the parameters and make the class more flexible:
+
+    /**Create here other constructors that call the main constructor to include fix values to the parameters and make the class more flexible:
   * public Generator (); this *include here the parameters values.**/
 
     public Generator(int genId, String genName, String owner, Double gencap, String techType, String fuelType, String dispachType, String locationCoord) {
@@ -38,6 +42,8 @@ public class Generator implements java.io.Serializable {
         this.maxCapacity = gencap;
         this.techTypeDescriptor = techType;
         this.dispatchTypeDescriptor = dispachType;
+        this.assetRelationships = new ArrayList<>();
+
 
         if (locationCoord != null) {
             String[] coord = locationCoord.split("\\,");
@@ -47,6 +53,15 @@ public class Generator implements java.io.Serializable {
 
     }
 
+    @Override
+    public double electricityIn() {
+        return 0;
+    }
+
+    @Override
+    public double electricityOut() {
+        return 0;
+    }
 
     @Override
     public String toString() {
@@ -56,6 +71,11 @@ public class Generator implements java.io.Serializable {
                 + ", lifecycle=" + lifecycle + ", constructionPeriod=" + constructionPeriod + ", fixedCosts=" + fixedCosts + ", " +
                 "peakContribFactor=" + peakContribFactor + ", location=" + location
                 + "]";//need to include capex in this constructor if used
+    }
+
+    @Override
+    public void addAssetRelationship( ActorAssetRelationship newAssetRel){
+        this.assetRelationships.add(newAssetRel);
     }
 
     public int getId() {

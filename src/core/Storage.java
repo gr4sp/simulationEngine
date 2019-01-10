@@ -2,7 +2,9 @@ package core;
 
 import sim.util.Double2D;
 
-public class Storage implements java.io.Serializable
+import java.util.ArrayList;
+
+public class Storage implements java.io.Serializable, Asset
 {
 	private static final long serialVersionUID = 1;
 	
@@ -19,8 +21,10 @@ public class Storage implements java.io.Serializable
 	//private Double2D distanceTodemand;
 	
 	//TODO: Ownership and Management
-	
-	public Storage(int id, String storageName, int type, double outputCapacity, double storageCapacity, int ownership, double cycleLife,  double costRange){
+    ArrayList<ActorAssetRelationship> assetRelationships;
+
+
+    public Storage(int id, String storageName, int type, double outputCapacity, double storageCapacity, int ownership, double cycleLife,  double costRange){
 		this.id = id;
 		this.storageName = storageName;
 		this.type = type;
@@ -28,14 +32,34 @@ public class Storage implements java.io.Serializable
 		this.storageCapacity = storageCapacity;
 		this.cycleLife = cycleLife;
 		this.costRange = costRange;
-	}
-	@Override
+        this.assetRelationships = new ArrayList<>();
+
+    }
+
+
+    @Override
+    public double electricityIn() {
+        return 0;
+    }
+
+    @Override
+    public double electricityOut() {
+        return 0;
+    }
+
+    @Override
 	public String toString() {
 		return "Storage [id=" + id + ", name=" + storageName +", type=" + type + ", outputCapacity=" + outputCapacity + ", storageCapacity="
 				+ storageCapacity + ", cycleLife=" + cycleLife + ", costRange=" + costRange + "]";
 	}
 
-	public int getId() {
+    @Override
+    public void addAssetRelationship( ActorAssetRelationship newAssetRel){
+        this.assetRelationships.add(newAssetRel);
+    }
+
+
+    public int getId() {
 		return id;
 	}
 
