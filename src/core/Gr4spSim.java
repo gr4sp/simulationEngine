@@ -20,6 +20,7 @@ public class Gr4spSim extends SimState {
 
     public Continuous2D layout;
     HashMap<Integer, Vector<Spm>> spm_register;
+    HashMap<Integer, Vector<Generator>> gen_register;
     ArrayList<ConsumptionActor> consumptionActors = new ArrayList<ConsumptionActor>(); //this is the array to be traverse to get the total consumption
 
 
@@ -79,7 +80,16 @@ public class Gr4spSim extends SimState {
                         rs.getString("DispatchType"),
                         rs.getString("location_Coordinates"));
 
+                int idGen = rs.getInt("id");
+                //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
+                if (!gen_register.containsKey(idGen))
+                    gen_register.put(idGen, new Vector<>());
+
+                gen_register.get(idGen).add(gen);
+
                 numGenerators += 1;
+
+                //Add gen to bag. This will be used in the constructor of SPM
                 gens.add(gen);
 
             }
@@ -306,6 +316,8 @@ public class Gr4spSim extends SimState {
 
                 Bag genSpm = selectGenTech(rs.getString("PowerStation"));
                 gens.addAll(genSpm);
+
+
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -473,14 +485,14 @@ public class Gr4spSim extends SimState {
         }
     }
 
-    void loadActorConsumption() {
-        Household householdA = new Household(1, "core.Household", "core.Household A", "Rule follower", "household",1, 0, false,
+    void loadActor() {
+        Household householdA = new Household(1, ActorType.HOUSEHOLD, "Household A", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, 0, false,
                 662, "residential", 82.6);
         //662 from 2016ABS census for Australia (http://quickstats.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/036)
         //82.6 kWh weekly average from "Household energy expenditure as proportion of gross income by family composition" data (4670.0 Household Energy consumption survey, 2012)
         consumptionActors.add(householdA);
 
-        Household householdB = new Household(1, "core.Household", "core.Household B", "Rule follower", "household",1, 1, true,
+        Household householdB = new Household(2, ActorType.HOUSEHOLD, "core.Household B", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, 1, true,
                 662, "residential", 82.6 * 1.2);
         consumptionActors.add(householdB);
 
@@ -488,9 +500,18 @@ public class Gr4spSim extends SimState {
 
         addNewActorAssetRel(householdA, spm_register.get(1).firstElement(), ActorAssetRelationshipType.OWN, 100);
 
-        ElectricityProducer electricityProducerA = new ElectricityProducer(1, "Electricity producer", "AGL Energy Limited", "Rule follower",
-                "Public company", "Large");
+        Actor electricityProducerA = new Actor(3, ActorType.ELECPROD, "AGL Energy Limited", GovRole.RULEFOLLOW, BusinessStructure.PUBLICCOMP, OwnershipModel.SHARES);
+        Actor retailerA = new Actor(4, ActorType.RETAILER, "Lumo", GovRole.RULEFOLLOW, BusinessStructure.SUBSIDIARY, OwnershipModel.SHARES);
+        Actor networkOperator = new Actor(5, ActorType.NETWORKOP, "AusNet", GovRole.RULEFOLLOW, BusinessStructure.PTYLTD, OwnershipModel.SHARES);
+        //Actor broker = new Actor...
 
+        addNewActorActorRel(householdA, retailerA, ActorActorRelationshipType.BILLING);
+        addNewActorActorRel(retailerA, networkOperator, ActorActorRelationshipType.ACCESS_FEE);
+
+        for( Generator gen : gen_register.get(12)){
+            addNewActorAssetRel(electricityProducerA,gen,ActorAssetRelationshipType.LEASE, 100.0);
+        }
+        System.out.println("foo");
     }
 
     void addNewActorActorRel(Actor act1, Actor act2, ActorActorRelationshipType type) {
@@ -513,14 +534,15 @@ public class Gr4spSim extends SimState {
         super.start();
         layout = new Continuous2D(10.0, 600.0, 600.0);
         spm_register = new HashMap<>();
-        loadCaseStudy("SPMsTimaruSt");
+        gen_register = new HashMap<>();
+        loadCaseStudy("SPM90VicNeigh");
         /*createSpm( "inner city");
         createSpm("individual");
         createSpm("primary");*/
         System.out.println(layout.toString());
         //loadCaseStudy("SPMsTimaruSt");
 
-        loadActorConsumption();
+        loadActor();
     }
 
     public static void main(String[] args) {
