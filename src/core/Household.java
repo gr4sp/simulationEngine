@@ -10,8 +10,8 @@ public class Household extends Actor implements ConsumptionActor {
     private ConsumptionProfile consumptionProfile;
 
 
-    public Household(int actor, String actorType, String name, String main_role, String organisationType, int numberOfAdults, int numberOfChildren, boolean family, double income, String demandType, double consumption) {
-        super(actor, actorType, name, main_role, organisationType);
+    public Household(int actor, ActorType actorType, String name, GovRole mainRole, BusinessStructure businessType, OwnershipModel ownershipModel, int numberOfAdults, int numberOfChildren, boolean family, double income, String demandType, double consumption) {
+        super(actor, actorType, name, mainRole, businessType, ownershipModel);
         this.numberOfAdults = numberOfAdults;
         this.numberOfChildren = numberOfChildren;
         this.family = family;
