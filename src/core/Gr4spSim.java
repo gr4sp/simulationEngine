@@ -21,6 +21,7 @@ public class Gr4spSim extends SimState {
     public Continuous2D layout;
     HashMap<Integer, Vector<Spm>> spm_register;
     HashMap<Integer, Vector<Generator>> gen_register;
+    HashMap<Integer, Actor> actor_register;
     ArrayList<ConsumptionActor> consumptionActors = new ArrayList<ConsumptionActor>(); //this is the array to be traverse to get the total consumption
 
 
@@ -34,6 +35,10 @@ public class Gr4spSim extends SimState {
     //counter organisation structures
     private int numOrg;
 
+    //couter for actors
+
+    private int numActors;
+
 
     public Gr4spSim(long seed) {
         super(seed);
@@ -42,6 +47,7 @@ public class Gr4spSim extends SimState {
         numStorage = 0;
         numGrid = 0;
         numOrg = 0;
+        numActors = 0;
     }
 
     /**
@@ -229,7 +235,7 @@ public class Gr4spSim extends SimState {
     }
 
 
-    //creation of societal organisations attached to the SPM
+    /*//creation of societal organisations attached to the SPM
 
     SocialOrgStructure createSocialOrgs() {
         int OrgId = numOrg;
@@ -253,129 +259,280 @@ public class Gr4spSim extends SimState {
         return SO;
     }
 
+    */
 
-    Spm createSpm(int idSpmEndUse) {
+    //Functions to convert readings from text in DB to Actor type, etc.
+
+    public ActorType stringToActorType(String actorType) {
+
+        if (actorType.equalsIgnoreCase("RETAILER") )
+            return ActorType.RETAILER;
+        if (actorType.equalsIgnoreCase("ELECPROD"))
+            return ActorType.ELECPROD;
+        if (actorType.equalsIgnoreCase("NETWORKOP"))
+            return ActorType.NETWORKOP;
+        if (actorType.equalsIgnoreCase("HOUSEHOLD"))
+            return ActorType.HOUSEHOLD;
+        if (actorType.equalsIgnoreCase("REGULATOR"))
+            return ActorType.REGULATOR;
+        if (actorType.equalsIgnoreCase( "IMPLEMENT"))
+            return ActorType.IMPLEMENT;
+        if (actorType.equalsIgnoreCase("GOVERNM"))
+            return ActorType.GOVERNM;
+        if (actorType.equalsIgnoreCase( "OMUSD"))
+            return ActorType.OMUSD;
+        if (actorType.equalsIgnoreCase( "ÏNVESTOR"))
+            return ActorType.INVESTOR;
+        if (actorType.equalsIgnoreCase( "BROKER"))
+            return ActorType.BROKER;
+        if (actorType.equalsIgnoreCase( "SPECULATOR"))
+            return ActorType.SPECULATOR;
+        else {
+            return ActorType.OTHER;
+        }
+    }
+
+    public BusinessStructure stringToBusinessStructure(String businessStructure) {
+        if (businessStructure.equalsIgnoreCase("INCORPASSOCIATION"))
+            return BusinessStructure.INCORPASSOCIATION;
+        if (businessStructure.equalsIgnoreCase("PTYLTD"))
+            return BusinessStructure.PTYLTD;
+        if (businessStructure.equalsIgnoreCase("PUBLICCOMP"))
+            return BusinessStructure.PUBLICCOMP;
+        if (businessStructure.equalsIgnoreCase("TRUST"))
+            return BusinessStructure.TRUST;
+        if (businessStructure.equalsIgnoreCase("SOLETRADER"))
+            return BusinessStructure.SOLETRADER;
+        if (businessStructure.equalsIgnoreCase("LIMITEDPARTNERSHIP"))
+            return BusinessStructure.LIMITEDPARTNERSHIP;
+        if (businessStructure.equalsIgnoreCase("COOPERATIVE"))
+            return BusinessStructure.COOPERATIVE;
+        if (businessStructure.equalsIgnoreCase( "INFORMAL"))
+            return BusinessStructure.INFORMAL;
+        if (businessStructure.equalsIgnoreCase( "GRASSROOTS"))
+            return BusinessStructure.GRASSROOTS;
+        if (businessStructure.equalsIgnoreCase( "NOTFORPROF"))
+            return BusinessStructure.NOTFORPROF;
+        if (businessStructure.equalsIgnoreCase( "STATE"))
+            return BusinessStructure.STATE;
+        else {
+            return BusinessStructure.OTHER;
+        }
+    }
+
+
+    public GovRole stringToGovRole(String govRole) {
+        if (govRole.equalsIgnoreCase("RULEFOLLOW"))
+            return GovRole.RULEFOLLOW;
+        if (govRole.equalsIgnoreCase( "RULEMAKER"))
+            return GovRole.RULEMAKER;
+        if (govRole.equalsIgnoreCase( "RULEIMPLEMENT"))
+            return GovRole.RULEIMPLEMENT;
+        else {
+
+            return GovRole.OTHER;
+        }
+    }
+
+    public OwnershipModel stringToOwnershipModel(String ownership) {
+        if (ownership.equalsIgnoreCase("SHARES"))
+            return OwnershipModel.SHARES;
+        if (ownership.equalsIgnoreCase( "DONATION_BASED"))
+            return OwnershipModel.DONATION_BASED;
+        if (ownership.equalsIgnoreCase( "COMMUNITY_INVEST"))
+            return OwnershipModel.COMMUNITY_INVEST;
+        if (ownership.equalsIgnoreCase( "COMM_DEV_PARTNER"))
+            return OwnershipModel.COMM_DEV_PARTNER;
+        if (ownership.equalsIgnoreCase( "COMM_COUNCIL_PARTNER"))
+            return OwnershipModel.COMM_COUNCIL_PARTNER;
+        if (ownership.equalsIgnoreCase("MULTIHOUSEHOLD"))
+            return OwnershipModel.MULTIHOUSEHOLD;
+        if (ownership.equalsIgnoreCase( "INDIVIDUAL"))
+            return OwnershipModel.INDIVIDUAL;
+        if (ownership.equalsIgnoreCase( "STATE"))
+            return OwnershipModel.STATE;
+        else {
+            return OwnershipModel.OTHER;
+        }
+    }
 
         /**
-         *  Get list of SPMs recursively from DB. Base case when there's no spm_contains.contained_id
+         * select all rows in the Actor table
          */
+        public void selectActors (String tableName){
+            String url = "jdbc:sqlite:Spm_archetypes.db";
 
-        String url = "jdbc:sqlite:Spm_archetypes.db";
 
-        String spmGenSql = "SELECT Spm_contains.contained_id FROM Spm_contains WHERE Spm_contains.id_Spm = '" + idSpmEndUse + "' ";
+            String sql = "SELECT id, actorType, actorName, role, businessStructure, ownershipModel" +
+                    " FROM " + tableName;
 
-        Bag spms_contained = new Bag();
+            //Bag actors = new Bag();
+            try (Connection conn = DriverManager.getConnection(url);
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
 
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(spmGenSql)) {
+                // loop through the result set
+                while (rs.next()) {
+                    System.out.println("\t" + rs.getInt("id") + "\t" +
+                            rs.getString("actorType") + "\t" +
+                            rs.getString("actorName") + "\t" +
+                            rs.getString("role") + "\t" +
+                            rs.getString("businessStructure") + "\t" +
+                            rs.getString("ownershipModel"));
 
-            // loop through the result set
-            while (rs.next()) {
 
-                int contained_id = rs.getInt("contained_id");
+                    Actor actor = new Actor(rs.getInt("id"),
+                            stringToActorType(rs.getString("actorType")),
+                            rs.getString("actorName"),
+                            stringToGovRole(rs.getString("role")),
+                            stringToBusinessStructure(rs.getString("businessStructure")),
+                            stringToOwnershipModel(rs.getString("ownershipModel")));
 
-                //Create SPM if contained_id is different than NULL
-                //Base Case of recursion
-                if (contained_id != 0) {
-                    System.out.println("SPM '" + idSpmEndUse + "' contains:" + rs.getInt("contained_id"));
+                    int idActor = rs.getInt("id");
 
-                    // Recursive call to load the contained SPMs before creating the current SPM with idSpmEndUse
-                    Spm spm_returned = createSpm(rs.getInt("contained_id"));
+                    //Insert in Map the actor with key = id, and add the new actor
+                    if (!actor_register.containsKey(idActor))
+                        actor_register.put(idActor, actor);
+                    else
+                        System.err.println("Two acotrs cannot have the same ID");
 
-                    // Add Spms created to the Bag
-                    spms_contained.add(spm_returned);
+
+                    numActors += 1;
+
+                    //Add actor to bag. This will be used in the constructor of SPM
+                    //actors.add(actor);
+
                 }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
-
-        /**
-         *  Get list of Generators from DB
-         */
-
-        spmGenSql = "SELECT Spm.id, Spm.name, GenerationAssets.id, GenerationAssets.PowerStation FROM Spm as Spm JOIN Spm_gen_mapping join GenerationAssets on " +
-                "GenerationAssets.id = Spm_gen_mapping.genId and Spm.id = Spm_gen_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
-
-        Bag gens = new Bag();
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(spmGenSql)) {
-
-            Boolean printed = false;
-            // loop through the result set
-            while (rs.next()) {
-
-                if (!printed) {
-                    System.out.println("SPM '" + rs.getString("name") + "' Generators:");
-                    printed = true;
-                }
-
-                Bag genSpm = selectGenTech(rs.getString("PowerStation"));
-                gens.addAll(genSpm);
-
-
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
+            //return actors;
         }
 
 
-        /**
-         * Get list of STORAGE from DB
-         */
-        String spmStrSql = "SELECT Spm.id, Spm.name, Storage.storage_id, Storage.storage_name FROM Spm as Spm JOIN Spm_storage_mapping join Storage " +
-                "on Storage.storage_id = Spm_storage_mapping.storageId and Spm.id = Spm_storage_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
-        Bag strs = new Bag();
+        Spm createSpm ( int idSpmEndUse){
 
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(spmStrSql)) {
-            Boolean printed = false;
+            /**
+             *  Get list of SPMs recursively from DB. Base case when there's no spm_contains.contained_id
+             */
 
-            // loop through the result set
-            while (rs.next()) {
+            String url = "jdbc:sqlite:Spm_archetypes.db";
 
+            String spmGenSql = "SELECT Spm_contains.contained_id FROM Spm_contains WHERE Spm_contains.id_Spm = '" + idSpmEndUse + "' ";
 
-                if (!printed) {
-                    System.out.println("SPM '" + rs.getString("name") + "' Storages:");
-                    printed = true;
+            Bag spms_contained = new Bag();
+
+            try (Connection conn = DriverManager.getConnection(url);
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(spmGenSql)) {
+
+                // loop through the result set
+                while (rs.next()) {
+
+                    int contained_id = rs.getInt("contained_id");
+
+                    //Create SPM if contained_id is different than NULL
+                    //Base Case of recursion
+                    if (contained_id != 0) {
+                        System.out.println("SPM '" + idSpmEndUse + "' contains:" + rs.getInt("contained_id"));
+
+                        // Recursive call to load the contained SPMs before creating the current SPM with idSpmEndUse
+                        Spm spm_returned = createSpm(rs.getInt("contained_id"));
+
+                        // Add Spms created to the Bag
+                        spms_contained.add(spm_returned);
+                    }
                 }
-                Bag SpmStrs = selectStorage(rs.getString("storage_name"));
-                strs.addAll(SpmStrs);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
 
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        /**
-         * Get list of NetworkAssets from DB
-         */
-        String spmGridSql = "SELECT Spm.id, Spm.name, NetworkAssets.id as netId FROM Spm as Spm JOIN Spm_networkTimaru_mapping join NetworkAssets " +
-                "on NetworkAssets.id = Spm_networkTimaru_mapping.network_assetId and Spm.id = Spm_networkTimaru_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
-        Bag networkAssets = new Bag();
 
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(spmGridSql)) {
-            Boolean printed = false;
 
-            // loop through the result set
-            while (rs.next()) {
-                if (!printed) {
-                    System.out.println("SPM '" + rs.getString("name") + "' Grids:");
-                    printed = true;
+            /**
+             *  Get list of Generators from DB
+             */
+
+            spmGenSql = "SELECT Spm.id, Spm.name, GenerationAssets.id, GenerationAssets.PowerStation FROM Spm as Spm JOIN Spm_gen_mapping join GenerationAssets on " +
+                    "GenerationAssets.id = Spm_gen_mapping.genId and Spm.id = Spm_gen_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
+
+            Bag gens = new Bag();
+
+            try (Connection conn = DriverManager.getConnection(url);
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(spmGenSql)) {
+
+                Boolean printed = false;
+                // loop through the result set
+                while (rs.next()) {
+
+                    if (!printed) {
+                        System.out.println("SPM '" + rs.getString("name") + "' Generators:");
+                        printed = true;
+                    }
+
+                    Bag genSpm = selectGenTech(rs.getString("PowerStation"));
+                    gens.addAll(genSpm);
+
+
                 }
-                Bag SpmNet = selectNetwork(rs.getString("netId"));
-                networkAssets.addAll(SpmNet);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+
+
+            /**
+             * Get list of STORAGE from DB
+             */
+            String spmStrSql = "SELECT Spm.id, Spm.name, Storage.storage_id, Storage.storage_name FROM Spm as Spm JOIN Spm_storage_mapping join Storage " +
+                    "on Storage.storage_id = Spm_storage_mapping.storageId and Spm.id = Spm_storage_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
+            Bag strs = new Bag();
+
+            try (Connection conn = DriverManager.getConnection(url);
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(spmStrSql)) {
+                Boolean printed = false;
+
+                // loop through the result set
+                while (rs.next()) {
+
+
+                    if (!printed) {
+                        System.out.println("SPM '" + rs.getString("name") + "' Storages:");
+                        printed = true;
+                    }
+                    Bag SpmStrs = selectStorage(rs.getString("storage_name"));
+                    strs.addAll(SpmStrs);
+
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+            /**
+             * Get list of NetworkAssets from DB
+             */
+            String spmGridSql = "SELECT Spm.id, Spm.name, NetworkAssets.id as netId FROM Spm as Spm JOIN Spm_networkTimaru_mapping join NetworkAssets " +
+                    "on NetworkAssets.id = Spm_networkTimaru_mapping.network_assetId and Spm.id = Spm_networkTimaru_mapping.spmId and Spm.id = '" + idSpmEndUse + "' ";
+            Bag networkAssets = new Bag();
+
+            try (Connection conn = DriverManager.getConnection(url);
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(spmGridSql)) {
+                Boolean printed = false;
+
+                // loop through the result set
+                while (rs.next()) {
+                    if (!printed) {
+                        System.out.println("SPM '" + rs.getString("name") + "' Grids:");
+                        printed = true;
+                    }
+                    Bag SpmNet = selectNetwork(rs.getString("netId"));
+                    networkAssets.addAll(SpmNet);
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
 
 //        /**
 //         * Get list of CONNECTION POINTS from DB
@@ -402,154 +559,158 @@ public class Gr4spSim extends SimState {
 //        }
 
 
-        //Bag cpoints = selectConnectionPoint("BK Brunswick");
-        //double embGHG = random.nextDouble() * 100.0; todo: this has to be calculated according to the components of the spm!
-        //double efficiency = 0.80; //efficiency all SPM
-
-        /**
-         * Create new SPM
-         */
-        Spm spmx = new Spm(idSpmEndUse, spms_contained, gens, networkAssets, strs, null);
-
-        //Get from Map the vector of SPM with key = idSpmEndUse, and add the new spm to the vector
-        if (!spm_register.containsKey(idSpmEndUse))
-            spm_register.put(idSpmEndUse, new Vector<>());
-
-        spm_register.get(idSpmEndUse).add(spmx);
-
-        return spmx;
+            //Bag cpoints = selectConnectionPoint("BK Brunswick");
+            //double embGHG = random.nextDouble() * 100.0; todo: this has to be calculated according to the components of the spm!
+            //double efficiency = 0.80; //efficiency all SPM
 
 
-    }
+            /**
+             * Create new SPM
+             */
+            Spm spmx = new Spm(idSpmEndUse, spms_contained, gens, networkAssets, strs, null);
 
-    public void loadCaseStudy(String tableName) {
-        /**
-         * Get the SPMs for EndUse Case study
-         */
+            //Get from Map the vector of SPM with key = idSpmEndUse, and add the new spm to the vector
+            if (!spm_register.containsKey(idSpmEndUse))
+                spm_register.put(idSpmEndUse, new Vector<>());
 
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+            spm_register.get(idSpmEndUse).add(spmx);
 
-        String spmSql = "SELECT id, location_code, id_spm, spm_name, location_area, " +
-                "category_type, dwelling_type  FROM " + tableName;
+            return spmx;
 
-        int spmId = 0;
 
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(spmSql)) {
+        }
 
-            // loop through the result set
-            while (rs.next()) {
+        public void loadCaseStudy (String tableName){
+            /**
+             * Get the SPMs for EndUse Case study
+             */
 
-                int endUseId = rs.getInt("id");
-                String locationCode = rs.getString("location_code");
-                int idSpm = rs.getInt("id_spm");
-                String spmName = rs.getString("Spm_name");
-                String categoryType = rs.getString("Category_type");
-                String dwellingType = rs.getString("Dwelling_type");
+            String url = "jdbc:sqlite:Spm_archetypes.db";
 
-                Spm spmEndUse = createSpm(idSpm);
+            String spmSql = "SELECT id, location_code, id_spm, spm_name, location_area, " +
+                    "category_type, dwelling_type  FROM " + tableName;
 
-                Enduse eu = new Enduse(endUseId, locationCode, spmEndUse, spmName, categoryType, dwellingType);
+            int spmId = 0;
 
-                //Add Random Location of EU in the layout
-                Double2D euLoc = new Double2D(random.nextDouble() * 1000, random.nextDouble() * 1000);
-                layout.setObjectLocation(eu, euLoc);
+            try (Connection conn = DriverManager.getConnection(url);
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(spmSql)) {
 
-                //Use same Loc for the SPM
-                Double2D spmLoc = new Double2D(euLoc.x + 0, euLoc.y + 0);
-                Spm spmeu = eu.getSpm_end_use();
+                // loop through the result set
+                while (rs.next()) {
 
-                //Add all SPMs location for this EU recursively, decreasing the diameter and
-                //shifting when more than one smp is contained
-                addSPMLocation(spmeu, spmLoc, spmeu.diameter);
+                    int endUseId = rs.getInt("id");
+                    String locationCode = rs.getString("location_code");
+                    int idSpm = rs.getInt("id_spm");
+                    String spmName = rs.getString("Spm_name");
+                    String categoryType = rs.getString("Category_type");
+                    String dwellingType = rs.getString("Dwelling_type");
+
+                    Spm spmEndUse = createSpm(idSpm);
+
+                    Enduse eu = new Enduse(endUseId, locationCode, spmEndUse, spmName, categoryType, dwellingType);
+
+                    //Add Random Location of EU in the layout
+                    Double2D euLoc = new Double2D(random.nextDouble() * 1000, random.nextDouble() * 1000);
+                    layout.setObjectLocation(eu, euLoc);
+
+                    //Use same Loc for the SPM
+                    Double2D spmLoc = new Double2D(euLoc.x + 0, euLoc.y + 0);
+                    Spm spmeu = eu.getSpm_end_use();
+
+                    //Add all SPMs location for this EU recursively, decreasing the diameter and
+                    //shifting when more than one smp is contained
+                    addSPMLocation(spmeu, spmLoc, spmeu.diameter);
+
+                }
+
+            } catch (SQLException e) {
+
+                System.out.println(e.getMessage());
 
             }
+        }
 
-        } catch (SQLException e) {
+        void addSPMLocation (Spm s, Double2D loc,double diameter){
+            layout.setObjectLocation(s, loc);
+            Double2D shift = new Double2D(10, 10);
+            for (int i = 0; i < s.getSpms_contained().numObjs; i++) {
+                Spm spmc = (Spm) s.getSpms_contained().getValue(i);
+                spmc.diameter = diameter - 10;
+                addSPMLocation(spmc, loc, spmc.diameter);
+                loc = loc.add(shift);
 
-            System.out.println(e.getMessage());
+            }
+        }
+
+        void loadActor () {
+            Household householdA = new Household(1, ActorType.HOUSEHOLD, "Household A", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, 0, false,
+                    662, "residential", 82.6);
+            //662 from 2016ABS census for Australia (http://quickstats.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/036)
+            //82.6 kWh weekly average from "Household energy expenditure as proportion of gross income by family composition" data (4670.0 Household Energy consumption survey, 2012)
+            consumptionActors.add(householdA);
+
+            Household householdB = new Household(2, ActorType.HOUSEHOLD, "core.Household B", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, 1, true,
+                    662, "residential", 82.6 * 1.2);
+            consumptionActors.add(householdB);
+
+            addNewActorActorRel(householdA, householdB, ActorActorRelationshipType.P2P);
+
+            addNewActorAssetRel(householdA, spm_register.get(1).firstElement(), ActorAssetRelationshipType.OWN, 100);
+
+            Actor electricityProducerA = new Actor(3, ActorType.ELECPROD, "AGL Energy Limited", GovRole.RULEFOLLOW, BusinessStructure.PUBLICCOMP, OwnershipModel.SHARES);
+            Actor retailerA = new Actor(4, ActorType.RETAILER, "Lumo", GovRole.RULEFOLLOW, BusinessStructure.PTYLTD, OwnershipModel.SHARES);
+            Actor networkOperator = new Actor(5, ActorType.NETWORKOP, "AusNet", GovRole.RULEFOLLOW, BusinessStructure.PTYLTD, OwnershipModel.SHARES);
+            //Actor broker = new Actor...
+
+            addNewActorActorRel(householdA, retailerA, ActorActorRelationshipType.BILLING);
+            addNewActorActorRel(retailerA, networkOperator, ActorActorRelationshipType.ACCESS_FEE);
+
+            for (Generator gen : gen_register.get(12)) {
+                addNewActorAssetRel(electricityProducerA, gen, ActorAssetRelationshipType.LEASE, 100.0);
+            }
+            System.out.println("foo");
+        }
+
+        void addNewActorActorRel (Actor act1, Actor act2, ActorActorRelationshipType type){
+
+            ActorActorRelationship newRel = new ActorActorRelationship(act1, act2, type);
+
+            act1.addContract(newRel);
+            act2.addContract(newRel);
+        }
+
+        void addNewActorAssetRel (Actor actor, Asset asset, ActorAssetRelationshipType type,double percentage){
+
+            ActorAssetRelationship newRel = new ActorAssetRelationship(actor, asset, type, percentage);
+
+            actor.addAssetRelationship(newRel);
+            asset.addAssetRelationship(newRel);
+        }
+
+        public void start () {
+            super.start();
+            layout = new Continuous2D(10.0, 600.0, 600.0);
+            spm_register = new HashMap<>();
+            gen_register = new HashMap<>();
+            actor_register = new HashMap<>();
+            loadCaseStudy("SPM90VicNeigh");
+            /*createSpm( "inner city");
+            createSpm("individual");
+            createSpm("primary");*/
+            System.out.println(layout.toString());
+            //loadCaseStudy("SPMsTimaruSt");
+            //loadActor();
+
+            selectActors("Actor90s");
 
         }
-    }
 
-    void addSPMLocation(Spm s, Double2D loc, double diameter) {
-        layout.setObjectLocation(s, loc);
-        Double2D shift = new Double2D(10, 10);
-        for (int i = 0; i < s.getSpms_contained().numObjs; i++) {
-            Spm spmc = (Spm) s.getSpms_contained().getValue(i);
-            spmc.diameter = diameter - 10;
-            addSPMLocation(spmc, loc, spmc.diameter);
-            loc = loc.add(shift);
+        public static void main (String[]args){
+            doLoop(Gr4spSim.class, args);
 
+
+            System.exit(0);
         }
+
     }
-
-    void loadActor() {
-        Household householdA = new Household(1, ActorType.HOUSEHOLD, "Household A", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, 0, false,
-                662, "residential", 82.6);
-        //662 from 2016ABS census for Australia (http://quickstats.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/036)
-        //82.6 kWh weekly average from "Household energy expenditure as proportion of gross income by family composition" data (4670.0 Household Energy consumption survey, 2012)
-        consumptionActors.add(householdA);
-
-        Household householdB = new Household(2, ActorType.HOUSEHOLD, "core.Household B", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, 1, true,
-                662, "residential", 82.6 * 1.2);
-        consumptionActors.add(householdB);
-
-        addNewActorActorRel(householdA, householdB, ActorActorRelationshipType.P2P);
-
-        addNewActorAssetRel(householdA, spm_register.get(1).firstElement(), ActorAssetRelationshipType.OWN, 100);
-
-        Actor electricityProducerA = new Actor(3, ActorType.ELECPROD, "AGL Energy Limited", GovRole.RULEFOLLOW, BusinessStructure.PUBLICCOMP, OwnershipModel.SHARES);
-        Actor retailerA = new Actor(4, ActorType.RETAILER, "Lumo", GovRole.RULEFOLLOW, BusinessStructure.SUBSIDIARY, OwnershipModel.SHARES);
-        Actor networkOperator = new Actor(5, ActorType.NETWORKOP, "AusNet", GovRole.RULEFOLLOW, BusinessStructure.PTYLTD, OwnershipModel.SHARES);
-        //Actor broker = new Actor...
-
-        addNewActorActorRel(householdA, retailerA, ActorActorRelationshipType.BILLING);
-        addNewActorActorRel(retailerA, networkOperator, ActorActorRelationshipType.ACCESS_FEE);
-
-        for( Generator gen : gen_register.get(12)){
-            addNewActorAssetRel(electricityProducerA,gen,ActorAssetRelationshipType.LEASE, 100.0);
-        }
-        System.out.println("foo");
-    }
-
-    void addNewActorActorRel(Actor act1, Actor act2, ActorActorRelationshipType type) {
-
-        ActorActorRelationship newRel = new ActorActorRelationship(act1, act2, type);
-
-        act1.addContract(newRel);
-        act2.addContract(newRel);
-    }
-
-    void addNewActorAssetRel(Actor actor, Asset asset, ActorAssetRelationshipType type, double percentage) {
-
-        ActorAssetRelationship newRel = new ActorAssetRelationship(actor, asset, type, percentage);
-
-        actor.addAssetRelationship(newRel);
-        asset.addAssetRelationship(newRel);
-    }
-
-    public void start() {
-        super.start();
-        layout = new Continuous2D(10.0, 600.0, 600.0);
-        spm_register = new HashMap<>();
-        gen_register = new HashMap<>();
-        loadCaseStudy("SPM90VicNeigh");
-        /*createSpm( "inner city");
-        createSpm("individual");
-        createSpm("primary");*/
-        System.out.println(layout.toString());
-        //loadCaseStudy("SPMsTimaruSt");
-
-        loadActor();
-    }
-
-    public static void main(String[] args) {
-        doLoop(Gr4spSim.class, args);
-
-
-        System.exit(0);
-    }
-
-}

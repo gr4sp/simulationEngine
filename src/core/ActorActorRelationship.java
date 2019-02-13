@@ -1,7 +1,7 @@
 package core;
 
 enum ActorActorRelationshipType {
-    BILLING,OTC,ETF,SPOT,ACCESS_FEE,COMMISSION_FEE,P2P;
+    BILLING,OTC,ETF,SPOT,ACCESS_FEE,COMMISSION_FEE,P2P, OWNS;  //additional "owns" relationship to represent subsidiaries.
 }
 
 public class ActorActorRelationship {
