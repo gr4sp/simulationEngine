@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90880ae2-9667-4e99-ba18-82531448e185" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/core/Market.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/864aee2c-61b3-4d64-8179-1d6d0acdd088.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c3ef2895-0ea2-4e0d-88c6-96ce479fe577.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spm_archetypes.db" beforeDir="false" afterPath="$PROJECT_DIR$/Spm_archetypes.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/core/Actor.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/Actor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/core/ActorActorRelationshipType.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/ActorActorRelationshipType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/core/ActorType.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/ActorType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/core/BusinessStructure.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/BusinessStructure.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/core/GovRole.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/GovRole.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/core/Gr4spSim.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/Gr4spSim.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/core/OwnershipModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/OwnershipModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Actor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/ActorActorRelationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/ActorActorRelationship.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Gr4spSim.java" afterDir="false" />
-    </list>
+    <list default="true" id="90880ae2-9667-4e99-ba18-82531448e185" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,12 +92,12 @@
     <session id="84884519">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="8" />
+          <entry key="project.closed" value="9" />
           <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.22" value="1" />
           <entry key="project.open.time.24" value="1" />
           <entry key="project.open.time.27" value="1" />
-          <entry key="project.open.time.32" value="1" />
+          <entry key="project.open.time.32" value="2" />
           <entry key="project.open.time.35" value="1" />
           <entry key="project.open.time.38" value="1" />
           <entry key="project.open.time.39" value="1" />
@@ -126,7 +107,7 @@
           <entry key="project.open.time.49" value="1" />
           <entry key="project.open.time.50" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="15" />
+          <entry key="project.opened" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -194,7 +175,7 @@
         <entry file="file://$PROJECT_DIR$/src/core/ConsumptionActor.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="220">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -225,8 +206,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="650" column="18" lean-forward="true" selection-start-line="650" selection-start-column="18" selection-end-line="650" selection-end-column="18" />
+            <state relative-caret-position="12800">
+              <caret line="650" column="18" selection-start-line="650" selection-start-column="18" selection-end-line="650" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -237,8 +218,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/core/Household.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="12" column="73" selection-start-line="12" selection-start-column="73" selection-end-line="12" selection-end-column="73" />
+            <state>
+              <caret column="4" selection-start-column="4" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -246,12 +227,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/JDBC.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
+            <state relative-caret-position="620">
               <caret line="51" selection-start-line="51" selection-end-line="51" />
-              <folding>
-                <element signature="e#999#1000#0" expanded="true" />
-                <element signature="e#1081#1082#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -338,6 +315,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -366,7 +344,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="AndroidView" />
       <pane id="Scope" />
     </panes>
@@ -504,11 +481,12 @@
       <workItem from="1549435953063" duration="6029000" />
       <workItem from="1549505063369" duration="969000" />
       <workItem from="1549574366195" duration="2662000" />
+      <workItem from="1550188608142" duration="209000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84170000" />
+    <option name="totallyTimeSpent" value="84379000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -521,9 +499,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1455" height="944" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49834985" visible="true" weight="0.14767025" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49834985" visible="true" weight="0.14982079" />
       <window_info id="Structure" order="1" weight="0.16487455" />
       <window_info id="Learn" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -687,13 +664,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="552">
           <caret line="61" column="46" selection-start-line="61" selection-start-column="43" selection-end-line="61" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2627#2628#0" expanded="true" />
-            <element signature="e#2652#2653#0" expanded="true" />
-            <element signature="e#2751#2752#0" expanded="true" />
-            <element signature="e#2788#2789#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -770,6 +740,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/ConsumptionActor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/ConsumptionProfile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" column="67" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/Generator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -779,6 +763,23 @@
             <element signature="e#4048#4049#0" expanded="true" />
             <element signature="e#4081#4082#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12800">
+          <caret line="650" column="18" selection-start-line="650" selection-start-column="18" selection-end-line="650" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/JDBC.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="620">
+          <caret line="51" selection-start-line="51" selection-end-line="51" />
         </state>
       </provider>
     </entry>
@@ -796,45 +797,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/JDBC.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="51" selection-start-line="51" selection-end-line="51" />
-          <folding>
-            <element signature="e#999#1000#0" expanded="true" />
-            <element signature="e#1081#1082#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/ConsumptionProfile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="67" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/ConsumptionActor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="650" column="18" lean-forward="true" selection-start-line="650" selection-start-column="18" selection-end-line="650" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/Household.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="12" column="73" selection-start-line="12" selection-start-column="73" selection-end-line="12" selection-end-column="73" />
+        <state>
+          <caret column="4" selection-start-column="4" selection-end-column="4" />
         </state>
       </provider>
     </entry>
