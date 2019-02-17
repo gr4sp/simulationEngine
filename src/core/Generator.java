@@ -28,6 +28,9 @@ public class Generator implements java.io.Serializable, Asset{
 
     private Double2D location;//coordinates where the generation is located
 
+    //Visualization Parameters
+    public double diameter;
+
     //TODO: Ownership and Management definition
     ArrayList<ActorAssetRelationship> assetRelationships;
 
@@ -43,6 +46,7 @@ public class Generator implements java.io.Serializable, Asset{
         this.techTypeDescriptor = techType;
         this.dispatchTypeDescriptor = dispachType;
         this.assetRelationships = new ArrayList<>();
+        this.diameter = 50.0;
 
 
         if (locationCoord != null) {
@@ -61,6 +65,12 @@ public class Generator implements java.io.Serializable, Asset{
     @Override
     public double electricityOut() {
         return 0;
+    }
+
+
+    @Override
+    public double diameter() {
+        return diameter;
     }
 
     @Override

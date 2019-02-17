@@ -49,6 +49,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     private double installCosts;
     private double maintenanceCosts;
 
+
     //Visualization Parameters
     public double diameter;
 
@@ -81,6 +82,11 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     @Override
     public double electricityOut() {
         return 0;
+    }
+
+    @Override
+    public double diameter() {
+        return diameter;
     }
 
     @Override

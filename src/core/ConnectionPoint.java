@@ -17,7 +17,10 @@ public class ConnectionPoint implements java.io.Serializable, Asset
 	private String description;
 	private Double distanceTodemand; //interface. e.g. from feeder to demand
 	private Double2D coordinates;
-	
+
+	//Visualization Parameters
+	public double diameter;
+
 	//TODO: Ownership and Management
     ArrayList<ActorAssetRelationship> assetRelationships;
 
@@ -31,7 +34,7 @@ public class ConnectionPoint implements java.io.Serializable, Asset
 		this.owner = owner;
 		this.ownership = ownership;
         this.assetRelationships = new ArrayList<>();
-
+		this.diameter  = 50;
     }
 
     @Override
@@ -49,6 +52,10 @@ public class ConnectionPoint implements java.io.Serializable, Asset
         this.assetRelationships.add(newAssetRel);
     }
 
+	@Override
+	public double diameter() {
+		return diameter;
+	}
 
     public int getId() {
 		return id;

@@ -1,11 +1,13 @@
 package core;
 
+import java.util.ArrayList;
+
 public class ConsumptionProfile {
 
     private String demandType; //householdA, householdB, householdC, ..., commercialA, commercialB,...,industryA, industryB
-    private double consumption; //weekly consumption in KwH
+    private ArrayList<Double> consumption; //weekly consumption in KwH
 
-    public ConsumptionProfile(String demandType, double consumption) {
+    public ConsumptionProfile(String demandType, ArrayList<Double> consumption) {
         this.demandType = demandType;
         this.consumption = consumption;
     }
@@ -18,11 +20,11 @@ public class ConsumptionProfile {
         this.demandType = demandType;
     }
 
-    public double getConsumption() {
+    public ArrayList<Double> getConsumption() {
         return consumption;
     }
 
-    public void setConsumption(double consumption) {
+    public void setConsumption(ArrayList<Double> consumption) {
         this.consumption = consumption;
     }
 }

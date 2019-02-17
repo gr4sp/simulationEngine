@@ -17,7 +17,10 @@ public class Storage implements java.io.Serializable, Asset
 	//This varies during the cycle life. it needs to be multiply by the capacity fade percentage during the cycle life.
 	private double cycleLife; //life in cycles.
 	private double costRange;
-	
+
+	//Visualization Parameters
+	public double diameter;
+
 	//private Double2D distanceTodemand;
 	
 	//TODO: Ownership and Management
@@ -33,6 +36,7 @@ public class Storage implements java.io.Serializable, Asset
 		this.cycleLife = cycleLife;
 		this.costRange = costRange;
         this.assetRelationships = new ArrayList<>();
+        this.diameter = 50;
 
     }
 
@@ -47,7 +51,12 @@ public class Storage implements java.io.Serializable, Asset
         return 0;
     }
 
-    @Override
+	@Override
+	public double diameter() {
+		return diameter;
+	}
+
+	@Override
 	public String toString() {
 		return "Storage [id=" + id + ", name=" + storageName +", type=" + type + ", outputCapacity=" + outputCapacity + ", storageCapacity="
 				+ storageCapacity + ", cycleLife=" + cycleLife + ", costRange=" + costRange + "]";
