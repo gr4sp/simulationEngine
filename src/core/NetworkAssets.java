@@ -2,7 +2,9 @@ package core;
 
 import sim.util.Double2D;
 
-public class NetworkAssets implements java.io.Serializable
+import java.util.ArrayList;
+
+public class NetworkAssets implements java.io.Serializable, Asset
 {
 	private static final long serialVersionUID = 1;
 	private int netId;
@@ -15,8 +17,12 @@ public class NetworkAssets implements java.io.Serializable
 	private double gridLosses;
 	private int gridVoltate;
 	private String owner;
-	
-	//TODO: Ownership and Management
+
+	//Visualization Parameters
+	public double diameter;
+
+	//TODO: Ownership and Management definition
+	ArrayList<ActorAssetRelationship> assetRelationships;
 	
 	public NetworkAssets(int NetId, String type, String subtype, String grid, String assetName, String grid_node_name, String location_MB,
 						 double gridLosses, int gridVoltage, String owner){
@@ -29,6 +35,10 @@ public class NetworkAssets implements java.io.Serializable
 		this.gridLosses = gridLosses;
 		this.gridVoltate = gridVoltage;
 		this.owner = owner;
+		this.diameter  = 50;
+
+		this.assetRelationships = new ArrayList<>();
+
 
 		if(location_MB != null) {
 			String[] coord = location_MB.split("\\,");
@@ -37,6 +47,25 @@ public class NetworkAssets implements java.io.Serializable
 		else
 			this.location = null;
 
+	}
+
+	@Override
+	public double electricityIn() {
+		return 0;
+	}
+
+	@Override
+	public double electricityOut() {
+		return 0;
+	}
+
+	public void addAssetRelationship( ActorAssetRelationship newAssetRel){
+		this.assetRelationships.add(newAssetRel);
+	}
+
+	@Override
+	public double diameter() {
+		return diameter;
 	}
 
 
