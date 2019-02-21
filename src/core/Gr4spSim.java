@@ -567,12 +567,45 @@ public class Gr4spSim extends SimState {
     Spm createSpm(int idSpmActor) {
 
         /**
+         *  Check if spm.id is shared. If so, check if we already created an object for that spm.id.
+         *  If it's the first time this spm.id is needed, then we create its object,
+         *  If it already exists, we just retrieve the object from the spm_register
+         */
+        String url = "jdbc:sqlite:Spm_archetypes.db";
+
+        String spmGenSql = "SELECT Spm.shared FROM Spm WHERE Spm.id = '" + idSpmActor + "' ";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(spmGenSql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+
+                int shared = rs.getInt("shared");
+
+                //If it is shared and
+                //we already created the spm, then the id should exist in the spm_register
+                //if so, we can return the existing object
+                if (shared == 1 && spm_register.containsKey(idSpmActor)) {
+                    return spm_register.get(idSpmActor).firstElement();
+                }
+                else
+                    break;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+
+        /**
          *  Get list of SPMs recursively from DB. Base case when there's no spm_contains.contained_id
          */
 
-        String url = "jdbc:sqlite:Spm_archetypes.db";
 
-        String spmGenSql = "SELECT Spm_contains.contained_id FROM Spm_contains WHERE Spm_contains.id_Spm = '" + idSpmActor + "' ";
+        url = "jdbc:sqlite:Spm_archetypes.db";
+
+        spmGenSql = "SELECT Spm_contains.contained_id FROM Spm_contains WHERE Spm_contains.id_Spm = '" + idSpmActor + "' ";
 
         Bag spms_contained = new Bag();
 
@@ -944,6 +977,9 @@ public class Gr4spSim extends SimState {
 
             Spm spm = createSpm(idSpm);
 
+            /**
+             * Actor Asset rel
+             * */
             //create new relationship btw the household and SPM
             ActorAssetRelationship actorSpmRel = new ActorAssetRelationship( actor,spm,ActorAssetRelationshipType.USE,100);
 
@@ -951,6 +987,18 @@ public class Gr4spSim extends SimState {
             actor.addAssetRelationship(actorSpmRel);
             //Store relationship in the global array of all actor asset rel
             actorAssetRelationships.add(actorSpmRel);
+
+            /**
+             * Actor Actor rel
+             * */
+            //create new relationship and contract btw the household and Retailer
+            ActorActorRelationship actorActHouseRetailRel = new ActorActorRelationship( actor,actor_register.get(4),ActorActorRelationshipType.BILLING);
+
+            //Store relationship with actor in the actor object
+            actor.addContract(actorActHouseRetailRel);
+            //Store relationship in the global array of all actor asset rel
+            actorActorRelationships.add(actorActHouseRetailRel);
+
 
             /**
              * The code below is only for visualization
@@ -990,14 +1038,14 @@ public class Gr4spSim extends SimState {
         System.out.println(layout.toString());
         //loadCaseStudy("SPMsTimaruSt");
         //loadActor();
-        generateHouseholdsNineties();
 
         selectActors("Actor90s");
+
+        generateHouseholdsNineties();
 
         selectActorActorRelationships("ActorActor90s");
 
         selectActorAssetRelationships("ActorAsset90s");//from https://www.secv.vic.gov.au/history/
-
 
     }
 
