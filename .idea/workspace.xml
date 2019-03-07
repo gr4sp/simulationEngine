@@ -2,7 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90880ae2-9667-4e99-ba18-82531448e185" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/864aee2c-61b3-4d64-8179-1d6d0acdd088/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c3ef2895-0ea2-4e0d-88c6-96ce479fe577/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Spm_archetypes.db" beforeDir="false" afterPath="$PROJECT_DIR$/Spm_archetypes.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/core/Gr4spSim.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/core/Gr4spSim.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gr4sp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gr4sp.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Gr4spSim.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -23,138 +33,8 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Spm_archetypesSurface.db" type="feb32156:DbDataSourceImpl" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Spm_archetypesSurface.db" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Spm_archetypesSurface.db" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="main: schema" type="90513b60:SqliteImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="Spm_archetypesSurface.db" type="feb32156:DbDataSourceImpl" />
-        <item name="collations" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-    </expand>
+    <expand />
     <select />
-  </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-542513336">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="6" />
-          <entry key="project.open.time.21" value="1" />
-          <entry key="project.open.time.22" value="1" />
-          <entry key="project.open.time.40" value="1" />
-          <entry key="project.open.time.48" value="1" />
-          <entry key="project.open.time.63" value="1" />
-          <entry key="project.open.time.70" value="1" />
-          <entry key="project.opened" value="6" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="generationassets" value="1" />
-          <entry key="java" value="8" />
-          <entry key="spm_networktimaru_mapping" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="Database Element" value="2" />
-          <entry key="JAVA" value="8" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="java" value="203" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JAVA" value="203" />
-        </counts>
-      </usages-collector>
-    </session>
-    <session id="84884519">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="10" />
-          <entry key="project.open.time.13" value="1" />
-          <entry key="project.open.time.22" value="1" />
-          <entry key="project.open.time.24" value="1" />
-          <entry key="project.open.time.25" value="1" />
-          <entry key="project.open.time.27" value="1" />
-          <entry key="project.open.time.32" value="2" />
-          <entry key="project.open.time.34" value="1" />
-          <entry key="project.open.time.35" value="1" />
-          <entry key="project.open.time.38" value="1" />
-          <entry key="project.open.time.39" value="1" />
-          <entry key="project.open.time.43" value="2" />
-          <entry key="project.open.time.45" value="1" />
-          <entry key="project.open.time.48" value="1" />
-          <entry key="project.open.time.49" value="1" />
-          <entry key="project.open.time.50" value="1" />
-          <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="18" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="actor" value="2" />
-          <entry key="actor90s" value="2" />
-          <entry key="actor_actortype_mapping" value="1" />
-          <entry key="actoractor90s" value="3" />
-          <entry key="actorasset90s" value="9" />
-          <entry key="actorasset_relationship" value="2" />
-          <entry key="actortype" value="1" />
-          <entry key="class" value="6" />
-          <entry key="generationassets" value="4" />
-          <entry key="generationassets90s" value="2" />
-          <entry key="generators" value="4" />
-          <entry key="iml" value="3" />
-          <entry key="java" value="62" />
-          <entry key="networkassets" value="1" />
-          <entry key="spm" value="2" />
-          <entry key="spm90vicneigh" value="2" />
-          <entry key="spm_gen_mapping" value="1" />
-          <entry key="spmstimarust" value="1" />
-          <entry key="sql" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="CLASS" value="6" />
-          <entry key="Database Element" value="37" />
-          <entry key="IDEA_MODULE" value="3" />
-          <entry key="JAVA" value="62" />
-          <entry key="Scratch" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="cell" value="45" />
-          <entry key="dummy" value="11" />
-          <entry key="java" value="14382" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JAVA" value="14382" />
-          <entry key="PLAIN_TEXT" value="11" />
-          <entry key="Scratch" value="45" />
-        </counts>
-      </usages-collector>
-    </session>
   </component>
   <component name="FavoritesManager">
     <favorites_list name="gr4sp" />
@@ -164,7 +44,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/ActorAssetRelationship.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
+            <state relative-caret-position="459">
               <caret line="35" selection-start-line="35" selection-end-line="35" />
             </state>
           </provider>
@@ -173,8 +53,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/ConnectionPoint.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="900">
-              <caret line="53" selection-start-line="53" selection-end-line="58" />
+            <state relative-caret-position="1020">
+              <caret line="82" selection-start-line="82" selection-end-line="87" selection-end-column="5" />
+              <folding>
+                <element signature="e#1720#1721#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -182,7 +65,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/Generator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="900">
+            <state relative-caret-position="765">
               <caret line="47" column="27" selection-start-line="47" selection-end-line="48" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -194,8 +77,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="797">
-              <caret line="1049" selection-start-line="1049" selection-end-line="1049" />
+            <state relative-caret-position="435">
+              <caret line="1047" column="51" selection-start-line="1047" selection-start-column="51" selection-end-line="1047" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -206,7 +89,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/Household.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
+            <state relative-caret-position="493">
               <caret line="39" column="36" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -218,7 +101,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/NetworkAssets.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="740">
+            <state relative-caret-position="629">
               <caret line="39" column="52" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -230,8 +113,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/Spm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1420">
+            <state relative-caret-position="721">
               <caret line="86" column="1" selection-start-line="86" selection-start-column="1" selection-end-line="90" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/Actor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="43" column="70" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="70" />
             </state>
           </provider>
         </entry>
@@ -239,7 +131,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/Storage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="980">
+            <state relative-caret-position="833">
               <caret line="57" selection-start-line="57" selection-end-line="57" />
             </state>
           </provider>
@@ -294,23 +186,17 @@
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
   <component name="MavenProjectNavigator">
     <treeState>
       <expand />
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1928" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1096" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="-12" />
+    <option name="y" value="-12" />
+    <option name="width" value="2184" />
+    <option name="height" value="1404" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -320,6 +206,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -345,33 +233,24 @@
               <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="Actor.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </path>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-              <item name="ActorAssetRelationship.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="sqlite" />
+    <property name="DatabaseDriversLRU" value="sqlite&#10;sqlite.xerial" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550751050519" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551944969722" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../opennem-fe" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.12643678" />
+    <property name="settings.editor.selected.configurable" value="preferences.pathVariables" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -386,7 +265,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.Gr4spSimUI">
-    <configuration default="true" type="Applet" factoryName="Applet">
+    <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -427,12 +306,13 @@
       </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
+    <configuration default="true" type="TestNG">
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <properties />
       <listeners />
@@ -440,11 +320,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
+      <predefined_log_file enabled="true" id="idea.log" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -497,11 +377,17 @@
       <workItem from="1550188608142" duration="209000" />
       <workItem from="1550302107945" duration="26266000" />
       <workItem from="1550745189054" duration="5829000" />
+      <workItem from="1551094618841" duration="690000" />
+      <workItem from="1551095513565" duration="2062000" />
+      <workItem from="1551097628909" duration="232000" />
+      <workItem from="1551246525706" duration="598000" />
+      <workItem from="1551751770369" duration="790000" />
+      <workItem from="1551930328388" duration="1266000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116474000" />
+    <option name="totallyTimeSpent" value="122112000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -513,10 +399,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-7" y="-7" width="1455" height="935" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49834985" weight="0.1130064" />
-      <window_info id="Structure" order="1" visible="true" weight="0.1663113" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49834985" visible="true" weight="0.1139785" />
+      <window_info id="Structure" order="1" weight="0.23727599" />
       <window_info id="Learn" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -530,10 +417,11 @@
       <window_info anchor="bottom" id="TODO" order="4" weight="0.32963988" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.32963988" />
       <window_info anchor="bottom" id="Terminal" order="6" weight="0.3290735" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Messages" order="8" weight="0.14631464" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Database Console" order="10" weight="0.27146813" />
+      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -544,32 +432,12 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Maven Projects" order="8" weight="0.32995737" />
       <window_info anchor="right" id="Run" order="9" weight="0.44136462" />
-      <window_info active="true" anchor="right" id="Debug" order="10" visible="true" weight="0.39019188" />
+      <window_info anchor="right" id="Debug" order="10" weight="0.39019188" />
+      <window_info anchor="right" id="Maven" order="11" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/core/Gr4spSim.java</url>
-          <line>833</line>
-          <properties />
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/core/Gr4spSim.java</url>
-          <line>1049</line>
-          <properties />
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -585,22 +453,12 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="das://864aee2c-61b3-4d64-8179-1d6d0acdd088/schema/main/table/spm_networktimaru_mapping" />
-    <entry file="das://864aee2c-61b3-4d64-8179-1d6d0acdd088/schema/main/table/generationassets" />
-    <entry file="jar://C:/Program Files/Java/jdk-9/lib/src.zip!/java.base/java/util/Collection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="143" column="17" selection-start-line="143" selection-start-column="17" selection-end-line="143" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-9/lib/src.zip!/java.base/java/util/Collection.java" />
     <entry file="file://$PROJECT_DIR$/../sandpit/sandpit.iml" />
     <entry file="file://$PROJECT_DIR$/gr4sp.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/My_Javas/MasterChallengeOOP/MasterChallengeOOP.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$USER_HOME$/Desktop/My_Javas/MasterChallengeOOP/MasterChallengeOOP.iml" />
     <entry file="file://$PROJECT_DIR$/src/core/SocialOrganisations.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -615,58 +473,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/ArrayList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="107" column="13" selection-start-line="107" selection-start-column="13" selection-end-line="107" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/ArrayList.java" />
     <entry file="file://$PROJECT_DIR$/src/core/Spm.class">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/util/Bag.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/util/Bag.class" />
     <entry file="file://$PROJECT_DIR$/src/core/NewtorkOperator.java" />
     <entry file="file://$PROJECT_DIR$/src/core/ElectricityProducer.java" />
     <entry file="file://$PROJECT_DIR$/src/core/Retailer.java" />
     <entry file="file://$PROJECT_DIR$/src/core/Speculator.java" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actortype">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm_gen_mapping">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/JDBC.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="51" selection-start-line="51" selection-end-line="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/jdbc3/JDBC3ResultSet.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="687">
-          <caret line="290" selection-start-line="290" selection-end-line="290" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/console.sql" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actortype" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm_gen_mapping" />
+    <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/JDBC.class" />
+    <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/jdbc3/JDBC3ResultSet.class" />
     <entry file="file://$PROJECT_DIR$/src/core/Gr4spUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="551">
@@ -674,20 +494,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor_actortype_mapping">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor_actortype_mapping" />
     <entry file="file://$PROJECT_DIR$/src/core/ConsumptionProfile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
@@ -709,20 +517,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actorasset_relationship">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actoractor90s">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actorasset_relationship" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actoractor90s" />
     <entry file="file://$PROJECT_DIR$/src/core/ActorActorRelationship.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -730,46 +526,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm90vicneigh">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/networkassets">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor90s">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm90vicneigh" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/networkassets" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor90s" />
     <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/generationassets90s" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spmstimarust">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spmstimarust" />
     <entry file="file://$PROJECT_DIR$/src/core/Enduse.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="108" lean-forward="true" selection-start-line="83" selection-start-column="4" selection-end-line="108" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Actor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="40" column="11" selection-start-line="40" selection-start-column="11" selection-end-line="40" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -787,30 +552,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actorasset90s">
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actorasset90s" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/generators" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm" />
+    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/generationassets" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/088d66e8-fab1-4c63-a936-0b7676406190/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/85733165-0e5b-4b9f-ae7a-923428b289f4/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://85733165-0e5b-4b9f-ae7a-923428b289f4/schema/main/table/ActorActor90s">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/ActorAssetRelationship.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/ConnectionPoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="53" selection-start-line="53" selection-end-line="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/Generator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
+        <state relative-caret-position="765">
           <caret line="47" column="27" selection-start-line="47" selection-end-line="48" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -818,54 +579,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/generators">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/NetworkAssets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="740">
-          <caret line="39" column="52" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Spm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1420">
-          <caret line="86" column="1" selection-start-line="86" selection-start-column="1" selection-end-line="90" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Storage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="980">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/generationassets">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/Household.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
+        <state relative-caret-position="493">
           <caret line="39" column="36" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -873,10 +589,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/NetworkAssets.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="39" column="52" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Storage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="833">
+          <caret line="57" selection-start-line="57" selection-end-line="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/ActorAssetRelationship.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/ConnectionPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1020">
+          <caret line="82" selection-start-line="82" selection-end-line="87" selection-end-column="5" />
+          <folding>
+            <element signature="e#1720#1721#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Spm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="721">
+          <caret line="86" column="1" selection-start-line="86" selection-start-column="1" selection-end-line="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Actor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="43" column="70" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="797">
-          <caret line="1049" selection-start-line="1049" selection-end-line="1049" />
+        <state relative-caret-position="435">
+          <caret line="1047" column="51" selection-start-line="1047" selection-start-column="51" selection-end-line="1047" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -904,7 +668,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.12643678" />
               </list>
             </option>
           </splitter-proportions>
@@ -924,7 +688,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>9</last-edited>
+          <last-edited>11</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -941,7 +705,6 @@
             <option name="proportions">
               <list>
                 <option value="0.12643678" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -949,6 +712,7 @@
       </state>
       <state key="ProjectJDKs.UI">
         <settings>
+          <last-edited>11</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -961,6 +725,17 @@
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
           <last-edited>libraries</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.12643678" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
           <splitter-proportions>
             <option name="proportions">
               <list>

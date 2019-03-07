@@ -1039,13 +1039,13 @@ public class Gr4spSim extends SimState {
         //loadCaseStudy("SPMsTimaruSt");
         //loadActor();
 
-        selectActors("Actor90s");
+        selectActors("Actor93");
 
         generateHouseholdsNineties();
 
-        selectActorActorRelationships("ActorActor90s");
+        selectActorActorRelationships("ActorActor93");
 
-        selectActorAssetRelationships("ActorAsset90s");//from https://www.secv.vic.gov.au/history/
+        selectActorAssetRelationships("ActorAsset93");//from https://www.secv.vic.gov.au/history/
 
     }
 
