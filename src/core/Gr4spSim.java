@@ -879,44 +879,52 @@ public class Gr4spSim extends SimState {
 
         Scanner read = new Scanner(System.in);
 
+        int numHouseholds =10;
+        double gasUsersPercentage = 20;
+        double onePerson = 20;
+        double twoPerson = 20;
+        double threePerson = 20;
+        double fourPerson = 20;
+        double fivePlusPerson = 20;
+        int month =1;
 
-        System.out.println("Introduce the number of Households: ");
-        int numHouseholds = read.nextInt();
-        read.nextLine();
-
-        System.out.println("Introduce % of Household with Gas [0..100]: ");
-        double gasUsersPercentage = read.nextDouble();
-        read.nextLine();
-
-        double percentageRemaining = 100;
-
-        System.out.println("Introduce % of Household with 1 person [0..100]: ");
-        double onePerson = read.nextDouble();
-        read.nextLine();
-        percentageRemaining -= onePerson;
-
-        System.out.println("Introduce % of Household with 2 person [0.." + percentageRemaining + "]: ");
-        double twoPerson = read.nextDouble();
-        read.nextLine();
-        percentageRemaining -= twoPerson;
-
-        System.out.println("Introduce % of Household with 3 person [0.." + percentageRemaining + "]: ");
-        double threePerson = read.nextDouble();
-        read.nextLine();
-        percentageRemaining -= threePerson;
-
-        System.out.println("Introduce % of Household with 4 person [0.." + percentageRemaining + "]: ");
-        double fourPerson = read.nextDouble();
-        read.nextLine();
-        percentageRemaining -= fourPerson;
-
-        System.out.println("Introduce % of Household with 5 person [0.." + percentageRemaining + "]: ");
-        double fivePlusPerson = read.nextDouble();
-        read.nextLine();
-
-        System.out.println("Introduce initial month [1..12]: ");
-        int month = read.nextInt();
-        read.nextLine();
+//        System.out.println("Introduce the number of Households: ");
+//        int numHouseholds = read.nextInt();
+//        read.nextLine();
+//
+//        System.out.println("Introduce % of Household with Gas [0..100]: ");
+//        double gasUsersPercentage = read.nextDouble();
+//        read.nextLine();
+//
+//        double percentageRemaining = 100;
+//
+//        System.out.println("Introduce % of Household with 1 person [0..100]: ");
+//        double onePerson = read.nextDouble();
+//        read.nextLine();
+//        percentageRemaining -= onePerson;
+//
+//        System.out.println("Introduce % of Household with 2 person [0.." + percentageRemaining + "]: ");
+//        double twoPerson = read.nextDouble();
+//        read.nextLine();
+//        percentageRemaining -= twoPerson;
+//
+//        System.out.println("Introduce % of Household with 3 person [0.." + percentageRemaining + "]: ");
+//        double threePerson = read.nextDouble();
+//        read.nextLine();
+//        percentageRemaining -= threePerson;
+//
+//        System.out.println("Introduce % of Household with 4 person [0.." + percentageRemaining + "]: ");
+//        double fourPerson = read.nextDouble();
+//        read.nextLine();
+//        percentageRemaining -= fourPerson;
+//
+//        System.out.println("Introduce % of Household with 5 person [0.." + percentageRemaining + "]: ");
+//        double fivePlusPerson = read.nextDouble();
+//        read.nextLine();
+//
+//        System.out.println("Introduce initial month [1..12]: ");
+//        int month = read.nextInt();
+//        read.nextLine();
 
         read.close();
 
@@ -1005,7 +1013,7 @@ public class Gr4spSim extends SimState {
              **/
 
             //Add Random Location of EU in the layout
-            Double2D euLoc = new Double2D(random.nextDouble() * 1000, random.nextDouble() * 1000);
+            Double2D euLoc = new Double2D( (i * 80)%1600, ((int)i/20 + 1) * 80);
             layout.setObjectLocation(actor, euLoc);
 
             //Use same Loc for the SPM
@@ -1047,7 +1055,13 @@ public class Gr4spSim extends SimState {
 
         selectActorAssetRelationships("ActorAsset93");//from https://www.secv.vic.gov.au/history/
 
+        for(ConsumptionActor ca : this.consumptionActors) {
+            this.schedule.scheduleRepeating((Actor)ca);
+        }
+
+
     }
+
 
     public static void main(String[] args) {
         doLoop(Gr4spSim.class, args);
