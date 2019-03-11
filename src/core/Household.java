@@ -1,6 +1,7 @@
 package core;
 
 import core.Actor;
+import sim.engine.SimState;
 
 import java.util.ArrayList;
 
@@ -9,7 +10,7 @@ public class Household extends Actor implements ConsumptionActor {
     private boolean family;
     private boolean hasGas;
     private double income; //median weekly income according to ABS census 2016
-
+    public double currentConsumption;
 
     public Household(int actor, ActorType actorType, String name, GovRole mainRole, BusinessStructure businessType, OwnershipModel ownershipModel, int numberOfPerson, boolean gas,
                      boolean family, double income) {
@@ -18,6 +19,16 @@ public class Household extends Actor implements ConsumptionActor {
         this.family = family;
         this.income = income;
         this.hasGas = gas;
+        this.currentConsumption = 0.0;
+    }
+
+
+    public double getCurrentConsumption() {
+        return currentConsumption;
+    }
+
+    public void setCurrentConsumption(double currentConsumption) {
+        this.currentConsumption = currentConsumption;
     }
 
     public boolean isFamily() {
@@ -34,6 +45,33 @@ public class Household extends Actor implements ConsumptionActor {
 
     public void setIncome(double income) {
         this.income = income;
+    }
+
+    public int getNumberOfPerson() {
+        return numberOfPerson;
+    }
+
+    public void setNumberOfPerson(int numberOfPerson) {
+        this.numberOfPerson = numberOfPerson;
+    }
+
+    public boolean isHasGas() {
+        return hasGas;
+    }
+
+    public void setHasGas(boolean hasGas) {
+        this.hasGas = hasGas;
+    }
+
+    @Override
+    public void step(SimState simState) {
+
+        //System.out.println(simState.schedule.getTime()+"STEP!!!!"+currentConsumption);
+
+        int currentMonth = (int)simState.schedule.getSteps()%12;
+
+        this.currentConsumption = computeConsumption( currentMonth );
+
     }
 
     @Override
@@ -61,10 +99,10 @@ public class Household extends Actor implements ConsumptionActor {
 
 
         if( this.hasGas ){
-            return gas[row][month-1];
+            return gas[row][month];
         }
         else{
-            return noGas[row][month-1];
+            return noGas[row][month];
         }
 
         /*Double consumptionTotal;
