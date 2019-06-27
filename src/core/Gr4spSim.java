@@ -57,11 +57,11 @@ public class Gr4spSim extends SimState {
      * select all rows in the Generation Technologies table
      */
     public Bag selectGenTech(String name) {
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; // url for sqlite "jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT id, PowerStation, Owner, InstalledCapacity_MW, TechnologyType, FuelType, DispatchType, location_Coordinates" +
-                " FROM GenerationAssets WHERE PowerStation = '" + name + "' ";
+        String sql = "SELECT id, powerstation, Owner, installedcapacity_mw, technologytype, fueltype, dispatchtype, location_coordinates" +
+                " FROM generationassets WHERE powerstation = '" + name + "' ";
 
         Bag gens = new Bag();
         try (Connection conn = DriverManager.getConnection(url);
@@ -110,10 +110,11 @@ public class Gr4spSim extends SimState {
 
 
     public Bag selectStorage(String name) {
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT storage_id, storage_name, StorageType, storageOutputCap , storageCapacity, Ownership, storage_cycleLife, storage_costRange  FROM Storage WHERE storage_name = '" + name + "' ";
+        String sql = "SELECT storage_id, storage_name, storagetype, storageoutputcap , storagecapacity, ownership," +
+                " storage_cyclelife, storage_costrange  FROM storage WHERE storage_name = '" + name + "' ";
         Bag strs = new Bag();
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -123,7 +124,7 @@ public class Gr4spSim extends SimState {
             while (rs.next()) {
                 System.out.println("\t" + rs.getInt("storage_id") + "\t" +
                         rs.getString("storage_name") + "\t" +
-                        rs.getInt("StorageType") + "\t" +
+                        rs.getInt("storageType") + "\t" +
                         rs.getDouble("storageOutputCap") + "\t" +
                         rs.getDouble("storageCapacity") + "\t" +
                         rs.getInt("Ownership") + "\t" +
@@ -151,12 +152,13 @@ public class Gr4spSim extends SimState {
 
     //Select and create the type of energy grid
     public Bag selectNetwork(String id) {
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT NetworkAssets.id as netId, NetworkAssetType.type as type, NetworkAssetType.subtype as subtype, NetworkAssetType.grid as grid, assetName, grid_node_name, " +
-                "location_MB, gridLosses, gridVoltage, owner  FROM NetworkAssets JOIN NetworkAssetType " +
-                "WHERE NetworkAssets.assetType = NetworkAssetType.id and NetworkAssets.id = '" + id + "' ";
+        String sql = "SELECT networkassets.id as netid, networkassettype.type as type, networkassettype.subtype as subtype, networkassettype.grid as grid, assetname, grid_node_name, location_mb, gridlosses, gridvoltage, owner " +
+                " FROM networkassets " +
+                "JOIN networkassettype ON networkassets.assettype = networkassettype.id " +
+                "and  networkassets.id = '" + id + "' ";
         Bag nets = new Bag();
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -207,10 +209,10 @@ public class Gr4spSim extends SimState {
     //it is basically the closest point where supply meets demand without going through any significant extra technological "treatment"
     //TODO knowledge and energy hubs within prosumer communities, where to include them?
     public Bag selectConnectionPoint(String name) {
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT cpoint_id, cpoint_name, CPoint_type, distanceToDemand, cpoint_locationCode, cpoint_owner, Ownership FROM ConnectionPoint WHERE cpoint_name = '" + name + "' ";
+        String sql = "SELECT cpoint_id, cpoint_name, cpoint_type, distancetodemand, cpoint_locationcode, cpoint_owner, ownership FROM connectionpoint WHERE cpoint_name = '" + name + "' ";
         Bag cpoints = new Bag();
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -406,10 +408,10 @@ public class Gr4spSim extends SimState {
      */
     public void
     selectActors(String tableName) {
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT id, actorType, actorName, role, businessStructure, ownershipModel" +
+        String sql = "SELECT id, actortype, actorname, role, businessstructure, ownershipmodel" +
                 " FROM " + tableName;
 
         //Bag actors = new Bag();
@@ -457,7 +459,7 @@ public class Gr4spSim extends SimState {
 
     public void
     selectActorActorRelationships(String tableName) {
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT Actor1, Actor2, RelType" +
@@ -490,10 +492,10 @@ public class Gr4spSim extends SimState {
 
     public void
     selectActorAssetRelationships(String tableName) {
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres";//"jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT ActorId, AssetId, RelType, AssetType, Percentage" +
+        String sql = "SELECT actorid, assetid, reltype, assettype, percentage" +
                 " FROM " + tableName;
 
         //Bag actors = new Bag();
@@ -571,9 +573,9 @@ public class Gr4spSim extends SimState {
          *  If it's the first time this spm.id is needed, then we create its object,
          *  If it already exists, we just retrieve the object from the spm_register
          */
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
-        String spmGenSql = "SELECT Spm.shared FROM Spm WHERE Spm.id = '" + idSpmActor + "' ";
+        String spmGenSql = "SELECT spm.shared FROM spm WHERE spm.id = '" + idSpmActor + "' ";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -603,9 +605,9 @@ public class Gr4spSim extends SimState {
          */
 
 
-        url = "jdbc:sqlite:Spm_archetypes.db";
+        url = "jdbc:postgresql://localhost:5432/postgres?user=postgres";//"jdbc:sqlite:Spm_archetypes.db";
 
-        spmGenSql = "SELECT Spm_contains.contained_id FROM Spm_contains WHERE Spm_contains.id_Spm = '" + idSpmActor + "' ";
+        spmGenSql = "SELECT spm_contains.contained_id FROM spm_contains WHERE spm_contains.id_spm = '" + idSpmActor + "' ";
 
         Bag spms_contained = new Bag();
 
@@ -640,8 +642,9 @@ public class Gr4spSim extends SimState {
          *  Get list of Generators from DB
          */
 
-        spmGenSql = "SELECT Spm.id, Spm.name, GenerationAssets.id, GenerationAssets.PowerStation FROM Spm as Spm JOIN Spm_gen_mapping join GenerationAssets on " +
-                "GenerationAssets.id = Spm_gen_mapping.genId and Spm.id = Spm_gen_mapping.spmId and Spm.id = '" + idSpmActor + "' ";
+        spmGenSql = "SELECT spm.id, spm.name, generationassets.id, generationassets.powerstation FROM spm " +
+                "JOIN spm_gen_mapping on  spm.id = spm_gen_mapping.spmId " +
+                "JOIN generationassets on generationassets.id = spm_gen_mapping.genid and spm.id = '" + idSpmActor + "' ";
 
         Bag gens = new Bag();
 
@@ -672,8 +675,12 @@ public class Gr4spSim extends SimState {
         /**
          * Get list of STORAGE from DB
          */
-        String spmStrSql = "SELECT Spm.id, Spm.name, Storage.storage_id, Storage.storage_name FROM Spm as Spm JOIN Spm_storage_mapping join Storage " +
-                "on Storage.storage_id = Spm_storage_mapping.storageId and Spm.id = Spm_storage_mapping.spmId and Spm.id = '" + idSpmActor + "' ";
+        String spmStrSql = "SELECT  storage.storage_id, storage.storage_name " +
+                "FROM spm " +
+                "JOIN spm_storage_mapping on spm.id = spm_storage_mapping.spmid\n" +
+                "JOIN storage on storage.storage_id = spm_storage_mapping.storageid\n" +
+                "Where spm.id ='" +
+                + idSpmActor + "' ";
         Bag strs = new Bag();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -699,8 +706,9 @@ public class Gr4spSim extends SimState {
         /**
          * Get list of NetworkAssets from DB
          */
-        String spmGridSql = "SELECT Spm.id, Spm.name, NetworkAssets.id as netId FROM Spm as Spm JOIN Spm_network_mapping join NetworkAssets " +
-                "on NetworkAssets.id = Spm_network_mapping.network_assetId and Spm.id = Spm_network_mapping.spmId and Spm.id = '" + idSpmActor + "' ";
+        String spmGridSql = "SELECT spm.id, spm.name, networkassets.id as netid FROM spm\n" +
+                "    JOIN spm_network_mapping on spm.id = spm_network_mapping.spmid\n" +
+                "    JOIN networkassets on networkassets.id = spm_network_mapping.network_assetid and spm.id = '" + idSpmActor + "' ";
         Bag networkAssets = new Bag();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -772,7 +780,7 @@ public class Gr4spSim extends SimState {
          * Get the SPMs for EndUse Case study
          */
 
-        String url = "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres";//"jdbc:sqlite:Spm_archetypes.db";
 
         String spmSql = "SELECT id, location_code, id_spm, spm_name, location_area, " +
                 "category_type, dwelling_type  FROM " + tableName;
@@ -1047,13 +1055,13 @@ public class Gr4spSim extends SimState {
         //loadCaseStudy("SPMsTimaruSt");
         //loadActor();
 
-        selectActors("Actor93");
+        selectActors("actor93");
 
         generateHouseholdsNineties();
 
-        selectActorActorRelationships("ActorActor93");
+        selectActorActorRelationships("actoractor93");
 
-        selectActorAssetRelationships("ActorAsset93");//from https://www.secv.vic.gov.au/history/
+        selectActorAssetRelationships("actorasset93");//from https://www.secv.vic.gov.au/history/
 
         for(ConsumptionActor ca : this.consumptionActors) {
             this.schedule.scheduleRepeating((Actor)ca);
