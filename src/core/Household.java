@@ -1,9 +1,8 @@
 package core;
 
-import core.Actor;
 import sim.engine.SimState;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 public class Household extends Actor implements ConsumptionActor {
     private int numberOfPerson;
@@ -11,6 +10,8 @@ public class Household extends Actor implements ConsumptionActor {
     private boolean hasGas;
     private double income; //median weekly income according to ABS census 2016
     public double currentConsumption;
+    public float currentTariff;
+    public Contract currentTariffContract;
 
     public Household(int actor, ActorType actorType, String name, GovRole mainRole, BusinessStructure businessType, OwnershipModel ownershipModel, int numberOfPerson, boolean gas,
                      boolean family, double income) {
@@ -22,6 +23,9 @@ public class Household extends Actor implements ConsumptionActor {
         this.currentConsumption = 0.0;
     }
 
+    public float getCurrentTariff() {
+        return currentTariff;
+    }
 
     public double getCurrentConsumption() {
         return currentConsumption;
@@ -68,10 +72,23 @@ public class Household extends Actor implements ConsumptionActor {
 
         //System.out.println(simState.schedule.getTime()+"STEP!!!!"+currentConsumption);
 
+        Gr4spSim data = (Gr4spSim) simState;
+
         int currentMonth = (int)simState.schedule.getSteps()%12;
 
-        this.currentConsumption = computeConsumption( currentMonth );
+        this.currentConsumption = data.monthly_consumption_register.get(data.getCurrentSimDate());
+        //this.currentConsumption = computeConsumption( currentMonth );
 
+        //Finds the Retail Arena, and asks for his currentTariff, following the Simulation policy defined in Gr4spSim.Start()
+        for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
+            Arena a = entry.getValue();
+
+            if(a.getType().equalsIgnoreCase("Retail") ) {
+                this.currentTariffContract = a.getEndConsumerTariff(simState);
+                this.currentTariff = this.currentTariffContract.getPricecKWh();
+                //Need to take into account service Fee when computing costs
+            }
+        }
     }
 
     @Override

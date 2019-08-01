@@ -1,13 +1,15 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class ConsumptionProfile {
 
     private String demandType; //householdA, householdB, householdC, ..., commercialA, commercialB,...,industryA, industryB
-    private ArrayList<Double> consumption; //weekly consumption in KwH
+    private HashMap<Date, Double> consumption; //monthly consumption in KwH
 
-    public ConsumptionProfile(String demandType, ArrayList<Double> consumption) {
+    public ConsumptionProfile(String demandType, HashMap<Date, Double> consumption) {
         this.demandType = demandType;
         this.consumption = consumption;
     }
@@ -20,13 +22,6 @@ public class ConsumptionProfile {
         this.demandType = demandType;
     }
 
-    public ArrayList<Double> getConsumption() {
-        return consumption;
-    }
-
-    public void setConsumption(ArrayList<Double> consumption) {
-        this.consumption = consumption;
-    }
 }
 
 

@@ -115,5 +115,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="opencsv-4.6" level="project" />
   </component>
 </module>
