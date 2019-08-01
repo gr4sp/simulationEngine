@@ -1,16 +1,20 @@
 package core;
 
-
+import core.Policies.EndConsumerTariff;
+import core.Policies.SimPolicies;
 import sim.engine.*;
 import sim.field.continuous.Continuous2D;
 import sim.util.Bag;
 import sim.util.Double2D;
 
+import javax.swing.text.html.parser.Entity;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -23,6 +27,18 @@ public class Gr4spSim extends SimState {
     HashMap<Integer, Vector<Generator>> gen_register;
     HashMap<Integer, Vector<NetworkAssets>> network_register;
     HashMap<Integer, Actor> actor_register;
+    HashMap<Integer, Arena> arena_register;
+
+    //Consumption per Domestic Costumer
+    HashMap<Date, Double> monthly_consumption_register;
+    //Total Generation GWh per month
+    HashMap<Date, Generation> monthly_generation_register;
+
+    //Number of costumers
+    HashMap<Date, Integer> monthly_domestic_consumers_register;
+    //CPI conversion
+    HashMap<Date, Float> cpi_conversion;
+
 
     ArrayList<ConsumptionActor> consumptionActors = new ArrayList<ConsumptionActor>(); //this is the array to be traverse to get the total consumption
     ArrayList<ActorActorRelationship> actorActorRelationships = new ArrayList<ActorActorRelationship>();
@@ -39,18 +55,88 @@ public class Gr4spSim extends SimState {
     private int numOrg;
 
     //couter for actors
-
     private int numActors;
+
+    //Date representing the start of the simulation, and the final date of the simulation
+    private Calendar simCalendar;
+    private Date startSimDate;
+    private Date endSimDate;
+
+    //Area Code for Simulation [M1,M2,R1,R2]
+    private String areaCode;
+
+    //Percentage of Domestic Consumption over Total Consumption. Used in selectConsumption()
+    private double domesticConsumptionPercentage;
+
+    //Policies used for the simulation
+    private SimPolicies policies;
 
 
     public Gr4spSim(long seed) {
+
         super(seed);
+
         //Num generator, storage, grid to generate unique id
         numGenerators = 0; //for real example, it is going to be the number of generators supplying the area under study at the scale under study.
         numStorage = 0;
         numGrid = 0;
         numOrg = 0;
         numActors = 0;
+
+        simCalendar = Calendar.getInstance();
+
+        spm_register = new HashMap<>();
+        gen_register = new HashMap<>();
+        network_register = new HashMap<>();
+        actor_register = new HashMap<>();
+        arena_register = new HashMap<>();
+        monthly_consumption_register = new HashMap<>();
+        monthly_generation_register = new HashMap<>();
+        monthly_domestic_consumers_register = new HashMap<>();
+        cpi_conversion = new HashMap<>();
+
+        layout = new Continuous2D(10.0, 600.0, 600.0);
+        policies = new SimPolicies();
+    }
+
+
+    /**
+     * Getters and Setters
+     */
+    public Calendar getSimCalendar() {
+        return simCalendar;
+    }
+
+    public Date getStartSimDate() {
+        return startSimDate;
+    }
+
+    public Date getCurrentSimDate() {
+        return simCalendar.getTime();
+    }
+
+    public void advanceCurrentSimDate() {
+        simCalendar.add(Calendar.MONTH, 1);
+    }
+
+    public Date getEndSimDate() {
+        return endSimDate;
+    }
+
+    public void setEndSimDate(Date endSimDate) {
+        this.endSimDate = endSimDate;
+    }
+
+    public SimPolicies getPolicies() {
+        return policies;
+    }
+
+    public void setPolicies(SimPolicies policies) {
+        this.policies = policies;
+    }
+
+    public HashMap<Integer, Arena> getArena_register() {
+        return arena_register;
     }
 
     /**
@@ -60,7 +146,7 @@ public class Gr4spSim extends SimState {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; // url for sqlite "jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT id, powerstation, Owner, installedcapacity_mw, technologytype, fueltype, dispatchtype, location_coordinates" +
+        String sql = "SELECT id, powerstation, Owner, installedcapacitymw, technologytype, fueltype, dispatchtype, locationcoordinates, startdate, enddate" +
                 " FROM generationassets WHERE powerstation = '" + name + "' ";
 
         Bag gens = new Bag();
@@ -73,21 +159,25 @@ public class Gr4spSim extends SimState {
                 System.out.println("\t" + rs.getInt("id") + "\t" +
                         rs.getString("PowerStation") + "\t" +
                         rs.getString("Owner") + "\t" +
-                        rs.getDouble("InstalledCapacity_MW") + "\t" +
+                        rs.getDouble("InstalledCapacityMW") + "\t" +
                         rs.getString("TechnologyType") + "\t" +
                         rs.getString("FuelType") + "\t" +
                         rs.getString("DispatchType") + "\t" +
-                        rs.getString("location_Coordinates"));
+                        rs.getDate("startdate") + "\t" +
+                        rs.getDate("enddate") + "\t" +
+                        rs.getString("locationcoordinates"));
 
 
                 Generator gen = new Generator(rs.getInt("id"),
                         rs.getString("PowerStation"),
                         rs.getString("Owner"),
-                        rs.getDouble("InstalledCapacity_MW"),
+                        rs.getDouble("InstalledCapacityMW"),
                         rs.getString("TechnologyType"),
                         rs.getString("FuelType"),
                         rs.getString("DispatchType"),
-                        rs.getString("location_Coordinates"));
+                        rs.getString("locationCoordinates"),
+                        rs.getDate("startdate"),
+                        rs.getDate("enddate"));
 
                 int idGen = rs.getInt("id");
                 //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
@@ -155,7 +245,8 @@ public class Gr4spSim extends SimState {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT networkassets.id as netid, networkassettype.type as type, networkassettype.subtype as subtype, networkassettype.grid as grid, assetname, grid_node_name, location_mb, gridlosses, gridvoltage, owner " +
+        String sql = "SELECT networkassets.id as netid, networkassettype.type as type, networkassettype.subtype as subtype, " +
+                "networkassettype.grid as grid, assetname, grid_node_name, location_mb, gridlosses, gridvoltage, owner, startdate, enddate " +
                 " FROM networkassets " +
                 "JOIN networkassettype ON networkassets.assettype = networkassettype.id " +
                 "and  networkassets.id = '" + id + "' ";
@@ -175,6 +266,8 @@ public class Gr4spSim extends SimState {
                         rs.getString("location_MB") + "\t" +
                         rs.getDouble("gridLosses") + "\t" +
                         rs.getInt("gridVoltage") + "\t" +
+                        rs.getDate("startdate") + "\t" +
+                        rs.getDate("enddate") + "\t" +
                         rs.getString("owner"));
 
                 int idNet = rs.getInt("netId");
@@ -187,7 +280,9 @@ public class Gr4spSim extends SimState {
                         rs.getString("location_MB"),
                         rs.getDouble("gridLosses"),
                         rs.getInt("gridVoltage"),
-                        rs.getString("owner"));
+                        rs.getString("owner"),
+                        rs.getDate("startdate"),
+                        rs.getDate("enddate"));
                 nets.add(grid);
 
                 //Get from Map the vector of Networks with key = idNet, and add the new Network to the vector
@@ -311,24 +406,24 @@ public class Gr4spSim extends SimState {
     }
 
     public ActorType stringToActorType(String actorType) {
+        if (actorType == null)
+            return ActorType.TBD;
 
         if (actorType.equalsIgnoreCase("RETAILER"))
-            return ActorType.RETAILER;
-        if (actorType.equalsIgnoreCase("ELECPROD"))
-            return ActorType.ELECPROD;
-        if (actorType.equalsIgnoreCase("NETWORKOP"))
-            return ActorType.NETWORKOP;
-        if (actorType.equalsIgnoreCase("HOUSEHOLD"))
-            return ActorType.HOUSEHOLD;
+            return ActorType.MARKETLOADSCHD;
+        if (actorType.equalsIgnoreCase("MARKETGENSCHD"))
+            return ActorType.MARKETGENSCHD;
+        if (actorType.equalsIgnoreCase("MARKETNETWORKPROV"))
+            return ActorType.MARKETNETWORKPROV;
+        if (actorType.equalsIgnoreCase("HDCONSUMER"))
+            return ActorType.HDCONSUMER;
         if (actorType.equalsIgnoreCase("REGULATOR"))
             return ActorType.REGULATOR;
         if (actorType.equalsIgnoreCase("IMPLEMENT"))
             return ActorType.IMPLEMENT;
-        if (actorType.equalsIgnoreCase("GOVERNM"))
-            return ActorType.GOVERNM;
-        if (actorType.equalsIgnoreCase("OMUSD"))
-            return ActorType.OMUSD;
-        if (actorType.equalsIgnoreCase("ÏNVESTOR"))
+        if (actorType.equalsIgnoreCase("GOVAUTHORITY"))
+            return ActorType.GOVAUTHORITY;
+        if (actorType.equalsIgnoreCase("INVESTOR"))
             return ActorType.INVESTOR;
         if (actorType.equalsIgnoreCase("BROKER"))
             return ActorType.BROKER;
@@ -340,6 +435,9 @@ public class Gr4spSim extends SimState {
     }
 
     public BusinessStructure stringToBusinessStructure(String businessStructure) {
+        if (businessStructure == null)
+            return BusinessStructure.TBD;
+
         if (businessStructure.equalsIgnoreCase("INCORPASSOCIATION"))
             return BusinessStructure.INCORPASSOCIATION;
         if (businessStructure.equalsIgnoreCase("PTYLTD"))
@@ -369,6 +467,9 @@ public class Gr4spSim extends SimState {
 
 
     public GovRole stringToGovRole(String govRole) {
+        if (govRole == null)
+            return GovRole.TBD;
+
         if (govRole.equalsIgnoreCase("RULEFOLLOW"))
             return GovRole.RULEFOLLOW;
         if (govRole.equalsIgnoreCase("RULEMAKER"))
@@ -382,6 +483,9 @@ public class Gr4spSim extends SimState {
     }
 
     public OwnershipModel stringToOwnershipModel(String ownership) {
+        if (ownership == null)
+            return OwnershipModel.TBD;
+
         if (ownership.equalsIgnoreCase("SHARES"))
             return OwnershipModel.SHARES;
         if (ownership.equalsIgnoreCase("DONATION_BASED"))
@@ -403,16 +507,271 @@ public class Gr4spSim extends SimState {
         }
     }
 
+    public void
+    selectGenerationHistoricData() {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        /**
+         * Load Total Consumption per month
+         * */
+        String sql = "SELECT date, volumeweightedprice_dollarMWh, temperaturec, solar_roofpv_dollargwh, solar_roofpv_gwh," +
+                "solar_utility_dollargwh, solar_utility_gwh, wind_dollargwh, wind_gwh, hydro_dollargwh," +
+                "hydro_gwh, battery_disch_dollargwh, battery_disch_gwh, gas_ocgt_dollargwh, gas_ocgt_gwh," +
+                "gas_steam_dollargwh, gas_steam_gwh, browncoal_dollargwh, browncoal_gwh, imports_dollargwh," +
+                "imports_gwh, exports_dollargwh, exports_gwh, total_gen_gwh" +
+                " FROM  generation_demand_historic ;";
+
+
+
+
+        //volumeweightedprice_dollarMWh, temperaturec, solar_roofpv_dollargwh, solar_roofpv_gwh, solar_utility_dollargwh, solar_utility_gwh, wind_dollargwh, wind_gwh, hydro_dollargwh, hydro_gwh, battery_disch_dollargwh, battery_disch_gwh, gas_ocgt_dollargwh, gas_ocgt_gwh,gas_steam_dollargwh, gas_steam_gwh, browncoal_dollargwh, browncoal_gwh, imports_dollargwh, imports_gwh, exports_dollargwh, exports_gwh, total_gen_gwh
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getString("date") + "\t" +
+                        rs.getString("total_demand_gwh"));
+
+
+                Date d = rs.getDate("date");
+
+                Generation genData = new Generation(
+                        rs.getDate("date"),rs.getFloat("volumeweightedprice_dollarMWh"),rs.getFloat(" temperaturec"),
+                        rs.getFloat(" solar_roofpv_dollargwh"),rs.getFloat(" solar_roofpv_gwh"),rs.getFloat(" solar_utility_dollargwh"),
+                        rs.getFloat(" solar_utility_gwh"),rs.getFloat(" wind_dollargwh"),rs.getFloat(" wind_gwh"),rs.getFloat(" hydro_dollargwh"),
+                        rs.getFloat(" hydro_gwh"),rs.getFloat(" battery_disch_dollargwh"),rs.getFloat(" battery_disch_gwh"),rs.getFloat(" gas_ocgt_dollargwh"),
+                        rs.getFloat(" gas_ocgt_gwh"),rs.getFloat("gas_steam_dollargwh"),rs.getFloat(" gas_steam_gwh"),rs.getFloat(" browncoal_dollargwh"),
+                        rs.getFloat(" browncoal_gwh"),rs.getFloat(" imports_dollargwh"),rs.getFloat(" imports_gwh"),rs.getFloat(" exports_dollargwh"),
+                        rs.getFloat(" exports_gwh"),rs.getFloat(" total_gen_gwh")
+                );
+
+                //If arena doesn't exist, create it
+                if (!monthly_generation_register.containsKey(d)) {
+                    monthly_generation_register.put(d, genData);
+                }
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void
+    selectConsumption() {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        /**
+         * Load Total Consumption per month
+         * */
+        String sql = "SELECT date, total_demand_gwh" +
+                " FROM  generation_demand_historic ;";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getString("date") + "\t" +
+                        rs.getString("total_demand_gwh"));
+
+
+                Date d = rs.getDate("date");
+                double gwh = rs.getDouble("total_demand_gwh");
+
+                //If arena doesn't exist, create it
+                if (!monthly_consumption_register.containsKey(d)) {
+                    monthly_consumption_register.put(d, gwh);
+                }
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        /**
+         * Load domestic consumers
+         * */
+        sql = "SELECT date, domesticconsumers" +
+                " FROM  domestic_consumers ;";
+
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getString("date") + "\t" +
+                        rs.getString("domesticconsumers"));
+
+
+                Date d = rs.getDate("date");
+                int consumers = rs.getInt("domesticconsumers");
+
+                //If arena doesn't exist, create it
+                if (!monthly_domestic_consumers_register.containsKey(d)) {
+                    monthly_domestic_consumers_register.put(d, consumers);
+                }
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        /**
+         * Compute linear Monthly growth from Yearly data
+         * */
+        HashMap<Date, Integer> newMonthlyData = new HashMap<>();
+        for (Map.Entry<Date, Integer> entry : monthly_domestic_consumers_register.entrySet()) {
+            Date currentDate = entry.getKey();
+            Integer consumers = entry.getValue();
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(currentDate);
+
+            //Get info about next year
+            c.add(Calendar.YEAR, 1);
+            Date nextYear = c.getTime();
+            Integer consumersNextYear = monthly_domestic_consumers_register.get(nextYear);
+
+            if (consumers == null || consumersNextYear == null) continue;
+
+            Integer increment = (consumersNextYear - consumers) / 12;
+
+            //Set calendar to current Date again
+            c.setTime(currentDate);
+
+            //Increment date by 1 month, and 1 increment of population, until we filled the 12 months
+            for (int i = 0; i < 11; i++) {
+
+                //add 1 month
+                c.add(Calendar.MONTH, 1);
+                Date newMonth = c.getTime();
+
+                //add new consumers
+                consumers += increment;
+
+                //store the new data point
+                newMonthlyData.put(newMonth, consumers);
+
+            }
+        }
+
+        //Add new monthly data into our domestic consumer register
+        for (Map.Entry<Date, Integer> entry : newMonthlyData.entrySet()) {
+            monthly_domestic_consumers_register.put(entry.getKey(), entry.getValue());
+        }
+
+        /**
+         * Update Total Consumption with monthly domestic consumers
+         * and Percentage of domestic usage
+         * */
+
+        for (Date month : monthly_consumption_register.keySet()) {
+
+            double gwh = monthly_consumption_register.get(month);
+            Integer consumers = monthly_domestic_consumers_register.get(month);
+
+            if (consumers == null) continue;
+
+            //convert to kwh
+            double newkwh = (gwh * 1000000 * domesticConsumptionPercentage) / consumers;
+
+
+            monthly_consumption_register.put(month, newkwh);
+        }
+    }
+
     /**
      * select all rows in the Actor table
      */
     public void
-    selectActors(String tableName) {
+    selectArenaAndContracts(String startDate, String endDate) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
-        String sql = "SELECT id, actortype, actorname, role, businessstructure, ownershipmodel" +
-                " FROM " + tableName;
+
+        String sql = "SELECT arenas.name as arenaname, arenas.type as arenatype, seller, buyer, assetused, pricemwh, startdate, enddate, capacitycontracted, arenaid" +
+                " FROM contracts, arenas WHERE " +
+                "contracts.arenaid = arenas.id AND contracts.startdate <= '" + endDate + "'" +
+                " AND contracts.enddate > '" + startDate + "';";
+
+        //Bag actors = new Bag();
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getInt("arenaid") + "\t" +
+                        rs.getString("arenaname") + "\t" +
+                        rs.getString("arenatype") + "\t" +
+                        rs.getString("seller") + "\t" +
+                        rs.getString("buyer") + "\t" +
+                        rs.getString("pricemwh") + "\t" +
+                        rs.getString("assetused") + "\t" +
+                        rs.getDate("startdate") + "\t" +
+                        rs.getDate("enddate") + "\t" +
+                        rs.getString("capacitycontracted"));
+
+
+                int arenaId = rs.getInt("arenaid");
+
+                //If arena doesn't exist, create it
+                if (!arena_register.containsKey(arenaId)) {
+                    Arena arena = new Arena(arenaId, rs.getString("arenaname"), rs.getString("arenatype"));
+                    arena_register.put(arenaId, arena);
+                }
+
+                Arena arena = arena_register.get(arenaId);
+
+                //Actor seller, Actor buyer, Asset assetUsed, float priceMWh, Date start, Date end, float capacityContracted
+
+                Contract contract = new Contract("",
+                        rs.getInt("seller"),
+                        rs.getInt("buyer"),
+                        rs.getInt("assetused"),
+                        rs.getFloat("pricemwh"),
+                        (float) 0.0,
+                        rs.getDate("startdate"),
+                        rs.getDate("enddate"),
+                        rs.getFloat("capacitycontracted"));
+
+
+                //Add contract to arena
+                if (arena.getType().equalsIgnoreCase("OTC") || arena.getType().equalsIgnoreCase("Retail")) {
+                    arena.getBilateral().add(contract);
+                }
+                if (arena.getType().equalsIgnoreCase("FiTs")) {
+                    arena.getFiTs().add(contract);
+                }
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void
+    selectArena() {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        String sql = "SELECT arenas.name as arenaname, arenas.type as arenatype, id" +
+                " FROM  arenas ;";
 
         //Bag actors = new Bag();
         try (Connection conn = DriverManager.getConnection(url);
@@ -422,19 +781,183 @@ public class Gr4spSim extends SimState {
             // loop through the result set
             while (rs.next()) {
                 System.out.println("\t" + rs.getInt("id") + "\t" +
-                        rs.getString("actorType") + "\t" +
-                        rs.getString("actorName") + "\t" +
-                        rs.getString("role") + "\t" +
+                        rs.getString("arenaname") + "\t" +
+                        rs.getString("arenatype"));
+
+
+                int arenaId = rs.getInt("id");
+
+                //If arena doesn't exist, create it
+                if (!arena_register.containsKey(arenaId)) {
+                    Arena arena = new Arena(arenaId, rs.getString("arenaname"), rs.getString("arenatype"));
+                    arena_register.put(arenaId, arena);
+                }
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void
+    selectTariffs(String startDate, String endDate, String areaCode) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        String sql = "SELECT date, conversion_variable" +
+                " FROM cpi_conversion;";
+
+        //Loading CPI Conversion data
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getString("date") + "\t" +
+                        rs.getFloat("conversion_variable"));
+
+
+                Date date = rs.getDate("date");
+                Float conversion_rate = rs.getFloat("conversion_variable");
+
+                cpi_conversion.put(date, conversion_rate);
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        sql = "SELECT id, casestudy_area, date, tariff_name, average_dckwh, chargeperroom_dmonth, secvij_gdgr_aud_quarter, standingcharge_aud_year" +
+                " FROM tariffdata WHERE" +
+                " casestudy_area = '" + areaCode + "'" +
+                " AND date <= '" + endDate + "'" +
+                " AND date >= '" + startDate + "';";
+
+
+        //Bag actors = new Bag();
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getInt("id") + "\t" +
+                        rs.getString("casestudy_area") + "\t" +
+                        rs.getString("date") + "\t" +
+                        rs.getString("tariff_name") + "\t" +
+                        rs.getString("average_dckwh") + "\t" +
+                        rs.getString("chargeperroom_dmonth") + "\t" +
+                        rs.getString("secvij_gdgr_aud_quarter") + "\t" +
+                        rs.getString("standingcharge_aud_year"));
+
+                //add tariffs to the Retail arena
+                int arenaId = 2;
+
+                Arena arena = arena_register.get(arenaId);
+
+                Date cStartDate = rs.getDate("date");
+
+                //Compute end Date 1 year after
+                Calendar cEndDate = Calendar.getInstance();
+                try {
+                    Date date = stringToDate.parse(rs.getString("date"));
+                    cEndDate.setTime(date);
+                } catch (ParseException e) {
+                    System.err.println("Cannot parse Start Date: " + e.toString());
+                }
+                cEndDate.add(Calendar.YEAR, 1);
+
+                //Get CPI conversion
+                float conversion_rate = cpi_conversion.get(cStartDate);
+
+                //Compute serviceFee
+                Float chargeperroom_dmonth = rs.getFloat("chargeperroom_dmonth") * conversion_rate;
+                Float secvij_gdgr_aud_quarter = rs.getFloat("secvij_gdgr_aud_quarter") * conversion_rate;
+                Float standingcharge_aud_year = rs.getFloat("standingcharge_aud_year") * conversion_rate;
+
+                float serviceFee = 0;
+
+                if (chargeperroom_dmonth != null)
+                    serviceFee += chargeperroom_dmonth;
+                if (secvij_gdgr_aud_quarter != null)
+                    serviceFee += secvij_gdgr_aud_quarter / 3.0;
+                if (standingcharge_aud_year != null)
+                    serviceFee += standingcharge_aud_year / 12.0;
+
+                //Actor seller, Actor buyer, Asset assetUsed, float priceMWh, Date start, Date end, float capacityContracted
+
+                /**
+                 * NEED TO USE FORMULAT RBA TO UPDATE PRICES!
+                 * */
+
+                Contract contract = new Contract(
+                        rs.getString("tariff_name"),
+                        0,
+                        arena.EndConsumer,
+                        0,
+                        rs.getFloat("average_dckwh") * conversion_rate,
+                        serviceFee,
+                        cStartDate,
+                        cEndDate.getTime(),
+                        0);
+
+
+                //Add contract to arena
+                if (arena.getType().equalsIgnoreCase("OTC") || arena.getType().equalsIgnoreCase("Retail")) {
+                    arena.getBilateral().add(contract);
+                }
+                if (arena.getType().equalsIgnoreCase("FiTs")) {
+                    arena.getFiTs().add(contract);
+                }
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * select all rows in the Actor table
+     */
+    public void
+    selectActors(String tableName, String startDate, String endDate) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+
+        String sql = "SELECT " + tableName + ".id as id, actortype.name as typename, " + tableName + ".name as name, govrole, businessstructure, ownershipmodel, startdate, actorschange.changedate" +
+                " FROM " + tableName + ", actorschange, actortype WHERE " +
+                "actortype.id = actors.type AND actors.id = actorschange.idactora AND actors.startdate <= '" + endDate + "'" +
+                " AND actorschange.changedate > '" + startDate + "';";
+
+        //Bag actors = new Bag();
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getInt("id") + "\t" +
+                        rs.getString("typename") + "\t" +
+                        rs.getString("name") + "\t" +
+                        rs.getString("govrole") + "\t" +
                         rs.getString("businessStructure") + "\t" +
+                        rs.getDate("startdate") + "\t" +
+                        rs.getDate("changedate") + "\t" +
                         rs.getString("ownershipModel"));
 
 
                 Actor actor = new Actor(rs.getInt("id"),
-                        stringToActorType(rs.getString("actorType")),
-                        rs.getString("actorName"),
-                        stringToGovRole(rs.getString("role")),
+                        ActorType.valueOf(rs.getString("typename")),
+                        rs.getString("name"),
+                        stringToGovRole(rs.getString("govrole")),
                         stringToBusinessStructure(rs.getString("businessStructure")),
-                        stringToOwnershipModel(rs.getString("ownershipModel")));
+                        stringToOwnershipModel(rs.getString("ownershipModel")),
+                        rs.getDate("startdate"),
+                        rs.getDate("changedate"));
 
                 int idActor = rs.getInt("id");
 
@@ -480,7 +1003,7 @@ public class Gr4spSim extends SimState {
                 Actor act1 = actor_register.get(rs.getInt("Actor1"));
                 Actor act2 = actor_register.get(rs.getInt("Actor2"));
 
-                ActorActorRelationship actorRel = new ActorActorRelationship( act1, act2, stringToActorActorTypeRelType(rs.getString("RelType")));
+                ActorActorRelationship actorRel = new ActorActorRelationship(act1, act2, stringToActorActorTypeRelType(rs.getString("RelType")));
 
                 actorActorRelationships.add(actorRel);
 
@@ -494,74 +1017,84 @@ public class Gr4spSim extends SimState {
     selectActorAssetRelationships(String tableName) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres";//"jdbc:sqlite:Spm_archetypes.db";
 
+        for (Map.Entry<Integer, Actor> entry : actor_register.entrySet()) {
+            Actor actor = entry.getValue();
 
-        String sql = "SELECT actorid, assetid, reltype, assettype, percentage" +
-                " FROM " + tableName;
+            String sql = "SELECT actorid, assetid, reltype, assettype, percentage" +
+                    " FROM " + tableName + " WHERE actorid = " + actor.getId();
 
-        //Bag actors = new Bag();
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+            //Bag actors = new Bag();
+            try (Connection conn = DriverManager.getConnection(url);
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
 
-            // loop through the result set
-            while (rs.next()) {
-                System.out.println("\t" + rs.getInt("ActorId") + "\t" +
-                        rs.getInt("AssetId") + "\t" +
-                        rs.getDouble("Percentage") + "\t" +
-                        rs.getString("AssetType") + "\t" +
-                        rs.getString("RelType"));
+                // loop through the result set
+                while (rs.next()) {
+                    System.out.println("\t" + rs.getInt("ActorId") + "\t" +
+                            rs.getInt("AssetId") + "\t" +
+                            rs.getDouble("Percentage") + "\t" +
+                            rs.getString("AssetType") + "\t" +
+                            rs.getString("RelType"));
 
 
-                Actor actor = actor_register.get(rs.getInt("ActorId"));
-                Vector<Asset> asset;
+                    //Actor actor = actor_register.get(rs.getInt("ActorId"));
+                    Vector<Asset> asset;
 
-                double percentage = rs.getDouble("Percentage");
-                String assetType = rs.getString("AssetType");
+                    double percentage = rs.getDouble("Percentage");
+                    String assetType = rs.getString("AssetType");
 
-                if(assetType.equalsIgnoreCase("Generation") ) {
-                    Vector<Generator> gens = gen_register.get(rs.getInt("AssetId"));
+                    if (assetType.equalsIgnoreCase("Generation")) {
+                        Vector<Generator> gens = gen_register.get(rs.getInt("AssetId"));
 
-                    //Need to make sure that the SPM_gen_mapping is correct
-                    //For this we need to create another SPM for 90s, and make sure that it uses
-                    //The gen from the 90s.
+                        //Need to make sure that the SPM_gen_mapping is correct
+                        //For this we need to create another SPM for 90s, and make sure that it uses
+                        //The gen from the 90s.
+                        if (gens == null) {
+                            System.out.println("Actor " + actor.getName() + " - Generation Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
+                        } else {
+                            for (Generator gen : gens) {
+                                ActorAssetRelationship actorRel = new ActorAssetRelationship(actor, gen,
+                                        stringToActorAssetTypeRelType(rs.getString("RelType")), percentage);
 
-                    for(Generator gen : gens ){
-                        ActorAssetRelationship actorRel = new ActorAssetRelationship( actor, gen,
-                                stringToActorAssetTypeRelType(rs.getString("RelType")),percentage);
+                                //Add actorAsset relationship into the asset list
+                                gen.addAssetRelationship(actorRel);
+                                //Add all actorAsset relationships into the simulation engine global asset list
+                                actorAssetRelationships.add(actorRel);
 
-                        //Add actorAsset relationship into the asset list
-                        gen.addAssetRelationship(actorRel);
-                        //Add all actorAsset relationships into the simulation engine global asset list
-                        actorAssetRelationships.add(actorRel);
+                            }
+                        }
+                    } else if (assetType.equalsIgnoreCase("Network asset")) {
+                        Vector<NetworkAssets> nets = network_register.get(rs.getInt("AssetId"));
+                        if (nets == null) {
+                            System.out.println("Actor " + actor.getName() + " - Network Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
+                        } else {
+                            for (NetworkAssets net : nets) {
+                                ActorAssetRelationship actorRel = new ActorAssetRelationship(actor, net,
+                                        stringToActorAssetTypeRelType(rs.getString("RelType")), percentage);
+                                net.addAssetRelationship(actorRel);
+                                actorAssetRelationships.add(actorRel);
 
+                            }
+                        }
+                    } else if (assetType.equalsIgnoreCase("SPM")) {
+                        Vector<Spm> spms = spm_register.get(rs.getInt("AssetId"));
+                        if (spms == null) {
+                            System.out.println("Actor " + actor.getName() + " - SPM Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
+                        } else {
+                            for (Spm spm : spms) {
+                                ActorAssetRelationship actorRel = new ActorAssetRelationship(actor, spm,
+                                        stringToActorAssetTypeRelType(rs.getString("RelType")), percentage);
+                                spm.addAssetRelationship(actorRel);
+                                actorAssetRelationships.add(actorRel);
+
+                            }
+                        }
                     }
+
                 }
-                else if(assetType.equalsIgnoreCase("Network asset") ) {
-                    Vector<NetworkAssets> nets = network_register.get(rs.getInt("AssetId"));
-
-                    for (NetworkAssets net : nets) {
-                        ActorAssetRelationship actorRel = new ActorAssetRelationship(actor, net,
-                                stringToActorAssetTypeRelType(rs.getString("RelType")), percentage);
-                        net.addAssetRelationship(actorRel);
-                        actorAssetRelationships.add(actorRel);
-
-                    }
-                }
-                else if(assetType.equalsIgnoreCase("SPM") ) {
-                    Vector<Spm> spms = spm_register.get(rs.getInt("AssetId"));
-
-                    for (Spm spm : spms) {
-                        ActorAssetRelationship actorRel = new ActorAssetRelationship(actor, spm,
-                                stringToActorAssetTypeRelType(rs.getString("RelType")), percentage);
-                        spm.addAssetRelationship(actorRel);
-                        actorAssetRelationships.add(actorRel);
-
-                    }
-                }
-
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -591,8 +1124,7 @@ public class Gr4spSim extends SimState {
                 //if so, we can return the existing object
                 if (shared == 1 && spm_register.containsKey(idSpmActor)) {
                     return spm_register.get(idSpmActor).firstElement();
-                }
-                else
+                } else
                     break;
             }
         } catch (SQLException e) {
@@ -680,7 +1212,7 @@ public class Gr4spSim extends SimState {
                 "JOIN spm_storage_mapping on spm.id = spm_storage_mapping.spmid\n" +
                 "JOIN storage on storage.storage_id = spm_storage_mapping.storageid\n" +
                 "Where spm.id ='" +
-                + idSpmActor + "' ";
+                +idSpmActor + "' ";
         Bag strs = new Bag();
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -839,12 +1371,12 @@ public class Gr4spSim extends SimState {
     }
 
     void loadActor() {
-    /*    Household householdA = new Household(1, ActorType.HOUSEHOLD, "Household A", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, true,0, false, 1);
+    /*    Household householdA = new Household(1, ActorType.HDCONSUMER, "Household A", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, true,0, false, 1);
         //662 from 2016ABS census for Australia (http://quickstats.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/036)
         //82.6 kWh weekly average from "Household energy expenditure as proportion of gross income by family composition" data (4670.0 Household Energy consumption survey, 2012)
         consumptionActors.add(householdA);
 
-        Household householdB = new Household(2, ActorType.HOUSEHOLD, "core.Household B", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, true,1, true,
+        Household householdB = new Household(2, ActorType.HDCONSUMER, "core.Household B", GovRole.RULEFOLLOW, BusinessStructure.INFORMAL, OwnershipModel.INDIVIDUAL, 1, true,1, true,
                 662 );
         consumptionActors.add(householdB);
 
@@ -852,9 +1384,9 @@ public class Gr4spSim extends SimState {
 
         addNewActorAssetRel(householdA, spm_register.get(1).firstElement(), ActorAssetRelationshipType.OWN, 100);
 
-        Actor electricityProducerA = new Actor(3, ActorType.ELECPROD, "AGL Energy Limited", GovRole.RULEFOLLOW, BusinessStructure.PUBLICCOMP, OwnershipModel.SHARES);
+        Actor electricityProducerA = new Actor(3, ActorType.MARKETGENSCHD, "AGL Energy Limited", GovRole.RULEFOLLOW, BusinessStructure.PUBLICCOMP, OwnershipModel.SHARES);
         Actor retailerA = new Actor(4, ActorType.RETAILER, "Lumo", GovRole.RULEFOLLOW, BusinessStructure.PTYLTD, OwnershipModel.SHARES);
-        Actor networkOperator = new Actor(5, ActorType.NETWORKOP, "AusNet", GovRole.RULEFOLLOW, BusinessStructure.PTYLTD, OwnershipModel.SHARES);
+        Actor networkOperator = new Actor(5, ActorType.MARKETNETWORKPROV, "AusNet", GovRole.RULEFOLLOW, BusinessStructure.PTYLTD, OwnershipModel.SHARES);
         //Actor broker = new Actor...
 
         addNewActorActorRel(householdA, retailerA, ActorActorRelationshipType.BILLING);
@@ -883,18 +1415,18 @@ public class Gr4spSim extends SimState {
         asset.addAssetRelationship(newRel);
     }
 
-    public void generateHouseholdsNineties() {
+    public void generateHouseholdsSeventies() {
 
         Scanner read = new Scanner(System.in);
 
-        int numHouseholds =10;
+        int numHouseholds = 1;
         double gasUsersPercentage = 20;
         double onePerson = 20;
         double twoPerson = 20;
         double threePerson = 20;
         double fourPerson = 20;
         double fivePlusPerson = 20;
-        int month =1;
+        int month = 1;
 
 //        System.out.println("Introduce the number of Households: ");
 //        int numHouseholds = read.nextInt();
@@ -958,38 +1490,38 @@ public class Gr4spSim extends SimState {
             int numPeople = 1;
             String name = "OnePersonHousehold";
 
-            if( (i >= onePersonHouseholds) &&
-                    ( i < onePersonHouseholds + twoPersonHouseholds ) ) {
+            if ((i >= onePersonHouseholds) &&
+                    (i < onePersonHouseholds + twoPersonHouseholds)) {
                 numPeople = 2;
                 name = "TwoPersonHousehold";
             }
 
-            if( (i >= onePersonHouseholds + twoPersonHouseholds) &&
-                    ( i < onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds) ){
+            if ((i >= onePersonHouseholds + twoPersonHouseholds) &&
+                    (i < onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds)) {
                 numPeople = 3;
                 name = "ThreePersonHousehold";
             }
 
-            if( (i >= onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds ) &&
-                    ( i < onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds + fourPersonHouseholds) ){
+            if ((i >= onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds) &&
+                    (i < onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds + fourPersonHouseholds)) {
                 numPeople = 4;
                 name = "FourPersonHousehold";
             }
 
-            if( (i >= onePersonHouseholds+ twoPersonHouseholds + threePersonHouseholds + fourPersonHouseholds ) &&
-                    ( i < onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds + fourPersonHouseholds + fivePlusPersonHouseholds) ){
+            if ((i >= onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds + fourPersonHouseholds) &&
+                    (i < onePersonHouseholds + twoPersonHouseholds + threePersonHouseholds + fourPersonHouseholds + fivePlusPersonHouseholds)) {
                 numPeople = 5;
                 name = "FivePlusPersonHousehold";
             }
 
-            Actor actor = new Household(idActor++, ActorType.HOUSEHOLD, "OnePersonHousehold",
+            Actor actor = new Household(idActor++, ActorType.HDCONSUMER, "OnePersonHousehold",
                     GovRole.RULEFOLLOW, BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
                     numPeople, hasGas, true, 0);
 
             consumptionActors.add((ConsumptionActor) actor);
 
-            //Id of conventional 90s SPM
-            int idSpm = 13;
+            //Id of conventional 70s SPM
+            int idSpm = 22;
 
             Spm spm = createSpm(idSpm);
 
@@ -997,7 +1529,7 @@ public class Gr4spSim extends SimState {
              * Actor Asset rel
              * */
             //create new relationship btw the household and SPM
-            ActorAssetRelationship actorSpmRel = new ActorAssetRelationship( actor,spm,ActorAssetRelationshipType.USE,100);
+            ActorAssetRelationship actorSpmRel = new ActorAssetRelationship(actor, spm, ActorAssetRelationshipType.USE, 100);
 
             //Store relationship with assets in the actor object
             actor.addAssetRelationship(actorSpmRel);
@@ -1008,7 +1540,7 @@ public class Gr4spSim extends SimState {
              * Actor Actor rel
              * */
             //create new relationship and contract btw the household and Retailer
-            ActorActorRelationship actorActHouseRetailRel = new ActorActorRelationship( actor,actor_register.get(4),ActorActorRelationshipType.BILLING);
+            ActorActorRelationship actorActHouseRetailRel = new ActorActorRelationship(actor, actor_register.get(4), ActorActorRelationshipType.BILLING);
 
             //Store relationship with actor in the actor object
             actor.addContract(actorActHouseRetailRel);
@@ -1021,7 +1553,7 @@ public class Gr4spSim extends SimState {
              **/
 
             //Add Random Location of EU in the layout
-            Double2D euLoc = new Double2D( (i * 80)%1600, ((int)i/20 + 1) * 80);
+            Double2D euLoc = new Double2D((i * 80) % 1600, ((int) i / 20 + 1) * 80);
             layout.setObjectLocation(actor, euLoc);
 
             //Use same Loc for the SPM
@@ -1030,8 +1562,8 @@ public class Gr4spSim extends SimState {
                 //Add all SPMs location for this EU recursively, decreasing the diameter and
                 //shifting when more than one smp is contained
                 //Only draw SPMs in the meantime
-                if( Spm.class.isInstance( rel.getAsset()) )
-                    addSPMLocation( (Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
+                if (Spm.class.isInstance(rel.getAsset()))
+                    addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
             }
 
 
@@ -1041,30 +1573,49 @@ public class Gr4spSim extends SimState {
 
     public void start() {
         super.start();
-        layout = new Continuous2D(10.0, 600.0, 600.0);
-        spm_register = new HashMap<>();
-        gen_register = new HashMap<>();
-        network_register = new HashMap<>();
-        actor_register = new HashMap<>();
 
-        //loadCaseStudy("SPM");
-            /*createSpm( "inner city");
-            createSpm("individual");
-            createSpm("primary");*/
-        System.out.println(layout.toString());
-        //loadCaseStudy("SPMsTimaruSt");
-        //loadActor();
 
-        selectActors("actor93");
+        /**
+         * Public Policies
+         */
 
-        generateHouseholdsNineties();
+        policies.setEndConsumerTariffs(EndConsumerTariff.MIN);
 
-        selectActorActorRelationships("actoractor93");
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
-        selectActorAssetRelationships("actorasset93");//from https://www.secv.vic.gov.au/history/
+        String startDate = "1926-01-01";
+        String endDate = "1990-01-01";
+        areaCode = "M1";
 
-        for(ConsumptionActor ca : this.consumptionActors) {
-            this.schedule.scheduleRepeating((Actor)ca);
+        domesticConsumptionPercentage = 0.3;
+
+        //Save start and end date in the simulator state, which is this classs Gr4spSim
+        try {
+            this.startSimDate = stringToDate.parse(startDate);
+            this.simCalendar.setTime(this.startSimDate);
+            this.endSimDate = stringToDate.parse(endDate);
+
+        } catch (ParseException e) {
+            System.err.println("Cannot parse Start Date: " + e.toString());
+        }
+
+        selectActors("actors", startDate, endDate);
+        //generateHouseholds(startDate, endDate, "Melbourne")
+        generateHouseholdsSeventies();
+
+        //selectActorActorRelationships("actoractor93");
+
+        selectActorAssetRelationships("actorasset");//from https://www.secv.vic.gov.au/history/
+
+        //selectArenaAndContracts(startDate,endDate);
+        selectArena();
+        selectTariffs(startDate, endDate, areaCode);
+
+        selectConsumption();
+        selectGenerationHistoricData();
+
+        for (ConsumptionActor ca : this.consumptionActors) {
+            this.schedule.scheduleRepeating((Actor) ca);
         }
 
 

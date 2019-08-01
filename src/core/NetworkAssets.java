@@ -3,6 +3,7 @@ package core;
 import sim.util.Double2D;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class NetworkAssets implements java.io.Serializable, Asset
 {
@@ -18,6 +19,10 @@ public class NetworkAssets implements java.io.Serializable, Asset
 	private int gridVoltate;
 	private String owner;
 
+	//Start and end of operations
+	private Date start;
+	private Date end;
+
 	//Visualization Parameters
 	public double diameter;
 
@@ -25,7 +30,7 @@ public class NetworkAssets implements java.io.Serializable, Asset
 	ArrayList<ActorAssetRelationship> assetRelationships;
 	
 	public NetworkAssets(int NetId, String type, String subtype, String grid, String assetName, String grid_node_name, String location_MB,
-						 double gridLosses, int gridVoltage, String owner){
+						 double gridLosses, int gridVoltage, String owner, Date start, Date end){
 		this.netId = netId;
 		this.type = type;
 		this.subtype = subtype;
@@ -38,7 +43,8 @@ public class NetworkAssets implements java.io.Serializable, Asset
 		this.diameter  = 50;
 
 		this.assetRelationships = new ArrayList<>();
-
+		this.start = start;
+		this.end = end;
 
 		if(location_MB != null) {
 			String[] coord = location_MB.split("\\,");

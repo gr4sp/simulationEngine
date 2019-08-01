@@ -3,6 +3,7 @@ package core;
 import sim.util.Double2D;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /*** Definition of the class generator ****/
 
@@ -28,6 +29,10 @@ public class Generator implements java.io.Serializable, Asset{
 
     private Double2D location;//coordinates where the generation is located
 
+    //Start and end of operations
+    private Date start;
+    private Date end;
+
     //Visualization Parameters
     public double diameter;
 
@@ -38,7 +43,7 @@ public class Generator implements java.io.Serializable, Asset{
     /**Create here other constructors that call the main constructor to include fix values to the parameters and make the class more flexible:
   * public Generator (); this *include here the parameters values.**/
 
-    public Generator(int genId, String genName, String owner, Double gencap, String techType, String fuelType, String dispachType, String locationCoord) {
+    public Generator(int genId, String genName, String owner, Double gencap, String techType, String fuelType, String dispachType, String locationCoord, Date start, Date end) {
         this.id = genId;
         this.name = genName;
         this.ownerName = owner;
@@ -47,7 +52,8 @@ public class Generator implements java.io.Serializable, Asset{
         this.dispatchTypeDescriptor = dispachType;
         this.assetRelationships = new ArrayList<>();
         this.diameter = 50.0;
-
+        this.start = start;
+        this.end = end;
 
         if (locationCoord != null) {
             String[] coord = locationCoord.split("\\,");
