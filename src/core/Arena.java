@@ -21,7 +21,7 @@ public class Arena implements Steppable {
     //    private float transactionFee; //percentage fee
 
     private MeritOrder spot;
-    private ArrayList<Contract> bilateral; //can be biilling with retailers, PPAs and other types of OTCa with two known parties involved.
+    private ArrayList<Contract> bilateral; //can be billing with retailers, PPAs and other types of OTCs with two known parties involved.
     private ArrayList<Contract> fiTs;
 
     //Each Arena has ONLY one of the following:

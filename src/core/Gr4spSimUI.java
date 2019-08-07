@@ -6,7 +6,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.*;
 
 import java.awt.Color;
 import javax.swing.JFrame;
@@ -26,8 +26,6 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.ChartPanel;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.Date;
 
 import org.jfree.data.xy.XYSeries;
 
@@ -48,9 +46,9 @@ public class Gr4spSimUI extends GUIState {
     JFrame numDomesticConsumersChartFrame;
 
 
-    ArrayList<XYSeries> consumptionActorSeries;    // the data series we'll add to
-    ArrayList<XYSeries> tariffConsumptionActorSeries;    // the data series we'll add to
-    ArrayList<XYSeries> ghgConsumptionActorSeries;    // the data series we'll add to
+    ArrayList<XYSeries> consumptionActorSeries;    // the data series that will be added to
+    ArrayList<XYSeries> tariffConsumptionActorSeries;    // the data series that will be added to
+    ArrayList<XYSeries> ghgConsumptionActorSeries;    // the data series that will be added to
     ArrayList<XYSeries> numDomesticConsumersSeries;
 
     public static void main(String[] args) {
@@ -113,6 +111,40 @@ public class Gr4spSimUI extends GUIState {
         plotting(c);
     }
 
+    private void addNewPlottingSeries(int startId, int numNewSeries) {
+        Gr4spSim data = (Gr4spSim) state;
+
+        int id = startId;
+        //Add series to store data about consumption, Tariffs and GHG
+        for (int i = 0; i < data.consumptionActors.size(); i++) {
+            ConsumerUnit h = (ConsumerUnit) data.consumptionActors.get(i);
+
+            //i + " - #p:" + h.getNumberOfPerson() + " Gas:" + h.isHasGas(),
+            XYSeries seriesConsumption = new org.jfree.data.xy.XYSeries(
+                    id,
+                    false);
+            consumptionActorSeries.add(seriesConsumption);
+
+            XYSeries seriesTariff = new org.jfree.data.xy.XYSeries(
+                    id,
+                    false);
+            tariffConsumptionActorSeries.add(seriesTariff);
+
+            XYSeries seriesGHG = new org.jfree.data.xy.XYSeries(
+                    id,
+                    false);
+            ghgConsumptionActorSeries.add(seriesGHG);
+
+            XYSeries seriesDomesticConsumers = new org.jfree.data.xy.XYSeries(
+                    id,
+                    false);
+            numDomesticConsumersSeries.add(seriesDomesticConsumers);
+
+            id++;
+
+        }
+    }
+
     public void plotSeries() {
         consumptionChart.removeAllSeries();
         tariffChart.removeAllSeries();
@@ -122,33 +154,54 @@ public class Gr4spSimUI extends GUIState {
         Gr4spSim data = (Gr4spSim) state;
 
         //Add series to store data about consumption, Tariffs and GHG
+
+        XYSeries seriesConsumption = new org.jfree.data.xy.XYSeries(
+                "AllConsumptionUnits",
+                false);
+        consumptionChart.addSeries(seriesConsumption, null);
+        consumptionActorSeries.add(seriesConsumption);
+
+        XYSeries seriesTariff = new org.jfree.data.xy.XYSeries(
+                "AllConsumptionUnits",
+                false);
+        tariffChart.addSeries(seriesTariff, null);
+        tariffConsumptionActorSeries.add(seriesTariff);
+
+        XYSeries seriesGHG = new org.jfree.data.xy.XYSeries(
+                "AllConsumptionUnits",
+                false);
+        ghgChart.addSeries(seriesGHG, null);
+        ghgConsumptionActorSeries.add(seriesGHG);
+
+        XYSeries seriesDomesticConsumers = new org.jfree.data.xy.XYSeries(
+                "AllConsumptionUnits",
+                false);
+        numDomesticConsumersChart.addSeries(seriesDomesticConsumers, null);
+        numDomesticConsumersSeries.add(seriesDomesticConsumers);
+
         for (int i = 0; i < data.consumptionActors.size(); i++) {
-            Household h = (Household) data.consumptionActors.get(i);
+            ConsumerUnit h = (ConsumerUnit) data.consumptionActors.get(i);
 
             //i + " - #p:" + h.getNumberOfPerson() + " Gas:" + h.isHasGas(),
-            XYSeries seriesConsumption = new org.jfree.data.xy.XYSeries(
+            XYSeries seriesConsumptionD = new org.jfree.data.xy.XYSeries(
                     i,
                     false);
-            consumptionChart.addSeries(seriesConsumption, null);
-            consumptionActorSeries.add(seriesConsumption);
+            consumptionActorSeries.add(seriesConsumptionD);
 
-            XYSeries seriesTariff = new org.jfree.data.xy.XYSeries(
+            XYSeries seriesTariffD = new org.jfree.data.xy.XYSeries(
                     i,
                     false);
-            tariffChart.addSeries(seriesTariff, null);
-            tariffConsumptionActorSeries.add(seriesTariff);
+            tariffConsumptionActorSeries.add(seriesTariffD);
 
-            XYSeries seriesGHG = new org.jfree.data.xy.XYSeries(
+            XYSeries seriesGHGD = new org.jfree.data.xy.XYSeries(
                     i,
                     false);
-            ghgChart.addSeries(seriesGHG, null);
-            ghgConsumptionActorSeries.add(seriesGHG);
+            ghgConsumptionActorSeries.add(seriesGHGD);
 
-            XYSeries seriesDomesticConsumers = new org.jfree.data.xy.XYSeries(
+            XYSeries seriesDomesticConsumersD = new org.jfree.data.xy.XYSeries(
                     i,
                     false);
-            numDomesticConsumersChart.addSeries(seriesDomesticConsumers, null);
-            numDomesticConsumersSeries.add(seriesDomesticConsumers);
+            numDomesticConsumersSeries.add(seriesDomesticConsumersD);
 
         }
 
@@ -164,22 +217,44 @@ public class Gr4spSimUI extends GUIState {
                 Date currentDate = data.getSimCalendar().getTime();
                 float year = data.getSimCalendar().get(Calendar.YEAR);
                 //normalize month btw [0.0,1.0]
-                float month = data.getSimCalendar().get(Calendar.MONTH) / (float)12.0;
+                float month = data.getSimCalendar().get(Calendar.MONTH) / (float) 12.0;
                 //sum normalized month
                 year += month;
 
                 // now add the data to the time series
                 if (x >= state.schedule.EPOCH && x < state.schedule.AFTER_SIMULATION) {
+                    float sumConsumption = 0;
+                    float averageTariff = 0;
+                    double sumEmissions = 0;
+                    int sumDwellings = 0;
+
                     for (int i = 0; i < data.consumptionActors.size(); i++) {
 
-                        consumptionActorSeries.get(i).add(year, data.consumptionActors.get(i).getCurrentConsumption(), true);
-                        tariffConsumptionActorSeries.get(i).add(year, data.consumptionActors.get(i).getCurrentTariff(), true);
-                        ghgConsumptionActorSeries.get(i).add(year, 0, true);
-                        numDomesticConsumersSeries.get(i).add(year, data.monthly_domestic_consumers_register.get(currentDate), true);
+                        int id = i + 1;
+                        //Save data for CSV
+                        ConsumerUnit c = (ConsumerUnit) data.consumptionActors.get(i);
+                        consumptionActorSeries.get(id).add(year, data.consumptionActors.get(i).getCurrentConsumption(), true);
+                        tariffConsumptionActorSeries.get(id).add(year, data.consumptionActors.get(i).getCurrentTariff(), true);
+                        ghgConsumptionActorSeries.get(id).add(year, data.consumptionActors.get(i).getCurrentEmissions(), true);
+                        numDomesticConsumersSeries.get(id).add(year, c.getNumberOfHouseholds(), true);
+
+                        //Average/sum data for plot
+                        sumConsumption += data.consumptionActors.get(i).getCurrentConsumption();
+                        averageTariff += data.consumptionActors.get(i).getCurrentTariff();
+                        sumEmissions += data.consumptionActors.get(i).getCurrentEmissions();
+                        sumDwellings += c.getNumberOfHouseholds();
                     }
+                    averageTariff = averageTariff / data.consumptionActors.size();
+
+                    consumptionActorSeries.get(0).add(year, sumConsumption, true);
+                    tariffConsumptionActorSeries.get(0).add(year, averageTariff, true);
+                    ghgConsumptionActorSeries.get(0).add(year, sumEmissions, true);
+                    numDomesticConsumersSeries.get(0).add(year, sumDwellings, true);
+                    //numDomesticConsumersSeries.get(0).add(year, data.monthly_domestic_consumers_register.get(currentDate), true);
+
 
                     // we're in the model thread right now, so we shouldn't directly
-                    // update the consumptionChart.  Instead we request an update to occur the next
+                    // update the consumptionChart/tariffChart/GHGChart/etc.  Instead we request an update to occur the next
                     // time that control passes back to the Swing event thread.
                     consumptionChart.updateChartLater(state.schedule.getSteps());
                     tariffChart.updateChartLater(state.schedule.getSteps());
@@ -190,9 +265,19 @@ public class Gr4spSimUI extends GUIState {
                 // Update Current simulation date
                 data.advanceCurrentSimDate();
 
+                //Add new Consumers according to population growth
+                int oldNumConsumers = data.consumptionActors.size();
+                data.generateHouseholds();
+                int NewNumConsumers = data.consumptionActors.size() - oldNumConsumers;
+
+                //Add new series for plots
+                addNewPlottingSeries(oldNumConsumers, NewNumConsumers);
+
                 //Finish simulation if endDate is reached
                 if (data.getCurrentSimDate().after(data.getEndSimDate()) || data.getCurrentSimDate().equals(data.getEndSimDate())) {
                     finish();
+                    saveData();
+                    savePlots();
                 }
 
             }
@@ -200,49 +285,52 @@ public class Gr4spSimUI extends GUIState {
 
     }
 
+
     public void plotting(Controller c) {
 
+        Gr4spSim data = (Gr4spSim) state;
+
         consumptionChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        consumptionChart.setTitle("TimeSeries Households Consumption (kWh)");
+        consumptionChart.setTitle("Total Households Consumption (kWh) area code: " + data.getAreaCode());
         consumptionChart.setXAxisLabel("Year");
         consumptionChart.setYAxisLabel("kWh");
 
         tariffChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        tariffChart.setTitle("TimeSeries Households Tariff (c/KWh)");
+        tariffChart.setTitle("Average Households Tariff (c/KWh) area code: " + data.getAreaCode());
         tariffChart.setXAxisLabel("Year");
         tariffChart.setYAxisLabel("c/KWh");
 
         ghgChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        ghgChart.setTitle("TimeSeries Households GHG (tCO2-e/KWh)");
+        ghgChart.setTitle("Total Households GHG (tCO2-e) area code: " + data.getAreaCode());
         ghgChart.setXAxisLabel("Year");
-        ghgChart.setYAxisLabel("tCO2-e/KWh");
+        ghgChart.setYAxisLabel("tCO2-e");
 
         numDomesticConsumersChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        numDomesticConsumersChart.setTitle("TimeSeries Number of Domestic Consumers (households)");
+        numDomesticConsumersChart.setTitle("Number of Domestic Consumers (households) area code: " + data.getAreaCode());
         numDomesticConsumersChart.setXAxisLabel("Year");
-        numDomesticConsumersChart.setYAxisLabel("tCO2-e/KWh");
+        numDomesticConsumersChart.setYAxisLabel("Num. Households");
 
 
         // perhaps you might move the consumptionChart to where you like.
-        consumtionChartFrame = new JFrame("TimeSeries Households Consumption (kWh)");
+        consumtionChartFrame = new JFrame("Total Households Consumption (kWh) area code: " + data.getAreaCode());
         consumtionChartFrame.setVisible(true);
         consumtionChartFrame.setSize(800, 800);
         c.registerFrame(consumtionChartFrame);
         consumtionChartFrame.add(new ChartPanel(consumptionChart.getChart()), BorderLayout.CENTER);
 
-        tariffChartFrame = new JFrame("TimeSeries Households Tariffs (c/KWh)");
+        tariffChartFrame = new JFrame("Average Households Tariffs (c/KWh) area code: " + data.getAreaCode());
         tariffChartFrame.setVisible(true);
         tariffChartFrame.setSize(800, 800);
         c.registerFrame(tariffChartFrame);
         tariffChartFrame.add(new ChartPanel(tariffChart.getChart()), BorderLayout.CENTER);
 
-        ghgChartFrame = new JFrame("TimeSeries Households GHG (tCO2-e/KWh)");
+        ghgChartFrame = new JFrame("Total Households GHG (tCO2-e) area code: " + data.getAreaCode());
         ghgChartFrame.setVisible(true);
         ghgChartFrame.setSize(800, 800);
         c.registerFrame(ghgChartFrame);
         ghgChartFrame.add(new ChartPanel(ghgChart.getChart()), BorderLayout.CENTER);
 
-        numDomesticConsumersChartFrame = new JFrame("TimeSeries Number of Domestic Consumers (households)");
+        numDomesticConsumersChartFrame = new JFrame("Number of Domestic Consumers (households) area code: " + data.getAreaCode());
         numDomesticConsumersChartFrame.setVisible(true);
         numDomesticConsumersChartFrame.setSize(800, 800);
         c.registerFrame(numDomesticConsumersChartFrame);
@@ -251,70 +339,7 @@ public class Gr4spSimUI extends GUIState {
 
     }
 
-    public void saveData() {
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
-        Calendar cal = Calendar.getInstance();
-        //final String dir = System.getProperty("user.dir");
-        //System.out.println("current dir = " + dir);
-
-        try (
-                Writer writer = Files.newBufferedWriter(Paths.get("../csv/SimData" + sdf.format(cal.getTime()) + ".csv"));
-
-                CSVWriter csvWriter = new CSVWriter(writer,
-                        CSVWriter.DEFAULT_SEPARATOR,
-                        CSVWriter.NO_QUOTE_CHARACTER,
-                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                        CSVWriter.DEFAULT_LINE_END);
-        ) {
-            String[] headerRecord = {"Household", "Time (month)", "Consumption (KWh)", "Tariff ($/KWh)", "GHG Emissions (tCO2-e/KWh)", "Number of Domestic Consumers (households)"};
-            csvWriter.writeNext(headerRecord);
-
-            Gr4spSim data = (Gr4spSim) state;
-            for (int i = 0; i < data.consumptionActors.size(); i++) {
-                XYSeries cseries = consumptionActorSeries.get(i);
-                XYSeries tseries = tariffConsumptionActorSeries.get(i);
-                XYSeries gseries = ghgConsumptionActorSeries.get(i);
-                XYSeries dseries = numDomesticConsumersSeries.get(i);
-
-
-                Calendar c = Calendar.getInstance();
-                c.setTime(data.getStartSimDate());
-
-                for (int t = 0; t < cseries.getItems().size(); t++) {
-                    //for (Object o : series.getItems()) {
-
-                    XYDataItem citem = (XYDataItem) cseries.getItems().get(t);
-                    XYDataItem titem = (XYDataItem) tseries.getItems().get(t);
-                    XYDataItem gitem = (XYDataItem) gseries.getItems().get(t);
-                    XYDataItem ditem = (XYDataItem) dseries.getItems().get(t);
-                    double kwh = citem.getYValue();
-                    double price = titem.getYValue();
-                    double emissions = gitem.getYValue();
-                    double consumers = ditem.getYValue();
-
-                    SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");
-
-                    String[] record = {Integer.toString(i), dateToString.format(c.getTime()), Double.toString(kwh), Double.toString(price), Double.toString(emissions), Double.toString(consumers)};
-                    csvWriter.writeNext(record);
-
-                    c.add(Calendar.MONTH, 1);
-                }
-            }
-
-
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-
-
-    }
-
-    public void finish() {
-        super.finish();
-
-        consumptionChart.update(state.schedule.getSteps(), true);
-        consumptionChart.repaint();
-        consumptionChart.stopMovie();
+    public void savePlots(){
 
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
@@ -348,8 +373,196 @@ public class Gr4spSimUI extends GUIState {
         } catch (IOException ex) {
             System.out.println(ex);
         }
+    }
 
-        saveData();
+    public void saveData() {
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
+        Calendar cal = Calendar.getInstance();
+        //final String dir = System.getProperty("user.dir");
+        //System.out.println("current dir = " + dir);
+
+        try (
+                Writer writer = Files.newBufferedWriter(Paths.get("../csv/SimData" + sdf.format(cal.getTime()) + ".csv"));
+
+                CSVWriter csvWriter = new CSVWriter(writer,
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END);
+
+                Writer writerMonthly = Files.newBufferedWriter(Paths.get("../csv/SimDataMonthlySummary" + sdf.format(cal.getTime()) + ".csv"));
+
+                CSVWriter csvWriterMonthly = new CSVWriter(writerMonthly,
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END);
+
+                Writer writerYear = Files.newBufferedWriter(Paths.get("../csv/SimDataYearSummary" + sdf.format(cal.getTime()) + ".csv"));
+
+                CSVWriter csvWriterYear = new CSVWriter(writerYear,
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END);
+        ) {
+            String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (KWh)", "Tariff (c/KWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
+            csvWriter.writeNext(headerRecord);
+
+            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
+
+            csvWriterYear.writeNext(headerRecordYear);
+
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
+
+            csvWriterMonthly.writeNext(headerRecordMonthly);
+
+
+            Gr4spSim data = (Gr4spSim) state;
+
+            SimpleDateFormat dateToYear = new SimpleDateFormat("yyyy");
+
+            HashMap<String, ArrayList<Double>> datasetGHGsummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPriceSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetKWhSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetConsumersSummary = new HashMap<>();
+
+
+
+            for (int i = 0; i <= data.consumptionActors.size(); i++) {
+
+                XYSeries cseries = consumptionActorSeries.get(i);
+                XYSeries tseries = tariffConsumptionActorSeries.get(i);
+                XYSeries gseries = ghgConsumptionActorSeries.get(i);
+                XYSeries dseries = numDomesticConsumersSeries.get(i);
+
+
+                Calendar c = Calendar.getInstance();
+
+                //First series starts from beginning simulation, the rest follows a consumtionUnit, which has a creationDate
+                if (i == 0)
+                    c.setTime(data.getStartSimDate());
+                else {
+                    ConsumerUnit consumer = (ConsumerUnit) data.consumptionActors.get(i - 1);
+                    c.setTime(consumer.creationDate);
+                }
+
+                for (int t = 0; t < cseries.getItems().size(); t++) {
+                    //for (Object o : series.getItems()) {
+
+                    XYDataItem citem = (XYDataItem) cseries.getItems().get(t);
+                    XYDataItem titem = (XYDataItem) tseries.getItems().get(t);
+                    XYDataItem gitem = (XYDataItem) gseries.getItems().get(t);
+                    XYDataItem ditem = (XYDataItem) dseries.getItems().get(t);
+                    double kwh = citem.getYValue();
+                    double price = titem.getYValue();
+                    double emissions = gitem.getYValue();
+                    double consumers = ditem.getYValue();
+
+                    SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");
+
+                    //First series starts from beginning simulation, the rest follows a consumtionUnit, which has a creationDate
+                    if (i == 0){
+                        String[] record = {dateToString.format(c.getTime()), Double.toString(kwh/consumers), Double.toString(price), Double.toString(emissions/consumers), Double.toString(consumers)};
+                        csvWriterMonthly.writeNext(record);
+                    }else {
+                        String[] record = {Integer.toString(i), dateToString.format(c.getTime()), Double.toString(kwh), Double.toString(price), Double.toString(emissions), Double.toString(consumers)};
+                        csvWriter.writeNext(record);
+                    }
+                    //Year summary based on monthly data from the first series with id=0 that aggregates all SPM data
+                    if (i == 0) {
+                        String year = dateToYear.format(c.getTime());
+
+                        if (!datasetGHGsummary.containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetGHGsummary.put(year, yearData);
+                        }
+
+                        datasetGHGsummary.get(year).add(emissions / consumers);
+
+                        if (!datasetPriceSummary.containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetPriceSummary.put(year, yearData);
+                        }
+
+                        datasetPriceSummary.get(year).add(price);
+
+
+                        if (!datasetKWhSummary.containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetKWhSummary.put(year, yearData);
+                        }
+
+                        datasetKWhSummary.get(year).add(kwh / consumers);
+
+                        if (!datasetConsumersSummary.containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetConsumersSummary.put(year, yearData);
+                        }
+
+                        datasetConsumersSummary.get(year).add(consumers);
+
+                    }
+
+                    c.add(Calendar.MONTH, 1);
+                }
+            }
+            csvWriter.close();
+            csvWriterMonthly.close();
+
+            //Save Year summary to csv file
+            Object[] years  =  datasetGHGsummary.keySet().toArray();
+            for (int i = years.length-1; i>= 0; i--) {
+                String year = (String) years[i];
+                ArrayList<Double> yearDataGHG = datasetGHGsummary.get(year);
+                ArrayList<Double> yearDataPrice = datasetPriceSummary.get(year);
+                ArrayList<Double> yearDataKWh = datasetKWhSummary.get(year);
+                ArrayList<Double> yearDataConsumers = datasetConsumersSummary.get(year);
+
+
+                Double totalGHG= 0.0;
+                Double avgPrice= 0.0;
+                Double totalKWh= 0.0;
+                Double maxDwellings = 0.0;
+
+                Double sizeData = (double) yearDataGHG.size();
+
+                for (Double ghg : yearDataGHG) {
+                    totalGHG += ghg;
+                }
+
+                for (Double p : yearDataPrice) {
+                    avgPrice += p;
+                }
+                avgPrice /= (double)yearDataPrice.size();
+
+                for (Double k : yearDataKWh) {
+                    totalKWh += k;
+                }
+
+                for (Double con : yearDataConsumers) {
+                    if(con > maxDwellings) maxDwellings = con;
+                }
+
+                String[] record = {year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(totalGHG), Double.toString(maxDwellings)};
+                csvWriterYear.writeNext(record);
+            }
+
+            csvWriterYear.close();
+
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+
+
+    }
+
+    public void finish() {
+        super.finish();
+
+        consumptionChart.update(state.schedule.getSteps(), true);
+        consumptionChart.repaint();
+        consumptionChart.stopMovie();
 
     }
 
