@@ -14,6 +14,7 @@ import sim.util.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class Spm extends SimplePortrayal2D implements Steppable, Asset {
@@ -22,20 +23,21 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     private int id;
     //For the Technical layout
     //Generators
-    private Bag generators;
+
+    private ArrayList<Generator> generators;
 
     //Contained SPMs
-    private Bag spms_contained;
+    private ArrayList<Spm> spms_contained;
 
     //Distribution Network
-    private Bag network_assets;
+    private ArrayList<NetworkAssets> network_assets;
 
     //Storage
-    private Bag storages;
+    private ArrayList<Storage> storages;
     private boolean hasStorage;
 
     //Interface: Connection Point
-    private Bag spm_interface;
+    private ArrayList<ConnectionPoint> spm_interface;
     //For the societal layout
 
     //Some performance metrics
@@ -60,7 +62,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
 
 
 
-    public Spm(int id, Bag spms_contained, Bag generators, Bag network_assets, Bag storages, Bag spm_interface) {
+    public Spm(int id, ArrayList<Spm> spms_contained, ArrayList<Generator> generators, ArrayList<NetworkAssets> network_assets, ArrayList<Storage> storages, ArrayList<ConnectionPoint> spm_interface) {
         this.id = id;
         this.spms_contained = spms_contained;
         this.generators = generators;
@@ -73,6 +75,26 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
 
     }
 
+    public ArrayList<Generator> getActiveGens(Date today){
+        ArrayList<Generator> activeGens = new ArrayList<Generator>();
+        for(Generator g : generators){
+            //Has started today or earlier?
+            if( g.getStart().before(today) || g.getStart().equals(today) ){
+                //Has not finished operations?
+                if(g.getEnd().after(today)){
+                    activeGens.add(g);
+                }
+            }
+        }
+
+        //Recursively get active generators contained in SPM
+        for(Spm scontained : spms_contained){
+            ArrayList<Generator> activeGensContained = scontained.getActiveGens(today);
+            activeGens.addAll(activeGensContained);
+        }
+
+        return activeGens;
+    }
 
     @Override
     public double electricityIn() {
@@ -110,42 +132,25 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
         this.id = id;
     }
 
-    public Bag getSpms_contained() {
+    public ArrayList<Spm> getSpms_contained() {
         return spms_contained;
     }
 
-    public void setSpms_contained(Bag spms_contained) {
+    public void setSpms_contained(ArrayList<Spm> spms_contained) {
         this.spms_contained = spms_contained;
     }
 
-    public Bag getGenerators() {
+    public ArrayList<Generator> getGenerators() {
         return generators;
     }
 
 
-    public void setGenerators(Bag generators) {
+    public void setGenerators(ArrayList<Generator> generators) {
         this.generators = generators;
     }
 
 
-    public Bag getNetwork_assets() {
-        return network_assets;
-    }
 
-
-    public void setNetwork_assets(Bag network_assets) {
-        this.network_assets = network_assets;
-    }
-
-
-    public Bag getStorages() {
-        return storages;
-    }
-
-
-    public void setStorages(Bag storages) {
-        this.storages = storages;
-    }
 
 
     public boolean isHasStorage() {
@@ -158,14 +163,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     }
 
 
-    public Bag getSpm_interface() {
-        return spm_interface;
-    }
 
-
-    public void setSpm_interface(Bag spm_interface) {
-        this.spm_interface = spm_interface;
-    }
 
 
     public double getEfficiency() {

@@ -2,25 +2,33 @@ package core;
 
 import sim.engine.SimState;
 
+import java.util.Date;
 import java.util.Map;
 
-public class Household extends Actor implements ConsumptionActor {
+public class ConsumerUnit extends Actor implements ConsumptionActor {
     private int numberOfPerson;
+    private int numberOfHouseholds;
     private boolean family;
     private boolean hasGas;
     private double income; //median weekly income according to ABS census 2016
     public double currentConsumption;
+    public double currentEmissions;
     public float currentTariff;
     public Contract currentTariffContract;
+    public Date creationDate;
 
-    public Household(int actor, ActorType actorType, String name, GovRole mainRole, BusinessStructure businessType, OwnershipModel ownershipModel, int numberOfPerson, boolean gas,
-                     boolean family, double income) {
+
+    public ConsumerUnit(int actor, ActorType actorType, String name, GovRole mainRole, BusinessStructure businessType, OwnershipModel ownershipModel, int numberOfPerson, int numberOfHouseholds, boolean gas,
+                        boolean family, double income, Date CreationDate ) {
         super(actor, actorType, name, mainRole, businessType, ownershipModel);
         this.numberOfPerson = numberOfPerson;
         this.family = family;
         this.income = income;
         this.hasGas = gas;
         this.currentConsumption = 0.0;
+        this.currentEmissions = 0.0;
+        this.numberOfHouseholds = numberOfHouseholds;
+        this.creationDate = CreationDate;
     }
 
     public float getCurrentTariff() {
@@ -29,6 +37,10 @@ public class Household extends Actor implements ConsumptionActor {
 
     public double getCurrentConsumption() {
         return currentConsumption;
+    }
+
+    public double getCurrentEmissions() {
+        return currentEmissions;
     }
 
     public void setCurrentConsumption(double currentConsumption) {
@@ -59,6 +71,14 @@ public class Household extends Actor implements ConsumptionActor {
         this.numberOfPerson = numberOfPerson;
     }
 
+    public int getNumberOfHouseholds() {
+        return numberOfHouseholds;
+    }
+
+    public void setNumberOfHouseholds(int numberOfHouseholds) {
+        this.numberOfHouseholds = numberOfHouseholds;
+    }
+
     public boolean isHasGas() {
         return hasGas;
     }
@@ -76,8 +96,23 @@ public class Household extends Actor implements ConsumptionActor {
 
         int currentMonth = (int)simState.schedule.getSteps()%12;
 
-        this.currentConsumption = data.monthly_consumption_register.get(data.getCurrentSimDate());
+        Date today = data.getCurrentSimDate();
+
+        this.currentConsumption = data.monthly_consumption_register.get(today);
+        this.currentConsumption = this.currentConsumption * numberOfHouseholds;
         //this.currentConsumption = computeConsumption( currentMonth );
+
+        //Find SPM used by Consumer
+        for(ActorAssetRelationship actorSpmRel : data.actorAssetRelationships){
+            if(actorSpmRel.getActor().getId() == this.getId() && actorSpmRel.getAsset() instanceof Spm){
+                Spm spm = (Spm) actorSpmRel.getAsset();
+
+                //Compute emissions multiplying Emission factor t-CO2/MWh * consumption in KWh->MWh
+                Generation genData = data.monthly_generation_register.get(today);
+                this.currentEmissions = genData.computeEmissions(spm) * (this.currentConsumption/1000.0);
+                //System.out.println("Population for " + today + " of "+numberOfHouseholds+ " with consumption "+ this.currentConsumption+" create total of "+ this.currentEmissions +"GHG (t/co2)");
+            }
+        }
 
         //Finds the Retail Arena, and asks for his currentTariff, following the Simulation policy defined in Gr4spSim.Start()
         for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
@@ -91,7 +126,8 @@ public class Household extends Actor implements ConsumptionActor {
         }
     }
 
-    @Override
+
+        @Override
     public double computeConsumption(int month) {
 
         double[][] noGas = new double[][]{

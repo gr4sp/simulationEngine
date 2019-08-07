@@ -11,21 +11,21 @@ public class Generator implements java.io.Serializable, Asset{
     private static final long serialVersionUID = 1;
 
     private int id;//tech id
-    private String fuelSource; //fossil fuel, renewable, biomass, waste, surplus, other.
     private String name;//name of power plant
     private String fuelSourceDescriptor; //fuel source descriptor: according to AEMO it can be: brown coal, black coal, natural gas, Diesel, waste coal mine gas, landfill methane, etc.
     private String ownership;//public, private, PPP, Cooperative?
     private String ownerName;//name of the owner
     private String techTypeDescriptor; //combustion steam-subcritical, combustion Open Cycle Gas turbines (OCGT) phtovoltaic flat panet, hydro-gravity, hydro-run of river, solar PV, wind onshore/offshore,
     private String dispatchTypeDescriptor; // scheduled or non-scheduled
-    private double maxCapacity; //maximum capacity in kW
-    private double unitSize;//unit size - dimensions. Depending on the range can fall into small/medium or large generation unit. //TODO: find the possible ranges!
+    private double maxCapacity; //maximum capacity in MW
+
     private double efficiency; //0-1 efficiency of conversion
     private int lifecycle; //life cycle in years
-    private double constructionPeriod;//construction period
+    //private double constructionPeriod;//construction period
     //private double capex; //capital costs in AUD/capacity unit (kW)
-    private double fixedCosts; //fixed costs operation and maintenance in AUD/capacity unit per year
-    private double peakContribFactor; //peak contribution factor in percentage
+    //private double fixedCosts; //fixed costs operation and maintenance in AUD/capacity unit per year
+    //private double peakContribFactor; //peak contribution factor in percentage
+    private double emissionsFactor;
 
     private Double2D location;//coordinates where the generation is located
 
@@ -43,17 +43,19 @@ public class Generator implements java.io.Serializable, Asset{
     /**Create here other constructors that call the main constructor to include fix values to the parameters and make the class more flexible:
   * public Generator (); this *include here the parameters values.**/
 
-    public Generator(int genId, String genName, String owner, Double gencap, String techType, String fuelType, String dispachType, String locationCoord, Date start, Date end) {
+    public Generator(int genId, String genName, String owner, Double gencap, String techType, String fuelType, String dispachType, String locationCoord, Date start, Date end, double emissionsfactor) {
         this.id = genId;
         this.name = genName;
         this.ownerName = owner;
         this.maxCapacity = gencap;
         this.techTypeDescriptor = techType;
+        this.fuelSourceDescriptor = fuelType;
         this.dispatchTypeDescriptor = dispachType;
         this.assetRelationships = new ArrayList<>();
         this.diameter = 50.0;
         this.start = start;
         this.end = end;
+        this.emissionsFactor = emissionsfactor;
 
         if (locationCoord != null) {
             String[] coord = locationCoord.split("\\,");
@@ -61,6 +63,8 @@ public class Generator implements java.io.Serializable, Asset{
         } else
             this.location = null;
 
+        //default lifecycle of 30 years
+        this.lifecycle = 30;
     }
 
     @Override
@@ -81,11 +85,11 @@ public class Generator implements java.io.Serializable, Asset{
 
     @Override
     public String toString() {
-        return "Generator [id=" + id + ", fuelSource=" + fuelSource + ", name=" + name + ", fuelSourceDescriptor="
+        return "Generator [id=" + id +  ", name=" + name + ", fuelSourceDescriptor="
                 + fuelSourceDescriptor + ", ownership=" + ownership + ", techTypeDescriptor=" + techTypeDescriptor
-                + ", maxCapacity=" + maxCapacity + ", unitSize=" + unitSize + ", efficiency=" + efficiency
-                + ", lifecycle=" + lifecycle + ", constructionPeriod=" + constructionPeriod + ", fixedCosts=" + fixedCosts + ", " +
-                "peakContribFactor=" + peakContribFactor + ", location=" + location
+                + ", maxCapacity=" + maxCapacity + ", efficiency=" + efficiency
+                + ", lifecycle=" + lifecycle + ", " +
+                 ", location=" + location
                 + "]";//need to include capex in this constructor if used
     }
 
@@ -114,15 +118,17 @@ public class Generator implements java.io.Serializable, Asset{
     }
 
 
-    public String getfuelSource() {
-        return fuelSource;
+    public Date getStart() {
+        return start;
     }
 
-
-    public void setfuelSource(String fuelSource) {
-        this.fuelSource = fuelSource;
+    public Date getEnd() {
+        return end;
     }
 
+    public double getEmissionsFactor() {
+        return emissionsFactor;
+    }
 
     public String getName() {
         return name;
@@ -164,34 +170,6 @@ public class Generator implements java.io.Serializable, Asset{
     }
 
 
-    public double getConstructionPeriod() {
-        return constructionPeriod;
-    }
-
-
-    public void setConstructionPeriod(double constructionPeriod) {
-        this.constructionPeriod = constructionPeriod;
-    }
-
-
-    public double getFixedCosts() {
-        return fixedCosts;
-    }
-
-
-    public void setFixedCosts(double fixedCosts) {
-        this.fixedCosts = fixedCosts;
-    }
-
-
-    public double getPeakContribFactor() {
-        return peakContribFactor;
-    }
-
-
-    public void setPeakContribFactor(double peakContribFactor) {
-        this.peakContribFactor = peakContribFactor;
-    }
 
 
     public Double2D getLocation() {
@@ -234,14 +212,6 @@ public class Generator implements java.io.Serializable, Asset{
     }
 
 
-    public double getUnitSize() {
-        return unitSize;
-    }
-
-
-    public void setUnitSize(double unitSize) {
-        this.unitSize = unitSize;
-    }
 
 
 }

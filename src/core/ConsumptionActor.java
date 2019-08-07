@@ -6,6 +6,7 @@ public interface ConsumptionActor {
 
      double getCurrentConsumption();
      float getCurrentTariff();
+     double getCurrentEmissions();
      double computeConsumption(int month);
 
 

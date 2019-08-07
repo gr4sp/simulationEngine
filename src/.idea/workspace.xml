@@ -2,42 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b436bec-4e4c-4add-8cc8-015eabbeedef" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/opencsv_4_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/Arena.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/Bid.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/Contract.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/Generation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/MeritOrder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/Policies/EndConsumerTariff.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/Policies/SimPolicies.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Spm_archetypes.db" beforeDir="false" afterPath="$PROJECT_DIR$/../Spm_archetypes.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-03-10-22_39_41.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Actor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Arena.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/ConsumptionActor.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/ConsumptionActor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/ConsumptionProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/ConsumptionProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Generation.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Generation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Generator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSim.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Gr4spSimUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSimUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Household.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Household.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/NetworkAssets.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/NetworkAssets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gr4sp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gr4sp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Household.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/ConsumerUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Spm.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Spm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Actor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Actor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/ActorType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/ActorType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/BusinessStructure.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/BusinessStructure.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/ConsumptionActor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/ConsumptionActor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/ConsumptionProfile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/ConsumptionProfile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Generation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Generation.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Generator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Generator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/GovRole.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/GovRole.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSim.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSim.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Household.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Household.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/NetworkAssets.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/NetworkAssets.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/OwnershipModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/OwnershipModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/gr4sp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/gr4sp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Household.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Spm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Spm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/index.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -125,25 +109,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/Gr4spSim.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="518" column="35" lean-forward="true" selection-start-line="518" selection-start-column="35" selection-end-line="522" selection-end-column="75" />
+            <state relative-caret-position="-83">
+              <caret line="143" column="26" selection-start-line="143" selection-start-column="26" selection-end-line="143" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2592#2593#0" expanded="true" />
-                <element signature="e#2642#2643#0" expanded="true" />
+                <element signature="e#5345#5346#0" expanded="true" />
+                <element signature="e#5379#5380#0" expanded="true" />
+                <element signature="e#5416#5417#0" expanded="true" />
+                <element signature="e#5451#5452#0" expanded="true" />
+                <element signature="e#5490#5491#0" expanded="true" />
+                <element signature="e#5534#5535#0" expanded="true" />
+                <element signature="e#5577#5578#0" expanded="true" />
+                <element signature="e#5627#5628#0" expanded="true" />
+                <element signature="e#5662#5663#0" expanded="true" />
+                <element signature="e#5695#5696#0" expanded="true" />
+                <element signature="e#5730#5731#0" expanded="true" />
+                <element signature="e#5761#5762#0" expanded="true" />
+                <element signature="e#5811#5812#0" expanded="true" />
+                <element signature="e#5855#5856#0" expanded="true" />
+                <element signature="e#5895#5896#0" expanded="true" />
+                <element signature="e#5926#5927#0" expanded="true" />
+                <element signature="e#5979#5980#0" expanded="true" />
+                <element signature="e#6019#6020#0" expanded="true" />
+                <element signature="e#6077#6078#0" expanded="true" />
+                <element signature="e#6114#6115#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Generator.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/Gr4spSimUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-204">
-              <caret line="9" column="56" selection-start-line="9" selection-start-column="56" selection-end-line="9" selection-end-column="56" />
+            <state relative-caret-position="289">
+              <caret line="50" column="54" selection-start-line="50" selection-start-column="54" selection-end-line="50" selection-end-column="54" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -151,17 +156,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/Generation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="46" column="55" selection-start-line="46" selection-start-column="55" selection-end-line="46" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/util/HashMap.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="1492" column="22" selection-start-line="1492" selection-start-column="22" selection-end-line="1492" selection-end-column="22" />
+            <state relative-caret-position="2686">
+              <caret line="162" column="10" selection-start-line="162" selection-start-column="10" selection-end-line="162" selection-end-column="10" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -169,7 +168,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/ConsumptionProfile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="289">
               <caret line="23" selection-start-line="23" selection-end-line="23" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -179,22 +178,25 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Gr4spSimUI.java">
+        <entry file="file://$PROJECT_DIR$/core/ConsumerUnit.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="40" column="36" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
+            <state relative-caret-position="1377">
+              <caret line="112" column="18" selection-start-line="112" selection-start-column="18" selection-end-line="112" selection-end-column="18" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#1836#1837#0" expanded="true" />
+                <element signature="e#1872#1873#0" expanded="true" />
+                <element signature="e#2098#2099#0" expanded="true" />
+                <element signature="e#2139#2140#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Household.java">
+        <entry file="jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/engine/IterativeRepeat.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="87" column="76" selection-start-line="87" selection-start-column="64" selection-end-line="87" selection-end-column="76" />
+            <state relative-caret-position="663">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
             </state>
           </provider>
         </entry>
@@ -202,35 +204,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/Arena.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="113" column="37" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
+            <state relative-caret-position="306">
+              <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Contract.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="23" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
-              <folding>
-                <element signature="e#1657#1658#0" expanded="true" />
-                <element signature="e#1690#1691#0" expanded="true" />
-                <element signature="e#1732#1733#0" expanded="true" />
-                <element signature="e#1771#1772#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Policies/EndConsumerTariff.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="3" selection-start-line="3" selection-start-column="3" selection-end-line="3" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -247,23 +225,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>connect</find>
-      <find>localhost</find>
-      <find>join</find>
-      <find>generationassets</find>
-      <find>technology</find>
-      <find>actor</find>
-      <find>series</find>
-      <find>consumptionActorSeries</find>
-      <find>schedul</find>
-      <find>curre</find>
-      <find>currentS</find>
-      <find>curren</find>
-      <find>consum</find>
-      <find>consumtionChartFrame</find>
       <find>time</find>
       <find>for(</find>
       <find>ghg</find>
+      <find>public</find>
+      <find>iterator</find>
+      <find>Bag</find>
+      <find>tempera</find>
+      <find>domesticConsumptionPercentage</find>
+      <find>tCO2</find>
+      <find>read</find>
+      <find>Calen</find>
+      <find>monthly_domestic_consumers_register</find>
+      <find>numActors</find>
+      <find>step</find>
+      <find>consumptionActors</find>
+      <find>plotSeries</find>
+      <find>plotSe</find>
+      <find>println</find>
+      <find>areaCode</find>
+      <find>policy</find>
+      <find>greg</find>
+      <find>fj</find>
+      <find>csvWr</find>
+      <find>writer</find>
+      <find>csvWriter</find>
+      <find>temp(</find>
+      <find>saveData</find>
+      <find>finish</find>
+      <find>saved</find>
+      <find>selectDemandTemp</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -273,7 +264,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/console.sql" />
-        <option value="$PROJECT_DIR$/core/Generator.java" />
         <option value="$PROJECT_DIR$/core/NetworkAssets.java" />
         <option value="$PROJECT_DIR$/core/Actor.java" />
         <option value="$PROJECT_DIR$/core/MeritOrder.java" />
@@ -282,22 +272,26 @@
         <option value="$PROJECT_DIR$/core/Policies/Policies.java" />
         <option value="$PROJECT_DIR$/core/Policies/SimPolicies.java" />
         <option value="$PROJECT_DIR$/core/Policies/EndConsumerTariff.java" />
-        <option value="$PROJECT_DIR$/core/ConsumptionActor.java" />
-        <option value="$PROJECT_DIR$/core/Arena.java" />
         <option value="$PROJECT_DIR$/core/ConsumptionProfile.java" />
-        <option value="$PROJECT_DIR$/core/Household.java" />
-        <option value="$PROJECT_DIR$/core/Gr4spSimUI.java" />
         <option value="$PROJECT_DIR$/core/Contract.java" />
+        <option value="$PROJECT_DIR$/core/Household.java" />
+        <option value="$PROJECT_DIR$/core/Spm.java" />
+        <option value="$PROJECT_DIR$/core/Generator.java" />
+        <option value="$PROJECT_DIR$/core/ConsumptionActor.java" />
+        <option value="$PROJECT_DIR$/core/index.html" />
+        <option value="$PROJECT_DIR$/core/Arena.java" />
+        <option value="$PROJECT_DIR$/core/Gr4spSimUI.java" />
+        <option value="$PROJECT_DIR$/core/ConsumerUnit.java" />
         <option value="$PROJECT_DIR$/core/Generation.java" />
         <option value="$PROJECT_DIR$/core/Gr4spSim.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1258" />
-    <option name="y" value="-178" />
-    <option name="width" value="878" />
-    <option name="height" value="780" />
+    <option name="x" value="-1605" />
+    <option name="y" value="-68" />
+    <option name="width" value="877" />
+    <option name="height" value="830" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -305,22 +299,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Scope 'Production'; set:Production; class com.intellij.psi.search.scope.ProjectProductionScope">
           <expand>
@@ -343,7 +322,22 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="src" type="b2602c69:ProjectViewProjectNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="src" type="b2602c69:ProjectViewProjectNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -479,19 +473,22 @@
       <workItem from="1563578250651" duration="26648000" />
       <workItem from="1563959176961" duration="7403000" />
       <workItem from="1564289928069" duration="17195000" />
-      <workItem from="1564493559403" duration="18283000" />
+      <workItem from="1564493559403" duration="20204000" />
+      <workItem from="1564719912006" duration="37248000" />
+      <workItem from="1564979943389" duration="26857000" />
+      <workItem from="1565133731958" duration="2900000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="123578000" />
+    <option name="totallyTimeSpent" value="192504000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="-437" width="1936" height="1056" extended-state="7" />
+    <frame x="-1928" y="-200" width="1936" height="1176" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.16151386" />
-      <window_info active="true" id="Structure" order="1" visible="true" weight="0.18017058" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.20309168" />
+      <window_info id="Structure" order="1" visible="true" weight="0.25426438" />
       <window_info id="Learn" order="2" weight="0.32942432" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -500,28 +497,30 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.29144096" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4978678" weight="0.16793066" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4978678" visible="true" weight="0.3347779" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4978678" visible="true" weight="0.0527325" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4978678" weight="0.28060672" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32936078" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3286119" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5021322" side_tool="true" weight="0.3347779" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32827735" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.3286119" />
+      <window_info anchor="bottom" id="Dependency Viewer" order="14" weight="0.32981783" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" weight="0.25" />
       <window_info anchor="right" id="Palette" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="right" id="Theme Preview" order="4" />
-      <window_info anchor="right" id="Ant Build" order="5" visible="true" weight="0.029317698" />
+      <window_info anchor="right" id="Ant Build" order="5" sideWeight="0.49945828" visible="true" weight="0.024520256" />
       <window_info anchor="right" id="Database" order="6" weight="0.27986577" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Maven Projects" order="8" />
       <window_info anchor="right" id="Maven" order="9" />
+      <window_info anchor="right" id="Coverage" order="10" sideWeight="0.5005417" side_tool="true" visible="true" weight="0.03144989" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -532,21 +531,27 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/Gr4spSim.java</url>
-          <line>1039</line>
+          <line>1177</line>
           <properties />
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/Gr4spSim.java</url>
-          <line>881</line>
+          <line>1766</line>
           <properties />
-          <option name="timeStamp" value="53" />
+          <option name="timeStamp" value="79" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/Gr4spSim.java</url>
-          <line>1616</line>
+          <line>914</line>
           <properties />
-          <option name="timeStamp" value="54" />
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/Gr4spSim.java</url>
+          <line>905</line>
+          <properties />
+          <option name="timeStamp" value="83" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -561,49 +566,12 @@
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/src$Gr4spSimUI.ic" NAME="Gr4spSimUI Coverage Results" MODIFIED="1564915323199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>core.Policies.*</FILTER>
+    </SUITE>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/1a0295cd-eab1-4e2f-8b2f-b38e0f01ee0b/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gr4sp.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Gr4spUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-714">
-          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/SocialOrgStructure.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-716">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/SocialOrganisations.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-699">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Spm.class">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/ConnectionPoint.class">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/a1ef4567-2063-4b9a-a99d-cb81c8e2e73d/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../libraries/sqlite-jdbc-3.23.1.jar!/org/sqlite/JDBC.class">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/spm" />
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/spm_contains" />
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/storatetype" />
     <entry file="file://$PROJECT_DIR$/core/Market.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -650,13 +618,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/ActorAssetRelationship.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/util/Date.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-331">
@@ -675,16 +636,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/MeritOrder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/Bid.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -696,24 +647,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/Spm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2312">
-          <caret line="19" column="51" lean-forward="true" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/Asset.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/ConsumptionActor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -752,20 +689,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="299" selection-start-line="299" selection-end-line="299" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/engine/Schedule.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="219" column="37" lean-forward="true" selection-start-line="219" selection-start-column="37" selection-end-line="219" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/display/GUIState.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="264" selection-start-line="264" selection-end-line="264" />
         </state>
       </provider>
     </entry>
@@ -826,50 +749,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/ConsumptionProfile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/util/HashMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="1492" column="22" selection-start-line="1492" selection-start-column="22" selection-end-line="1492" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Arena.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="113" column="37" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Household.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="87" column="76" selection-start-line="87" selection-start-column="64" selection-end-line="87" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/Contract.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="13" column="23" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
-          <folding>
-            <element signature="e#1657#1658#0" expanded="true" />
-            <element signature="e#1690#1691#0" expanded="true" />
-            <element signature="e#1732#1733#0" expanded="true" />
-            <element signature="e#1771#1772#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -880,38 +763,270 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/Gr4spSimUI.java">
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/util/HashMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="36" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
+        <state relative-caret-position="195">
+          <caret line="1492" column="22" selection-start-line="1492" selection-start-column="22" selection-end-line="1492" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="412">
+          <caret line="2362" column="20" selection-start-line="2362" selection-start-column="20" selection-end-line="2362" selection-end-column="20" />
+          <folding>
+            <element signature="e#94325#94326#0" expanded="true" />
+            <element signature="e#94363#94364#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/lang/NumberFormatException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="64" column="15" selection-start-line="64" selection-start-column="15" selection-end-line="64" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/lang/Integer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="769" column="15" selection-start-line="769" selection-start-column="15" selection-end-line="769" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/util/Bag.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6239">
+          <caret line="22" column="11" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/Generator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="714">
+          <caret line="45" column="181" selection-start-line="45" selection-start-column="181" selection-end-line="45" selection-end-column="181" />
+          <folding>
+            <element signature="e#4184#4185#0" expanded="true" />
+            <element signature="e#4212#4213#0" expanded="true" />
+            <element signature="e#4240#4241#0" expanded="true" />
+            <element signature="e#4266#4267#0" expanded="true" />
+            <element signature="e#4307#4308#0" expanded="true" />
+            <element signature="e#4345#4346#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/ActorAssetRelationship.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/Spm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="77" column="45" selection-start-line="77" selection-start-column="32" selection-end-line="77" selection-end-column="45" />
+          <folding>
+            <element signature="e#2151#2162#0" expanded="true" />
+            <element signature="e#2859#2860#0" expanded="true" />
+            <element signature="e#2935#2936#0" expanded="true" />
+            <element signature="e#3012#3013#0" expanded="true" />
+            <element signature="e#3280#3281#0" expanded="true" />
+            <element signature="e#3336#3337#0" expanded="true" />
+            <element signature="e#3681#3682#0" expanded="true" />
+            <element signature="e#3742#3743#0" expanded="true" />
+            <element signature="e#3828#3829#0" expanded="true" />
+            <element signature="e#3948#3949#0" expanded="true" />
+            <element signature="e#4032#4033#0" expanded="true" />
+            <element signature="e#4143#4144#0" expanded="true" />
+            <element signature="e#4217#4218#0" expanded="true" />
+            <element signature="e#4315#4316#0" expanded="true" />
+            <element signature="e#4389#4390#0" expanded="true" />
+            <element signature="e#4486#4487#0" expanded="true" />
+            <element signature="e#4549#4550#0" expanded="true" />
+            <element signature="e#4630#4631#0" expanded="true" />
+            <element signature="e#4705#4706#0" expanded="true" />
+            <element signature="e#4810#4811#0" expanded="true" />
+            <element signature="e#4893#4894#0" expanded="true" />
+            <element signature="e#5014#5015#0" expanded="true" />
+            <element signature="e#5102#5103#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/lang/Float.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="453" column="24" selection-start-line="453" selection-start-column="24" selection-end-line="453" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/engine/Schedule.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="224" selection-start-line="224" selection-end-line="224" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/display/GUIState.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="247" column="19" selection-start-line="247" selection-start-column="19" selection-end-line="247" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/ConsumptionActor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="42" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/display/Console.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30022">
+          <caret line="2034" selection-start-line="2034" selection-end-line="2034" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="283" selection-start-line="283" selection-end-line="283" />
+          <folding>
+            <element signature="e#10623#10624#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/Gr4spUI.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-998" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/Gr4spUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="46" column="21" lean-forward="true" selection-start-line="46" selection-start-column="21" selection-end-line="46" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/java/util/Objects.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="371" column="29" selection-start-line="371" selection-start-column="29" selection-end-line="371" selection-end-column="29" />
+          <folding>
+            <element signature="e#13877#13878#0" expanded="true" />
+            <element signature="e#13945#13946#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/MeritOrder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/Generation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="46" column="55" selection-start-line="46" selection-start-column="55" selection-end-line="46" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Generator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-204">
-          <caret line="9" column="56" selection-start-line="9" selection-start-column="56" selection-end-line="9" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/Gr4spSim.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="518" column="35" lean-forward="true" selection-start-line="518" selection-start-column="35" selection-end-line="522" selection-end-column="75" />
+        <state relative-caret-position="-83">
+          <caret line="143" column="26" selection-start-line="143" selection-start-column="26" selection-end-line="143" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2592#2593#0" expanded="true" />
-            <element signature="e#2642#2643#0" expanded="true" />
+            <element signature="e#5345#5346#0" expanded="true" />
+            <element signature="e#5379#5380#0" expanded="true" />
+            <element signature="e#5416#5417#0" expanded="true" />
+            <element signature="e#5451#5452#0" expanded="true" />
+            <element signature="e#5490#5491#0" expanded="true" />
+            <element signature="e#5534#5535#0" expanded="true" />
+            <element signature="e#5577#5578#0" expanded="true" />
+            <element signature="e#5627#5628#0" expanded="true" />
+            <element signature="e#5662#5663#0" expanded="true" />
+            <element signature="e#5695#5696#0" expanded="true" />
+            <element signature="e#5730#5731#0" expanded="true" />
+            <element signature="e#5761#5762#0" expanded="true" />
+            <element signature="e#5811#5812#0" expanded="true" />
+            <element signature="e#5855#5856#0" expanded="true" />
+            <element signature="e#5895#5896#0" expanded="true" />
+            <element signature="e#5926#5927#0" expanded="true" />
+            <element signature="e#5979#5980#0" expanded="true" />
+            <element signature="e#6019#6020#0" expanded="true" />
+            <element signature="e#6077#6078#0" expanded="true" />
+            <element signature="e#6114#6115#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/Generation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2686">
+          <caret line="162" column="10" selection-start-line="162" selection-start-column="10" selection-end-line="162" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/ConsumptionProfile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/ConsumerUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="112" column="18" selection-start-line="112" selection-start-column="18" selection-end-line="112" selection-end-column="18" />
+          <folding>
+            <element signature="e#1836#1837#0" expanded="true" />
+            <element signature="e#1872#1873#0" expanded="true" />
+            <element signature="e#2098#2099#0" expanded="true" />
+            <element signature="e#2139#2140#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/engine/IterativeRepeat.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/Arena.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/Gr4spSimUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="50" column="54" selection-start-line="50" selection-start-column="54" selection-end-line="50" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
