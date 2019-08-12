@@ -11,6 +11,7 @@ import java.util.*;
 import java.awt.Color;
 import javax.swing.JFrame;
 
+import core.Social.ConsumerUnit;
 import org.jfree.data.xy.*;
 import sim.engine.Steppable;
 
@@ -116,28 +117,29 @@ public class Gr4spSimUI extends GUIState {
 
         int id = startId;
         //Add series to store data about consumption, Tariffs and GHG
-        for (int i = 0; i < data.consumptionActors.size(); i++) {
-            ConsumerUnit h = (ConsumerUnit) data.consumptionActors.get(i);
+        for (int i = 0; i < numNewSeries; i++) {
+            ConsumerUnit h = (ConsumerUnit) data.consumptionActors.get(id+i);
 
             //i + " - #p:" + h.getNumberOfPerson() + " Gas:" + h.isHasGas(),
             XYSeries seriesConsumption = new org.jfree.data.xy.XYSeries(
-                    id,
+                    h.getName(),
                     false);
             consumptionActorSeries.add(seriesConsumption);
 
             XYSeries seriesTariff = new org.jfree.data.xy.XYSeries(
-                    id,
+                    h.getName(),
                     false);
             tariffConsumptionActorSeries.add(seriesTariff);
 
             XYSeries seriesGHG = new org.jfree.data.xy.XYSeries(
-                    id,
+                    h.getName(),
                     false);
             ghgConsumptionActorSeries.add(seriesGHG);
 
             XYSeries seriesDomesticConsumers = new org.jfree.data.xy.XYSeries(
-                    id,
+                    h.getName(),
                     false);
+            numDomesticConsumersChart.addSeries(seriesDomesticConsumers, null);
             numDomesticConsumersSeries.add(seriesDomesticConsumers);
 
             id++;
@@ -184,23 +186,25 @@ public class Gr4spSimUI extends GUIState {
 
             //i + " - #p:" + h.getNumberOfPerson() + " Gas:" + h.isHasGas(),
             XYSeries seriesConsumptionD = new org.jfree.data.xy.XYSeries(
-                    i,
+                    h.getName(),
                     false);
             consumptionActorSeries.add(seriesConsumptionD);
 
             XYSeries seriesTariffD = new org.jfree.data.xy.XYSeries(
-                    i,
+                    h.getName(),
                     false);
             tariffConsumptionActorSeries.add(seriesTariffD);
 
             XYSeries seriesGHGD = new org.jfree.data.xy.XYSeries(
-                    i,
+                    h.getName(),
                     false);
             ghgConsumptionActorSeries.add(seriesGHGD);
 
             XYSeries seriesDomesticConsumersD = new org.jfree.data.xy.XYSeries(
-                    i,
+                    h.getName(),
                     false);
+
+            numDomesticConsumersChart.addSeries(seriesDomesticConsumersD, null);
             numDomesticConsumersSeries.add(seriesDomesticConsumersD);
 
         }
@@ -210,6 +214,14 @@ public class Gr4spSimUI extends GUIState {
          */
         scheduleRepeatingImmediatelyAfter(new Steppable() {
             public void step(SimState state) {
+
+
+                //Add new series for plots if new consumer units were created
+                int startIdForNewSeries = consumptionActorSeries.size()-1;
+                int NewNumConsumers = data.consumptionActors.size() - startIdForNewSeries;
+                if(NewNumConsumers > 0) {
+                    addNewPlottingSeries(startIdForNewSeries, NewNumConsumers);
+                }
 
                 Gr4spSim data = (Gr4spSim) state;
 
@@ -266,12 +278,7 @@ public class Gr4spSimUI extends GUIState {
                 data.advanceCurrentSimDate();
 
                 //Add new Consumers according to population growth
-                int oldNumConsumers = data.consumptionActors.size();
                 data.generateHouseholds();
-                int NewNumConsumers = data.consumptionActors.size() - oldNumConsumers;
-
-                //Add new series for plots
-                addNewPlottingSeries(oldNumConsumers, NewNumConsumers);
 
                 //Finish simulation if endDate is reached
                 if (data.getCurrentSimDate().after(data.getEndSimDate()) || data.getCurrentSimDate().equals(data.getEndSimDate())) {
@@ -291,9 +298,9 @@ public class Gr4spSimUI extends GUIState {
         Gr4spSim data = (Gr4spSim) state;
 
         consumptionChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        consumptionChart.setTitle("Total Households Consumption (kWh) area code: " + data.getAreaCode());
+        consumptionChart.setTitle("Total Households Consumption (MWh) area code: " + data.getAreaCode());
         consumptionChart.setXAxisLabel("Year");
-        consumptionChart.setYAxisLabel("kWh");
+        consumptionChart.setYAxisLabel("MWh");
 
         tariffChart = new sim.util.media.chart.TimeSeriesChartGenerator();
         tariffChart.setTitle("Average Households Tariff (c/KWh) area code: " + data.getAreaCode());
@@ -301,9 +308,9 @@ public class Gr4spSimUI extends GUIState {
         tariffChart.setYAxisLabel("c/KWh");
 
         ghgChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        ghgChart.setTitle("Total Households GHG (tCO2-e) area code: " + data.getAreaCode());
+        ghgChart.setTitle("Total Households GHG (tCO2-e/MWh) area code: " + data.getAreaCode());
         ghgChart.setXAxisLabel("Year");
-        ghgChart.setYAxisLabel("tCO2-e");
+        ghgChart.setYAxisLabel("tCO2-e/MWh");
 
         numDomesticConsumersChart = new sim.util.media.chart.TimeSeriesChartGenerator();
         numDomesticConsumersChart.setTitle("Number of Domestic Consumers (households) area code: " + data.getAreaCode());
@@ -312,7 +319,7 @@ public class Gr4spSimUI extends GUIState {
 
 
         // perhaps you might move the consumptionChart to where you like.
-        consumtionChartFrame = new JFrame("Total Households Consumption (kWh) area code: " + data.getAreaCode());
+        consumtionChartFrame = new JFrame("Total Households Consumption (MWh) area code: " + data.getAreaCode());
         consumtionChartFrame.setVisible(true);
         consumtionChartFrame.setSize(800, 800);
         c.registerFrame(consumtionChartFrame);
@@ -324,7 +331,7 @@ public class Gr4spSimUI extends GUIState {
         c.registerFrame(tariffChartFrame);
         tariffChartFrame.add(new ChartPanel(tariffChart.getChart()), BorderLayout.CENTER);
 
-        ghgChartFrame = new JFrame("Total Households GHG (tCO2-e) area code: " + data.getAreaCode());
+        ghgChartFrame = new JFrame("Total Households GHG (tCO2-e/MWh) area code: " + data.getAreaCode());
         ghgChartFrame.setVisible(true);
         ghgChartFrame.setSize(800, 800);
         c.registerFrame(ghgChartFrame);
