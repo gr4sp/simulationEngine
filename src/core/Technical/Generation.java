@@ -72,25 +72,25 @@ public class Generation {
         this.totalGWh = totalGWh - this.exportsGWh;
     }
 
-    public ArrayList<Generator> filterGens( ArrayList<Generator> gens, String fuelType){
+    public ArrayList<Generator> filterGens(ArrayList<Generator> gens, String fuelType) {
         ArrayList<Generator> filteredGens = new ArrayList<Generator>();
 
-        for(Generator g : gens){
-            if(g.getFuelSourceDescriptor().equalsIgnoreCase(fuelType))
+        for (Generator g : gens) {
+            if (g.getFuelSourceDescriptor().equalsIgnoreCase(fuelType))
                 filteredGens.add(g);
         }
         return filteredGens;
     }
 
-    public double emmissionByFuelType(ArrayList<Generator> activeGens, float percentage, String fuelType){
+    public double emmissionByFuelType(ArrayList<Generator> activeGens, float percentage, String fuelType) {
 
         ArrayList<Generator> filteredGens = filterGens(activeGens, fuelType);
         double emissions = 0;
 
         //Get total capacity by Fuel Type
-        double sumCapacity =0;
+        double sumCapacity = 0;
         for (Generator g : filteredGens)
-            sumCapacity+=g.getMaxCapacity();
+            sumCapacity += g.getMaxCapacity();
 
         for (Generator g : filteredGens) {
             //Compute Emission Contribution based on Capacity of all generators of a specific fuelType
@@ -109,7 +109,12 @@ public class Generation {
         return emissions;
     }
 
-    public float computeEmissions(Spm spm) {
+    public float computeEmissionFactor(Spm spm ) {
+        ArrayList<Generator> activeGens = spm.getActiveGens(date);
+        return computeEmissionFactor(activeGens);
+    }
+
+    public float computeEmissionFactor(ArrayList<Generator> activeGens ) {
 
         //System.out.println("Generators used for " + date);
 
@@ -126,31 +131,34 @@ public class Generation {
 
         float emissions = 0;
 
-        ArrayList<Generator> activeGens = spm.getActiveGens(date);
 
         // Average emmission factors NSW and SA from "existing Generation" tab Snapshots xls. Includes all generation fuel types.
         double emissionsNSW = 0.78; //Steam turbine - Black Coal, also OCGT - Distillate, CCGT - Natural gas,Cogeneration - Natural gas
         double emissionsSA = 0.84; // Steam turbine - Black Coal, OCGT - Distillate, CCGT - Natural gas, Steam turbine - Natural gas
 
-        if(PsolarRooftopPVGWh > 0.0)
-            emissions += emmissionByFuelType(activeGens,PsolarRooftopPVGWh,"Solar");
+        if (PsolarRooftopPVGWh > 0.0)
+            emissions += emmissionByFuelType(activeGens, PsolarRooftopPVGWh, "Solar");
 
-        if(PsolarUtilityGWh > 0.0)
-            emissions += emmissionByFuelType(activeGens,PsolarUtilityGWh,"Solar");
+        if (PsolarUtilityGWh > 0.0)
+            emissions += emmissionByFuelType(activeGens, PsolarUtilityGWh, "Solar");
 
-        if(PwindGWh > 0.0)
-            emissions += emmissionByFuelType(activeGens,PwindGWh,"Wind");
-        if(PhydroGWh > 0.0)
-            emissions += emmissionByFuelType(activeGens,PhydroGWh,"Water");
-        if(PbatteryGWh > 0.0)
-            emissions += emmissionByFuelType(activeGens,PbatteryGWh,"Battery");
-        if(PgasOcgtGWh > 0.0)
-            emissions += emmissionByFuelType(activeGens,PgasOcgtGWh,"Natural Gas");
-        if(PgasSteamGWh > 0.0)
-            emissions += emmissionByFuelType(activeGens,PgasSteamGWh,"Natural Gas");
-        if(PbrownCoalGWh > 0.0)
-            emissions += emmissionByFuelType(activeGens,PbrownCoalGWh,"Brown Coal");
-        if(PimportsGWh > 0.0)
+        if (PwindGWh > 0.0)
+            emissions += emmissionByFuelType(activeGens, PwindGWh, "Wind");
+        if (PhydroGWh > 0.0)
+            emissions += emmissionByFuelType(activeGens, PhydroGWh, "Water");
+        if (PbatteryGWh > 0.0)
+            emissions += emmissionByFuelType(activeGens, PbatteryGWh, "Battery");
+        if (PgasOcgtGWh > 0.0)
+            emissions += emmissionByFuelType(activeGens, PgasOcgtGWh, "Natural Gas");
+        if (PgasSteamGWh > 0.0)
+            emissions += emmissionByFuelType(activeGens, PgasSteamGWh, "Natural Gas");
+        if (PbrownCoalGWh > 0.0)
+            emissions += emmissionByFuelType(activeGens, PbrownCoalGWh, "Brown Coal");
+
+        //If no emissions are accounted, it's because we only use renewables onsite and we are not at an generation SPM
+        if(emissions == 0.0) return (float)0.0;
+
+        if (PimportsGWh > 0.0)
             emissions += ((emissionsNSW + emissionsSA) / 2) * PimportsGWh;
 
         //Do not include Exports to consumer emissions
@@ -159,7 +167,7 @@ public class Generation {
 
         //System.out.println("Total emissions for " + date + " of "+emissions + " GHG (t/co2)");
 
-
+//return emissions in MTons CO2-e
         return emissions;
     }
 }

@@ -115,12 +115,13 @@ public class ConsumerUnit extends Actor implements ConsumptionActor {
         //MWH
         this.currentConsumption = (data.getMonthly_consumption_register().get(today));
         this.currentConsumption = this.currentConsumption * numberOfHouseholds;
-        //this.currentConsumption = computeConsumption( currentMonth );
 
         //Find SPM used by Consumer
         for(ActorAssetRelationship actorSpmRel : data.getActorAssetRelationships()){
             if(actorSpmRel.getActor().getId() == this.getId() && actorSpmRel.getAsset() instanceof Spm){
                 Spm spm = (Spm) actorSpmRel.getAsset();
+
+                spm.computeIndicators(simState,this.currentConsumption);
 
                 double offSiteConsumption = this.currentConsumption;
 
@@ -141,10 +142,10 @@ public class ConsumerUnit extends Actor implements ConsumptionActor {
 
                 //Compute emissions multiplying Emission factor t-CO2/MWh * consumption in MWh
                 Generation genData = data.getMonthly_generation_register().get(today);
-                this.currentEmissions = genData.computeEmissions(spm) * offSiteConsumption;
+                this.currentEmissions = genData.computeEmissionFactor(spm) * offSiteConsumption;
 
                 //Apply network losses to the computation of GHG emissions
-                double networkLosses = spm.computeNetworksLosses(spm);
+                double networkLosses = spm.computeRecursiveNetworksLosses(spm);
                 this.currentEmissions *= (1+networkLosses);
 
                 //System.out.println("Population for " + today + " of "+numberOfHouseholds+ " with consumption "+ this.currentConsumption+" create total of "+ this.currentEmissions +"GHG (t/co2)");

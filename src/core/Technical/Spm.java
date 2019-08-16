@@ -57,11 +57,16 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     //Visualization Parameters
     public double diameter;
 
+    //Indicators
+    public double currentEmissions; //operational emissions
+    public float currentPrice;
+    public float currentReliability;
+
+
     //Ownerships
     //TODO: add list of owners
 
     ArrayList<ActorAssetRelationship> assetRelationships;
-
 
 
     public Spm(int id, ArrayList<Spm> spms_contained, ArrayList<Generator> generators, ArrayList<NetworkAssets> network_assets, ArrayList<Storage> storages, ArrayList<ConnectionPoint> spm_interface) {
@@ -75,17 +80,21 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
         this.diameter = 50.0;
         this.assetRelationships = new ArrayList<>();
 
+        this.currentEmissions = 0;
+        this.currentPrice = 0;
+        this.currentReliability = 0;
+
     }
 
     //Get onsite generation
-    public double getOnsiteGeneration(Gr4spSim data, Date today, HashMap<Date, Integer> newHouseholdsPerDate){
+    public double getOnsiteGeneration(Gr4spSim data, Date today, HashMap<Date, Integer> newHouseholdsPerDate) {
         double generationKWh = 0.0;
 
-        for(Generator g : generators){
+        for (Generator g : generators) {
             generationKWh += g.getGeneration(data, today, newHouseholdsPerDate);
         }
 
-        for (Storage s : storages){
+        for (Storage s : storages) {
             generationKWh += s.getGeneration(data, today, newHouseholdsPerDate);
         }
 
@@ -93,20 +102,20 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     }
 
     //Get currently active generators
-    public ArrayList<Generator> getActiveGens(Date today){
+    public ArrayList<Generator> getActiveGens(Date today) {
         ArrayList<Generator> activeGens = new ArrayList<Generator>();
-        for(Generator g : generators){
+        for (Generator g : generators) {
             //Has started today or earlier?
-            if( g.getStart().before(today) || g.getStart().equals(today) ){
+            if (g.getStart().before(today) || g.getStart().equals(today)) {
                 //Has not finished operations?
-                if(g.getEnd().after(today)){
+                if (g.getEnd().after(today)) {
                     activeGens.add(g);
                 }
             }
         }
 
         //Recursively get active generators contained in SPM
-        for(Spm scontained : spms_contained){
+        for (Spm scontained : spms_contained) {
             ArrayList<Generator> activeGensContained = scontained.getActiveGens(today);
             activeGens.addAll(activeGensContained);
         }
@@ -115,11 +124,11 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     }
 
     //Calculates recursively the network losses from Generation to Consumer through each level of SPM traversed
-    public double computeNetworksLosses(Spm spm){
+    public double computeRecursiveNetworksLosses(Spm spm) {
         double networkLoss = 0.0;
 
         //Compute average loss across networks of current SPM
-        if(spm.network_assets.size() > 0) {
+        if (spm.network_assets.size() > 0) {
             for (NetworkAssets n : spm.network_assets) {
                 networkLoss += n.getGridLosses();
             }
@@ -127,11 +136,26 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
         }
         //Sum the (avg, if contains more than 1 spm as a direct child) Network Losses of Contained SPMs
         //Each level of SPM is averaged, but each depth is summed, as it's a measure of distance
-        if(spm.spms_contained.size() > 0) {
+        if (spm.spms_contained.size() > 0) {
             for (Spm s : spm.spms_contained) {
-                networkLoss += spm.computeNetworksLosses(s);
+                networkLoss += spm.computeRecursiveNetworksLosses(s);
             }
             networkLoss /= spm.spms_contained.size();
+        }
+
+        return networkLoss;
+    }
+
+    //Calculates the network losses of current SPM
+    public double computeNetworksLosses() {
+        double networkLoss = 0.0;
+
+        //Compute average loss across networks of current SPM
+        if (network_assets.size() > 0) {
+            for (NetworkAssets n : network_assets) {
+                networkLoss += n.getGridLosses();
+            }
+            networkLoss /= network_assets.size();
         }
 
         return networkLoss;
@@ -151,7 +175,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     }
 
     @Override
-    public void addAssetRelationship( ActorAssetRelationship newAssetRel){
+    public void addAssetRelationship(ActorAssetRelationship newAssetRel) {
         this.assetRelationships.add(newAssetRel);
     }
 
@@ -181,9 +205,6 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     }
 
 
-
-
-
     public boolean isHasStorage() {
         return hasStorage;
     }
@@ -192,9 +213,6 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     public void setHasStorage(boolean hasStorage) {
         this.hasStorage = hasStorage;
     }
-
-
-
 
 
     public double getEfficiency() {
@@ -245,12 +263,44 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     public void step(SimState state) {
         Gr4spSim data = (Gr4spSim) state;
 
-        System.out.println(this);
-        // position = position + velocity
-        //Double2D pos = tut.balls.getObjectLocation(this);
-        //Double2D newpos = new Double2D(pos.x+velocityx, pos.y + velocityy);
-        //tut.balls.setObjectLocation(this,newpos);
+        Date today = data.getCurrentSimDate();
 
+
+    }
+
+    public void computeIndicators(SimState state, double energyFlow) {
+        Gr4spSim data = (Gr4spSim) state;
+
+        Date today = data.getCurrentSimDate();
+
+
+        //Compute emissions multiplying Emission factor t-CO2/MWh
+        Generation genData = data.getMonthly_generation_register().get(today);
+
+        //Get the emission factor of generators within THIS spm
+        double emissionFactorGeneration = genData.computeEmissionFactor(generators);
+
+        //Get the emission factor of all genereators (This and contained SPM)
+        double emissionFactorNetwork = genData.computeEmissionFactor(this);
+
+        //Compute LossFactor
+        double lossFactor = computeNetworksLosses();
+
+        //Direct Operational Network Emissions = ElectricityFlow * (EmissionFactor * LossFactor)
+        double networkEmissions = energyFlow * emissionFactorNetwork * lossFactor;
+        //Direct Operational Generators Emissions = Generated E * EmissionFactor
+        double generationEmissions = energyFlow * emissionFactorGeneration;
+
+
+        currentEmissions = networkEmissions + generationEmissions;
+
+        for(Spm s_inside : spms_contained) {
+            s_inside.computeIndicators(state,energyFlow);
+            currentEmissions += s_inside.currentEmissions;
+        }
+
+        currentPrice = 0;
+        currentReliability = 0;
     }
 
 

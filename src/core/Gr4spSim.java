@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.System.exit;
+import static java.lang.System.setOut;
 
 
 public class Gr4spSim extends SimState {
@@ -94,6 +95,9 @@ public class Gr4spSim extends SimState {
     //Policies used for the simulation
     private SimPolicies policies;
 
+    //Class to manage all the data generated in the simulation
+    public SaveData saveData;
+
 
     public Gr4spSim(long seed) {
 
@@ -123,6 +127,9 @@ public class Gr4spSim extends SimState {
         layout = new Continuous2D(10.0, 600.0, 600.0);
         policies = new SimPolicies();
 
+        simulParametres();
+
+        saveData = new SaveData(this);
 
     }
 
@@ -131,7 +138,7 @@ public class Gr4spSim extends SimState {
         /**
          * Simulation Date Range
          */
-        String startDate = "1990-01-01";
+        String startDate = "2000-01-01";
         String endDate = "2018-01-01";
 
         /**
@@ -153,7 +160,7 @@ public class Gr4spSim extends SimState {
         maxHouseholdsPerConsumerUnit = Integer.MAX_VALUE;
 
         //Percentage of Total Consumption Historic Data that goes into domestic use
-        domesticConsumptionPercentage = 0.3;
+        domesticConsumptionPercentage = 1;
 
         /**
          * Public Policies
@@ -851,8 +858,9 @@ public class Gr4spSim extends SimState {
         simulParametres();
         loadData();
         generateHouseholds();
-
+        saveData.plotSeries(this);
         this.schedule.scheduleRepeating(policies);
+        this.schedule.scheduleRepeating(0.0,1,saveData);
 
 
     }
