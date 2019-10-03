@@ -190,7 +190,7 @@ public class LoadData {
                 if (standingcharge_aud_year != null)
                     serviceFee += standingcharge_aud_year / 12.0;
 
-                //Actor seller, Actor buyer, Asset assetUsed, float priceMWh, Date start, Date end, float capacityContracted
+                //Actor seller, Actor buyer, Asset assetUsed, float dollarMWh, Date start, Date end, float capacityContracted
 
                 /**
                  * NEED TO USE FORMULAT RBA TO UPDATE PRICES!
@@ -226,7 +226,7 @@ public class LoadData {
     //Select Consumption
 
     public static void
-    selectConsumption(Gr4spSim data, String startDate, String endDate) {
+    selectDemand(Gr4spSim data, String startDate, String endDate) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -234,7 +234,7 @@ public class LoadData {
         /**
          * Load Total Consumption per month
          * */
-        String sql = "SELECT date, total_demand_gwh" +
+        String sql = "SELECT date, operational_demand_mw" +
                 " FROM  generation_demand_historic WHERE " +
                 " date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "';";
@@ -246,11 +246,51 @@ public class LoadData {
             // loop through the result set
             while (rs.next()) {
                 System.out.println("\t" + rs.getString("date") + "\t" +
-                        rs.getString("total_demand_gwh"));
+                        rs.getString("operational_demand_mw"));
 
 
                 Date d = rs.getDate("date");
-                Double gwh = rs.getDouble("total_demand_gwh");
+                Double mw = rs.getDouble("operational_demand_mw");
+
+                //If monthly consumption doesn't exist, create it
+                if (!data.getMonthly_demand_register().containsKey(d)) {
+                    data.getMonthly_demand_register().put(d, mw);
+                }
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+        //Select Consumption
+
+    public static void
+    selectConsumption(Gr4spSim data, String startDate, String endDate) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        /**
+         * Load Total Consumption per month
+         * */
+        String sql = "SELECT date, total_consumption_gwh" +
+                " FROM  generation_demand_historic WHERE " +
+                " date <= '" + endDate + "'" +
+                " AND date >= '" + startDate + "';";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getString("date") + "\t" +
+                        rs.getString("total_consumption_gwh"));
+
+
+                Date d = rs.getDate("date");
+                Double gwh = rs.getDouble("total_consumption_gwh");
 
                 //If monthly consumption doesn't exist, create it
                 if (!data.getMonthly_consumption_register().containsKey(d)) {
@@ -348,16 +388,20 @@ public class LoadData {
         for (Date month : data.getMonthly_consumption_register().keySet()) {
 
             double gwh = data.getMonthly_consumption_register().get(month);
+
+            //Save total consumption
+            data.getTotal_monthly_consumption_register().put(month, gwh * 1000.0);
+
             Integer consumers = data.getMonthly_domestic_consumers_register().get(month);
 
             if (consumers == null) continue;
 
             //convert to MWh and only domestic demand
-            double newkwh = (gwh * 1000.0 * data.getDomesticConsumptionPercentage()) / (double) consumers;
+            double newMwh = (gwh * 1000.0 * data.getDomesticConsumptionPercentage()) / (double) consumers;
             //to check total demand in KWh
             //double newkwh = (gwh * 1000000);
 
-            data.getMonthly_consumption_register().put(month, newkwh);
+            data.getMonthly_consumption_register().put(month, newMwh);
         }
     }
 
@@ -695,9 +739,11 @@ public class LoadData {
 
         SimpleDateFormat DateToString = new SimpleDateFormat("yyyy-MM-dd");
 
-        String sql = "SELECT id, powerstation, Owner, installedcapacitymw, technologytype, fueltype, dispatchtype, locationcoordinates, startdate, enddate, emissionsfactor" +
-                " FROM generationassets WHERE id = '" + idgen + "' AND startdate <= '" + DateToString.format(data.getEndSimDate()) + "'" +
-                " AND enddate > '" + DateToString.format(data.getStartSimDate()) + "';";
+        String sql = "SELECT asset_id, region, asset_type, site_name, owner_name, technology_type, fuel_type, nameplate_capacity_mw, dispatch_type, full_commercial_use_date, closure_date, " +
+                " duid, no_units, storage_capacity_mwh, expected_closure_date, fuel_bucket_summary" +
+                " FROM generationassets WHERE asset_id = '" + idgen + "' AND full_commercial_use_date <= '" + DateToString.format(data.getEndSimDate()) + "'" +
+                " AND ( closure_date > '" + DateToString.format(data.getStartSimDate()) + "'"+
+                " OR expected_closure_date > '" + DateToString.format(data.getStartSimDate()) + "');";
 
         ArrayList<Generator> gens = new ArrayList<Generator>();
         try (Connection conn = DriverManager.getConnection(url);
@@ -706,33 +752,46 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-              /*  System.out.println("\t" + rs.getInt("id") + "\t" +
-                        rs.getString("PowerStation") + "\t" +
-                        rs.getString("Owner") + "\t" +
-                        rs.getDouble("InstalledCapacityMW") + "\t" +
-                        rs.getString("TechnologyType") + "\t" +
-                        rs.getString("FuelType") + "\t" +
-                        rs.getString("DispatchType") + "\t" +
-                        rs.getDate("startdate") + "\t" +
-                        rs.getDate("enddate") + "\t" +
-                        rs.getString("locationcoordinates") + "\t" +
-                        rs.getString("emissionsfactor"));
-*/
+                /*System.out.println("\t Generator: " +
+                        rs.getInt("asset_id")+ "\t" +
+                        rs.getString("region")+ "\t" +
+                        rs.getString("asset_type")+ "\t" +
+                        rs.getString("site_name")+ "\t" +
+                        rs.getString("owner_name")+ "\t" +
+                        rs.getString("technology_type")+ "\t" +
+                        rs.getString("fuel_type")+ "\t" +
+                        rs.getDouble("nameplate_capacity_mw")+ "\t" +
+                        rs.getString("dispatch_type")+ "\t" +
+                        rs.getDate("full_commercial_use_date")+ "\t" +
+                        rs.getDate("expected_closure_date")+ "\t" +
+                        rs.getDate("closure_date")+ "\t" +
+                        rs.getString("duid")+ "\t" +
+                        rs.getInt("no_units")+ "\t" +
+                        rs.getFloat("storage_capacity_mwh")+ "\t" +
+                        rs.getString("fuel_bucket_summary")
 
-                Generator gen = new Generator(rs.getInt("id"),
-                        rs.getString("PowerStation"),
-                        rs.getString("Owner"),
-                        rs.getDouble("InstalledCapacityMW"),
-                        rs.getString("TechnologyType"),
-                        rs.getString("FuelType"),
-                        rs.getString("DispatchType"),
-                        rs.getString("locationCoordinates"),
-                        rs.getDate("startdate"),
-                        rs.getDate("enddate"),
-                        rs.getFloat("emissionsfactor")
+                );*/
+
+                Generator gen = new Generator(
+                        rs.getInt("asset_id"),
+                        rs.getString("region"),
+                        rs.getString("asset_type"),
+                        rs.getString("site_name"),
+                        rs.getString("owner_name"),
+                        rs.getString("technology_type"),
+                        rs.getString("fuel_type"),
+                        rs.getDouble("nameplate_capacity_mw"),
+                        rs.getString("dispatch_type"),
+                        rs.getDate("full_commercial_use_date"),
+                        rs.getDate("expected_closure_date"),
+                        rs.getDate("closure_date"),
+                        rs.getString("duid"),
+                        rs.getInt("no_units"),
+                        rs.getFloat("storage_capacity_mwh"),
+                        rs.getString("fuel_bucket_summary")
                 );
 
-                int idGen = rs.getInt("id");
+                int idGen = rs.getInt("asset_id");
                 //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
                 if (!data.getGen_register().containsKey(idGen))
                     data.getGen_register().put(idGen, new Vector<>());
@@ -936,7 +995,7 @@ public class LoadData {
 
                 Arena arena = data.getArena_register().get(arenaId);
 
-                //Actor seller, Actor buyer, Asset assetUsed, float priceMWh, Date start, Date end, float capacityContracted
+                //Actor seller, Actor buyer, Asset assetUsed, float dollarMWh, Date start, Date end, float capacityContracted
 
                 Contract contract = new Contract("",
                         rs.getInt("seller"),
