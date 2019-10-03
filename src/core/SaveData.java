@@ -56,9 +56,9 @@ public class SaveData implements Steppable {
         tariffChart.setYAxisLabel("c/KWh");
 
         ghgChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        ghgChart.setTitle("Total Households GHG (MtCO2-e/MWh) area code: " + data.getAreaCode());
+        ghgChart.setTitle("Total Households GHG (tCO2-e) area code: " + data.getAreaCode());
         ghgChart.setXAxisLabel("Year");
-        ghgChart.setYAxisLabel("MtCO2-e/MWh");
+        ghgChart.setYAxisLabel("tCO2-e");
 
         numDomesticConsumersChart = new sim.util.media.chart.TimeSeriesChartGenerator();
         numDomesticConsumersChart.setTitle("Number of Domestic Consumers (households) area code: " + data.getAreaCode());
@@ -365,14 +365,14 @@ public class SaveData implements Steppable {
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                         CSVWriter.DEFAULT_LINE_END);
         ) {
-            String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (KWh)", "Tariff (c/KWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
+            String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (MWh)", "Tariff (c/KWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
             csvWriter.writeNext(headerRecord);
 
-            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
+            String[] headerRecordYear = {"Time (Year)", "Consumption (MWh) per household", " Avg Tariff (c/KWh) per household", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
 
             csvWriterYear.writeNext(headerRecordYear);
 
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (MWh) per household", " Avg Tariff (c/KWh) per household", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
 
             csvWriterMonthly.writeNext(headerRecordMonthly);
 

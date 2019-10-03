@@ -33,8 +33,14 @@ public class Gr4spSim extends SimState {
     HashMap<Integer, Actor> actor_register;
     HashMap<Integer, Arena> arena_register;
 
+    //Demand
+    HashMap<Date, Double> monthly_demand_register;
+
     //Consumption per Domestic Costumer
     HashMap<Date, Double> monthly_consumption_register;
+    //Total monthly Consumption
+    HashMap<Date, Double> total_monthly_consumption_register;
+
     //Total Generation GWh per month
     HashMap<Date, Generation> monthly_generation_register;
 
@@ -79,6 +85,7 @@ public class Gr4spSim extends SimState {
     private Calendar simCalendar;
     private Date startSimDate;
     private Date endSimDate;
+    private Date startSpotMarketDate;
 
     //Area Code for Simulation [M1,M2,R1,R2]
     private String areaCode;
@@ -117,7 +124,9 @@ public class Gr4spSim extends SimState {
         network_register = new HashMap<>();
         actor_register = new HashMap<>();
         arena_register = new HashMap<>();
+        monthly_demand_register = new HashMap<>();
         monthly_consumption_register = new HashMap<>();
+        total_monthly_consumption_register = new HashMap<>();
         monthly_generation_register = new HashMap<>();
         monthly_domestic_consumers_register = new HashMap<>();
         cpi_conversion = new HashMap<>();
@@ -138,8 +147,13 @@ public class Gr4spSim extends SimState {
         /**
          * Simulation Date Range
          */
-        String startDate = "2000-01-01";
-        String endDate = "2018-01-01";
+        String startDate = "1989-01-01";
+        String endDate = "2019-01-01";
+
+        /**
+         * Spot Market Start Date
+         */
+        String startDateSpotMarket = "1999-01-01";
 
         /**
          * Population and scale
@@ -160,7 +174,7 @@ public class Gr4spSim extends SimState {
         maxHouseholdsPerConsumerUnit = Integer.MAX_VALUE;
 
         //Percentage of Total Consumption Historic Data that goes into domestic use
-        domesticConsumptionPercentage = 1;
+        domesticConsumptionPercentage = 0.3;
 
         /**
          * Public Policies
@@ -180,6 +194,8 @@ public class Gr4spSim extends SimState {
             this.simCalendar.setTime(this.startSimDate);
             this.endSimDate = stringToDate.parse(endDate);
 
+            this.startSpotMarketDate = stringToDate.parse(startDateSpotMarket);
+
         } catch (ParseException e) {
             System.err.println("Cannot parse Start Date: " + e.toString());
         }
@@ -188,8 +204,14 @@ public class Gr4spSim extends SimState {
     /**
      * Getters and Setters
      */
+
+
     public Calendar getSimCalendar() {
         return simCalendar;
+    }
+
+    public Date getStartSpotMarketDate() {
+        return startSpotMarketDate;
     }
 
     public Date getStartSimDate() {
@@ -232,8 +254,17 @@ public class Gr4spSim extends SimState {
         return cpi_conversion;
     }
 
+    public HashMap<Date, Double> getMonthly_demand_register() {
+        return monthly_demand_register;
+    }
+
     public HashMap<Date, Double> getMonthly_consumption_register() {
         return monthly_consumption_register;
+    }
+
+
+    public HashMap<Date, Double> getTotal_monthly_consumption_register() {
+        return total_monthly_consumption_register;
     }
 
     public HashMap<Date, Integer> getMonthly_domestic_consumers_register() {
@@ -332,6 +363,20 @@ public class Gr4spSim extends SimState {
         return maxHouseholdsPerConsumerUnit;
     }
 
+    public ArrayList<ConsumptionActor> getConsumptionActors() {
+        return consumptionActors;
+    }
+
+    public Arena getArenaByName(String arenaName ) {
+        for (Map.Entry<Integer, Arena> entry : this.getArena_register().entrySet()) {
+            Arena a = entry.getValue();
+            if (a.getType().equalsIgnoreCase(arenaName)) {
+                return a;
+            }
+        }
+
+        return null;
+    }
     /**
      * Create SPM function
      * */
@@ -592,7 +637,7 @@ public class Gr4spSim extends SimState {
             householdsLeft -= householdsCreated;
 
             //Schedule the actor in order to make decissions at every step
-            this.schedule.scheduleRepeating((Actor) actor);
+            this.schedule.scheduleRepeating(0.0,1,(Actor) actor);
 
             //Id of conventional SPM
             int idSpm = 1;
@@ -774,7 +819,7 @@ public class Gr4spSim extends SimState {
             householdsLeft -= householdsCreated;
 
             //Schedule the actor in order to make decisions at every step
-            this.schedule.scheduleRepeating((Actor) actor);
+            this.schedule.scheduleRepeating(0.0,1,(Actor) actor);
 
             //Id of Non Conventional SPM
             int idSpm = 2;
@@ -841,6 +886,7 @@ public class Gr4spSim extends SimState {
         LoadData.selectArena(this);
         LoadData.selectTariffs(this, startDate, endDate, areaCode);
 
+        LoadData.selectDemand(this,startDate,endDate);
         LoadData.selectConsumption(this, startDate, endDate);
         LoadData.selectGenerationHistoricData(this, startDate, endDate);
         LoadData.selectSolarExposure(this);
@@ -860,10 +906,15 @@ public class Gr4spSim extends SimState {
         generateHouseholds();
         saveData.plotSeries(this);
         this.schedule.scheduleRepeating(policies);
-        this.schedule.scheduleRepeating(0.0,1,saveData);
+        this.schedule.scheduleRepeating(0.0,2,saveData);
+
+        for (Map.Entry<Integer, Arena> entry : arena_register.entrySet()) {
+            Arena a = entry.getValue();
+            this.schedule.scheduleRepeating(0.0,0,a);
+        }
 
 
-    }
+        }
 
 
     public static void main(String[] args) {

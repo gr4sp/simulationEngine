@@ -2,14 +2,23 @@ package core.Relationships;
 
 
 import core.Social.Actor;
+import core.Technical.Asset;
 
 public class Bid implements Comparable<Bid>{
-    public Actor act;
-    public float priceMWh;
-    public float capacity;
+    public Actor actor;
+    public Asset asset;
+    public double dollarMWh;
+    public double capacity;
+
+    public Bid(Actor actor, Asset asset, double dollarMWh, double capacity) {
+        this.actor = actor;
+        this.asset = asset;
+        this.dollarMWh = dollarMWh;
+        this.capacity = capacity;
+    }
 
     @Override
     public int compareTo(Bid other){
-        return Float.compare(this.priceMWh, other.priceMWh);
+        return Double.compare(this.dollarMWh, other.dollarMWh);
     }
 }

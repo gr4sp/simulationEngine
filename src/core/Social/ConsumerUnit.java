@@ -121,32 +121,33 @@ public class ConsumerUnit extends Actor implements ConsumptionActor {
             if(actorSpmRel.getActor().getId() == this.getId() && actorSpmRel.getAsset() instanceof Spm){
                 Spm spm = (Spm) actorSpmRel.getAsset();
 
-                spm.computeIndicators(simState,this.currentConsumption);
+                double consumption = this.currentConsumption;
 
-                double offSiteConsumption = this.currentConsumption;
-
-                //Reduce the from offSiteConsumption the onsite generation in order to compute Emissions
+                //Reduce from consumption the onsite generation in order to compute Emissions
                 double onSiteGenerationTotalHouseholds = spm.getOnsiteGeneration(data, today, this.newHousholdsPerDate);
 
                 //Save the surplus energy
-                this.surplusMWh = onSiteGenerationTotalHouseholds - offSiteConsumption;
+                this.surplusMWh = onSiteGenerationTotalHouseholds - consumption;
 
-                //remove from offsite consumption the MWh generated onsite
-                offSiteConsumption -= onSiteGenerationTotalHouseholds;
+                //remove from consumption the MWh generated onsite
+                consumption -= onSiteGenerationTotalHouseholds;
 
-                //If onsite Generation is greater than consumption, set offSite Consumption to 0
+                //If onsite Generation is greater than consumption, set consumption to 0
                 //Because we have not created a market to sell the surplus to other SPMs
-                if(offSiteConsumption < 0) {
-                    offSiteConsumption = 0;
+                if(consumption < 0) {
+                    consumption = 0;
                 }
 
-                //Compute emissions multiplying Emission factor t-CO2/MWh * consumption in MWh
-                Generation genData = data.getMonthly_generation_register().get(today);
-                this.currentEmissions = genData.computeEmissionFactor(spm) * offSiteConsumption;
+                spm.computeIndicators(simState,consumption);
+                this.currentEmissions = spm.currentEmissions;
 
-                //Apply network losses to the computation of GHG emissions
-                double networkLosses = spm.computeRecursiveNetworksLosses(spm);
-                this.currentEmissions *= (1+networkLosses);
+//                //Compute emissions multiplying Emission factor t-CO2/MWh * consumption in MWh
+//                Generation genData = data.getMonthly_generation_register().get(today);
+//                this.currentEmissions = genData.computeGenEmissionIntensity(spm) * consumption;
+//
+//                //Apply network losses to the computation of GHG emissions
+//                double networkLosses = spm.computeRecursiveNetworksLosses(spm);
+//                this.currentEmissions *= (1+networkLosses);
 
                 //System.out.println("Population for " + today + " of "+numberOfHouseholds+ " with consumption "+ this.currentConsumption+" create total of "+ this.currentEmissions +"GHG (t/co2)");
             }
@@ -157,8 +158,9 @@ public class ConsumerUnit extends Actor implements ConsumptionActor {
             Arena a = entry.getValue();
 
             if(a.getType().equalsIgnoreCase("Retail") ) {
-                this.currentTariffContract = a.getEndConsumerTariff(simState);
-                this.currentTariff = this.currentTariffContract.getPricecKWh();
+                this.currentTariff = (float)a.getTariff(simState);
+                //this.currentTariffContract = a.getEndConsumerTariff(simState);
+                //this.currentTariff = this.currentTariffContract.getPricecKWh();
                 //Need to take into account service Fee when computing costs
             }
         }
