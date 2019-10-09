@@ -124,12 +124,12 @@ public class Generator implements java.io.Serializable, Asset{
         //efficiency of the inverter. Typically 0.9
         double ninv = 1 - 0.1;
         //efficiency of the subsystem (cables) between the inverter and the switchboard (AC cable loss)
-        // recommended voltage drop between inverter and main swithc shouldn't be greater than 1%
+        // recommended voltage drop between inverter and main switch shouldn't be greater than 1%
         double ninv_sb = 1 - 0.01 ;
-        //TODO: check units!
-        generation = capacitySolar *fman * fdirt * ftemp * solarExporsure  * npv_inv * ninv * ninv_sb;
+        //solar exposure in data base is in MJ/m2 but converted to KWh/m2 when loaded.
+        generation = capacitySolar *fman * fdirt * ftemp * solarExporsure * npv_inv * ninv * ninv_sb;
 
-        //in kWh
+        //in this case, the energy yield is given in energy output per area, or energy generated in KWh//m2 per month
         return generation;
     }
 
@@ -149,7 +149,7 @@ public class Generator implements java.io.Serializable, Asset{
                 int daysInMonth = yearMonthObject.lengthOfMonth(); //28
 
                 //get Generation in MWh
-                float solarExposure = (data.getSolar_exposure().get(d));//mean daily solar exposure in MJ/m^2 TODO: correct for MWh (dividing by 3.6?)
+                float solarExposure = (data.getSolar_exposure().get(d));//mean monthly solar exposure given in MJ/m^2 but converted in LoadData to KWh
 
                 //Compute generation taking into account the date when households installed solar (and number), and the avg size.
                 for (HashMap.Entry pair : newHouseholdsPerDate.entrySet()) {
@@ -178,7 +178,7 @@ public class Generator implements java.io.Serializable, Asset{
 
             }
         }else{
-            throw new java.lang.UnsupportedOperationException("Not supported yet. Only support on-site Solar generation"); //TODO: and solar utility?
+            throw new java.lang.UnsupportedOperationException("Not supported yet. Only support on-site Solar generation"); //TODO: solar utility?
         }
         return generation;
 
@@ -229,6 +229,10 @@ public class Generator implements java.io.Serializable, Asset{
             expRateEF = 0;
         }
 
+        //TODO: Include if neccessary (source: CO2EII All Generators csv):
+        // usual CO2EII for landfill biogas methane: 0.062, Biomass and industrial materials: 0.023,
+        // Diesel oil: 0.957
+
         int age = currentYear - startYear;
         if(age > this.lifecycle) age = this.lifecycle;
 
@@ -237,7 +241,6 @@ public class Generator implements java.io.Serializable, Asset{
         return emissionsFactor;
 
     }
-
 
     private int monthsInSpot(SimState state){
         Gr4spSim data = (Gr4spSim) state;

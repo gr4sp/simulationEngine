@@ -216,6 +216,26 @@ public class Arena implements Steppable {
 
 
             /**
+             * Get all the half hour info of the month if available
+             * */
+
+            c.add(Calendar.MONTH, 1);
+            Date nextMonth = c.getTime();
+
+            c.setTime(today);
+
+            while(c.getTime().before(nextMonth)) {
+
+                Date currentTime = c.getTime();
+                double totalDemand  = data.getHalf_hour_demand_register().get(currentTime);
+                System.out.println(currentTime + " Demand: " + totalDemand);
+
+
+                //Add 30 min to get next demand
+                c.add(Calendar.MINUTE, 30);
+            }
+
+            /**
              * Create a bid for each Generator that participates in the SPOT market
              * Capacity factors of each generator vary depending on the season.  Data on this capacity factors is obtained from
              * the "Generation_Information_VIC" (May 2019)

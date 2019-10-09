@@ -223,7 +223,7 @@ public class LoadData {
     }
 
 
-    //Select Consumption
+    //Select Demand monthly Historic
 
     public static void
     selectDemand(Gr4spSim data, String startDate, String endDate) {
@@ -263,7 +263,50 @@ public class LoadData {
             System.out.println(e.getMessage());
         }
     }
-        //Select Consumption
+
+    //Select Demand Historic half hours for spot market
+
+    public static void
+    selectDemandHalfHour(Gr4spSim data, String startDate, String endDate) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        /**
+         * Load Total Consumption per month
+         * */
+        String sql = "SELECT settlement_date, total_demand, price" +
+                " FROM  total_demand_halfhour WHERE " +
+                " settlement_date <= '" + endDate + "'" +
+                " AND settlement_date >= '" + startDate + "';";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getTimestamp("settlement_date") + "\t" +
+                        rs.getFloat("total_demand")+ "\t" +
+                        rs.getFloat("price"));
+
+
+                Date d = rs.getTimestamp("settlement_date");
+                Double mw = rs.getDouble("total_demand");
+
+                //If half hour consumption doesn't exist, create it
+                if (!data.getHalf_hour_demand_register().containsKey(d)) {
+                    data.getHalf_hour_demand_register().put(d, mw);
+                }
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //Select Consumption
 
     public static void
     selectConsumption(Gr4spSim data, String startDate, String endDate) {
