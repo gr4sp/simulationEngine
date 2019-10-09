@@ -15,13 +15,13 @@
       <Comment>default administrative connection database</Comment>
       <StateNumber>567</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4167</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4227</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
       <Relations>sequence|table|16652|16654|1
 sequence|table|16745|16747|1
-sequence|table|16770|16667|1
 sequence|table|33216|33218|1
+sequence|table|16770|16667|1
 </Relations>
     </database>
     <role id="4" parent="1" name="pg_execute_server_program">
@@ -84,7 +84,7 @@ sequence|table|33216|33218|1
       <ObjectId>33190</ObjectId>
       <StateNumber>2881</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>3056</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4189</IntrospectionStateNumber>
       <Visible>1</Visible>
     </schema>
     <schema id="15" parent="3" name="pg_catalog">
@@ -114,7 +114,7 @@ sequence|table|33216|33218|1
       <Comment>standard public schema</Comment>
       <StateNumber>360</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4168</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4228</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -332,10 +332,10 @@ Data for the Melbourne Olympic Park station</Comment>
       <StateNumber>2375</StateNumber>
     </table>
     <table id="53" parent="19" name="total_demand_halfhour">
-      <ObjectId>33200</ObjectId>
-      <Comment>contains the TOTALDEMAND data given by AEMO since Dec 1998. The data is given in MW each 30 minutes.</Comment>
+      <ObjectId>33234</ObjectId>
+      <Comment>Total Demand data AEMO. From 1999 to 2019. 30 minute data.</Comment>
       <Owner>postgres</Owner>
-      <StateNumber>2969</StateNumber>
+      <StateNumber>4187</StateNumber>
     </table>
     <table id="54" parent="19" name="totaldemandvictoria">
       <ObjectId>33173</ObjectId>
@@ -910,7 +910,7 @@ unique id regardless on changes in management or ownership over time. This chang
     <column id="144" parent="43" name="dispatch_type">
       <Position>13</Position>
       <Comment>If the unit is Scheduled (mainly powerstations using coal, some hydro and some natural gas and other), Semi-scheduled (mainly wind and solar), 
-Non-sheduled (mainlhy power stations with low name plate capacity using fuel types like landfill gas, diesel, biomass, municipal waste, bagasse, fuel oil, dry wood etc). </Comment>
+Non-sheduled (mainlhy power stations with low name plate capacity using fuel types like landfill gas, diesel, biomass, municipal waste, bagasse, fuel oil, dry wood etc).</Comment>
       <DataType>text|0s</DataType>
       <StateNumber>3028</StateNumber>
       <TypeId>25</TypeId>
@@ -1615,22 +1615,25 @@ R2: Wodonga/Yackandandah</Comment>
       <StateNumber>2375</StateNumber>
       <TypeId>701</TypeId>
     </column>
-    <column id="252" parent="53" name="date">
+    <column id="252" parent="53" name="settlement_date">
       <Position>1</Position>
-      <DataType>date|0s</DataType>
-      <StateNumber>2969</StateNumber>
-      <TypeId>1082</TypeId>
+      <Comment>30 minute data</Comment>
+      <DataType>timestamp|0s</DataType>
+      <StateNumber>4187</StateNumber>
+      <TypeId>1114</TypeId>
     </column>
-    <column id="253" parent="53" name="total_demand_mw">
+    <column id="253" parent="53" name="total_demand">
       <Position>2</Position>
+      <Comment>Total demand at RRP in MW</Comment>
       <DataType>double precision|0s</DataType>
-      <StateNumber>2969</StateNumber>
+      <StateNumber>4171</StateNumber>
       <TypeId>701</TypeId>
     </column>
-    <column id="254" parent="53" name="dollar_per_mw">
+    <column id="254" parent="53" name="price">
       <Position>3</Position>
+      <Comment>30 min price at regional reference point RRP in $/MWh</Comment>
       <DataType>double precision|0s</DataType>
-      <StateNumber>2969</StateNumber>
+      <StateNumber>4171</StateNumber>
       <TypeId>701</TypeId>
     </column>
     <column id="255" parent="54" name="date">

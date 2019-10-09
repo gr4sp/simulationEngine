@@ -35,6 +35,7 @@ public class Gr4spSim extends SimState {
 
     //Demand
     HashMap<Date, Double> monthly_demand_register;
+    HashMap<Date, Double> half_hour_demand_register;
 
     //Consumption per Domestic Costumer
     HashMap<Date, Double> monthly_consumption_register;
@@ -125,6 +126,7 @@ public class Gr4spSim extends SimState {
         actor_register = new HashMap<>();
         arena_register = new HashMap<>();
         monthly_demand_register = new HashMap<>();
+        half_hour_demand_register = new HashMap<>();
         monthly_consumption_register = new HashMap<>();
         total_monthly_consumption_register = new HashMap<>();
         monthly_generation_register = new HashMap<>();
@@ -147,7 +149,7 @@ public class Gr4spSim extends SimState {
         /**
          * Simulation Date Range
          */
-        String startDate = "1989-01-01";
+        String startDate = "1999-01-01";
         String endDate = "2019-01-01";
 
         /**
@@ -159,7 +161,7 @@ public class Gr4spSim extends SimState {
          * Population and scale
          */
 
-        //To use M1(only Melbourne cityareaCode), populationPercentageAreacCode = 0.009; assuming 0.9% of Vic popultaion,
+        //To use M1(only Melbourne cityareaCode), populationPercentageAreacCode = 0.009; assuming 0.9% of Vic population,
 
         //Include regional with all framework indicators, 100% Population data
         areaCode = "VIC";
@@ -256,6 +258,10 @@ public class Gr4spSim extends SimState {
 
     public HashMap<Date, Double> getMonthly_demand_register() {
         return monthly_demand_register;
+    }
+
+    public HashMap<Date, Double> getHalf_hour_demand_register() {
+        return half_hour_demand_register;
     }
 
     public HashMap<Date, Double> getMonthly_consumption_register() {
@@ -886,7 +892,8 @@ public class Gr4spSim extends SimState {
         LoadData.selectArena(this);
         LoadData.selectTariffs(this, startDate, endDate, areaCode);
 
-        LoadData.selectDemand(this,startDate,endDate);
+        LoadData.selectDemand(this,startDate, endDate);
+        LoadData.selectDemandHalfHour(this, startDate, endDate);
         LoadData.selectConsumption(this, startDate, endDate);
         LoadData.selectGenerationHistoricData(this, startDate, endDate);
         LoadData.selectSolarExposure(this);
