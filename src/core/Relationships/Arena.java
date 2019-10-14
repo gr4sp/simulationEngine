@@ -1,13 +1,11 @@
 package core.Relationships;
 
 import core.Gr4spSim;
-import core.Social.ConsumptionActor;
 import core.Technical.Generator;
 import core.Technical.Spm;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 
-import java.time.YearMonth;
 import java.util.*;
 
 public class Arena implements Steppable {
@@ -179,6 +177,55 @@ public class Arena implements Steppable {
 //        return tariff;
     }
 
+    /**
+     * Create a bid for each Generator that participates in the SPOT market
+     * Capacity factors of each generator vary depending on the season.  Data on this capacity factors is obtained from
+     * the "Generation_Information_VIC" (May 2019)
+    */
+    public void createBids(SimState state){
+
+        Gr4spSim data = (Gr4spSim) state;
+        Date today = data.getCurrentSimDate();
+
+        ArrayList<Generator> activeGensSPOT = new ArrayList<Generator>();
+        ArrayList<Generator> activeGensOutSPOT = new ArrayList<Generator>();
+
+        /**
+         * Go through each SPM and check if active generators today have more than 30MW
+         */
+
+        for (Map.Entry<Integer, Vector<Spm>> entry : data.getSpm_register().entrySet()) {
+            Vector<Spm> spm_gens = entry.getValue();
+            for (Spm s : spm_gens) {
+
+                //Get Active Gens Today
+                s.getActiveGensThisSPM(today, activeGensSPOT, activeGensOutSPOT);
+
+            }
+        }
+
+        /**
+         * Create a bid for each Generator that participates in the SPOT market
+         */
+
+        this.spot.clearBidders();
+        for (Generator g : activeGensSPOT) {
+
+            //only consider Scheduled (S)
+            if( g.getDispatchTypeDescriptor().equals("S") == false ) continue;
+
+            g.updateHistoricCapacityFactor(state);
+            g.setBidsInSpot( g.getBidsInSpot() + 1 );
+
+            double availableCapacity = g.computeAvailableCapacity(state);
+            double dollarMWh = g.priceMWhLCOE();
+
+            Bid b = new Bid(null, g, dollarMWh, availableCapacity);
+            this.spot.addBidder(b);
+        }
+
+    }
+
     @Override
     public void step(SimState state) {
         Gr4spSim data = (Gr4spSim) state;
@@ -191,22 +238,6 @@ public class Arena implements Steppable {
                 return;
             }
 
-            ArrayList<Generator> activeGensSPOT = new ArrayList<Generator>();
-            ArrayList<Generator> activeGensOutSPOT = new ArrayList<Generator>();
-
-            /**
-             * Go through each SPM and check if active generators today have more than 30MW
-             */
-
-            for (Map.Entry<Integer, Vector<Spm>> entry : data.getSpm_register().entrySet()) {
-                Vector<Spm> spm_gens = entry.getValue();
-                for (Spm s : spm_gens) {
-
-                    //Get Active Gens Today
-                    s.getActiveGensThisSPM(today, activeGensSPOT, activeGensOutSPOT);
-
-                }
-            }
 
             Calendar c = Calendar.getInstance();
             c.setTime(today);
@@ -224,78 +255,92 @@ public class Arena implements Steppable {
 
             c.setTime(today);
 
+            double monthlyAveragePrice = 0;
+            double monthlyAverageEmissions = 0;
+            int num_half_hours = 1;
+            double totalDemand  = 0;
+
             while(c.getTime().before(nextMonth)) {
 
                 Date currentTime = c.getTime();
-                double totalDemand  = data.getHalf_hour_demand_register().get(currentTime);
+
+                if(data.getHalf_hour_demand_register().containsKey(currentTime))
+                    totalDemand  = data.getHalf_hour_demand_register().get(currentTime);
+                else{
+                    System.out.println("\t\t\t" + currentTime + " For some reason we loose this key");
+                }
+
+                //double totalDemand = data.getMonthly_demand_register().get(today);
+
                 System.out.println(currentTime + " Demand: " + totalDemand);
 
+                createBids(state);
 
-                //Add 30 min to get next demand
-                c.add(Calendar.MINUTE, 30);
-            }
+                /**
+                 * Compute spot price using current consumption - consumption met by non scheduled gen
+                 */
 
-            /**
-             * Create a bid for each Generator that participates in the SPOT market
-             * Capacity factors of each generator vary depending on the season.  Data on this capacity factors is obtained from
-             * the "Generation_Information_VIC" (May 2019)
-             */
-
-            this.spot.clearBidders();
-            for (Generator g : activeGensSPOT) {
-
-                //only consider Scheduled (S)
-                if( g.getDispatchTypeDescriptor().equals("S") == false ) continue;
-
-                g.updateHistoricCapacityFactor(state);
-                double availableCapacity = g.computeMonthlyAvailableCapacity(state);
-                double dollarMWh = g.priceMWhLCOE();
-
-                Bid b = new Bid(null, g, dollarMWh, availableCapacity);
-                this.spot.addBidder(b);
-            }
-
-            /**
-             * Compute spot price using current consumption - consumption met by non scheduled gen
-             */
-
-
-            double totalDemand = data.getMonthly_demand_register().get(today);
-
-            // Substract from Consumption the amount supplied by generators smaller than 30MW
-            double availableCapacityNonScheduled = 0;
-            for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
-                Vector<Generator> gens = entry.getValue();
-                for (Generator g : gens) {
-                    //Has started today or earlier?
-                    if (g.getStart().before(today) || g.getStart().equals(today)) {
-                        //Has not finished operations?
-                        if (g.getEnd().after(today)) {
-                            //Check nominal capacity is smaller than 30 MW in order to know participation in spot Market
-                            if (g.getMaxCapacity() < 30) {
-                                availableCapacityNonScheduled += g.computeMonthlyAvailableCapacity(state);
+                // Substract from Consumption the amount supplied by generators smaller than 30MW
+                double availableCapacityNonScheduled = 0;
+                for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
+                    Vector<Generator> gens = entry.getValue();
+                    for (Generator g : gens) {
+                        //Has started today or earlier?
+                        if (g.getStart().before(today) || g.getStart().equals(today)) {
+                            //Has not finished operations?
+                            if (g.getEnd().after(today)) {
+                                //Check nominal capacity is smaller than 30 MW in order to know participation in spot Market
+                                if (g.getMaxCapacity() < 30) {
+                                    availableCapacityNonScheduled += g.computeAvailableCapacity(state);
+                                }
                             }
                         }
                     }
                 }
+
+                //remove consumption met by non scheduled generation (see assumptions in Word Document)
+                totalDemand -= availableCapacityNonScheduled;
+
+                this.spot.computeMarketPrice(totalDemand);
+
+                //Update average
+                monthlyAveragePrice = (monthlyAveragePrice * num_half_hours) + this.spot.getMarketPrice();
+                monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + this.spot.getEmissionsIntensity();
+
+                Generator lastGenBid = (Generator) this.getSpot().getSuccessfulBids().get(this.getSpot().getSuccessfulBids().size()-1).asset;
+                System.out.println("Price - " + currentTime + ": " + this.spot.getMarketPrice() + " - Last Bid in "+ lastGenBid.getFuelSourceDescriptor() + "Gen Name: " +lastGenBid.getName() + "Gen Id: " +lastGenBid.getId()  +" Historic Capacity Factor: "+ lastGenBid.getHistoricCapacityFactor() );
+
+                /**
+                 * Compute spot Emissions Intensity using successful bidders
+                 */
+
+                spot.computeGenEmissionIntensity(currentYear);
+
+                //Update the counter on how many steps the spot has been running
+                rounds++;
+                num_half_hours++;
+
+                //Get Averages
+                monthlyAveragePrice /= num_half_hours;
+                monthlyAverageEmissions /= num_half_hours;
+
+                //Add 30 min to get next demand
+                c.add(Calendar.MINUTE, 30);
+
+
+                //----------DEBUG AND REMOVE--------------
+                // creating a Calendar object
+                Date date = new Date(119, 0, 24);
+
+                if(currentTime.after(date) )
+                    System.out.println("Foo");
+                //-------------------------------------------------
+
             }
 
-            //remove consumption met by non scheduled generation (see assumptions in Word Document)
-            totalDemand -= availableCapacityNonScheduled;
 
-            this.spot.computeMarketPrice(totalDemand);
-
-            Generator lastGenBid = (Generator) this.getSpot().getSuccessfulBids().get(this.getSpot().getSuccessfulBids().size()-1).asset;
-            System.out.println("Price - " + today + ": " + this.spot.getMarketPrice() + " - Last Bid in "+ lastGenBid.getFuelSourceDescriptor() + "Gen Name: " +lastGenBid.getName() + "Gen Id: " +lastGenBid.getId()  +" Historic Capacity Factor: "+ lastGenBid.getHistoricCapacityFactor() );
-
-            /**
-             * Compute spot Emissions Intensity using successful bidders
-             */
-
-            spot.computeGenEmissionIntensity(currentYear);
-
-            //Update the counter on how many steps the spot has been running
-            rounds++;
+            spot.setEmissionsIntensity(monthlyAverageEmissions);
+            spot.setMarketPrice(monthlyAveragePrice);
 
         }
 

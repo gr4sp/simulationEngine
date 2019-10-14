@@ -18,6 +18,14 @@ public class MeritOrder {
         this.successfulBids= new ArrayList<Bid>();
     }
 
+    public void setMarketPrice(double marketPrice) {
+        this.marketPrice = marketPrice;
+    }
+
+    public void setEmissionsIntensity(double emissionsIntensity) {
+        this.emissionsIntensity = emissionsIntensity;
+    }
+
     public ArrayList<Bid> getSuccessfulBids() { return successfulBids; }
 
     public double getEmissionsIntensity() { return emissionsIntensity; }

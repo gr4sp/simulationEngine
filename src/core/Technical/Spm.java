@@ -17,7 +17,6 @@ import sim.portrayal.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.util.*;
-import java.util.function.ToDoubleBiFunction;
 
 
 public class Spm extends SimplePortrayal2D implements Steppable, Asset {
@@ -244,7 +243,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
 
         //It uses the same available capacity (capacity factors) used by bidders in markets
         for (Generator g : gensOutSpotMarket) {
-            double capacityAvailable = g.computeMonthlyAvailableCapacity(data);
+            double capacityAvailable = g.computeAvailableCapacity(data);
             emissionFactorGenerationOutSpot += capacityAvailable * g.getEmissionsFactor(currentYear);
             capacityOutSpot += capacityAvailable;
         }
@@ -296,7 +295,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
             Generation genData = data.getMonthly_generation_register().get(today);
             this.genEemissionFactor = genData.computeGenEmissionIntensity(activegens, today);
             for (Generator g : activegens) {
-                genCapacityAvailable += g.computeMonthlyAvailableCapacity(data);
+                genCapacityAvailable += g.computeAvailableCapacity(data);
             }
             //CDEII
             this.genEemissionFactor = this.genCapacityAvailable * this.genEemissionFactor;
