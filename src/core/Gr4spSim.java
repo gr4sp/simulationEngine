@@ -1,5 +1,6 @@
 package core;
 
+import com.esotericsoftware.yamlbeans.YamlReader;
 import core.Policies.EndConsumerTariff;
 import core.Policies.SimPolicies;
 import core.Relationships.*;
@@ -9,6 +10,7 @@ import sim.engine.*;
 import sim.field.continuous.Continuous2D;
 import sim.util.Double2D;
 
+import java.io.FileReader;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -106,6 +108,9 @@ public class Gr4spSim extends SimState {
     //Class to manage all the data generated in the simulation
     public SaveData saveData;
 
+    //Simulation Settings specified via YAML file
+    Settings settings;
+
 
     public Gr4spSim(long seed) {
 
@@ -146,61 +151,61 @@ public class Gr4spSim extends SimState {
 
     private void simulParametres() {
 
-        /**
-         * Simulation Date Range
-         */
-        String startDate = "1999-01-01";
-        String endDate = "2019-01-01";
-
-        /**
-         * Spot Market Start Date
-         */
-        String startDateSpotMarket = "1999-01-01";
-
-        /**
-         * Population and scale
-         */
-
-        //To use M1(only Melbourne cityareaCode), populationPercentageAreacCode = 0.009; assuming 0.9% of Vic population,
-
-        //Include regional with all framework indicators, 100% Population data
-        areaCode = "VIC";
-        populationPercentageAreacCode = 1;
-
-        //Max number of Dwellings represented in a single ConsumerUnit, attached to a SPM
-        //It is a measure to control aggregation of dwellings per SPM
-        //New ConsumerUnits are created according to monthly population growth in the simulation Data monthly_domestic_consumers_register
-        //maxHouseholdsPerConsumerUnit = 1000;
-
-        //Adds all households as a single actor connected to a single SPM
-        maxHouseholdsPerConsumerUnit = Integer.MAX_VALUE;
-
-        //Percentage of Total Consumption Historic Data that goes into domestic use
-        domesticConsumptionPercentage = 0.3;
-
-        /**
-         * Public Policies
-         */
-
-        // goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
-        // for example, 0.01 represents 1% per month, around 12% a year
-        double uptakeRate = 0.0;//0.005;
-        policies.getAccelerateSolarPV().setMonthlyHousholdsPercentageConversion(uptakeRate);
-
-        policies.setEndConsumerTariffs(EndConsumerTariff.MIN);
-
-        //Save start and end date in the simulator state, which is this classs Gr4spSim
-        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            this.startSimDate = stringToDate.parse(startDate);
+
+            YamlReader reader = new YamlReader(new FileReader("../settings/scenario1.yaml"));
+            settings = reader.read(Settings.class);
+            System.out.println(settings);
+
+
+            /**
+             * Simulation Date Range
+             */
+
+            //Save start and end date in the simulator state, which is this classs Gr4spSim
+            SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+            this.startSimDate = stringToDate.parse( settings.simulationDates.startDate );
             this.simCalendar.setTime(this.startSimDate);
-            this.endSimDate = stringToDate.parse(endDate);
+            this.endSimDate = stringToDate.parse( settings.simulationDates.endDate );
 
-            this.startSpotMarketDate = stringToDate.parse(startDateSpotMarket);
+            this.startSpotMarketDate = stringToDate.parse( settings.simulationDates.startDateSpotMarket );
 
-        } catch (ParseException e) {
-            System.err.println("Cannot parse Start Date: " + e.toString());
+            /**
+             * Population and scale
+             */
+
+            //To use M1(only Melbourne cityareaCode), populationPercentageAreacCode = 0.009; assuming 0.9% of Vic population,
+            //Include regional with all framework indicators, 100% Population data
+            areaCode = settings.population.areaCode;
+            populationPercentageAreacCode = settings.population.populationPercentageAreacCode;
+            //Adds all households as a single actor connected to a single SPM
+            maxHouseholdsPerConsumerUnit = settings.population.maxHouseholdsPerConsumerUnit;
+            //Percentage of Total Consumption Historic Data that goes into domestic use
+            domesticConsumptionPercentage = settings.population.domesticConsumptionPercentage;
+
+            //Max number of Dwellings represented in a single ConsumerUnit, attached to a SPM
+            //It is a measure to control aggregation of dwellings per SPM
+            //New ConsumerUnits are created according to monthly population growth in the simulation Data monthly_domestic_consumers_register
+            //maxHouseholdsPerConsumerUnit = 1000;
+
+
+            /**
+             * Public Policies
+             */
+
+            // goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
+            // for example, 0.01 represents 1% per month, around 12% a year
+            double uptakeRate = settings.policy.uptakeRate;
+            policies.getAccelerateSolarPV().setMonthlyHousholdsPercentageConversion(uptakeRate);
+            policies.setEndConsumerTariffs( settings.policy.endConsumerTariff);
+
+        }catch (ParseException | com.esotericsoftware.yamlbeans.YamlException | java.io.FileNotFoundException e){
+            System.out.println("Problems reading YAML file!"+ e.toString());
+            exit(0);
         }
+
+
     }
 
     /**

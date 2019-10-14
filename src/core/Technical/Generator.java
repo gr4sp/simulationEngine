@@ -2,6 +2,7 @@ package core.Technical;
 
 import core.Relationships.ActorAssetRelationship;
 import core.Gr4spSim;
+import core.Settings;
 import sim.engine.SimState;
 import sim.util.Double2D;
 
@@ -41,10 +42,28 @@ public class Generator implements java.io.Serializable, Asset{
     //private double fixedCosts; //fixed costs operation and maintenance in AUD/capacity unit per year
     //private double peakContribFactor; //peak contribution factor in percentage
 
-    private double lcoe; //levelised cost of electricity
+    //LCOE Price Parameters
+    public double priceMinMWh;
+    public double priceMaxMWh;
+    public double priceRateParameterMWh;
 
+    //Price Evolution
     private double historicCapacityFactor;
     private double historicGeneratedMW;
+    private int bidsInSpot;
+
+    //Capacity Factor
+    public double minCapacityFactor;
+    public double maxCapacityFactor;
+    public double maxCapacityFactorSummer;
+
+    //Emission Factor
+    public double minEF;
+    public double linRateEF;
+    public double expRateEF;
+
+
+
     private Double2D location;//coordinates where the generation is located
 
     //Start and end of operations
@@ -66,7 +85,7 @@ public class Generator implements java.io.Serializable, Asset{
     public Generator(int genId, String region, String assetType,
                      String genName, String owner, String techType, String fuelType,
                      Double gencap, String dispachType, Date start, Date expectedEnd, Date end,
-                     String duid, int no_units, double storageCapacityMwh, String fuelBucketSummary)  {
+                     String duid, int no_units, double storageCapacityMwh, String fuelBucketSummary, Settings settings)  {
         this.id = genId;
         this.region = region;
         this.assetType = assetType;
@@ -104,6 +123,20 @@ public class Generator implements java.io.Serializable, Asset{
         this.lifecycle = 30;
 
         historicCapacityFactor = getCapacityFactor(1);
+        bidsInSpot = 0;
+
+        //Load Settings specified through YAML settings file
+        priceMinMWh = settings.getPriceMinMWh( this.fuelSourceDescriptor, this.techTypeDescriptor );
+        priceMaxMWh = settings.getPriceMaxMWh( this.fuelSourceDescriptor, this.techTypeDescriptor );
+        priceRateParameterMWh = settings.getPriceRateParameterMWh( this.fuelSourceDescriptor, this.techTypeDescriptor );
+
+        minCapacityFactor = settings.getMinCapacityFactor( this.fuelSourceDescriptor, this.techTypeDescriptor );
+        maxCapacityFactor = settings.getMaxCapacityFactor( this.fuelSourceDescriptor, this.techTypeDescriptor );
+        maxCapacityFactorSummer = settings.getMaxCapacityFactorSummer( this.fuelSourceDescriptor, this.techTypeDescriptor );
+
+        minEF = settings.getMinEF( this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear );
+        linRateEF = settings.getLinRateEF( this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear );
+        expRateEF = settings.getExpRateEF( this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear );
 
     }
 
@@ -189,46 +222,6 @@ public class Generator implements java.io.Serializable, Asset{
     //Brown Coal generators prior 1964 (year Hazelwood started operating) had less thermal efficiency
     public double getEmissionsFactor(int currentYear) {
 
-        double minEF = 0;
-        double linRateEF = 0;
-        double expRateEF = 0;
-
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Brown Coal")){
-            if(this.startYear < 1964 ) {
-                minEF = 1.19;
-                linRateEF = 0.01;
-                expRateEF = 0.178;
-            }
-            else{
-                minEF = 0.49;
-                linRateEF = 0.01;
-                expRateEF = 0.151;
-            }
-        }
-        // Natural gas with two different technologies
-        if (this.getFuelSourceDescriptor().contains("Natural Gas") &&
-                (this.getTechTypeDescriptor().contains("OCGT")) ){
-            minEF = 1.19;
-            linRateEF = 0.01;
-            expRateEF = 0.178;
-        }
-        if (this.getFuelSourceDescriptor().contains("Natural Gas") &&
-                (this.getTechTypeDescriptor().equalsIgnoreCase("Turbine - Steam Sub Critical")) ){
-            minEF = 1.19;
-            linRateEF = 0.01;
-            expRateEF = 0.178;
-        }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Water")){
-            minEF = 0;
-            linRateEF = 0;
-            expRateEF = 0;
-        }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Wind")){
-            minEF = 0;
-            linRateEF = 0;
-            expRateEF = 0;
-        }
-
         //TODO: Include if neccessary (source: CO2EII All Generators csv):
         // usual CO2EII for landfill biogas methane: 0.062, Biomass and industrial materials: 0.023,
         // Diesel oil: 0.957
@@ -242,7 +235,7 @@ public class Generator implements java.io.Serializable, Asset{
 
     }
 
-    private int monthsInSpot(SimState state){
+    public int monthsInSpot(SimState state){
         Gr4spSim data = (Gr4spSim) state;
 
         Date today = data.getCurrentSimDate();
@@ -263,10 +256,8 @@ public class Generator implements java.io.Serializable, Asset{
 
         return months;
     }
+
     public void updateHistoricCapacityFactor(SimState state) {
-
-
-        int rounds = monthsInSpot(state);
 
         // Update Capacity based on historic amount sold, and reset every year
 //        if(rounds%12 > 0)
@@ -275,107 +266,55 @@ public class Generator implements java.io.Serializable, Asset{
 //            historicCapacityFactor = getCapacityFactor(1);
 
         // Update Capacity based on historic amount sold
-        if(rounds > 0)
-            historicCapacityFactor = historicGeneratedMW / (maxCapacity * (double)rounds);
+        if(bidsInSpot > 0) {
+            historicCapacityFactor = historicGeneratedMW / (maxCapacity * (double) bidsInSpot);
+            historicCapacityFactor = (double)Math.round(historicCapacityFactor * 100000d) / 100000d;
+
+
+        }
 
     }
 
+    //If historic is below minCapacityFactor, then use min CapacityFactor to ge prices. MinCapacityFactors makes the assumption that the capacity
+    //factor didn't fall  below that threshold by selling through OTCs instead of SPOT
     public double priceMWhLCOE(){
 
-        double result =  priceMinMWh() +  ( (priceMaxMWh()-priceMinMWh()) * (Math.exp( - priceRateParameterMWh() * historicCapacityFactor)) );
+        double historicCF = historicCapacityFactor;
+
+        if( historicCF < minCapacityFactor ) historicCF= minCapacityFactor;
+
+        double result =  priceMinMWh() +  ( (priceMaxMWh()-priceMinMWh()) * (Math.exp( - priceRateParameterMWh() * historicCF)) );
         //double meanResult =
 
         return result;
     }
 
 
-
+    //$/MWH
     public double priceMinMWh(){
-        double dollarMWh = 0.0;
-
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Brown Coal")){ dollarMWh = 43; }
-        // Natural gas with two different technologies
-        if (this.getFuelSourceDescriptor().contains("Natural Gas") &&
-                (this.getTechTypeDescriptor().contains("OCGT")) ){
-            dollarMWh = 63;
-        }
-        if (this.getFuelSourceDescriptor().contains("Natural Gas") &&
-                (this.getTechTypeDescriptor().equalsIgnoreCase("Turbine - Steam Sub Critical")) ){
-            dollarMWh = 58;
-        }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Water")){ dollarMWh = 57; }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Wind")){ dollarMWh = 44; }
-
-        return dollarMWh;
+        return priceMinMWh;
     }
 
     public double priceMaxMWh(){
-        double dollarMWh = 0.0;
-
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Brown Coal")){ dollarMWh = 250; }
-        if (this.getFuelSourceDescriptor().contains("Natural Gas") &&
-                (this.getTechTypeDescriptor().contains("OCGT")) ){ dollarMWh = 800; }
-        if (this.getFuelSourceDescriptor().contains("Natural Gas") &&
-                (this.getTechTypeDescriptor().equalsIgnoreCase("Turbine - Steam Sub Critical")) ){ dollarMWh = 600; }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Water")){ dollarMWh = 900; }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Wind")){ dollarMWh = 250; }
-
-        return dollarMWh;
+        return priceMaxMWh;
     }
+
 
     public double priceRateParameterMWh(){
-        double dollarMWh = 0.0;
-
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Brown Coal")){ dollarMWh = 7; }
-        if (this.getFuelSourceDescriptor().contains("Natural Gas") &&
-                (this.getTechTypeDescriptor().contains("OCGT")) ){ dollarMWh = 5; }
-        if (this.getFuelSourceDescriptor().contains("Natural Gas") &&
-                (this.getTechTypeDescriptor().equalsIgnoreCase("Turbine - Steam Sub Critical")) ){ dollarMWh = 5; }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Water")){ dollarMWh = 7; }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Wind")){ dollarMWh = 7; }
-
-        return dollarMWh;
+        return priceRateParameterMWh;
     }
 
-//    public double priceMWh(){
-//        double dollarMWh = 0.0;
-//
-//        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Brown Coal")){ dollarMWh = 50; }
-//        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Natural Gas")){ dollarMWh = 100; }
-//        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Water")){ dollarMWh = 60; }
-//        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Wind")){ dollarMWh = 100; }
-//
-//        return dollarMWh;
-//    }
 
     public double getCapacityFactor( int currentMonth ){
-        //capactiy 0.95 (Disesl, Waste Water, LandFill, etc.)
-        double capacityFactor = 0.95;
 
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Brown Coal")){
-            if( currentMonth > 11  && currentMonth < 3 ) { //Summer from December to March 1
-                capacityFactor = 0.9; // all brown coal generators offer 90% of their nameplate capacity for summer periods
-            }else {
-                capacityFactor = 0.95; // all brown coal generators offer 95% of their nameplate capacity for summer periods
-            }
-        }
-        if (this.getFuelSourceDescriptor().contains("Natural Gas")){
-            capacityFactor = 0.85;
-        }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Water")){
-            capacityFactor = 0.95;
-        }
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Wind")){
-            if( currentMonth > 11  && currentMonth < 3 ) { //Summer from December to March 1
-                capacityFactor = 0.081;
-            }else {
-                capacityFactor = 0.073;
-            }
-        }
-        return capacityFactor;
+        if( currentMonth > 11  && currentMonth < 3 )
+            return maxCapacityFactorSummer;
+        else
+            return maxCapacityFactor;
     }
+
     //returns MW
-    public double computeMonthlyAvailableCapacity(SimState state) {
+    public double computeAvailableCapacity(SimState state) {
         Gr4spSim data = (Gr4spSim) state;
         Date today = data.getCurrentSimDate();
         Calendar c = Calendar.getInstance();
@@ -445,6 +384,13 @@ public class Generator implements java.io.Serializable, Asset{
         this.fuelSourceDescriptor = fuelSourceDescriptor;
     }
 
+    public int getBidsInSpot() {
+        return bidsInSpot;
+    }
+
+    public void setBidsInSpot(int bidsInSpot) {
+        this.bidsInSpot = bidsInSpot;
+    }
 
     public double getHistoricGeneratedMW() {
         return historicGeneratedMW;

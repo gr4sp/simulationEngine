@@ -1,0 +1,157 @@
+simulationDates:
+
+  # Simulation Date Range
+  startDate:  2005-01-01
+  endDate: 2019-01-01
+
+  # Spot Market Start Date
+  startDateSpotMarket: 1999-01-01
+
+population:
+  # Population and scale
+  # To use M1(only Melbourne cityareaCode), populationPercentageAreacCode: 0.009 assuming 0.9% of Vic population,
+
+  # Include regional with all framework indicators, 100% Population data
+  areaCode: VIC
+  populationPercentageAreacCode: 1.0
+
+  # Adds all households as a single actor connected to a single SPM (Integer.MAX_VALUE: 2147483647)
+  maxHouseholdsPerConsumerUnit: 2147483647
+
+  # Percentage of Total Consumption Historic Data that goes into domestic use
+  domesticConsumptionPercentage: 0.3
+
+policy:
+  # goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
+  # for example, 0.01 represents 1% per month, around 12% a year
+  uptakeRate: 0.0
+
+  # Consumers will choose the Best (MIN), Worst (MAX), Random (RND) available retail price
+  endConsumerTariff: MIN
+
+generators:
+  Default:
+    #LCOE Price Parameters
+    priceMinMWh: 0
+    priceMaxMWh: 0
+    priceRateParameterMWh: 0
+    # Capacity Factor
+    minCapacityFactor: 0
+    maxCapacityFactor: 0
+    maxCapacityFactorSummer: 0
+    # Emission Factor List, by increasing start year
+    emissionFactors:
+      - startYear: 1800
+        minEF: 0
+        linRateEF: 0
+        expRateEF: 0
+
+  Brown Coal:
+    #LCOE Price Parameters
+    priceMinMWh: 15
+    priceMaxMWh: 80
+    priceRateParameterMWh: 7
+    # Capacity Factor
+    minCapacityFactor: 0.47
+    maxCapacityFactor: 0.9
+    maxCapacityFactorSummer: 0.95
+    # Emission Factor, by increasing start year
+    emissionFactors:
+      - startYear: 1800
+        minEF: 1.19
+        linRateEF: 0.01
+        expRateEF: 0.178
+      - startYear: 1964
+        minEF: 0.49
+        linRateEF: 0.01
+        expRateEF: 0.151
+
+  Natural Gas Pipeline Turbine - OCGT:
+    #LCOE Price Parameters
+    priceMinMWh: 63
+    priceMaxMWh: 800
+    priceRateParameterMWh: 5
+    # Capacity Factor
+    minCapacityFactor: 0.08
+    maxCapacityFactor: 0.928
+    maxCapacityFactorSummer: 0.928
+    # Emission Factor, by increasing start year
+    emissionFactors:
+      - startYear: 1800
+        minEF: 1.19
+        linRateEF: 0.01
+        expRateEF: 0.178
+
+  Natural Gas Pipeline Turbine - CCGT:
+    #LCOE Price Parameters
+    priceMinMWh: 58
+    priceMaxMWh: 300
+    priceRateParameterMWh: 5
+    # Capacity Factor
+    minCapacityFactor: 0.22
+    maxCapacityFactor: 0.64
+    maxCapacityFactorSummer: 0.64
+    # Emission Factor, by increasing start year
+    emissionFactors:
+      - startYear: 1800
+        minEF: 1.19
+        linRateEF: 0.01
+        expRateEF: 0.178
+
+  Wind:
+    #LCOE Price Parameters
+    priceMinMWh: 20
+    priceMaxMWh: 200
+    priceRateParameterMWh: 7
+    # Capacity Factor
+    minCapacityFactor: 0.28
+    maxCapacityFactor: 0.38
+    maxCapacityFactorSummer: 0.38
+    # Emission Factor, by increasing start year
+    emissionFactors:
+      - startYear: 1800
+        minEF: 0
+        linRateEF: 0
+        expRateEF: 0
+
+  Water:
+    #LCOE Price Parameters
+    priceMinMWh: 22
+    priceMaxMWh: 150
+    priceRateParameterMWh: 7
+    # Capacity Factor
+    minCapacityFactor: 0.05
+    maxCapacityFactor: 0.90
+    maxCapacityFactorSummer: 0.90
+    # Emission Factor, by increasing start year
+    emissionFactors:
+      - startYear: 1800
+        minEF: 0
+        linRateEF: 0
+        expRateEF: 0
+
+
+# solar exposure in data base is in MJ/m2 but converted to KWh/m2 when loaded.
+# the energy yield is given in energy output per area, or energy generated in KWh//m2 per month
+
+#SolarExposure:
+#  #de-rating factor for manufacturing tolerance, dimensionless
+#  double fman: 1 - 0.03
+#  # de-rating factor for dirt, dimensionless
+#  double fdirt: 1 - 0.05
+#  # temperature de-rating factor, dimensionless, ƒtemp: 1 + (γ × (avg temp) y=-.005 * 20
+#  # y is the temperature coefficient, using example from CEC guidelines as -0.5%/C and average daily temperature of 20C
+#  # the de-rating factor increases with increasing average daily temperatures.
+#  double ftemp: 1 + (-0.005*20)
+#  # efficiency of the subsystem (cables) between the PV array
+#  # and the inverter (DC cable loss)
+#  double npv_inv: 1 - 0.03
+#  # efficiency of the inverter. Typically 0.9
+#  double ninv: 1 - 0.1
+#  # efficiency of the subsystem (cables) between the inverter and the switchboard (AC cable loss)
+#  #  recommended voltage drop between inverter and main switch shouldn't be greater than 1%
+#  double ninv_sb: 1 - 0.01
+
+
+#tariffs:
+#some settings to change the extra charge for: network (transmission and distribution charges), jurisdictional charges (environemntal costs, including FiTs) and retail service costs.

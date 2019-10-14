@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
 
+import static java.lang.System.exit;
+
 //Class to load all the data to start the simulation
 public class LoadData {
 
@@ -303,6 +305,7 @@ public class LoadData {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            exit(1);
         }
     }
 
@@ -831,7 +834,8 @@ public class LoadData {
                         rs.getString("duid"),
                         rs.getInt("no_units"),
                         rs.getFloat("storage_capacity_mwh"),
-                        rs.getString("fuel_bucket_summary")
+                        rs.getString("fuel_bucket_summary"),
+                        data.settings
                 );
 
                 int idGen = rs.getInt("asset_id");
