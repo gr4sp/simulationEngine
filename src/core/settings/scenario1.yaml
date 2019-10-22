@@ -1,7 +1,7 @@
 simulationDates:
 
   # Simulation Date Range
-  startDate:  2005-01-01
+  startDate:  1999-01-01
   endDate: 2019-01-01
 
   # Spot Market Start Date
@@ -28,8 +28,10 @@ policy:
 
   # Consumers will choose the Best (MIN), Worst (MAX), Random (RND) available retail price
   endConsumerTariff: MIN
+  annualInflation: 0.025
 
 generators:
+
   Default:
     #LCOE Price Parameters
     priceMinMWh: 0

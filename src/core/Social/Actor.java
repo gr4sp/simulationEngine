@@ -24,12 +24,18 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
 
     private int id; // actor id
     private ActorType actorType; // household, generator, transmission operator, distribution operator, retailer, gov institution, etc.
+
     private String name; //AGL, Angela, SunCorp, Powershop, AEMO, ACCC, COAG, Origin, AER, AEMO etc.
     private GovRole role; // rule follower, rule implementer, rule maker
     private BusinessStructure businessType; // cooperative, public company, private, etc.
     private OwnershipModel ownershipModel;
     private Date start;
     private Date end;
+    private String region; //VIC, NSW, ACT, etc
+    private String reg_number; //ABN or any other official id
+    private String actor_role;
+    private String businessStructure;
+
     public ArrayList<ActorActorRelationship> contracts;
     public ArrayList<ActorAssetRelationship> assetRelationships;
 
@@ -46,17 +52,17 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
         this.end = null;
     }
 
-    public Actor(int id, ActorType actorType, String name, GovRole role, BusinessStructure businessType, OwnershipModel ownershipModel, Date start, Date end) {
+    public Actor(int id, String name, java.sql.Date registrationDate, java.sql.Date changeDate, String reg_number, String region, String actor_role, String businessStructure) {
         this.id = id;
-        this.actorType = actorType;
         this.name = name;
-        this.role = role;
-        this.businessType = businessType;
-        this.ownershipModel = ownershipModel;
-        this.contracts = new ArrayList<>();
-        this.assetRelationships = new ArrayList<>();
         this.start = start;
         this.end = end;
+        this.reg_number = reg_number;
+        this.region = region;
+        this.actor_role = actor_role;
+        this.businessType = businessType;
+        this.contracts = new ArrayList<>();
+        this.assetRelationships = new ArrayList<>();
     }
 
     public int getId() {

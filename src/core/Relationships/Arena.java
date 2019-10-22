@@ -179,7 +179,7 @@ public class Arena implements Steppable {
 
     /**
      * Create a bid for each Generator that participates in the SPOT market
-     * Capacity factors of each generator vary depending on the season.  Data on this capacity factors is obtained from
+     * Capacity factors of each generator vary depending on the season.  Data on max capacity is obtained from
      * the "Generation_Information_VIC" (May 2019)
     */
     public void createBids(SimState state){
@@ -215,15 +215,30 @@ public class Arena implements Steppable {
             if( g.getDispatchTypeDescriptor().equals("S") == false ) continue;
 
             g.updateHistoricCapacityFactor(state);
-            g.setBidsInSpot( g.getBidsInSpot() + 1 );
 
             double availableCapacity = g.computeAvailableCapacity(state);
             double dollarMWh = g.priceMWhLCOE();
 
             Bid b = new Bid(null, g, dollarMWh, availableCapacity);
             this.spot.addBidder(b);
+
+            g.setBidsInSpot( g.getBidsInSpot() + 1 );
         }
 
+    }
+
+    private void applyInflation(SimState state) {
+        Gr4spSim data = (Gr4spSim) state;
+        for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
+            Vector<Generator> gens = entry.getValue();
+            for (Generator g : gens) {
+
+                //Apply annual inflation
+                g.setPriceMinMWh(g.getPriceMinMWh() * (1 + data.settings.getAnnualInflation()));
+                g.setPriceMaxMWh(g.getPriceMaxMWh() * (1 + data.settings.getAnnualInflation()));
+
+            }
+        }
     }
 
     @Override
@@ -245,6 +260,9 @@ public class Arena implements Steppable {
             int currentMonth = c.get(Calendar.MONTH) + 1;
             int currentYear = c.get(Calendar.YEAR);
 
+            if (currentMonth == 1){
+                applyInflation(state);
+            }
 
             /**
              * Get all the half hour info of the month if available
@@ -290,7 +308,9 @@ public class Arena implements Steppable {
                             //Has not finished operations?
                             if (g.getEnd().after(today)) {
                                 //Check nominal capacity is smaller than 30 MW in order to know participation in spot Market
-                                if (g.getMaxCapacity() < 30) {
+                                //if (g.getMaxCapacity() < 30) {
+                                //only consider Semi-Scheduled (SS) and (NS)
+                                if( g.getDispatchTypeDescriptor().equals("S") == false ) {
                                     availableCapacityNonScheduled += g.computeAvailableCapacity(state);
                                 }
                             }
@@ -330,7 +350,7 @@ public class Arena implements Steppable {
 
                 //----------DEBUG AND REMOVE--------------
                 // creating a Calendar object
-                Date date = new Date(119, 0, 24);
+                Date date = new Date(118, 3, 24);
 
                 if(currentTime.after(date) )
                     System.out.println("Foo");

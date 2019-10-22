@@ -17,17 +17,14 @@ public class LoadData {
 
 
     //Functions to convert readings from text in DB to Actor type, etc.
+    public static ActorAssetRelationshipType stringToActorAssetTypeRelType (String actorAssetRelType){
 
-    public static ActorAssetRelationshipType stringToActorAssetTypeRelType(String actorRelType) {
-
-        if (actorRelType.equalsIgnoreCase("OWN"))
+        if (actorAssetRelType.equalsIgnoreCase("OWN"))
             return ActorAssetRelationshipType.OWN;
-        if (actorRelType.equalsIgnoreCase("LEASE"))
-            return ActorAssetRelationshipType.LEASE;
-        if (actorRelType.equalsIgnoreCase("USE"))
+        if (actorAssetRelType.equalsIgnoreCase("USE"))
             return ActorAssetRelationshipType.USE;
-
-
+        if (actorAssetRelType.equalsIgnoreCase("LEASE"))
+            return ActorAssetRelationshipType.LEASE;
         return ActorAssetRelationshipType.OTHER;
     }
 
@@ -36,20 +33,22 @@ public class LoadData {
 
         if (actorRelType.equalsIgnoreCase("BILLING"))
             return ActorActorRelationshipType.BILLING;
-        if (actorRelType.equalsIgnoreCase("OTC"))
-            return ActorActorRelationshipType.OTC;
-        if (actorRelType.equalsIgnoreCase("ETF"))
-            return ActorActorRelationshipType.ETF;
-        if (actorRelType.equalsIgnoreCase("SPOT"))
-            return ActorActorRelationshipType.SPOT;
-        if (actorRelType.equalsIgnoreCase("ACCESS_FEE"))
-            return ActorActorRelationshipType.ACCESS_FEE;
-        if (actorRelType.equalsIgnoreCase("COMMISSION_FEE"))
-            return ActorActorRelationshipType.COMMISSION_FEE;
-        if (actorRelType.equalsIgnoreCase("P2P"))
-            return ActorActorRelationshipType.P2P;
-        if (actorRelType.equalsIgnoreCase("OWNS"))
-            return ActorActorRelationshipType.OWNS;
+        if (actorRelType.equalsIgnoreCase("NONE_INDEPENDENT"))
+            return ActorActorRelationshipType.NONE_INDEPENDENT;
+        if (actorRelType.equalsIgnoreCase("HOLDER_PARENT"))
+            return ActorActorRelationshipType.HOLDER_PARENT;
+        if (actorRelType.equalsIgnoreCase("CHANGE_NAME"))
+            return ActorActorRelationshipType.CHANGE_NAME;
+        if (actorRelType.equalsIgnoreCase("BUYS_AQUIRES_ABSORBS"))
+            return ActorActorRelationshipType.BUYS_AQUIRES_ABSORBS;
+        if (actorRelType.equalsIgnoreCase("MANAGES_OPERATES_INTERMEDIARY"))
+            return ActorActorRelationshipType.MANAGES_OPERATES_INTERMEDIARY;
+        if (actorRelType.equalsIgnoreCase("DISSAGREGATED_FROM"))
+            return ActorActorRelationshipType.DISSAGREGATED_FROM;
+        if (actorRelType.equalsIgnoreCase("PARTNER_CO"))
+            return ActorActorRelationshipType.PARTNER_CO;
+        if (actorRelType.equalsIgnoreCase("PARTLY_OWNS"))
+            return ActorActorRelationshipType.PARTLY_OWNS;
 
         return ActorActorRelationshipType.OTHER;
     }
@@ -195,7 +194,7 @@ public class LoadData {
                 //Actor seller, Actor buyer, Asset assetUsed, float dollarMWh, Date start, Date end, float capacityContracted
 
                 /**
-                 * NEED TO USE FORMULAT RBA TO UPDATE PRICES!
+                 * NEED TO USE FORMULA RBA TO UPDATE PRICES!
                  * */
 
                 Contract contract = new Contract(
@@ -247,8 +246,8 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getString("date") + "\t" +
-                        rs.getString("operational_demand_mw"));
+                //System.out.println("\t" + rs.getString("date") + "\t" +
+                  //      rs.getString("operational_demand_mw"));
 
 
                 Date d = rs.getDate("date");
@@ -623,14 +622,24 @@ public class LoadData {
                         rs.getString("ownershipModel"));
 
 
-                Actor actor = new Actor(rs.getInt("id"),
+                /*Actor actor = new Actor(rs.getInt("id"),
                         ActorType.valueOf(rs.getString("typename")),
                         rs.getString("name"),
                         core.Social.GovRole.stringToGovRole(rs.getString("govrole")),
                         core.Social.BusinessStructure.stringToBusinessStructure(rs.getString("businessStructure")),
                         core.Social.OwnershipModel.stringToOwnershipModel(rs.getString("ownershipModel")),
                         rs.getDate("startdate"),
-                        rs.getDate("changedate"));
+                        rs.getDate("changedate"));*/
+
+                Actor actor = new Actor(rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getDate("registrationDate"),
+                        rs.getDate("changeDate"),
+                        rs.getString("reg_number"),
+                        rs.getString("region"),
+                        rs.getString("role"),
+                        rs.getString("businessStructure"));
+
 
                 int idActor = rs.getInt("id");
 
