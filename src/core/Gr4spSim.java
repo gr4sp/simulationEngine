@@ -1,11 +1,11 @@
 package core;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
-import core.Policies.EndConsumerTariff;
 import core.Policies.SimPolicies;
 import core.Relationships.*;
 import core.Social.*;
 import core.Technical.*;
+import core.settings.Settings;
 import sim.engine.*;
 import sim.field.continuous.Continuous2D;
 import sim.util.Double2D;
@@ -20,8 +20,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static core.Social.GovRole.*;
 import static java.lang.System.exit;
-import static java.lang.System.setOut;
 
 
 public class Gr4spSim extends SimState {
@@ -109,7 +109,7 @@ public class Gr4spSim extends SimState {
     public SaveData saveData;
 
     //Simulation Settings specified via YAML file
-    Settings settings;
+    public Settings settings;
 
 
     public Gr4spSim(long seed) {
@@ -153,7 +153,7 @@ public class Gr4spSim extends SimState {
 
         try {
 
-            YamlReader reader = new YamlReader(new FileReader("../settings/scenario1.yaml"));
+            YamlReader reader = new YamlReader(new FileReader("core/settings/scenario1.yaml"));
             settings = reader.read(Settings.class);
             System.out.println(settings);
 
@@ -165,11 +165,11 @@ public class Gr4spSim extends SimState {
             //Save start and end date in the simulator state, which is this classs Gr4spSim
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
-            this.startSimDate = stringToDate.parse( settings.simulationDates.startDate );
+            this.startSimDate = stringToDate.parse( settings.getStartDate() );
             this.simCalendar.setTime(this.startSimDate);
-            this.endSimDate = stringToDate.parse( settings.simulationDates.endDate );
+            this.endSimDate = stringToDate.parse( settings.getEndDate() );
 
-            this.startSpotMarketDate = stringToDate.parse( settings.simulationDates.startDateSpotMarket );
+            this.startSpotMarketDate = stringToDate.parse( settings.getStartDateSpotMarket() );
 
             /**
              * Population and scale
@@ -177,12 +177,12 @@ public class Gr4spSim extends SimState {
 
             //To use M1(only Melbourne cityareaCode), populationPercentageAreacCode = 0.009; assuming 0.9% of Vic population,
             //Include regional with all framework indicators, 100% Population data
-            areaCode = settings.population.areaCode;
-            populationPercentageAreacCode = settings.population.populationPercentageAreacCode;
+            areaCode = settings.getAreaCode();
+            populationPercentageAreacCode = settings.getPopulationPercentageAreacCode();
             //Adds all households as a single actor connected to a single SPM
-            maxHouseholdsPerConsumerUnit = settings.population.maxHouseholdsPerConsumerUnit;
+            maxHouseholdsPerConsumerUnit = settings.getMaxHouseholdsPerConsumerUnit();
             //Percentage of Total Consumption Historic Data that goes into domestic use
-            domesticConsumptionPercentage = settings.population.domesticConsumptionPercentage;
+            domesticConsumptionPercentage = settings.getDomesticConsumptionPercentage();
 
             //Max number of Dwellings represented in a single ConsumerUnit, attached to a SPM
             //It is a measure to control aggregation of dwellings per SPM
@@ -196,9 +196,9 @@ public class Gr4spSim extends SimState {
 
             // goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
             // for example, 0.01 represents 1% per month, around 12% a year
-            double uptakeRate = settings.policy.uptakeRate;
+            double uptakeRate = settings.getUptakeRate();
             policies.getAccelerateSolarPV().setMonthlyHousholdsPercentageConversion(uptakeRate);
-            policies.setEndConsumerTariffs( settings.policy.endConsumerTariff);
+            policies.setEndConsumerTariffs( settings.getEndConsumerTariff() );
 
         }catch (ParseException | com.esotericsoftware.yamlbeans.YamlException | java.io.FileNotFoundException e){
             System.out.println("Problems reading YAML file!"+ e.toString());
@@ -639,7 +639,7 @@ public class Gr4spSim extends SimState {
 
             //Create new Consumer Unit
             Actor actor = new ConsumerUnit(numActors++, ActorType.HDCONSUMER, name,
-                    GovRole.RULEFOLLOW, BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
+                    stringToGovRole("RULEFOLLOWER"), BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
                     numPeople, householdsCreated, hasGas, true, 0, today);
 
             consumptionActors.add((ConsumptionActor) actor);
@@ -817,7 +817,7 @@ public class Gr4spSim extends SimState {
             if (householdsLeft < maxHouseholdsPerConsumerUnit) householdsCreated = householdsLeft;
 
             Actor actor = new ConsumerUnit(numActors++, ActorType.HDCONSUMER, name,
-                    GovRole.RULEFOLLOW, BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
+                    RULEFOLLOW, BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
                     numPeople, householdsCreated, hasGas, true, 0, today);
 
             //Decrease conventional households, after increasing the non-conventional

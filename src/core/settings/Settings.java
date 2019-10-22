@@ -1,4 +1,4 @@
-package core;
+package core.settings;
 
 import core.Policies.EndConsumerTariff;
 
@@ -9,6 +9,8 @@ class SimulationDatesSettings{
     public String startDate;
     public String endDate;
     public String startDateSpotMarket;
+
+
 }
 
 class PopulationSettings{
@@ -16,11 +18,15 @@ class PopulationSettings{
     public double populationPercentageAreacCode;
     public int maxHouseholdsPerConsumerUnit;
     public double domesticConsumptionPercentage;
+
+
 }
 
 class PolicySettings{
     public double uptakeRate;
     public EndConsumerTariff endConsumerTariff;
+    public double annualInflation;
+
 }
 
 class EmissionFactor{
@@ -123,4 +129,53 @@ public class Settings {
         return getGenSettings(fuelType, techType).selectEmissionFactor(startYear).expRateEF;
 
     }
+
+    /**
+     * SimulDates
+     * */
+    public String getStartDate() {
+        return simulationDates.startDate;
+    }
+
+    public String getEndDate() {
+        return simulationDates.endDate;
+    }
+
+    public String getStartDateSpotMarket() {
+        return simulationDates.startDateSpotMarket;
+    }
+
+    /**
+     * Population
+     * */
+
+    public String getAreaCode() {
+        return population.areaCode;
+    }
+
+    public double getPopulationPercentageAreacCode() {
+        return population.populationPercentageAreacCode;
+    }
+
+    public int getMaxHouseholdsPerConsumerUnit() {
+        return population.maxHouseholdsPerConsumerUnit;
+    }
+
+    public double getDomesticConsumptionPercentage() {
+        return population.domesticConsumptionPercentage;
+    }
+
+    /**
+     * Policy
+     * */
+
+    public double getUptakeRate() {
+        return policy.uptakeRate;
+    }
+
+    public EndConsumerTariff getEndConsumerTariff() { return policy.endConsumerTariff; }
+
+    public double getAnnualInflation() { return policy.annualInflation; }
+
+
 }

@@ -1,19 +1,7 @@
 package core;
 
-import com.opencsv.CSVWriter;
-
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import java.awt.Color;
 import javax.swing.JFrame;
-
-import core.Social.ConsumerUnit;
-import org.jfree.data.xy.*;
-import sim.engine.Steppable;
 
 import sim.display.Controller;
 import sim.display.Display2D;
@@ -21,14 +9,10 @@ import sim.display.GUIState;
 import sim.engine.SimState;
 import sim.portrayal.continuous.ContinuousPortrayal2D;
 import sim.portrayal.network.NetworkPortrayal2D;
-import sim.util.media.chart.TimeSeriesChartGenerator;
 
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.ChartPanel;
 
 import java.awt.BorderLayout;
-
-import org.jfree.data.xy.XYSeries;
 
 
 public class Gr4spSimUI extends GUIState {
@@ -120,7 +104,7 @@ public class Gr4spSimUI extends GUIState {
         tariffChartFrame.setVisible(true);
         tariffChartFrame.setSize(800, 800);
         c.registerFrame(tariffChartFrame);
-        tariffChartFrame.add(new ChartPanel(data.saveData.tariffChart.getChart()), BorderLayout.CENTER);
+        tariffChartFrame.add(new ChartPanel(data.saveData.WholesaleChart.getChart()), BorderLayout.CENTER);
 
         ghgChartFrame = new JFrame("Total Households GHG (MtCO2-e/MWh) area code: " + data.getAreaCode());
         ghgChartFrame.setVisible(true);

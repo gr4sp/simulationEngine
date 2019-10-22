@@ -21,7 +21,7 @@ import java.util.*;
 public class SaveData implements Steppable {
 
     public TimeSeriesChartGenerator consumptionChart;
-    public TimeSeriesChartGenerator tariffChart;
+    public TimeSeriesChartGenerator WholesaleChart;
     public TimeSeriesChartGenerator ghgChart;
     public TimeSeriesChartGenerator numDomesticConsumersChart;
 
@@ -50,10 +50,10 @@ public class SaveData implements Steppable {
         consumptionChart.setXAxisLabel("Year");
         consumptionChart.setYAxisLabel("MWh");
 
-        tariffChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        tariffChart.setTitle("Average Households Tariff (c/KWh) area code: " + data.getAreaCode());
-        tariffChart.setXAxisLabel("Year");
-        tariffChart.setYAxisLabel("c/KWh");
+        WholesaleChart = new sim.util.media.chart.TimeSeriesChartGenerator();
+        WholesaleChart.setTitle("30min Monthly Average Wholesale ($/MWh) area code: " + data.getAreaCode());
+        WholesaleChart.setXAxisLabel("Year");
+        WholesaleChart.setYAxisLabel("$/MWh");
 
         ghgChart = new sim.util.media.chart.TimeSeriesChartGenerator();
         ghgChart.setTitle("Total Households GHG (tCO2-e) area code: " + data.getAreaCode());
@@ -104,7 +104,7 @@ public class SaveData implements Steppable {
 
     public void plotSeries(SimState simState) {
         consumptionChart.removeAllSeries();
-        tariffChart.removeAllSeries();
+        WholesaleChart.removeAllSeries();
         ghgChart.removeAllSeries();
         numDomesticConsumersChart.removeAllSeries();
 
@@ -121,7 +121,7 @@ public class SaveData implements Steppable {
         XYSeries seriesTariff = new org.jfree.data.xy.XYSeries(
                 "AllConsumptionUnits",
                 false);
-        tariffChart.addSeries(seriesTariff, null);
+        WholesaleChart.addSeries(seriesTariff, null);
         tariffConsumptionActorSeries.add(seriesTariff);
 
         XYSeries seriesGHG = new org.jfree.data.xy.XYSeries(
@@ -247,10 +247,10 @@ public class SaveData implements Steppable {
 
 
             // we're in the model thread right now, so we shouldn't directly
-            // update the consumptionChart/tariffChart/GHGChart/etc.  Instead we request an update to occur the next
+            // update the consumptionChart/WholesaleChart/GHGChart/etc.  Instead we request an update to occur the next
             // time that control passes back to the Swing event thread.
             consumptionChart.updateChartLater(simState.schedule.getSteps());
-            tariffChart.updateChartLater(simState.schedule.getSteps());
+            WholesaleChart.updateChartLater(simState.schedule.getSteps());
             ghgChart.updateChartLater(simState.schedule.getSteps());
             numDomesticConsumersChart.updateChartLater(simState.schedule.getSteps());
         }
@@ -278,9 +278,9 @@ public class SaveData implements Steppable {
         consumptionChart.repaint();
         consumptionChart.stopMovie();
 
-        tariffChart.update(simState.schedule.getSteps(), true);
-        tariffChart.repaint();
-        tariffChart.stopMovie();
+        WholesaleChart.update(simState.schedule.getSteps(), true);
+        WholesaleChart.repaint();
+        WholesaleChart.stopMovie();
 
         ghgChart.update(simState.schedule.getSteps(), true);
         ghgChart.repaint();
@@ -313,7 +313,7 @@ public class SaveData implements Steppable {
 
             ft.createNewFile();
             ChartUtilities.saveChartAsPNG(ft,
-                    tariffChart.getChart(),
+                    WholesaleChart.getChart(),
                     width,
                     height);
 

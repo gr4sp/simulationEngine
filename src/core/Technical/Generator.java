@@ -2,13 +2,11 @@ package core.Technical;
 
 import core.Relationships.ActorAssetRelationship;
 import core.Gr4spSim;
-import core.Settings;
+import core.settings.Settings;
 import sim.engine.SimState;
 import sim.util.Double2D;
 
-import java.time.Period;
 import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,6 +48,7 @@ public class Generator implements java.io.Serializable, Asset{
     //Price Evolution
     private double historicCapacityFactor;
     private double historicGeneratedMW;
+    private double historicRevenue;
     private int bidsInSpot;
 
     //Capacity Factor
@@ -123,6 +122,8 @@ public class Generator implements java.io.Serializable, Asset{
         this.lifecycle = 30;
 
         historicCapacityFactor = getCapacityFactor(1);
+        historicGeneratedMW = 0.0;
+        historicRevenue = 0.0;
         bidsInSpot = 0;
 
         //Load Settings specified through YAML settings file
@@ -138,6 +139,18 @@ public class Generator implements java.io.Serializable, Asset{
         linRateEF = settings.getLinRateEF( this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear );
         expRateEF = settings.getExpRateEF( this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear );
 
+
+        //Price if a generator sells always at full capacity
+        //double targetPrice =  priceMinMWh();
+        //double targetGen = maxCapacity * 8760;
+
+        //Max capacity (MW)* hours per year (H) * TargetPrice ($/MWH) => $
+       // double targetReveneueYear = targetGen * targetPrice;
+
+       /* System.out.println("Gen " + this.fuelSourceDescriptor);
+        System.out.println("Target Price $/MWh: "+ targetPrice);
+        System.out.println("Target Generation MWh: "+ targetGen);
+        System.out.println("Target Historic Revenue per year $: "+ targetReveneueYear);*/
     }
 
     static public double getSolarMonthlyGeneration(float solarExporsure, float capacitySolar){
@@ -267,24 +280,37 @@ public class Generator implements java.io.Serializable, Asset{
 
         // Update Capacity based on historic amount sold
         if(bidsInSpot > 0) {
-            historicCapacityFactor = historicGeneratedMW / (maxCapacity * (double) bidsInSpot);
+            //double historicCapacityFactorOld = historicGeneratedMW / (maxCapacity * (double) (bidsInSpot / 2.0));
+            historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh * (double) (bidsInSpot / 2.0));
             historicCapacityFactor = (double)Math.round(historicCapacityFactor * 100000d) / 100000d;
 
+            if (historicCapacityFactor > 1.0){
+                System.out.printf("Capacity Factor greater than 1: " + historicCapacityFactor);
+            }
 
         }
 
     }
 
-    //If historic is below minCapacityFactor, then use min CapacityFactor to ge prices. MinCapacityFactors makes the assumption that the capacity
+    //If historic is below minCapacityFactor, then use min CapacityFactor to ge prices.
+    // MinCapacityFactors makes the assumption that the capacity
     //factor didn't fall  below that threshold by selling through OTCs instead of SPOT
     public double priceMWhLCOE(){
 
-        double historicCF = historicCapacityFactor;
+        double result;
+        double historicCF = historicCapacityFactor + 0.01;
 
         if( historicCF < minCapacityFactor ) historicCF= minCapacityFactor;
 
-        double result =  priceMinMWh() +  ( (priceMaxMWh()-priceMinMWh()) * (Math.exp( - priceRateParameterMWh() * historicCF)) );
-        //double meanResult =
+        if(bidsInSpot == 0 ){
+            result =  priceMinMWh() / maxCapacityFactor ;
+        }
+        else{
+            result =  priceMinMWh() / historicCF ;
+        }
+
+        //double result =  priceMinMWh() +  ( (priceMaxMWh()-priceMinMWh()) * (Math.exp( - priceRateParameterMWh() * historicCF)) );
+
 
         return result;
     }
@@ -400,6 +426,14 @@ public class Generator implements java.io.Serializable, Asset{
         this.historicGeneratedMW = historicGeneratedMW;
     }
 
+    public double getHistoricRevenue() {
+        return historicRevenue;
+    }
+
+    public void setHistoricRevenue(double historicRevenue) {
+        this.historicRevenue = historicRevenue;
+    }
+
     public Date getStart() {
         return start;
     }
@@ -496,5 +530,21 @@ public class Generator implements java.io.Serializable, Asset{
 
     public String getDispatchTypeDescriptor() {
         return dispatchTypeDescriptor;
+    }
+
+    public void setPriceMinMWh(double priceMinMWh) {
+        this.priceMinMWh = priceMinMWh;
+    }
+
+    public void setPriceMaxMWh(double priceMaxMWh) {
+        this.priceMaxMWh = priceMaxMWh;
+    }
+
+    public double getPriceMinMWh() {
+        return priceMinMWh;
+    }
+
+    public double getPriceMaxMWh() {
+        return priceMaxMWh;
     }
 }

@@ -127,8 +127,8 @@ public class MeritOrder {
         }
 
         if(Math.ceil(offered) < Math.floor(demand) ) {
-            marketPrice *= 2;
-            System.out.println("Unmet Demand: " +(demand - offered) );
+            marketPrice *= 1.2;
+            System.out.println("Unmet Demand (imported) " +(demand - offered) );
         }
 
         /**
@@ -136,7 +136,9 @@ public class MeritOrder {
          */
         for ( Bid b : successfulBids ) {
             Generator g = (Generator) b.asset;
-            g.setHistoricGeneratedMW( g.getHistoricGeneratedMW() + b.capacity );
+            double mwhGenerated = b.capacity / 2.0; //30min
+            g.setHistoricGeneratedMW( g.getHistoricGeneratedMW() + mwhGenerated );
+            g.setHistoricRevenue( g.getHistoricRevenue() + (mwhGenerated * b.dollarMWh) );
         }
     }
 

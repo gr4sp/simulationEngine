@@ -2,27 +2,45 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b436bec-4e4c-4add-8cc8-015eabbeedef" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../settings/scenario1.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSim.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Gr4spSimUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSimUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/LoadData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/LoadData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Relationships/ActorActorRelationshipType.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/ActorActorRelationshipType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Relationships/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/Arena.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Relationships/MeritOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/MeritOrder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Social/ActorType.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/ActorType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/SaveData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/SaveData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Social/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/Actor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Technical/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Generator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Technical/Spm.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Spm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gr4sp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gr4sp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/META-INF/gr4sp.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/EmissionFactor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/GeneratorSettings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSim.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSim.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/PolicySettings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/PopulationSettings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/ActorActorRelationshipType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/ActorActorRelationshipType.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/MeritOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/MeritOrder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/ActorType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/ActorType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Settings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/SimulationDatesSettings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/Actor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/Actor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Spm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Spm.class" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,249 +71,13 @@
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
         <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="roles" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
     </expand>
     <select />
   </component>
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Gr4spSim.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="575">
-              <caret line="196" column="26" lean-forward="true" selection-start-line="196" selection-start-column="11" selection-end-line="196" selection-end-column="26" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#7804#7805#0" expanded="true" />
-                <element signature="e#7890#7891#0" expanded="true" />
-                <element signature="e#7962#7963#0" expanded="true" />
-                <element signature="e#8045#8046#0" expanded="true" />
-                <element signature="e#8138#8139#0" expanded="true" />
-                <element signature="e#8206#8207#0" expanded="true" />
-                <element signature="e#8272#8273#0" expanded="true" />
-                <element signature="e#8366#8367#0" expanded="true" />
-                <element signature="e#8437#8438#0" expanded="true" />
-                <element signature="e#8530#8531#0" expanded="true" />
-                <element signature="e#8625#8626#0" expanded="true" />
-                <element signature="e#8717#8718#0" expanded="true" />
-                <element signature="e#8828#8829#0" expanded="true" />
-                <element signature="e#8943#8944#0" expanded="true" />
-                <element signature="e#9064#9065#0" expanded="true" />
-                <element signature="e#9198#9199#0" expanded="true" />
-                <element signature="e#9442#9443#0" expanded="true" />
-                <element signature="e#9565#9566#0" expanded="true" />
-                <element signature="e#9657#9658#0" expanded="true" />
-                <element signature="e#9763#9764#0" expanded="true" />
-                <element signature="e#9858#9859#0" expanded="true" />
-                <element signature="e#9923#9924#0" expanded="true" />
-                <element signature="e#10012#10013#0" expanded="true" />
-                <element signature="e#10115#10116#0" expanded="true" />
-                <element signature="e#10238#10239#0" expanded="true" />
-                <element signature="e#10353#10354#0" expanded="true" />
-                <element signature="e#10450#10451#0" expanded="true" />
-                <element signature="e#10573#10574#0" expanded="true" />
-                <element signature="e#10646#10647#0" expanded="true" />
-                <element signature="e#10751#10752#0" expanded="true" />
-                <element signature="e#10818#10819#0" expanded="true" />
-                <element signature="e#10911#10912#0" expanded="true" />
-                <element signature="e#10972#10973#0" expanded="true" />
-                <element signature="e#11053#11054#0" expanded="true" />
-                <element signature="e#11120#11121#0" expanded="true" />
-                <element signature="e#11213#11214#0" expanded="true" />
-                <element signature="e#11272#11273#0" expanded="true" />
-                <element signature="e#11380#11381#0" expanded="true" />
-                <element signature="e#11483#11484#0" expanded="true" />
-                <element signature="e#11588#11589#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../settings/scenario1.yaml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Social/Actor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="842">
-              <caret line="60" selection-start-line="60" selection-end-line="60" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Social/ActorType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="43" column="52" selection-start-line="43" selection-start-column="52" selection-end-line="43" selection-end-column="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/actors">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state projectRestartId="1b431585-1701-4507-825c-d9a42c7461ee">
-              <filtering>
-                <filter text="" />
-              </filtering>
-              <column-attributes>
-                <column name="ctid" enabled="false" position="-1" />
-              </column-attributes>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/actorschange">
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state projectRestartId="1b431585-1701-4507-825c-d9a42c7461ee">
-              <filtering>
-                <filter text="" />
-              </filtering>
-              <column-attributes>
-                <column name="ctid" enabled="false" position="-1" />
-              </column-attributes>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/LoadData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="290" selection-start-line="290" selection-end-line="290" />
-              <folding>
-                <element signature="method#stringToActorAssetTypeRelType#0;class#LoadData#0" />
-                <element signature="method#stringToActorActorTypeRelType#0;class#LoadData#0" />
-                <element signature="method#selectArena#0;class#LoadData#0" />
-                <element signature="method#selectTariffs#0;class#LoadData#0" />
-                <element signature="method#selectConsumption#0;class#LoadData#0" />
-                <element signature="method#selectSolarInstallation#0;class#LoadData#0" />
-                <element signature="method#selectActors#0;class#LoadData#0" />
-                <element signature="method#selectActorAssetRelationships#0;class#LoadData#0" />
-                <element signature="docComment;method#selectActorActorRelationships#0;class#LoadData#0" />
-                <element signature="method#selectActorActorRelationships#0;class#LoadData#0" />
-                <element signature="docComment;method#selectGenTech#0;class#LoadData#0" />
-                <element signature="method#selectStorage#0;class#LoadData#0" />
-                <element signature="method#selectNetwork#0;class#LoadData#0" />
-                <element signature="method#selectConnectionPoint#0;class#LoadData#0" />
-                <element signature="method#selectArenaAndContracts#0;class#LoadData#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Technical/Generator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="318" column="85" selection-start-line="318" selection-start-column="85" selection-end-line="318" selection-end-column="85" />
-              <folding>
-                <element signature="e#18546#18547#0" expanded="true" />
-                <element signature="e#18577#18578#0" expanded="true" />
-                <element signature="e#19251#19252#0" expanded="true" />
-                <element signature="e#19276#19277#0" expanded="true" />
-                <element signature="e#19310#19311#0" expanded="true" />
-                <element signature="e#19338#19339#0" expanded="true" />
-                <element signature="e#19386#19387#0" expanded="true" />
-                <element signature="e#19429#19430#0" expanded="true" />
-                <element signature="e#19600#19601#0" expanded="true" />
-                <element signature="e#19633#19634#0" expanded="true" />
-                <element signature="e#19682#19683#0" expanded="true" />
-                <element signature="e#19726#19727#0" expanded="true" />
-                <element signature="e#19772#19773#0" expanded="true" />
-                <element signature="e#19814#19815#0" expanded="true" />
-                <element signature="e#19884#19885#0" expanded="true" />
-                <element signature="e#19946#19947#0" expanded="true" />
-                <element signature="e#19976#19977#0" expanded="true" />
-                <element signature="e#20004#20005#0" expanded="true" />
-                <element signature="e#20032#20033#0" expanded="true" />
-                <element signature="e#20058#20059#0" expanded="true" />
-                <element signature="e#20089#20090#0" expanded="true" />
-                <element signature="e#20116#20117#0" expanded="true" />
-                <element signature="e#20157#20158#0" expanded="true" />
-                <element signature="e#20189#20190#0" expanded="true" />
-                <element signature="e#20228#20229#0" expanded="true" />
-                <element signature="e#20262#20263#0" expanded="true" />
-                <element signature="e#20317#20318#0" expanded="true" />
-                <element signature="e#20363#20364#0" expanded="true" />
-                <element signature="e#20401#20402#0" expanded="true" />
-                <element signature="e#20434#20435#0" expanded="true" />
-                <element signature="e#20487#20488#0" expanded="true" />
-                <element signature="e#20531#20532#0" expanded="true" />
-                <element signature="e#20565#20566#0" expanded="true" />
-                <element signature="e#20597#20598#0" expanded="true" />
-                <element signature="e#20645#20646#0" expanded="true" />
-                <element signature="e#20687#20688#0" expanded="true" />
-                <element signature="e#20727#20728#0" expanded="true" />
-                <element signature="e#20758#20759#0" expanded="true" />
-                <element signature="e#20809#20810#0" expanded="true" />
-                <element signature="e#20849#20850#0" expanded="true" />
-                <element signature="e#20886#20887#0" expanded="true" />
-                <element signature="e#20918#20919#0" expanded="true" />
-                <element signature="e#20969#20970#0" expanded="true" />
-                <element signature="e#21011#21012#0" expanded="true" />
-                <element signature="e#21059#21060#0" expanded="true" />
-                <element signature="e#21102#21103#0" expanded="true" />
-                <element signature="e#21285#21286#0" expanded="true" />
-                <element signature="e#21326#21327#0" expanded="true" />
-                <element signature="e#21395#21396#0" expanded="true" />
-                <element signature="e#21455#21456#0" expanded="true" />
-                <element signature="e#21505#21506#0" expanded="true" />
-                <element signature="e#21550#21551#0" expanded="true" />
-                <element signature="e#21599#21600#0" expanded="true" />
-                <element signature="e#21644#21645#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/Relationships/Arena.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="330" selection-start-line="330" selection-end-line="331" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -305,137 +87,19 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>monthly_generation_register</find>
-      <find>schedule.</find>
-      <find>getActiveGensThisSPMinSpotMarket</find>
-      <find>getge</find>
-      <find>monthly_consumption_register</find>
-      <find>monthly_consumption</find>
-      <find>currentM</find>
-      <find>maxCapa</find>
-      <find>MWh</find>
-      <find>startS</find>
-      <find>loy</find>
-      <find>cari</find>
-      <find>mckay</find>
-      <find>getFuelSourceDescriptor</find>
-      <find>fuelSourceDescriptor</find>
-      <find>emissionFactor</find>
-      <find>emissionsFactor</find>
-      <find>emmissionByFuelType</find>
-      <find>194</find>
-      <find>Calendar</find>
-      <find>historicCapacityFactor</find>
-      <find>rounds</find>
-      <find>state</find>
-      <find>jeera</find>
-      <find>computeMonthlyAvailableCapacity</find>
-      <find>solar</find>
-      <find>computeGenEmissionIntensity</find>
-      <find>monthly_demand_register</find>
-      <find>currentMonth</find>
-      <find>historicGeneratedMW</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/core/NetworkAssets.java" />
-        <option value="$PROJECT_DIR$/core/Actor.java" />
-        <option value="$PROJECT_DIR$/core/MeritOrder.java" />
-        <option value="$PROJECT_DIR$/core/Bid.java" />
-        <option value="$PROJECT_DIR$/core/Policies.java" />
-        <option value="$PROJECT_DIR$/core/Policies/Policies.java" />
-        <option value="$PROJECT_DIR$/core/Policies/EndConsumerTariff.java" />
-        <option value="$PROJECT_DIR$/core/ConsumptionProfile.java" />
-        <option value="$PROJECT_DIR$/core/Contract.java" />
-        <option value="$PROJECT_DIR$/core/Household.java" />
-        <option value="$PROJECT_DIR$/core/ConsumptionActor.java" />
-        <option value="$PROJECT_DIR$/core/Arena.java" />
-        <option value="$PROJECT_DIR$/core/Generation.java" />
-        <option value="$PROJECT_DIR$/core/Asset.java" />
-        <option value="$PROJECT_DIR$/core/Policies/AccelerateSolarPV.java" />
-        <option value="$PROJECT_DIR$/core/Spm.java" />
-        <option value="$PROJECT_DIR$/core/Storage.java" />
-        <option value="$PROJECT_DIR$/core/ConsumerUnit.java" />
-        <option value="$PROJECT_DIR$/core/Generator.java" />
-        <option value="$PROJECT_DIR$/core/index.html" />
-        <option value="$PROJECT_DIR$/core/Social/blabla.java" />
-        <option value="$PROJECT_DIR$/core/Social/Actor.java" />
-        <option value="$PROJECT_DIR$/core/Social/BusinessStructure.java" />
-        <option value="$PROJECT_DIR$/core/Social/GovRole.java" />
-        <option value="$PROJECT_DIR$/core/Social/OwnershipModel.java" />
-        <option value="$PROJECT_DIR$/core/Relationships/ActorActorRelationship.java" />
-        <option value="$PROJECT_DIR$/core/Relationships/ActorActorRelationshipType.java" />
-        <option value="$PROJECT_DIR$/core/Relationships/ActorAssetRelationship.java" />
-        <option value="$PROJECT_DIR$/core/Relationships/ActorAssetRelationshipType.java" />
-        <option value="$PROJECT_DIR$/core/Gr4spSimUI.java" />
-        <option value="$PROJECT_DIR$/core/Policies/SimPolicies.java" />
-        <option value="$PROJECT_DIR$/core/SaveData.java" />
-        <option value="$PROJECT_DIR$/core/Relationships/Bid.java" />
-        <option value="$PROJECT_DIR$/core/Social/ConsumerUnit.java" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/console.sql" />
-        <option value="$PROJECT_DIR$/core/Technical/Spm.java" />
-        <option value="$PROJECT_DIR$/core/Technical/Generation.java" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
-        <option value="$PROJECT_DIR$/core/Technical/Generator.java" />
-        <option value="$PROJECT_DIR$/core/Relationships/MeritOrder.java" />
-        <option value="$PROJECT_DIR$/core/LoadData.java" />
-        <option value="$PROJECT_DIR$/core/Social/ActorType.java" />
-        <option value="$PROJECT_DIR$/core/Relationships/Arena.java" />
-        <option value="$PROJECT_DIR$/core/Gr4spSim.java" />
-        <option value="$PROJECT_DIR$/../settings/scenario1.yaml" />
-      </list>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\angel\Documents\GitHub\gr4sp\src\.idea" />
+      </set>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1547" />
-    <option name="y" value="-16" />
-    <option name="width" value="992" />
-    <option name="height" value="536" />
-  </component>
+  <component name="ProjectId" id="1STAh7kg8GNGAsUobTuCAJBmgLU" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-              <item name="Social" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="src" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="sqlite&#10;postgresql" />
@@ -443,13 +107,18 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../libraries/yamlbeans-1.13.jar!/" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="core.settings" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -591,99 +260,33 @@
       <workItem from="1569804907200" duration="31446000" />
       <workItem from="1570438434794" duration="11476000" />
       <workItem from="1570623670130" duration="8519000" />
-      <workItem from="1570665314986" duration="13486000" />
+      <workItem from="1570665314986" duration="45957000" />
+      <workItem from="1571094141833" duration="4546000" />
+      <workItem from="1571129871226" duration="39265000" />
+      <workItem from="1571358120686" duration="1115000" />
+      <workItem from="1571576851604" duration="287000" />
+      <workItem from="1571577335058" duration="4117000" />
+      <workItem from="1571616213141" duration="2735000" />
+      <workItem from="1571657856516" duration="37000" />
+      <workItem from="1571658037854" duration="255000" />
     </task>
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="460044000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-1928" y="-437" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.09115139" />
-      <window_info active="true" id="Structure" order="1" visible="true" weight="0.16684435" />
-      <window_info id="Learn" order="2" weight="0.32942432" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Designer" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Capture Tool" order="6" />
-      <window_info id="Favorites" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.21343446" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4978678" weight="0.37053087" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4978678" visible="true" weight="0.2340195" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5021322" side_tool="true" weight="0.3347779" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.15817985" />
-      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Console" order="13" weight="0.32827735" />
-      <window_info anchor="bottom" id="Dependency Viewer" order="14" weight="0.32981783" />
-      <window_info active="true" anchor="bottom" id="Analyze Dataflow to" order="15" visible="true" weight="0.25135428" />
-      <window_info anchor="bottom" id="Sequence" order="16" weight="0.15580736" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="right" id="Theme Preview" order="4" />
-      <window_info anchor="right" id="Ant Build" order="5" sideWeight="0.49945828" weight="0.024520256" />
-      <window_info anchor="right" id="Database" order="6" visible="true" weight="0.14179105" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Maven Projects" order="8" />
-      <window_info anchor="right" id="Maven" order="9" />
-      <window_info anchor="right" id="Coverage" order="10" sideWeight="0.5005417" side_tool="true" visible="true" weight="0.03144989" />
-      <window_info anchor="right" id="Module Dependencies" order="11" weight="0.3295302" />
-      <window_info anchor="right" id="PlantUML" order="12" />
-    </layout>
-    <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09168444" />
-      <window_info id="Structure" order="1" weight="0.14658849" />
-      <window_info id="Learn" order="2" weight="0.32942432" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Designer" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Capture Tool" order="6" />
-      <window_info id="Favorites" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.34019503" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4978678" weight="0.06608884" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4978678" weight="0.25460455" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5021322" side_tool="true" weight="0.3347779" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.32827735" />
-      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Console" order="13" weight="0.3286119" />
-      <window_info anchor="bottom" id="Dependency Viewer" order="14" weight="0.32981783" />
-      <window_info active="true" anchor="bottom" id="Analyze Dataflow to" order="15" visible="true" weight="0.25135428" />
-      <window_info anchor="bottom" id="Sequence" order="16" weight="0.26487252" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="1" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="right" id="Theme Preview" order="4" />
-      <window_info anchor="right" id="Ant Build" order="5" sideWeight="0.49945828" weight="0.024520256" />
-      <window_info anchor="right" id="Database" order="6" visible="true" weight="0.20842217" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Maven Projects" order="8" />
-      <window_info anchor="right" id="Maven" order="9" />
-      <window_info anchor="right" id="Coverage" order="10" sideWeight="0.5005417" side_tool="true" visible="true" weight="0.03144989" />
-      <window_info anchor="right" id="Module Dependencies" order="11" weight="0.3295302" />
-      <window_info anchor="right" id="PlantUML" order="12" />
-    </layout-to-restore>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -691,26 +294,20 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/Social/ConsumerUnit.java</url>
           <line>148</line>
-          <properties />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/core/Relationships/Arena.java</url>
-          <line>331</line>
-          <properties />
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/core/Gr4spSim.java</url>
-          <line>154</line>
-          <properties />
-          <option name="timeStamp" value="14" />
+          <url>file://$PROJECT_DIR$/core/LoadData.java</url>
+          <line>643</line>
+          <option name="timeStamp" value="78" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="this.currentEmissions *= (1+networkLosses)" language="JAVA" />
+        <watch expression="this" />
+        <watch expression="state" />
       </configuration>
     </watches-manager>
   </component>
@@ -731,239 +328,6 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/generation_demand_historic" />
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/totaldemandvictoria" />
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/solar_exposure_monthly" />
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/total_demand_halfhour" />
-    <entry file="file://$PROJECT_DIR$/core/Technical/Spm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3451">
-          <caret line="217" column="26" selection-start-line="217" selection-end-line="218" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Relationships/MeritOrder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="20" column="52" selection-start-line="20" selection-start-column="52" selection-end-line="20" selection-end-column="52" />
-          <folding>
-            <element signature="e#556#557#0" expanded="true" />
-            <element signature="e#624#625#0" expanded="true" />
-            <element signature="e#684#685#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/generationassets">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="1b431585-1701-4507-825c-d9a42c7461ee">
-          <filtering>
-            <filter text="" />
-          </filtering>
-          <column-attributes>
-            <column name="ctid" enabled="false" position="-1" />
-          </column-attributes>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/actorschange">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="1b431585-1701-4507-825c-d9a42c7461ee">
-          <filtering>
-            <filter text="" />
-          </filtering>
-          <column-attributes>
-            <column name="ctid" enabled="false" position="-1" />
-          </column-attributes>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/database/postgres/schema/public/table/actors">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="1b431585-1701-4507-825c-d9a42c7461ee">
-          <filtering>
-            <filter text="" />
-          </filtering>
-          <column-attributes>
-            <column name="ctid" enabled="false" position="-1" />
-          </column-attributes>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/LoadData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="290" selection-start-line="290" selection-end-line="290" />
-          <folding>
-            <element signature="method#stringToActorAssetTypeRelType#0;class#LoadData#0" />
-            <element signature="method#stringToActorActorTypeRelType#0;class#LoadData#0" />
-            <element signature="method#selectArena#0;class#LoadData#0" />
-            <element signature="method#selectTariffs#0;class#LoadData#0" />
-            <element signature="method#selectConsumption#0;class#LoadData#0" />
-            <element signature="method#selectSolarInstallation#0;class#LoadData#0" />
-            <element signature="method#selectActors#0;class#LoadData#0" />
-            <element signature="method#selectActorAssetRelationships#0;class#LoadData#0" />
-            <element signature="docComment;method#selectActorActorRelationships#0;class#LoadData#0" />
-            <element signature="method#selectActorActorRelationships#0;class#LoadData#0" />
-            <element signature="docComment;method#selectGenTech#0;class#LoadData#0" />
-            <element signature="method#selectStorage#0;class#LoadData#0" />
-            <element signature="method#selectNetwork#0;class#LoadData#0" />
-            <element signature="method#selectConnectionPoint#0;class#LoadData#0" />
-            <element signature="method#selectArenaAndContracts#0;class#LoadData#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Social/ActorType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="43" column="52" selection-start-line="43" selection-start-column="52" selection-end-line="43" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Technical/Generator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="318" column="85" selection-start-line="318" selection-start-column="85" selection-end-line="318" selection-end-column="85" />
-          <folding>
-            <element signature="e#18546#18547#0" expanded="true" />
-            <element signature="e#18577#18578#0" expanded="true" />
-            <element signature="e#19251#19252#0" expanded="true" />
-            <element signature="e#19276#19277#0" expanded="true" />
-            <element signature="e#19310#19311#0" expanded="true" />
-            <element signature="e#19338#19339#0" expanded="true" />
-            <element signature="e#19386#19387#0" expanded="true" />
-            <element signature="e#19429#19430#0" expanded="true" />
-            <element signature="e#19600#19601#0" expanded="true" />
-            <element signature="e#19633#19634#0" expanded="true" />
-            <element signature="e#19682#19683#0" expanded="true" />
-            <element signature="e#19726#19727#0" expanded="true" />
-            <element signature="e#19772#19773#0" expanded="true" />
-            <element signature="e#19814#19815#0" expanded="true" />
-            <element signature="e#19884#19885#0" expanded="true" />
-            <element signature="e#19946#19947#0" expanded="true" />
-            <element signature="e#19976#19977#0" expanded="true" />
-            <element signature="e#20004#20005#0" expanded="true" />
-            <element signature="e#20032#20033#0" expanded="true" />
-            <element signature="e#20058#20059#0" expanded="true" />
-            <element signature="e#20089#20090#0" expanded="true" />
-            <element signature="e#20116#20117#0" expanded="true" />
-            <element signature="e#20157#20158#0" expanded="true" />
-            <element signature="e#20189#20190#0" expanded="true" />
-            <element signature="e#20228#20229#0" expanded="true" />
-            <element signature="e#20262#20263#0" expanded="true" />
-            <element signature="e#20317#20318#0" expanded="true" />
-            <element signature="e#20363#20364#0" expanded="true" />
-            <element signature="e#20401#20402#0" expanded="true" />
-            <element signature="e#20434#20435#0" expanded="true" />
-            <element signature="e#20487#20488#0" expanded="true" />
-            <element signature="e#20531#20532#0" expanded="true" />
-            <element signature="e#20565#20566#0" expanded="true" />
-            <element signature="e#20597#20598#0" expanded="true" />
-            <element signature="e#20645#20646#0" expanded="true" />
-            <element signature="e#20687#20688#0" expanded="true" />
-            <element signature="e#20727#20728#0" expanded="true" />
-            <element signature="e#20758#20759#0" expanded="true" />
-            <element signature="e#20809#20810#0" expanded="true" />
-            <element signature="e#20849#20850#0" expanded="true" />
-            <element signature="e#20886#20887#0" expanded="true" />
-            <element signature="e#20918#20919#0" expanded="true" />
-            <element signature="e#20969#20970#0" expanded="true" />
-            <element signature="e#21011#21012#0" expanded="true" />
-            <element signature="e#21059#21060#0" expanded="true" />
-            <element signature="e#21102#21103#0" expanded="true" />
-            <element signature="e#21285#21286#0" expanded="true" />
-            <element signature="e#21326#21327#0" expanded="true" />
-            <element signature="e#21395#21396#0" expanded="true" />
-            <element signature="e#21455#21456#0" expanded="true" />
-            <element signature="e#21505#21506#0" expanded="true" />
-            <element signature="e#21550#21551#0" expanded="true" />
-            <element signature="e#21599#21600#0" expanded="true" />
-            <element signature="e#21644#21645#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.3/lib/src.zip!/java.base/jdk/internal/misc/Unsafe.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="2293" column="23" selection-start-line="2293" selection-start-column="23" selection-end-line="2293" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Relationships/Arena.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="330" selection-start-line="330" selection-end-line="331" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Social/Actor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="842">
-          <caret line="60" selection-start-line="60" selection-end-line="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/Gr4spSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="196" column="26" lean-forward="true" selection-start-line="196" selection-start-column="11" selection-end-line="196" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7804#7805#0" expanded="true" />
-            <element signature="e#7890#7891#0" expanded="true" />
-            <element signature="e#7962#7963#0" expanded="true" />
-            <element signature="e#8045#8046#0" expanded="true" />
-            <element signature="e#8138#8139#0" expanded="true" />
-            <element signature="e#8206#8207#0" expanded="true" />
-            <element signature="e#8272#8273#0" expanded="true" />
-            <element signature="e#8366#8367#0" expanded="true" />
-            <element signature="e#8437#8438#0" expanded="true" />
-            <element signature="e#8530#8531#0" expanded="true" />
-            <element signature="e#8625#8626#0" expanded="true" />
-            <element signature="e#8717#8718#0" expanded="true" />
-            <element signature="e#8828#8829#0" expanded="true" />
-            <element signature="e#8943#8944#0" expanded="true" />
-            <element signature="e#9064#9065#0" expanded="true" />
-            <element signature="e#9198#9199#0" expanded="true" />
-            <element signature="e#9442#9443#0" expanded="true" />
-            <element signature="e#9565#9566#0" expanded="true" />
-            <element signature="e#9657#9658#0" expanded="true" />
-            <element signature="e#9763#9764#0" expanded="true" />
-            <element signature="e#9858#9859#0" expanded="true" />
-            <element signature="e#9923#9924#0" expanded="true" />
-            <element signature="e#10012#10013#0" expanded="true" />
-            <element signature="e#10115#10116#0" expanded="true" />
-            <element signature="e#10238#10239#0" expanded="true" />
-            <element signature="e#10353#10354#0" expanded="true" />
-            <element signature="e#10450#10451#0" expanded="true" />
-            <element signature="e#10573#10574#0" expanded="true" />
-            <element signature="e#10646#10647#0" expanded="true" />
-            <element signature="e#10751#10752#0" expanded="true" />
-            <element signature="e#10818#10819#0" expanded="true" />
-            <element signature="e#10911#10912#0" expanded="true" />
-            <element signature="e#10972#10973#0" expanded="true" />
-            <element signature="e#11053#11054#0" expanded="true" />
-            <element signature="e#11120#11121#0" expanded="true" />
-            <element signature="e#11213#11214#0" expanded="true" />
-            <element signature="e#11272#11273#0" expanded="true" />
-            <element signature="e#11380#11381#0" expanded="true" />
-            <element signature="e#11483#11484#0" expanded="true" />
-            <element signature="e#11588#11589#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../settings/scenario1.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
   </component>
   <component name="masterDetails">
     <states>
