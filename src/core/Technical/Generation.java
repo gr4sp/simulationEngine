@@ -42,6 +42,32 @@ public class Generation {
 
     public Float totalGWh;
 
+    public Generation( Generation g ){
+        this.date = g.date;
+        this.volumeDollarMWh = g.volumeDollarMWh;
+        this.temperature = g.temperature;
+        this.solarRooftopPVdollarGWh = g.solarRooftopPVdollarGWh;
+        this.solarRooftopPVGWh = g.solarRooftopPVGWh;
+        this.solarUtilitydollarGWh = g.solarUtilitydollarGWh;
+        this.solarUtilityGWh = g.solarUtilityGWh;
+        this.windDollarGWh = g.windDollarGWh;
+        this.windGWh = g.windGWh;
+        this.hydroDollarGWh = g.hydroDollarGWh;
+        this.hydroGWh = g.hydroGWh;
+        this.batteryDollarGWh = g.batteryDollarGWh;
+        this.batteryGWh = g.batteryGWh;
+        this.gasOcgtDollarGWh = g.gasOcgtDollarGWh;
+        this.gasOcgtGWh = g.gasOcgtGWh;
+        this.gasSteamDollarGWh = g.gasSteamDollarGWh;
+        this.gasSteamGWh = g.gasSteamGWh;
+        this.brownCoalDollarGWh = g.brownCoalDollarGWh;
+        this.brownCoalGWh = g.brownCoalGWh;
+        this.importsDollarGWh = g.importsDollarGWh;
+        this.importsGWh = g.importsGWh;
+        this.exportsDollarGWh = g.exportsDollarGWh;
+        this.exportsGWh = g.exportsGWh;
+        this.totalGWh = g.totalGWh - this.exportsGWh;
+    }
     public Generation(Date date, Float volumeDollarMWh, Float temperature, Float solarRooftopPVdollarGWh, Float solarRooftopPVGWh,
                       Float solarUtilitydollarGWh, Float solarUtilityGWh, Float windDollarGWh, Float windGWh, Float hydroDollarGWh,
                       Float hydroGWh, Float batteryDollarGWh, Float batteryGWh, Float gasOcgtDollarGWh, Float gasOcgtGWh, Float gasSteamDollarGWh,
@@ -83,10 +109,10 @@ public class Generation {
         return filteredGens;
     }
 
-    public double emmissionByFuelType(int currentYear, ArrayList<Generator> activeGens, float percentageContributionPerFuelType, String fuelType) {
+
+    public double CDEFuelType(int currentYear, ArrayList<Generator> activeGens, float MWh, String fuelType) {
 
         ArrayList<Generator> filteredGens = filterGens(activeGens, fuelType);
-        double emissionsIntensityPerGen = 0;
 
         //Get total capacity by Fuel Type (sumCapacity)
         //Normalize it over the total capacity of the fuel type (1/sumCi) Ci per fuel type or power plant
@@ -95,22 +121,18 @@ public class Generation {
         for (Generator g : filteredGens)
             sumCapacity += g.getMaxCapacity();
 
+        //Compute Emission Factor based on Capacity of all generators of a specific fuelType
+
+        double emissionFactor = 0;
         for (Generator g : filteredGens) {
-            //Compute Emission Contribution based on Capacity of all generators of a specific fuelType
 
-            //Weighted by the percentage of fuel type to total generation of system (capacity factor). emissionIntensity of a generator is in tCO2-e/MWh
-            // and depends on the emisisonFactor per technology and fueltype
-            emissionsIntensityPerGen += (g.getMaxCapacity() * g.getEmissionsFactor(currentYear) * percentageContributionPerFuelType) / sumCapacity ;
+            //Weighted by the percentage of fuel type to total generation of system (capacity factor). emissionIntensity index of a generator is in tCO2-e/MWh
+            // and depends on the emisisonFactor per technology and fueltype. This emission factor is in tCO2-e/MWh and is in the DB
+            emissionFactor += (g.getMaxCapacity() * g.getEmissionsFactor(currentYear)) / sumCapacity ;
 
-            /*System.out.println("\t Gen "+g.getName()+
-                            " Contributes " + ((contribution * g.getEmissionsFactor()) * percentage) +
-                    " GHG (t/co2), Capacity "+g.getMaxCapacity() +
-                    " with Em Factor " + g.getEmissionsFactor() + " "+fuelType + " percentage of Total Gen: "+percentage*100.0 +"%"
-                    );*/
         }
-        return emissionsIntensityPerGen;
+        return emissionFactor * MWh;
     }
-
 
 
     public float computeGenEmissionIntensity(ArrayList<Generator> activeGens, Date today ) {
@@ -119,58 +141,40 @@ public class Generation {
         c.setTime(today);
         int currentYear = c.get(Calendar.YEAR);
 
-        //Get contribution percentages per fuel type
-        float PsolarRooftopPVGWh = solarRooftopPVGWh / totalGWh;
-        float PsolarUtilityGWh = solarUtilityGWh / totalGWh;
-        float PwindGWh = windGWh / totalGWh;
-        float PhydroGWh = hydroGWh / totalGWh;
-        float PbatteryGWh = batteryGWh / totalGWh;
-        float PgasOcgtGWh = gasOcgtGWh / totalGWh;
-        float PgasSteamGWh = gasSteamGWh / totalGWh;
-        float PbrownCoalGWh = brownCoalGWh / totalGWh;
-        float PimportsGWh = importsGWh / totalGWh;
-        float PexportsGWh = exportsGWh / totalGWh;
-
         // Average emmission factors NSW and SA from "existing Generation" tab Snapshots xls. Includes all generation fuel types.
         double emissionsNSW = 0.78; //Steam turbine - Black Coal, also OCGT - Distillate, CCGT - Natural gas,Cogeneration - Natural gas
         double emissionsSA = 0.84; // Steam turbine - Black Coal, OCGT - Distillate, CCGT - Natural gas, Steam turbine - Natural gas
 
         //Find out the total Emission Factor of all fuel types combined. Using the
-        float combinedEmissionIntensity = 0;
+        float CDE = 0;
 
-        if (PsolarRooftopPVGWh > 0.0)
-            combinedEmissionIntensity += emmissionByFuelType(currentYear, activeGens, PsolarRooftopPVGWh, "Solar");
+        if (solarRooftopPVGWh > 0.0)
+            CDE += CDEFuelType(currentYear, activeGens, solarRooftopPVGWh * 1000, "Solar");
 
-        if (PsolarUtilityGWh > 0.0)
-            combinedEmissionIntensity += emmissionByFuelType(currentYear, activeGens, PsolarUtilityGWh, "Solar");
+        if (solarUtilityGWh > 0.0)
+            CDE += CDEFuelType(currentYear, activeGens, solarUtilityGWh * 1000, "Solar");
 
-        if (PwindGWh > 0.0)
-            combinedEmissionIntensity += emmissionByFuelType(currentYear, activeGens, PwindGWh, "Wind");
-        if (PhydroGWh > 0.0)
-            combinedEmissionIntensity += emmissionByFuelType(currentYear, activeGens, PhydroGWh, "Water");
-        if (PbatteryGWh > 0.0)
-            combinedEmissionIntensity += emmissionByFuelType(currentYear, activeGens, PbatteryGWh, "Battery");
-        if (PgasOcgtGWh > 0.0)
-            combinedEmissionIntensity += emmissionByFuelType(currentYear, activeGens, PgasOcgtGWh, "Natural Gas");
-        if (PgasSteamGWh > 0.0)
-            combinedEmissionIntensity += emmissionByFuelType(currentYear, activeGens, PgasSteamGWh, "Natural Gas");
-        if (PbrownCoalGWh > 0.0)
-            combinedEmissionIntensity += emmissionByFuelType(currentYear, activeGens, PbrownCoalGWh, "Brown Coal");
+        if (windGWh > 0.0)
+            CDE += CDEFuelType(currentYear, activeGens, windGWh * 1000, "Wind");
+        if (hydroGWh > 0.0)
+            CDE += CDEFuelType(currentYear, activeGens, hydroGWh * 1000, "Water");
+        if (batteryGWh > 0.0)
+            CDE += CDEFuelType(currentYear, activeGens, batteryGWh * 1000, "Battery");
+        if (gasOcgtGWh > 0.0)
+            CDE += CDEFuelType(currentYear, activeGens, gasOcgtGWh * 1000, "Natural Gas");
+        if (gasSteamGWh > 0.0)
+            CDE += CDEFuelType(currentYear, activeGens, gasSteamGWh * 1000, "Natural Gas");
+        if (brownCoalGWh > 0.0)
+            CDE += CDEFuelType(currentYear, activeGens, brownCoalGWh * 1000, "Brown Coal");
 
         //If no emissions are accounted, it's because we only use renewables onsite and we are not at an generation SPM
-        if(combinedEmissionIntensity == 0.0) return (float)0.0;
+        if(CDE == 0.0) return (float)0.0;
 
-        if (PimportsGWh > 0.0)
-            combinedEmissionIntensity += ((emissionsNSW + emissionsSA) / 2) * PimportsGWh;
+        if (importsGWh > 0.0)
+            CDE += ((emissionsNSW + emissionsSA) / 2) * importsGWh * 1000;
 
-        //Do not include Exports to consumer emissions
-        //if(PexportsGWh > 0.0)
-        //    emissions += emmissionByFuelType(activeGens,PexportsGWh,"Brown Coal");
-
-        //System.out.println("Total emissions for " + date + " of "+emissions + " GHG (t/co2)");
-
-//return emissions intensity in (M?)tCO2-e/MWh
-        return combinedEmissionIntensity;
+        //return emissions intensity in (M?)tCO2-e/MWh
+        return CDE / (totalGWh * 1000);
     }
 }
 

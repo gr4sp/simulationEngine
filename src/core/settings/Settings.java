@@ -1,42 +1,47 @@
 package core.settings;
 
+import com.sun.media.protocol.DelegateDataSource;
 import core.Policies.EndConsumerTariff;
 
 import java.util.List;
 import java.util.Map;
 
-class SimulationDatesSettings{
+
+class SimulationDatesSettings {
     public String startDate;
     public String endDate;
     public String startDateSpotMarket;
 
-
 }
 
-class PopulationSettings{
+class PopulationSettings {
     public String areaCode;
     public double populationPercentageAreacCode;
     public int maxHouseholdsPerConsumerUnit;
     public double domesticConsumptionPercentage;
 
-
 }
 
-class PolicySettings{
+class PolicySettings {
     public double uptakeRate;
     public EndConsumerTariff endConsumerTariff;
     public double annualInflation;
 
 }
 
-class EmissionFactor{
+class EmissionFactor {
     public int startYear;
     public double minEF;
     public double linRateEF;
     public double expRateEF;
 }
 
-class GeneratorSettings{
+class ArenaSettings {
+    public int minCapMarketGen;
+
+}
+
+class GeneratorSettings {
     public double priceMinMWh;
     public double priceMaxMWh;
     public double priceRateParameterMWh;
@@ -48,18 +53,18 @@ class GeneratorSettings{
     public List<EmissionFactor> emissionFactors;
 
 
-    public EmissionFactor selectEmissionFactor(int startYear){
+    public EmissionFactor selectEmissionFactor(int startYear) {
         int selectedEFidx = 0;
 
 
         //Get the emission Factor for the correct startYear
-        for(int i = 0; i < emissionFactors.size(); i++){
-            if( emissionFactors.get(i).startYear <= startYear ) {
+        for (int i = 0; i < emissionFactors.size(); i++) {
+            if (emissionFactors.get(i).startYear <= startYear) {
                 int nextI = i + 1;
-                if( nextI < emissionFactors.size() ){
-                    if(emissionFactors.get(nextI).startYear > startYear )
+                if (nextI < emissionFactors.size()) {
+                    if (emissionFactors.get(nextI).startYear > startYear)
                         return emissionFactors.get(i);
-                }else{
+                } else {
                     return emissionFactors.get(i);
                 }
             }
@@ -69,21 +74,62 @@ class GeneratorSettings{
 
 }
 
+class TariffSettings {
+    public double fixed;
+    public double usage;
+
+}
+
+class ForecastSetting{
+    public String scenario;
+    public int baseYear;
+    public double annualCpi;
+}
+
 public class Settings {
     //public int ConstantMaxInt;
+    public ArenaSettings arena;
     public SimulationDatesSettings simulationDates;
     public PopulationSettings population;
     public PolicySettings policy;
     public Map<String, GeneratorSettings> generators;
+    public Map<String, TariffSettings> tariffs;
+    public ForecastSetting forecast;
 
+
+    /*
+     * Tariff
+     * */
+
+    //Get the Generator Settings with a composite Key
+    private TariffSettings getTariffSettings(String actorType) {
+        if (tariffs.containsKey(actorType)) {
+            return tariffs.get(actorType);
+        } else {
+            return null;
+        }
+    }
+
+
+    public double getFixedTariff(String actorType) {
+        return getTariffSettings(actorType).fixed;
+    }
+
+    public double getUsageTariff(String actorType) {
+        return getTariffSettings(actorType).usage;
+    }
+
+    /*
+     * Generator
+     * */
 
     //Get the Generator Settings with a composite Key
     private GeneratorSettings getGenSettings(String fuelType, String techType) {
-        if(generators.containsKey(fuelType)) {
+        if (generators.containsKey(fuelType)) {
             return generators.get(fuelType);
-        }else{
+        } else {
             for (Map.Entry<String, GeneratorSettings> e : generators.entrySet()) {
-                if( e.getKey().contains(fuelType) && e.getKey().contains( techType ) ){
+                if (e.getKey().contains(fuelType) && e.getKey().contains(techType)) {
                     return e.getValue();
                 }
             }
@@ -91,7 +137,7 @@ public class Settings {
 
         return generators.get("Default");
     }
-    
+
     public double getPriceMinMWh(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).priceMinMWh;
     }
@@ -132,7 +178,7 @@ public class Settings {
 
     /**
      * SimulDates
-     * */
+     */
     public String getStartDate() {
         return simulationDates.startDate;
     }
@@ -147,7 +193,7 @@ public class Settings {
 
     /**
      * Population
-     * */
+     */
 
     public String getAreaCode() {
         return population.areaCode;
@@ -167,15 +213,36 @@ public class Settings {
 
     /**
      * Policy
-     * */
+     */
 
     public double getUptakeRate() {
         return policy.uptakeRate;
     }
 
-    public EndConsumerTariff getEndConsumerTariff() { return policy.endConsumerTariff; }
+    public EndConsumerTariff getEndConsumerTariff() {
+        return policy.endConsumerTariff;
+    }
 
-    public double getAnnualInflation() { return policy.annualInflation; }
+    public double getAnnualInflation() {
+        return policy.annualInflation;
+    }
 
+    /**
+     * Arena
+     */
+
+    public int getMinCapMarketGen() {
+        return arena.minCapMarketGen;
+    }
+
+    /**
+     *  Forecast
+     */
+
+    public String getScenarioForecast() { return  forecast.scenario; }
+
+    public int getBaseYearConsumptionForecast() { return forecast.baseYear;  }
+
+    public double getAnnualCpiForecast() { return forecast.annualCpi; }
 
 }

@@ -1,6 +1,7 @@
 package core;
 
 import com.opencsv.CSVWriter;
+import core.Relationships.Arena;
 import core.Social.ConsumerUnit;
 import core.Technical.Spm;
 import org.jfree.chart.ChartUtilities;
@@ -22,19 +23,22 @@ public class SaveData implements Steppable {
 
     public TimeSeriesChartGenerator consumptionChart;
     public TimeSeriesChartGenerator WholesaleChart;
+    public TimeSeriesChartGenerator TariffUsageChart;
     public TimeSeriesChartGenerator ghgChart;
     public TimeSeriesChartGenerator numDomesticConsumersChart;
 
 
     public ArrayList<XYSeries> consumptionActorSeries;  // the data series that will be added to
-    public ArrayList<XYSeries> tariffConsumptionActorSeries;// the data series that will be added to
+    public ArrayList<XYSeries> tariffUsageConsumptionActorSeries;// the data series that will be added to
+    public ArrayList<XYSeries> wholesaleSeries;// the data series that will be added to
     public ArrayList<XYSeries> ghgConsumptionActorSeries; // the data series that will be added to
     public ArrayList<XYSeries> ghgConsumptionSpmSeries; // the data series that will be added to
     public ArrayList<XYSeries> numDomesticConsumersSeries;
 
     public SaveData(SimState simState) {
         consumptionActorSeries = new ArrayList<XYSeries>();  // the data series that will be added to
-        tariffConsumptionActorSeries = new ArrayList<XYSeries>();// the data series that will be added to
+        tariffUsageConsumptionActorSeries = new ArrayList<XYSeries>();// the data series that will be added to
+        wholesaleSeries = new ArrayList<XYSeries>();// the data series that will be added to
         ghgConsumptionActorSeries = new ArrayList<XYSeries>(); // the data series that will be added to
         ghgConsumptionSpmSeries = new ArrayList<XYSeries>(); // the data series that will be added to
         numDomesticConsumersSeries = new ArrayList<XYSeries>();
@@ -54,6 +58,11 @@ public class SaveData implements Steppable {
         WholesaleChart.setTitle("30min Monthly Average Wholesale ($/MWh) area code: " + data.getAreaCode());
         WholesaleChart.setXAxisLabel("Year");
         WholesaleChart.setYAxisLabel("$/MWh");
+
+        TariffUsageChart = new sim.util.media.chart.TimeSeriesChartGenerator();
+        TariffUsageChart.setTitle("Tariff (c/KWh) area code: " + data.getAreaCode());
+        TariffUsageChart.setXAxisLabel("Year");
+        TariffUsageChart.setYAxisLabel("c/KWh");
 
         ghgChart = new sim.util.media.chart.TimeSeriesChartGenerator();
         ghgChart.setTitle("Total Households GHG (tCO2-e) area code: " + data.getAreaCode());
@@ -84,7 +93,7 @@ public class SaveData implements Steppable {
             XYSeries seriesTariff = new org.jfree.data.xy.XYSeries(
                     h.getName(),
                     false);
-            tariffConsumptionActorSeries.add(seriesTariff);
+            tariffUsageConsumptionActorSeries.add(seriesTariff);
 
             XYSeries seriesGHG = new org.jfree.data.xy.XYSeries(
                     h.getName(),
@@ -105,6 +114,7 @@ public class SaveData implements Steppable {
     public void plotSeries(SimState simState) {
         consumptionChart.removeAllSeries();
         WholesaleChart.removeAllSeries();
+        TariffUsageChart.removeAllSeries();
         ghgChart.removeAllSeries();
         numDomesticConsumersChart.removeAllSeries();
 
@@ -118,11 +128,17 @@ public class SaveData implements Steppable {
         consumptionChart.addSeries(seriesConsumption, null);
         consumptionActorSeries.add(seriesConsumption);
 
+        XYSeries seriesWholesale = new org.jfree.data.xy.XYSeries(
+                "AllConsumptionUnits",
+                false);
+        WholesaleChart.addSeries(seriesWholesale, null);
+        wholesaleSeries.add(seriesWholesale);
+
         XYSeries seriesTariff = new org.jfree.data.xy.XYSeries(
                 "AllConsumptionUnits",
                 false);
-        WholesaleChart.addSeries(seriesTariff, null);
-        tariffConsumptionActorSeries.add(seriesTariff);
+        TariffUsageChart.addSeries(seriesTariff, null);
+        tariffUsageConsumptionActorSeries.add(seriesTariff);
 
         XYSeries seriesGHG = new org.jfree.data.xy.XYSeries(
                 "AllConsumptionUnits",
@@ -149,7 +165,7 @@ public class SaveData implements Steppable {
             XYSeries seriesTariffD = new org.jfree.data.xy.XYSeries(
                     h.getName(),
                     false);
-            tariffConsumptionActorSeries.add(seriesTariffD);
+            tariffUsageConsumptionActorSeries.add(seriesTariffD);
 
             XYSeries seriesGHGD = new org.jfree.data.xy.XYSeries(
                     h.getName(),
@@ -227,7 +243,7 @@ public class SaveData implements Steppable {
                 //Save data for CSV
                 ConsumerUnit c = (ConsumerUnit) data.consumptionActors.get(i);
                 consumptionActorSeries.get(id).add(year, data.consumptionActors.get(i).getCurrentConsumption(), true);
-                tariffConsumptionActorSeries.get(id).add(year, data.consumptionActors.get(i).getCurrentTariff(), true);
+                tariffUsageConsumptionActorSeries.get(id).add(year, data.consumptionActors.get(i).getCurrentTariff(), true);
                 ghgConsumptionActorSeries.get(id).add(year, data.consumptionActors.get(i).getCurrentEmissions(), true);
                 numDomesticConsumersSeries.get(id).add(year, c.getNumberOfHouseholds(), true);
 
@@ -240,9 +256,23 @@ public class SaveData implements Steppable {
             averageTariff = averageTariff / data.consumptionActors.size();
 
             consumptionActorSeries.get(0).add(year, sumConsumption, true);
-            tariffConsumptionActorSeries.get(0).add(year, averageTariff, true);
+            tariffUsageConsumptionActorSeries.get(0).add(year, averageTariff, true);
             ghgConsumptionActorSeries.get(0).add(year, sumEmissions, true);
             numDomesticConsumersSeries.get(0).add(year, sumDwellings, true);
+
+            for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
+                Arena a = entry.getValue();
+                if(a.getType().equalsIgnoreCase("Retail") ) {
+                    //If Spot Market hasn't started yet, get historic prices
+                    if (data.getStartSpotMarketDate().after(currentDate)) {
+                        wholesaleSeries.get(0).add(year, 0, true);
+                    }
+                    else{
+                        wholesaleSeries.get(0).add(year, (float) a.getTariff(simState), true);
+                    }
+                }
+            }
+
             //numDomesticConsumersSeries.get(0).add(year, data.monthly_domestic_consumers_register.get(currentDate), true);
 
 
@@ -251,6 +281,7 @@ public class SaveData implements Steppable {
             // time that control passes back to the Swing event thread.
             consumptionChart.updateChartLater(simState.schedule.getSteps());
             WholesaleChart.updateChartLater(simState.schedule.getSteps());
+            TariffUsageChart.updateChartLater(simState.schedule.getSteps());
             ghgChart.updateChartLater(simState.schedule.getSteps());
             numDomesticConsumersChart.updateChartLater(simState.schedule.getSteps());
         }
@@ -282,6 +313,10 @@ public class SaveData implements Steppable {
         WholesaleChart.repaint();
         WholesaleChart.stopMovie();
 
+        TariffUsageChart.update(simState.schedule.getSteps(), true);
+        TariffUsageChart.repaint();
+        TariffUsageChart.stopMovie();
+
         ghgChart.update(simState.schedule.getSteps(), true);
         ghgChart.repaint();
         ghgChart.stopMovie();
@@ -298,6 +333,7 @@ public class SaveData implements Steppable {
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
         File fc = new File("../plots/HouseholdConsumption" + sdf.format(cal.getTime()) + ".png");
         File ft = new File("../plots/HouseholdTariff" + sdf.format(cal.getTime()) + ".png");
+        File fw = new File("../plots/WholesalePrice" + sdf.format(cal.getTime()) + ".png");
         File fg = new File("../plots/HouseholdGHG" + sdf.format(cal.getTime()) + ".png");
         File fd = new File("../plots/NumberHouseholds" + sdf.format(cal.getTime()) + ".png");
 
@@ -313,6 +349,12 @@ public class SaveData implements Steppable {
 
             ft.createNewFile();
             ChartUtilities.saveChartAsPNG(ft,
+                    TariffUsageChart.getChart(),
+                    width,
+                    height);
+
+            fw.createNewFile();
+            ChartUtilities.saveChartAsPNG(fw,
                     WholesaleChart.getChart(),
                     width,
                     height);
@@ -365,14 +407,14 @@ public class SaveData implements Steppable {
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                         CSVWriter.DEFAULT_LINE_END);
         ) {
-            String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (MWh)", "Tariff (c/KWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
+            String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (MWh)", "Tariff (c/KWh)", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
             csvWriter.writeNext(headerRecord);
 
-            String[] headerRecordYear = {"Time (Year)", "Consumption (MWh) per household", " Avg Tariff (c/KWh) per household", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
+            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
 
             csvWriterYear.writeNext(headerRecordYear);
 
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (MWh) per household", " Avg Tariff (c/KWh) per household", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)"};
 
             csvWriterMonthly.writeNext(headerRecordMonthly);
 
@@ -383,6 +425,7 @@ public class SaveData implements Steppable {
 
             HashMap<String, ArrayList<Double>> datasetGHGsummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetPriceSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetWholesaleSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetKWhSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetConsumersSummary = new HashMap<>();
 
@@ -390,7 +433,8 @@ public class SaveData implements Steppable {
             for (int i = 0; i <= data.consumptionActors.size(); i++) {
 
                 XYSeries cseries = consumptionActorSeries.get(i);
-                XYSeries tseries = tariffConsumptionActorSeries.get(i);
+                XYSeries tseries = tariffUsageConsumptionActorSeries.get(i);
+                XYSeries wseries = wholesaleSeries.get(0);
                 XYSeries gseries = ghgConsumptionActorSeries.get(i);
                 XYSeries dseries = numDomesticConsumersSeries.get(i);
 
@@ -410,10 +454,12 @@ public class SaveData implements Steppable {
 
                     XYDataItem citem = (XYDataItem) cseries.getItems().get(t);
                     XYDataItem titem = (XYDataItem) tseries.getItems().get(t);
+                    XYDataItem witem = (XYDataItem) wseries.getItems().get(t);
                     XYDataItem gitem = (XYDataItem) gseries.getItems().get(t);
                     XYDataItem ditem = (XYDataItem) dseries.getItems().get(t);
-                    double kwh = citem.getYValue();
-                    double price = titem.getYValue();
+                    double kwh = citem.getYValue() * 1000.0;
+                    double tariffPrice = titem.getYValue();
+                    double wholesale = witem.getYValue();
                     double emissions = gitem.getYValue();
                     double consumers = ditem.getYValue();
 
@@ -421,10 +467,10 @@ public class SaveData implements Steppable {
 
                     //First series starts from beginning simulation, the rest follows a consumtionUnit, which has a creationDate
                     if (i == 0) {
-                        String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(price), Double.toString(emissions / consumers), Double.toString(consumers)};
+                        String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions / consumers), Double.toString(consumers)};
                         csvWriterMonthly.writeNext(record);
                     } else {
-                        String[] record = {Integer.toString(i), dateToString.format(c.getTime()), Double.toString(kwh), Double.toString(price), Double.toString(emissions), Double.toString(consumers)};
+                        String[] record = {Integer.toString(i), dateToString.format(c.getTime()), Double.toString(kwh), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions), Double.toString(consumers)};
                         csvWriter.writeNext(record);
                     }
                     //Year summary based on monthly data from the first series with id=0 that aggregates all SPM data
@@ -443,7 +489,13 @@ public class SaveData implements Steppable {
                             datasetPriceSummary.put(year, yearData);
                         }
 
-                        datasetPriceSummary.get(year).add(price);
+                        datasetPriceSummary.get(year).add(tariffPrice);
+
+                        if (!datasetWholesaleSummary.containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetWholesaleSummary.put(year, yearData);
+                        }
+                        datasetWholesaleSummary.get(year).add(wholesale);
 
 
                         if (!datasetKWhSummary.containsKey(year)) {
@@ -451,6 +503,7 @@ public class SaveData implements Steppable {
                             datasetKWhSummary.put(year, yearData);
                         }
 
+                        //Divide Consumption to make it into consumption per household
                         datasetKWhSummary.get(year).add(kwh / consumers);
 
                         if (!datasetConsumersSummary.containsKey(year)) {
@@ -474,12 +527,14 @@ public class SaveData implements Steppable {
                 String year = (String) years[i];
                 ArrayList<Double> yearDataGHG = datasetGHGsummary.get(year);
                 ArrayList<Double> yearDataPrice = datasetPriceSummary.get(year);
+                ArrayList<Double> yearDataWholesale = datasetWholesaleSummary.get(year);
                 ArrayList<Double> yearDataKWh = datasetKWhSummary.get(year);
                 ArrayList<Double> yearDataConsumers = datasetConsumersSummary.get(year);
 
 
                 Double totalGHG = 0.0;
                 Double avgPrice = 0.0;
+                Double avgWholesale = 0.0;
                 Double totalKWh = 0.0;
                 Double maxDwellings = 0.0;
 
@@ -494,6 +549,11 @@ public class SaveData implements Steppable {
                 }
                 avgPrice /= (double) yearDataPrice.size();
 
+                for (Double w : yearDataWholesale) {
+                    avgWholesale += w;
+                }
+                avgWholesale /= (double) yearDataWholesale.size();
+
                 for (Double k : yearDataKWh) {
                     totalKWh += k;
                 }
@@ -502,7 +562,7 @@ public class SaveData implements Steppable {
                     if (con > maxDwellings) maxDwellings = con;
                 }
 
-                String[] record = {year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(totalGHG), Double.toString(maxDwellings)};
+                String[] record = {year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(avgWholesale), Double.toString(totalGHG), Double.toString(maxDwellings)};
                 csvWriterYear.writeNext(record);
             }
 

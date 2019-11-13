@@ -8,6 +8,7 @@ import java.util.Collections;
 public class MeritOrder {
     private double marketPrice;
     private double emissionsIntensity;
+    private double demand;
 
     private ArrayList<Bid> bidders;
     private ArrayList<Bid> successfulBids;
@@ -16,6 +17,14 @@ public class MeritOrder {
         this.marketPrice = 0;
         this.bidders = new ArrayList<Bid>();
         this.successfulBids= new ArrayList<Bid>();
+    }
+
+    public double getDemand() {
+        return demand;
+    }
+
+    public void setDemand(double demand) {
+        this.demand = demand;
     }
 
     public void setMarketPrice(double marketPrice) {
@@ -85,6 +94,9 @@ public class MeritOrder {
 
 
     public void computeMarketPrice(double demand){
+
+        this.demand = demand;
+
         //Reset MarketPrice
         marketPrice=0;
 
@@ -128,7 +140,7 @@ public class MeritOrder {
 
         if(Math.ceil(offered) < Math.floor(demand) ) {
             marketPrice *= 1.2;
-            System.out.println("Unmet Demand (imported) " +(demand - offered) );
+            System.out.println("Unmet Demand (imported) " + (demand - offered) );
         }
 
         /**
@@ -137,7 +149,9 @@ public class MeritOrder {
         for ( Bid b : successfulBids ) {
             Generator g = (Generator) b.asset;
             double mwhGenerated = b.capacity / 2.0; //30min
-            g.setHistoricGeneratedMW( g.getHistoricGeneratedMW() + mwhGenerated );
+
+            g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + mwhGenerated );
+            g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + mwhGenerated );
             g.setHistoricRevenue( g.getHistoricRevenue() + (mwhGenerated * b.dollarMWh) );
         }
     }
