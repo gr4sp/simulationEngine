@@ -50,8 +50,8 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     private double embGHG;
 
     //Generation metrics
-    private double genCapacityAvailable;
-    private double genEemissionFactor;
+    private double genAvailable;
+    private double genEmissionIntensityIndex;
 
     //Costs
     private double installCosts;
@@ -88,8 +88,8 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
         this.currentPrice = 0;
         this.currentReliability = 0;
 
-        this.genCapacityAvailable=0;
-        this.genEemissionFactor=0;
+        this.genAvailable = 0;
+        this.genEmissionIntensityIndex = 0;
 
     }
 
@@ -123,11 +123,23 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
                 }
             }
         }
+    }
 
+    //Get currently active generators in 1 array, this is used before the spot market
+    public void getActiveGensThisSPM(Date today, ArrayList<Generator> gens) {
+        for (Generator g : generators) {
+            //Has started today or earlier?
+            if (g.getStart().before(today) || g.getStart().equals(today)) {
+                //Has not finished operations?
+                if (g.getEnd().after(today)) {
+                        gens.add(g);
+                }
+            }
+        }
     }
 
 
-    //Get currently active generators
+    //Get currently active generators in 2 lists as in/out spot market
     public void getActiveGensAllSPM(Date today, ArrayList<Generator> inSpotMarket, ArrayList<Generator> outSpotMarket) {
 
         getActiveGensThisSPM(today, inSpotMarket, outSpotMarket);
@@ -135,6 +147,17 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
         //Recursively get active generators contained in SPM
         for (Spm scontained : spms_contained) {
             scontained.getActiveGensAllSPM(today, inSpotMarket, outSpotMarket);
+        }
+    }
+
+    //Get currently active generators in 1 list, used before spot market
+    public void getActiveGensAllSPM(Date today, ArrayList<Generator> gens) {
+
+        getActiveGensThisSPM(today, gens);
+
+        //Recursively get active generators contained in SPM
+        for (Spm scontained : spms_contained) {
+            scontained.getActiveGensAllSPM(today, gens);
         }
     }
 
@@ -161,13 +184,19 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     }
 
     //Calculates the network losses of current SPM
-    public double computeNetworksLosses() {
+    public double computeNetworksLosses(Date today) {
         double networkLoss = 0.0;
 
         //Compute average loss across networks of current SPM
         if (network_assets.size() > 0) {
             for (NetworkAssets n : network_assets) {
-                networkLoss += n.getGridLosses();
+                //Has started today or earlier?
+                if (n.getStart().before(today) || n.getStart().equals(today)) {
+                    //Has not finished operations?
+                    if (n.getEnd().after(today)) {
+                        networkLoss += n.getGridLosses();
+                    }
+                }
             }
             networkLoss /= network_assets.size();
         }
@@ -176,42 +205,43 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
     }
 
 
-    //Recursively get Total available Capacity in each spm contained in this SPM
-    public double getTotalCapacityInSPMs() {
+    //Recursively get Total available Generation in each spm contained in this SPM
+    public double getTotalGenerationInSPMs() {
 
-        double totalCapacity = this.getGenCapacityAvailable();
+        double totalGeneration = this.getGenAvailable();
 
         for (Spm scontained : spms_contained) {
-            totalCapacity += scontained.getTotalCapacityInSPMs();
+            totalGeneration += scontained.getTotalGenerationInSPMs();
         }
 
-        return totalCapacity;
+        return totalGeneration;
     }
 
     //Recursively get normalize each contained SPM with Total Capacity
-    public void normalizeEmissionFactorRecursively(double totalCapacity) {
-        this.genEemissionFactor /= totalCapacity;
+    public void normalizeEmissionIntensityIndexRecursively(double totalCapacity) {
+        this.genEmissionIntensityIndex /= totalCapacity;
 
         for (Spm scontained : spms_contained) {
-            scontained.normalizeEmissionFactorRecursively(totalCapacity);
+            scontained.normalizeEmissionIntensityIndexRecursively(totalCapacity);
         }
     }
 
     /**
      * If spot market has started, combine emissions intensity from spot and out of spot, normalized by total capacity used.
      * Compute emissionIntensity based on Merit Order bids in Spot Market
+     *
      * @param state
      * @param gensInSpotMarket
      * @param gensOutSpotMarket
      */
-    public void computeEmissionsFactorActiveSpotMarket(SimState state, ArrayList<Generator> gensInSpotMarket, ArrayList<Generator> gensOutSpotMarket){
+    public void computeCDEIISpotMarket(SimState state, ArrayList<Generator> gensInSpotMarket, ArrayList<Generator> gensOutSpotMarket) {
         Gr4spSim data = (Gr4spSim) state;
 
         /**
          * In SPOT
          */
-        double capacityInSpot = 0.0;
-        double emissionFactorGenerationInSpot = 0.0;
+        double totalGenerationInSpot = 0.0;
+        double CDEInSpot = 0.0;
 
         Calendar c = Calendar.getInstance();
         c.setTime(data.getCurrentSimDate());
@@ -222,15 +252,12 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
 
         //Compute capacity from successful bidders from THIS SPM .
         ArrayList<Bid> bids = a.getSpot().getSuccessfulBids();
-        for (Bid b : bids) {
-            Generator g = (Generator) b.asset;
+        for (Generator g : gensInSpotMarket) {
 
-            //if the bid has been made by a generator in this SPM, then count its emmission intensity
-            if (gensInSpotMarket.contains(g)) {
+            //Total MWh generated by a generator in this SPM  *  its emmission intensity
+            CDEInSpot += g.getMonthlyGeneratedMWh() * g.getEmissionsFactor(currentYear);
+            totalGenerationInSpot += g.getMonthlyGeneratedMWh();
 
-                emissionFactorGenerationInSpot += b.capacity * g.getEmissionsFactor(currentYear);
-                capacityInSpot += b.capacity;
-            }
         }
 
         /**
@@ -238,25 +265,25 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
          */
 
         //Get the emission factor of generators within THIS spm OUT spot market
-        double capacityOutSpot = 0.0;
-        double emissionFactorGenerationOutSpot = 0.0;
+        double totalGenerationOutSpot = 0.0;
+        double CDEOutSpot = 0.0;
 
         //It uses the same available capacity (capacity factors) used by bidders in markets
         for (Generator g : gensOutSpotMarket) {
-            double capacityAvailable = g.computeAvailableCapacity(data);
-            emissionFactorGenerationOutSpot += capacityAvailable * g.getEmissionsFactor(currentYear);
-            capacityOutSpot += capacityAvailable;
+            CDEOutSpot += g.getMonthlyGeneratedMWh() * g.getEmissionsFactor(currentYear);
+            totalGenerationOutSpot += g.getMonthlyGeneratedMWh();
         }
 
         //Normalize using the total capacity
-        genCapacityAvailable = capacityInSpot + capacityOutSpot;
+        this.genAvailable = totalGenerationInSpot + totalGenerationOutSpot;
 
-        //CDEII
-        this.genEemissionFactor = emissionFactorGenerationInSpot + emissionFactorGenerationOutSpot;
+        //CDE (not normalized yet - see function normalizeEmissionIntensityIndexRecursively() )
+        this.genEmissionIntensityIndex = CDEInSpot + CDEOutSpot;
     }
 
     /**
      * Computes Indicators and starts with recursion level 0 by default
+     *
      * @param state
      * @param consumption
      */
@@ -266,20 +293,20 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
 
     /**
      * Recursive computation of indicators
+     *
      * @param state
      * @param consumption
      * @param recursionLevel
      */
     public void computeIndicators(SimState state, double consumption, int recursionLevel) {
         Gr4spSim data = (Gr4spSim) state;
-        ArrayList<Generator> gensInSpotMarket = new ArrayList<Generator>();
-        ArrayList<Generator> gensOutSpotMarket = new ArrayList<Generator>();
+
+
 
         Date today = data.getCurrentSimDate();
 
 
-        //Get Active gens In/Out spot market in this SPM
-        this.getActiveGensThisSPM(today, gensInSpotMarket, gensOutSpotMarket);
+
 
         /**
          * Get the emission factor of generators
@@ -287,50 +314,84 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
 
         //If spot hasn't started, get historic information of generation per fuel type using all generators
         if (data.getStartSpotMarketDate().after(today)) {
-            ArrayList<Generator> activegens = new ArrayList<Generator>();
-            activegens.addAll(gensInSpotMarket);
-            activegens.addAll(gensOutSpotMarket);
+
+            ArrayList<Generator> activeGens = new ArrayList<Generator>();
+            ArrayList<Generator> allActivegens = new ArrayList<Generator>();
+
+            //Get Active gens in this SPM
+            this.getActiveGensThisSPM(today, activeGens);
+
+            //Get ALL Active gens in this SPM, and in the contained SPMs
+            this.getActiveGensAllSPM(today, allActivegens);
+
+
+            //GET ALL CAPACITY
+            float sumCapacityALLSPM = 0;
+            for (Generator g : allActivegens)
+                sumCapacityALLSPM += g.getMaxCapacity();
+
+            //GET CAPACITY THIS SPM
+            float sumCapacityThisSPM = 0;
+            for (Generator g : activeGens)
+                sumCapacityThisSPM += g.getMaxCapacity();
+
+            //Proportion of energy used to normalize the CDE into CDEII
+            //As we do not have the energy generated by each generation unit in the historical data,
+            //We use the ratio of (nominal capacity to of this SPM vs the nominal capacity of all SPMS) to normalize the contribution of each SPM
+            float proportionGeneration = sumCapacityThisSPM / sumCapacityALLSPM;
 
             //compute Emission Factor t-CO2/MWh from historic generation contributions
             Generation genData = data.getMonthly_generation_register().get(today);
-            this.genEemissionFactor = genData.computeGenEmissionIntensity(activegens, today);
-            for (Generator g : activegens) {
-                genCapacityAvailable += g.computeAvailableCapacity(data);
-            }
-            //CDEII
-            this.genEemissionFactor = this.genCapacityAvailable * this.genEemissionFactor;
+
+
+            this.genEmissionIntensityIndex = genData.computeGenEmissionIntensity(activeGens, today) * proportionGeneration;
 
         } else {
 
+            ArrayList<Generator> gensInSpotMarket = new ArrayList<Generator>();
+            ArrayList<Generator> gensOutSpotMarket = new ArrayList<Generator>();
+
+            //Get Active gens In/Out spot market in this SPM
+            this.getActiveGensThisSPM(today, gensInSpotMarket, gensOutSpotMarket);
+
             //If spot market has started, combine emissions intensity from spot and out of spot, normalized by total capacity used
             //Compute emissionIntensity based on Merit Order bids in Spot Market
-            this.computeEmissionsFactorActiveSpotMarket(data,gensInSpotMarket,gensOutSpotMarket);
+            this.computeCDEIISpotMarket(data, gensInSpotMarket, gensOutSpotMarket);
 
         }
 
 
-        //Compute LossFactor
-        double lossFactor = computeNetworksLosses();
+        //Compute network losses
+        double networkLosses = computeNetworksLosses(today);
 
-        //Base Case, when an SPM doesn't contain any other SPM
-        this.genEemissionFactor = (1 / (1 - lossFactor)) * this.genEemissionFactor;
+        //Base Case, when an SPM doesn't contain any other SPM but contains generators
+        this.genEmissionIntensityIndex = (1 / (1 - networkLosses)) * this.genEmissionIntensityIndex;
 
         //Recursion through SPMs
 
         for (Spm s_inside : spms_contained) {
             s_inside.computeIndicators(state, consumption, recursionLevel + 1);
-            this.genEemissionFactor += (1 / (1 - lossFactor)) * s_inside.getGenEemissionFactor();
+            this.genEmissionIntensityIndex += (1 / (1 - networkLosses)) * s_inside.getGenEmissionIntensityIndex();
         }
 
         //When recursion has finished, compute normalized CDEII
         if (recursionLevel == 0) {
 
-            double totalCapacity = this.getTotalCapacityInSPMs();
-            this.normalizeEmissionFactorRecursively(totalCapacity);
+            //If spot has not started, The historic data is already normalized with the total generation
+            if (data.getStartSpotMarketDate().after(today)) {
+                //Direct Operational Generators Emissions = Generated E * EmissionIntensityIndex (CDEIII)
+                //Emission factor t-CO2/MWh * consumption in MWh
+                this.currentEmissions = consumption * this.getGenEmissionIntensityIndex();
+            }else{
+                //If spot has started, normalize the EmissionIntensityIndex
+                double totalGeneration = this.getTotalGenerationInSPMs();
+                this.normalizeEmissionIntensityIndexRecursively(totalGeneration);
+                //Direct Operational Generators Emissions = Generated E * EmissionIntensityIndex (CDEIII)
+                //Emission factor t-CO2/MWh * consumption in MWh
+                this.currentEmissions = consumption * this.getGenEmissionIntensityIndex();
+            }
 
-            //Direct Operational Generators Emissions = Generated E * EmissionFactor
-            //Emission factor t-CO2/MWh * consumption in MWh
-            this.currentEmissions = consumption * this.getGenEemissionFactor();
+
 
         }
 
@@ -417,12 +478,12 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
         this.assetRelationships.add(newAssetRel);
     }
 
-    public double getGenCapacityAvailable() {
-        return genCapacityAvailable;
+    public double getGenAvailable() {
+        return genAvailable;
     }
 
-    public double getGenEemissionFactor() {
-        return genEemissionFactor;
+    public double getGenEmissionIntensityIndex() {
+        return genEmissionIntensityIndex;
     }
 
     public int getId() {
@@ -450,6 +511,9 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset {
         this.generators = generators;
     }
 
+    public void addGenerator(Generator generator) {
+        this.generators.add(generator);
+    }
 
     public boolean isHasStorage() {
         return hasStorage;

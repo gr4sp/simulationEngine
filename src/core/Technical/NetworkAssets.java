@@ -14,10 +14,10 @@ public class NetworkAssets implements java.io.Serializable, Asset
 	private String subtype;
 	private String grid;
 	private String assetName;
-	private String grid_node_name;
+	private String ownername;
 	private Double2D location;//coordinates where the network assets are located
 	private double gridLosses;
-	private int gridVoltate;
+	private String gridVoltate;
 	private String owner;
 
 	//Start and end of operations
@@ -30,17 +30,16 @@ public class NetworkAssets implements java.io.Serializable, Asset
 	//TODO: Ownership and Management definition
 	ArrayList<ActorAssetRelationship> assetRelationships;
 	
-	public NetworkAssets(int NetId, String type, String subtype, String grid, String assetName, String grid_node_name, String location_MB,
-						 double gridLosses, int gridVoltage, String owner, Date start, Date end){
+	public NetworkAssets(int netId, String type, String subtype, String grid, String assetName, String ownername, String location_MB,
+						 double gridLosses, String gridVoltage, Date start, Date end){
 		this.netId = netId;
 		this.type = type;
 		this.subtype = subtype;
 		this.grid = grid;
 		this.assetName = assetName;
-		this.grid_node_name = grid_node_name;
+		this.ownername = ownername;
 		this.gridLosses = gridLosses;
 		this.gridVoltate = gridVoltage;
-		this.owner = owner;
 		this.diameter  = 50;
 
 		this.assetRelationships = new ArrayList<>();
@@ -65,6 +64,13 @@ public class NetworkAssets implements java.io.Serializable, Asset
 		return diameter;
 	}
 
+	public Date getStart() {
+		return start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
@@ -110,12 +116,12 @@ public class NetworkAssets implements java.io.Serializable, Asset
 		this.assetName = assetName;
 	}
 
-	public String getGrid_node_name() {
-		return grid_node_name;
+	public String getOwnername() {
+		return ownername;
 	}
 
-	public void setGrid_node_name(String grid_node_name) {
-		this.grid_node_name = grid_node_name;
+	public void setOwnername(String ownername) {
+		this.ownername = ownername;
 	}
 
 	public Double2D getLocation() {
@@ -134,11 +140,11 @@ public class NetworkAssets implements java.io.Serializable, Asset
 		this.gridLosses = gridLosses;
 	}
 
-	public int getGridVoltate() {
+	public String getGridVoltate() {
 		return gridVoltate;
 	}
 
-	public void setGridVoltate(int gridVoltate) {
+	public void setGridVoltate(String gridVoltate) {
 		this.gridVoltate = gridVoltate;
 	}
 
@@ -162,11 +168,10 @@ public class NetworkAssets implements java.io.Serializable, Asset
 				", subtype='" + subtype + '\'' +
 				", grid='" + grid + '\'' +
 				", assetName='" + assetName + '\'' +
-				", grid_node_name='" + grid_node_name + '\'' +
-				", location=" + location +
+				", ownername='" + ownername + '\'' +
+				", location_MB=" + location +
 				", gridLosses=" + gridLosses +
-				", gridVoltate=" + gridVoltate +
-				", owner='" + owner + '\'' +
+				", gridVoltate='" + gridVoltate +'\'' +
 				'}';
 	}
 }

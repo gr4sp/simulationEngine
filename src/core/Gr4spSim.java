@@ -11,11 +11,6 @@ import sim.field.continuous.Continuous2D;
 import sim.util.Double2D;
 
 import java.io.FileReader;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,12 +32,21 @@ public class Gr4spSim extends SimState {
 
     //Demand
     HashMap<Date, Double> monthly_demand_register;
-    HashMap<Date, Double> half_hour_demand_register;
+    HashMap<Date, Double> halfhour_demand_register;
+
+    //forecast ISP maximum and minimum demand (MW) from 2019 to 2050; various scenarios
+    HashMap<Integer, Float> maximum_demand_forecast_register;
+    HashMap<Integer, Float> minimum_demand_forecast_register;
+
+    //Forecast ISP consumption from 2019 to 2050 in GWh for various scenarios and regions
+    HashMap<Integer, Float> annual_forecast_consumption_register;
 
     //Consumption per Domestic Costumer
     HashMap<Date, Double> monthly_consumption_register;
+
     //Total monthly Consumption
     HashMap<Date, Double> total_monthly_consumption_register;
+
 
     //Total Generation GWh per month
     HashMap<Date, Generation> monthly_generation_register;
@@ -52,12 +56,16 @@ public class Gr4spSim extends SimState {
     //CPI conversion
     HashMap<Date, Float> cpi_conversion;
 
-    //Solar Exposure in MJ/m^2 daily mean per month
-    HashMap<Date, Float> solar_exposure;
+    //Solar Exposure in KWh/m^2 (MJ/m^2 in DB) monthly mean
+    HashMap<Date, Float> monthly_solar_exposure;
+
+    //Solar Exposure in KWh/m^2 30min mean
+    HashMap<Date, Float> halfhour_solar_exposure;
 
     // Solar installation in kw per month in Australia
-
-    HashMap<Date, Float> solar_installation_kw;
+    HashMap<Date, Integer> solar_number_installs;
+    HashMap<Date, Integer> solar_aggregated_kw;
+    HashMap<Date, Float> solar_system_capacity_kw;
 
     //this is the array to be traversed to get the total consumption
     ArrayList<ConsumptionActor> consumptionActors = new ArrayList<ConsumptionActor>();
@@ -131,14 +139,20 @@ public class Gr4spSim extends SimState {
         actor_register = new HashMap<>();
         arena_register = new HashMap<>();
         monthly_demand_register = new HashMap<>();
-        half_hour_demand_register = new HashMap<>();
+        halfhour_demand_register = new HashMap<>();
         monthly_consumption_register = new HashMap<>();
         total_monthly_consumption_register = new HashMap<>();
         monthly_generation_register = new HashMap<>();
         monthly_domestic_consumers_register = new HashMap<>();
         cpi_conversion = new HashMap<>();
-        solar_exposure = new HashMap<>();
-        solar_installation_kw = new HashMap<>();
+        monthly_solar_exposure = new HashMap<>();
+        halfhour_solar_exposure = new HashMap<>();
+        solar_aggregated_kw = new HashMap<>();
+        solar_number_installs = new HashMap<>();
+        solar_system_capacity_kw = new HashMap<>();
+        annual_forecast_consumption_register = new HashMap<>();
+        maximum_demand_forecast_register = new HashMap<>();
+        minimum_demand_forecast_register = new HashMap<>();
 
         layout = new Continuous2D(10.0, 600.0, 600.0);
         policies = new SimPolicies();
@@ -153,7 +167,7 @@ public class Gr4spSim extends SimState {
 
         try {
 
-            YamlReader reader = new YamlReader(new FileReader("core/settings/scenario1.yaml"));
+            YamlReader reader = new YamlReader(new FileReader("core/settings/BAUVIC.yaml"));
             settings = reader.read(Settings.class);
             System.out.println(settings);
 
@@ -165,11 +179,11 @@ public class Gr4spSim extends SimState {
             //Save start and end date in the simulator state, which is this classs Gr4spSim
             SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
-            this.startSimDate = stringToDate.parse( settings.getStartDate() );
+            this.startSimDate = stringToDate.parse(settings.getStartDate());
             this.simCalendar.setTime(this.startSimDate);
-            this.endSimDate = stringToDate.parse( settings.getEndDate() );
+            this.endSimDate = stringToDate.parse(settings.getEndDate());
 
-            this.startSpotMarketDate = stringToDate.parse( settings.getStartDateSpotMarket() );
+            this.startSpotMarketDate = stringToDate.parse(settings.getStartDateSpotMarket());
 
             /**
              * Population and scale
@@ -198,10 +212,10 @@ public class Gr4spSim extends SimState {
             // for example, 0.01 represents 1% per month, around 12% a year
             double uptakeRate = settings.getUptakeRate();
             policies.getAccelerateSolarPV().setMonthlyHousholdsPercentageConversion(uptakeRate);
-            policies.setEndConsumerTariffs( settings.getEndConsumerTariff() );
+            policies.setEndConsumerTariffs(settings.getEndConsumerTariff());
 
-        }catch (ParseException | com.esotericsoftware.yamlbeans.YamlException | java.io.FileNotFoundException e){
-            System.out.println("Problems reading YAML file!"+ e.toString());
+        } catch (ParseException | com.esotericsoftware.yamlbeans.YamlException | java.io.FileNotFoundException e) {
+            System.out.println("Problems reading YAML file!" + e.toString());
             exit(0);
         }
 
@@ -265,8 +279,8 @@ public class Gr4spSim extends SimState {
         return monthly_demand_register;
     }
 
-    public HashMap<Date, Double> getHalf_hour_demand_register() {
-        return half_hour_demand_register;
+    public HashMap<Date, Double> getHalfhour_demand_register() {
+        return halfhour_demand_register;
     }
 
     public HashMap<Date, Double> getMonthly_consumption_register() {
@@ -290,12 +304,24 @@ public class Gr4spSim extends SimState {
         return monthly_generation_register;
     }
 
-    public HashMap<Date, Float> getSolar_exposure() {
-        return solar_exposure;
+    public HashMap<Date, Float> getMonthly_solar_exposure() {
+        return monthly_solar_exposure;
     }
 
-    public HashMap<Date, Float> getSolar_installation_kw() {
-        return solar_installation_kw;
+    public HashMap<Date, Float> getHalfhour_solar_exposure() {
+        return halfhour_solar_exposure;
+    }
+
+    public HashMap<Date, Integer> getSolar_aggregated_kw() {
+        return solar_aggregated_kw;
+    }
+
+    public HashMap<Date, Integer> getSolar_number_installs() {
+        return solar_number_installs;
+    }
+
+    public HashMap<Date, Float> getSolar_system_capacity_kw() {
+        return solar_system_capacity_kw;
     }
 
     public HashMap<Integer, Actor> getActor_register() {
@@ -378,7 +404,31 @@ public class Gr4spSim extends SimState {
         return consumptionActors;
     }
 
-    public Arena getArenaByName(String arenaName ) {
+    public HashMap<Integer, Float> getAnnual_forecast_consumption_register() {
+        return annual_forecast_consumption_register;
+    }
+
+    public void setAnnual_forecast_consumption_register(HashMap<Integer, Float> annual_forecast_consumption_register) {
+        this.annual_forecast_consumption_register = annual_forecast_consumption_register;
+    }
+
+    public HashMap<Integer, Float> getMaximum_demand_forecast_register() {
+        return maximum_demand_forecast_register;
+    }
+
+    public void setMaximum_demand_forecast_register(HashMap<Integer, Float> maximum_demand_forecast_register) {
+        this.maximum_demand_forecast_register = maximum_demand_forecast_register;
+    }
+
+    public HashMap<Integer, Float> getMinimum_demand_forecast_register() {
+        return minimum_demand_forecast_register;
+    }
+
+    public void setMinimum_demand_forecast_register(HashMap<Integer, Float> minimum_demand_forecast_register) {
+        this.minimum_demand_forecast_register = minimum_demand_forecast_register;
+    }
+
+    public Arena getArenaByName(String arenaName) {
         for (Map.Entry<Integer, Arena> entry : this.getArena_register().entrySet()) {
             Arena a = entry.getValue();
             if (a.getType().equalsIgnoreCase(arenaName)) {
@@ -387,156 +437,6 @@ public class Gr4spSim extends SimState {
         }
 
         return null;
-    }
-    /**
-     * Create SPM function
-     * */
-
-    Spm createSpm(int idSpmActor) {
-
-        /**
-         *  Check if spm.id is shared. If so, check if we already created an object for that spm.id.
-         *  If it's the first time this spm.id is needed, then we create its object,
-         *  If it already exists, we just retrieve the object from the spm_register
-         */
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
-
-        String spmGenSql = "SELECT id, spm.shared, spm_contains, generation, network_assets, interface, storage, description FROM spm WHERE spm.id = '" + idSpmActor + "' ";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(spmGenSql)) {
-
-            // loop through the result set
-            while (rs.next()) {
-
-                int shared = rs.getInt("shared");
-
-                //If it is shared and
-                //we already created the spm, then the id should exist in the spm_register
-                //if so, we can return the existing object
-                if (shared == 1 && spm_register.containsKey(idSpmActor)) {
-                    return spm_register.get(idSpmActor).firstElement();
-                }
-
-                /**
-                 *  Get list of SPMs recursively from DB. Base case when there's no spm_contains.contained_id
-                 */
-                ArrayList<Spm> spms_contained = new ArrayList<Spm>();
-
-                String[] spm_contains = rs.getString("spm_contains").split(",");
-                for (String id : spm_contains) {
-                    if (id.equalsIgnoreCase("")) break;
-                    int contained_id = Integer.parseInt(id);
-
-                    //Create SPM if contained_id is different than NULL
-                    //Base Case of recursion
-                    if (contained_id != 0) {
-                        //System.out.println("SPM '" + idSpmActor + "' contains:" + contained_id);
-
-                        // Recursive call to load the contained SPMs before creating the current SPM with idSpmActor
-                        Spm spm_returned = createSpm(contained_id);
-
-                        // Add Spms created to the ArrayList<Spm>
-                        spms_contained.add(spm_returned);
-                    }
-                }
-
-                /**
-                 *  Get list of Generators from DB
-                 */
-
-                ArrayList<Generator> gens = new ArrayList<Generator>();
-
-                String[] gen_contained = rs.getString("generation").split(",");
-                for (String id : gen_contained) {
-                    if (id.equalsIgnoreCase("")) break;
-                    //System.out.println("SPM '" + rs.getString("id") + "' Generators:");
-
-                    ArrayList<Generator> genSpm = LoadData.selectGenTech(this, id);
-                    gens.addAll(genSpm);
-                }
-
-                /**
-                 * Get list of STORAGE from DB
-                 */
-
-                ArrayList<Storage> strs = new ArrayList<Storage>();
-                String[] st_contained = rs.getString("storage").split(",");
-                for (String id : st_contained) {
-                    if (id.equalsIgnoreCase("")) break;
-                    //System.out.println("SPM '" + rs.getString("id") + "' Storages:");
-
-                    ArrayList<Storage> SpmStrs = LoadData.selectStorage(this, id);
-                    strs.addAll(SpmStrs);
-                }
-
-                /**
-                 * Get list of NetworkAssets from DB
-                 */
-
-                ArrayList<NetworkAssets> networkAssets = new ArrayList<NetworkAssets>();
-                String[] net_contained = rs.getString("network_assets").split(",");
-                for (String id : net_contained) {
-                    if (id.equalsIgnoreCase("")) break;
-                    //System.out.println("SPM '" + rs.getString("id") + "' Grids:");
-
-                    ArrayList<NetworkAssets> SpmNet = LoadData.selectNetwork(this, id);
-                    networkAssets.addAll(SpmNet);
-                }
-
-
-                /**
-                 * Create new SPM
-                 */
-                Spm spmx = new Spm(idSpmActor, spms_contained, gens, networkAssets, strs, null);
-
-                //Get from Map the vector of SPM with key = idSpmActor, and add the new spm to the vector
-                if (!spm_register.containsKey(idSpmActor))
-                    spm_register.put(idSpmActor, new Vector<>());
-
-                spm_register.get(idSpmActor).add(spmx);
-
-                return spmx;
-
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
-
-
-//        /**
-//         * Get list of CONNECTION POINTS from DB
-//         */
-//        String spmCptSql = "SELECT Spm.id, Spm.name, ConnectionPoint.cpoint_id, ConnectionPoint.cpoint_name FROM Spm as Spm JOIN Spm_connection_mapping join ConnectionPoint " +
-//                "on ConnectionPoint.cpoint_id = Spm_connection_mapping.connectionId and Spm.id = Spm_connection_mapping.spmId and Spm.name = '" + name + "' ";
-//        Bag cpoints = new Bag();
-//
-//        try (Connection conn = DriverManager.getConnection(url);
-//             Statement stmt = conn.createStatement();
-//             ResultSet rs = stmt.executeQuery(spmCptSql)) {
-//            Boolean printed = false;
-//            // loop through the result set
-//            while (rs.next()) {
-//                if (!printed) {
-//                    System.out.println("SPM '" + rs.getString("name") + "' Connection Points:");
-//                    printed = true;
-//                }
-//                Bag SpmCpoints = selectConnectionPoint( rs.getString("cpoint_name"));
-//                cpoints.addAll(SpmCpoints);
-//            }
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-
-
-        //Bag cpoints = selectConnectionPoint("BK Brunswick");
-        //double embGHG = random.nextDouble() * 100.0; todo: this has to be calculated according to the components of the spm!
-        //double efficiency = 0.80; //efficiency all SPM
-
-        return null;
-
     }
 
 
@@ -572,7 +472,7 @@ public class Gr4spSim extends SimState {
 
     /**
      * Generate Conventional ConsumerUnit
-     * */
+     */
 
     public void generateHouseholds() {
 
@@ -584,8 +484,11 @@ public class Gr4spSim extends SimState {
         //Get Last month date (last sim state)
         Calendar c = Calendar.getInstance();
         c.setTime(today);
+        int currentYear = c.get(Calendar.YEAR);
+
         c.add(Calendar.MONTH, -1);
         Date lastStepTime = c.getTime();
+
 
         //Get Population before (last sim step)
         int householdsBefore = 0;
@@ -597,6 +500,10 @@ public class Gr4spSim extends SimState {
 
 
         int numHouseholds = (int) (householdsGrowth * populationPercentageAreacCode);
+
+        //If currentYear is after the forecast, then do not adapt the population percentage, as the forecast already has data for regions.
+        if( settings.getBaseYearConsumptionForecast() >= currentYear)
+            numHouseholds = (int) householdsGrowth;
 
         //Get Last conventional ConsumerUnit, which may have space for more households
         ConsumerUnit consumer = null;
@@ -648,13 +555,13 @@ public class Gr4spSim extends SimState {
             householdsLeft -= householdsCreated;
 
             //Schedule the actor in order to make decissions at every step
-            this.schedule.scheduleRepeating(0.0,1,(Actor) actor);
+            this.schedule.scheduleRepeating(0.0, 1, (Actor) actor);
 
             //Id of conventional SPM
             int idSpm = 1;
 
             //Create new SPM
-            Spm spm = createSpm(idSpm);
+            Spm spm = LoadData.createSpm(this, idSpm);
 
             /**
              * Actor Asset rel
@@ -703,8 +610,8 @@ public class Gr4spSim extends SimState {
     }
 
     /**
-     *  Decrease conventional households, without deleting the ConsumerUnit if it gets down to 0 households
-     * */
+     * Decrease conventional households, without deleting the ConsumerUnit if it gets down to 0 households
+     */
 
     void decreaseConventionalHouseholds(int numHouseholds) {
         //Get Last conventional ConsumerUnit, which may have space for more households
@@ -752,7 +659,7 @@ public class Gr4spSim extends SimState {
 
     /**
      * Move housholds from Conventional ConsumerUnits to NonConventional Consumer Units
-     * */
+     */
 
     public void convertIntoNonConventionalHouseholds(double conversionPercentage) {
 
@@ -830,12 +737,12 @@ public class Gr4spSim extends SimState {
             householdsLeft -= householdsCreated;
 
             //Schedule the actor in order to make decisions at every step
-            this.schedule.scheduleRepeating(0.0,1,(Actor) actor);
+            this.schedule.scheduleRepeating(0.0, 1, (Actor) actor);
 
             //Id of Non Conventional SPM
             int idSpm = 2;
 
-            Spm spm = createSpm(idSpm);
+            Spm spm = LoadData.createSpm(this, idSpm);
 
             /**
              * Actor Asset rel
@@ -885,7 +792,7 @@ public class Gr4spSim extends SimState {
 
     /**
      * Load Data From DataBase
-     * */
+     */
 
     public void loadData() {
         //selectDemandTemp();
@@ -897,14 +804,19 @@ public class Gr4spSim extends SimState {
         LoadData.selectArena(this);
         LoadData.selectTariffs(this, startDate, endDate, areaCode);
 
-        LoadData.selectDemand(this,startDate, endDate);
+        LoadData.selectDemand(this, startDate, endDate);
         LoadData.selectDemandHalfHour(this, startDate, endDate);
+        LoadData.selectForecastConsumption(this);
         LoadData.selectConsumption(this, startDate, endDate);
         LoadData.selectGenerationHistoricData(this, startDate, endDate);
-        LoadData.selectSolarExposure(this);
+        LoadData.selectMonthlySolarExposure(this);
+        LoadData.selectHalfHourSolarExposure(this);
+        LoadData.createHalfHourSolarExposureForecast(this);
         LoadData.selectSolarInstallation(this);
-
         LoadData.selectActors(this, "actors", startDate, endDate);
+
+        LoadData.selectMaximumDemandForecast(this);
+        LoadData.selectMinimumDemandForecast(this);
 
         //selectActorActorRelationships("actoractor93");
 
@@ -918,15 +830,15 @@ public class Gr4spSim extends SimState {
         generateHouseholds();
         saveData.plotSeries(this);
         this.schedule.scheduleRepeating(policies);
-        this.schedule.scheduleRepeating(0.0,2,saveData);
+        this.schedule.scheduleRepeating(0.0, 2, saveData);
 
         for (Map.Entry<Integer, Arena> entry : arena_register.entrySet()) {
             Arena a = entry.getValue();
-            this.schedule.scheduleRepeating(0.0,0,a);
+            this.schedule.scheduleRepeating(0.0, 0, a);
         }
 
 
-        }
+    }
 
 
     public static void main(String[] args) {

@@ -11,13 +11,14 @@ import java.util.*;
 import java.util.Date;
 
 import static java.lang.System.exit;
+import static java.lang.System.setOut;
 
 //Class to load all the data to start the simulation
 public class LoadData {
 
 
     //Functions to convert readings from text in DB to Actor type, etc.
-    public static ActorAssetRelationshipType stringToActorAssetTypeRelType (String actorAssetRelType){
+    public static ActorAssetRelationshipType stringToActorAssetTypeRelType(String actorAssetRelType) {
 
         if (actorAssetRelType.equalsIgnoreCase("OWN"))
             return ActorAssetRelationshipType.OWN;
@@ -30,6 +31,7 @@ public class LoadData {
 
     public static ActorActorRelationshipType stringToActorActorTypeRelType(String actorRelType) {
 
+//todo: fix actor-actor (from continuous to static) and use these relationships
 
         if (actorRelType.equalsIgnoreCase("BILLING"))
             return ActorActorRelationshipType.BILLING;
@@ -53,8 +55,114 @@ public class LoadData {
         return ActorActorRelationshipType.OTHER;
     }
 
+    // Select Forecast ISP annual consumption (GWh)
+
+    public static void
+    selectForecastConsumption(Gr4spSim data) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
 
+        String sql = "SELECT isp_annual_consumption.region as consumptionForecastRegion, isp_annual_consumption.year as consumptionForecastYear, " +
+                "isp_annual_consumption.category as consumptionForecastCategory, isp_annual_consumption.subcategory as consumptionForecastSubCategory, " +
+                "isp_annual_consumption.scenario as consumptionForecastScenario, isp_annual_consumption.annual_consumption as annualConsumptionForecast " +
+                "FROM  isp_annual_consumption " +
+                "WHERE (category = 'Operational' OR category = 'PriceImpact' OR category ='EnergyEfficiency' OR category = 'RooftopPV' OR category = 'SmallNonScheduledGeneration') " +
+                "AND region = 'VIC' " +
+                "AND (scenario = 'Actual' OR scenario ='"+ data.settings.getScenarioForecast()+"') ";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                int year = rs.getInt("consumptionForecastYear");
+                float gwh = rs.getFloat("annualConsumptionForecast");
+                System.out.println("\t" + rs.getString("consumptionForecastRegion") + "\t" +
+                        year + "\t" +
+                        rs.getString("consumptionForecastCategory") + "\t" +
+                        rs.getString("consumptionForecastSubCategory") + "\t" +
+                        rs.getString("consumptionForecastScenario") + "\t" +
+                        gwh );
+
+
+                //If year consumption forecast doesn't exist, create it
+                if (!data.getAnnual_forecast_consumption_register().containsKey(year)) {
+                    data.getAnnual_forecast_consumption_register().put(year, gwh);
+                }else{
+                    //Sum the existing category forecast with the new value (Operational,PriceImpact, etc.)
+                    float existingGWh = data.getAnnual_forecast_consumption_register().get(year);
+                    data.getAnnual_forecast_consumption_register().put(year, gwh + existingGWh);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    // Select Forecast ISP maximum demand (MW)
+    public static void
+    selectMaximumDemandForecast(Gr4spSim data) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        String sql = "SELECT isp_maximum_demand.region as maxDemandForecastRegion, isp_maximum_demand.year as maxDemandForecastYear, " +
+                "isp_maximum_demand.category as maxDemandForecastCategory, isp_maximum_demand.subcategory as maxDemandForecastSubCategory, " +
+                "isp_maximum_demand.scenario as maxDemandForecastScenario, isp_maximum_demand.maximum_demand as maxDemandForecast " +
+                "FROM  isp_maximum_demand";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getString("maxDemandForecastRegion") + "\t" +
+                        rs.getInt("maxDemandForecastYear") + "\t" +
+                        rs.getString("maxDemandForecastCategory") + "\t" +
+                        rs.getString("maxDemandForecastSubCategory") + "\t" +
+                        rs.getString("maxDemandForecastScenario") + "\t" +
+                        rs.getFloat("maxDemandForecast"));
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // Select Forecast ISP minimum demand (MW)
+    public static void
+    selectMinimumDemandForecast(Gr4spSim data) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        String sql = "SELECT isp_minimum_demand.region as minDemandForecastRegion, isp_minimum_demand.year as minDemandForecastYear, isp_minimum_demand.category as minDemandForecastCategory, isp_minimum_demand.subcategory as minDemandForecastSubCategory, isp_minimum_demand.scenario as minDemandForecastScenario, isp_minimum_demand.maximum_demand as minDemandForecast FROM  isp_minimum_demand";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                System.out.println("\t" + rs.getString("minDemandForecastRegion") + "\t" +
+                        rs.getInt("minDemandForecastYear") + "\t" +
+                        rs.getString("minDemandForecastCategory") + "\t" +
+                        rs.getString("minDemandForecastSubCategory") + "\t" +
+                        rs.getString("minDemandForecastScenario") + "\t" +
+                        rs.getFloat("minDemandForecast"));
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
     // Select Arena Function
 
     public static void
@@ -126,16 +234,18 @@ public class LoadData {
             System.out.println(e.getMessage());
         }
 
+        createCPIForecast(data);
+
 
         sql = "SELECT id, casestudy_area, date, tariff_name, average_dckwh, chargeperroom_dmonth, secvij_gdgr_aud_quarter, standingcharge_aud_year" +
                 " FROM tariffdata WHERE" +
-                " casestudy_area = '" + areaCode + "'" +
+                " casestudy_area SIMILAR TO '" + areaCode + "%' " +
                 " AND date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "';";
 
         //If areaCode is at state scale, do not filter tariffs by smaller areacodes, take all tariffs available
         //Agent will select a tariff according to simulation policy. For more details See SimulParameters()
-        if (areaCode == "VIC")
+        if (areaCode.equalsIgnoreCase("VIC"))
             sql = "SELECT id, casestudy_area, date, tariff_name, average_dckwh, chargeperroom_dmonth, secvij_gdgr_aud_quarter, standingcharge_aud_year" +
                     " FROM tariffdata WHERE" +
                     " date <= '" + endDate + "'" +
@@ -193,10 +303,6 @@ public class LoadData {
 
                 //Actor seller, Actor buyer, Asset assetUsed, float dollarMWh, Date start, Date end, float capacityContracted
 
-                /**
-                 * NEED TO USE FORMULA RBA TO UPDATE PRICES!
-                 * */
-
                 Contract contract = new Contract(
                         rs.getString("tariff_name"),
                         0,
@@ -247,7 +353,7 @@ public class LoadData {
             // loop through the result set
             while (rs.next()) {
                 //System.out.println("\t" + rs.getString("date") + "\t" +
-                  //      rs.getString("operational_demand_mw"));
+                //      rs.getString("operational_demand_mw"));
 
 
                 Date d = rs.getDate("date");
@@ -271,8 +377,6 @@ public class LoadData {
     selectDemandHalfHour(Gr4spSim data, String startDate, String endDate) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
-        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
-
         /**
          * Load Total Consumption per month
          * */
@@ -288,7 +392,7 @@ public class LoadData {
             // loop through the result set
             while (rs.next()) {
                 System.out.println("\t" + rs.getTimestamp("settlement_date") + "\t" +
-                        rs.getFloat("total_demand")+ "\t" +
+                        rs.getFloat("total_demand") + "\t" +
                         rs.getFloat("price"));
 
 
@@ -296,8 +400,8 @@ public class LoadData {
                 Double mw = rs.getDouble("total_demand");
 
                 //If half hour consumption doesn't exist, create it
-                if (!data.getHalf_hour_demand_register().containsKey(d)) {
-                    data.getHalf_hour_demand_register().put(d, mw);
+                if (!data.getHalfhour_demand_register().containsKey(d)) {
+                    data.getHalfhour_demand_register().put(d, mw);
                 }
 
 
@@ -309,6 +413,306 @@ public class LoadData {
     }
 
     //Select Consumption
+    public static void createConsumptionAndDemandForecast(Gr4spSim data) {
+
+        //Set Base Date
+        Date baseDate = null;
+        int baseYear = data.settings.getBaseYearConsumptionForecast();
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+        String dateInString = baseYear + "-01-01";
+        try {
+            baseDate = stringToDate.parse(dateInString);
+        } catch (java.text.ParseException e) {
+            System.out.println(e);
+        }
+
+        GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        Calendar fc = Calendar.getInstance();
+
+        c.setTime(baseDate);
+
+
+        while (baseYear < 2050) {
+            float baseConsumption = data.getAnnual_forecast_consumption_register().get(baseYear);
+            float nextConsumption = data.getAnnual_forecast_consumption_register().get(baseYear + 1);
+            float percentageChange = (nextConsumption-baseConsumption) / baseConsumption;
+
+
+            for (int month = 0; month < 12; month++) {
+
+                //Set the month for the forecast
+                c.set(Calendar.MONTH, month);
+                baseDate = c.getTime();
+
+                //ForecastConsumption
+                double gwh = data.getMonthly_consumption_register().get(baseDate);
+                double forecastedGWh = gwh + (gwh * percentageChange);
+
+
+                //Set the 1 year forecast date
+                c.add(Calendar.YEAR, 1);
+                Date forecastedDate = c.getTime();
+                c.add(Calendar.YEAR, -1);
+
+                data.getMonthly_consumption_register().put(forecastedDate, forecastedGWh);
+
+
+
+            }
+
+            //Leap year day
+            Date leapYearFeb = null;
+            dateInString = baseYear + "-02-29";
+            boolean isLeap = cal.isLeapYear(baseYear);
+            if( isLeap ) {
+                try {
+                    leapYearFeb = stringToDate.parse(dateInString);
+                } catch (java.text.ParseException e) {
+                    System.out.println(e);
+                }
+            }
+
+            //Set the month to January for Demand forecast
+            c.set(Calendar.MONTH, 0);
+            double mw = 0.0;
+            while( c.get(Calendar.YEAR) == baseYear ){
+                baseDate = c.getTime();
+
+                //Truncate time to get the correct data in leap year 29th of Feb
+                c.set(Calendar.MINUTE,0);
+                c.set(Calendar.HOUR_OF_DAY,0);
+                Date alwaysMidnight = c.getTime();
+                c.setTime(baseDate);
+
+                //ForecastDemand Half Hour
+                if(data.getHalfhour_demand_register().containsKey(baseDate)) {
+                    mw = data.getHalfhour_demand_register().get(baseDate);
+                }
+
+                //If the basis is a leap year, then fill it with the info from the day before,
+                //And do not try to copy info from 29th of Feb to the next year forecast as it will fail
+                if( leapYearFeb != null && alwaysMidnight.compareTo(leapYearFeb) == 0 ){
+                    c.add(Calendar.DAY_OF_MONTH, -1);
+                    Date yesterdayDate = c.getTime();
+                    double yesterdayMw = data.getHalfhour_demand_register().get(yesterdayDate);
+                    data.getHalfhour_demand_register().put(baseDate, yesterdayMw );
+                    c.add(Calendar.DAY_OF_MONTH, 1);
+                }
+                else {
+                    double forecastedMw = mw + (mw * percentageChange);
+
+                    //Set the 1 year forecast date
+                    fc.setTime(c.getTime());
+                    fc.add(Calendar.YEAR, 1);
+                    Date forecastedDate = fc.getTime();
+
+                    data.getHalfhour_demand_register().put(forecastedDate, forecastedMw);
+                }
+
+                //Set the month for the forecast
+                c.add(Calendar.MINUTE, 30);
+
+            }
+
+            baseYear++;
+
+        }
+    }
+
+    //Select Consumption
+    public static void createCPIForecast(Gr4spSim data) {
+
+        //Set Base Date
+        Date baseDate = null;
+        int baseYear = data.settings.getBaseYearConsumptionForecast();
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+        String dateInString = baseYear + "-01-01";
+        try {
+            baseDate = stringToDate.parse(dateInString);
+        } catch (java.text.ParseException e) {
+            System.out.println(e);
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(baseDate);
+
+
+        while (baseYear < 2050) {
+            float baseConsumption = data.getCpi_conversion().get(baseDate);
+            float forecastedConsumption = baseConsumption + (float) data.settings.getAnnualCpiForecast();
+
+            //Add 1 year to the base reference date
+            c.add(Calendar.YEAR, 1);
+            Date forecastedDate = c.getTime();
+
+            data.getCpi_conversion().put(forecastedDate, forecastedConsumption);
+
+            baseDate = c.getTime();
+            baseYear++;
+
+        }
+    }
+
+    public static void createForecastDomesticConsumers(Gr4spSim data){
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        /**
+         * Load Forecast domestic consumers
+         * */
+        String sql = "SELECT year, all_household_types" +
+                " FROM  household_forecast_victoria WHERE " +
+                " region = '" + data.settings.getAreaCode() + "';";
+
+
+        ArrayList< Map.Entry<Integer,Integer> > forecast = new ArrayList<>();
+
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+  /*              System.out.println("\t" + rs.getString("date") + "\t" +
+                        rs.getString("domesticconsumers"));
+*/
+
+                int year = rs.getInt("year");
+                int consumers = rs.getInt("all_household_types");
+
+
+
+                forecast.add(Map.entry(year, consumers));
+                //data.getMonthly_domestic_consumers_register().put(date, consumers);
+
+
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //Create linear interpolation of the forecasted years
+        for( int i = 0; i < forecast.size()-1; i++) {
+
+            int j = i + 1;
+            int firstYear = forecast.get(i).getKey();
+            int nextYear = forecast.get(j).getKey();
+
+            int firstConsumers = forecast.get(i).getValue();
+            int nextConsumers = forecast.get(j).getValue();
+
+            //Get growth per year in order to interpolate
+            float growthPerYear = (nextConsumers - firstConsumers) / (nextYear - firstYear);
+
+
+            //Interpolate from firstYear until NextYear
+            int consumers = firstConsumers;
+            for( int year = firstYear; year <= nextYear; year++) {
+
+                //Set  Date
+                Date date = null;
+                String dateInString = year + "-01-01";
+                try {
+                    date = stringToDate.parse(dateInString);
+                } catch (java.text.ParseException e) {
+                    System.out.println(e);
+                }
+
+                data.getMonthly_domestic_consumers_register().put(date, consumers);
+
+                consumers += growthPerYear;
+            }
+        }
+    }
+
+
+    //Select Consumption
+    public static void createHalfHourSolarExposureForecast(Gr4spSim data) {
+
+        //Set Base Date
+        Date baseDate = null;
+        int baseYear = data.settings.getBaseYearConsumptionForecast();
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+        String dateInString = baseYear + "-01-01";
+        try {
+            baseDate = stringToDate.parse(dateInString);
+        } catch (java.text.ParseException e) {
+            System.out.println(e);
+        }
+
+        GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        Calendar fc = Calendar.getInstance();
+
+        c.setTime(baseDate);
+
+
+        while (baseYear < 2050) {
+
+            //Leap year day
+            Date leapYearFeb = null;
+            dateInString = baseYear + "-02-29";
+            boolean isLeap = cal.isLeapYear(baseYear);
+            if( isLeap ) {
+                try {
+                    leapYearFeb = stringToDate.parse(dateInString);
+                } catch (java.text.ParseException e) {
+                    System.out.println(e);
+                }
+            }
+
+            //Set the month to January for Demand forecast
+            c.set(Calendar.MONTH, 0);
+            float solarHalfhourExposureKwh = (float)0.0;
+            while( c.get(Calendar.YEAR) == baseYear ){
+                baseDate = c.getTime();
+
+                //Truncate time to get the correct data in leap year 29th of Feb
+                c.set(Calendar.MINUTE,0);
+                c.set(Calendar.HOUR_OF_DAY,0);
+                Date alwaysMidnight = c.getTime();
+                c.setTime(baseDate);
+
+                //ForecastDemand Half Hour
+                if(data.getHalfhour_solar_exposure().containsKey(baseDate)) {
+                    solarHalfhourExposureKwh = data.getHalfhour_solar_exposure().get(baseDate);
+                }
+
+                //If the basis is a leap year, then fill it with the info from the day before,
+                //And do not try to copy info from 29th of Feb to the next year forecast as it will fail
+                if( leapYearFeb != null && alwaysMidnight.compareTo(leapYearFeb) == 0 ){
+                    c.add(Calendar.DAY_OF_MONTH, -1);
+                    Date yesterdayDate = c.getTime();
+                    float yesterdaySolarHalfhourExposureKwh = data.getHalfhour_solar_exposure().get(yesterdayDate);
+                    data.getHalfhour_solar_exposure().put(baseDate, yesterdaySolarHalfhourExposureKwh );
+                    c.add(Calendar.DAY_OF_MONTH, 1);
+                }
+                else {
+
+                    //Set the 1 year forecast date
+                    fc.setTime(c.getTime());
+                    fc.add(Calendar.YEAR, 1);
+                    Date forecastedDate = fc.getTime();
+
+                    data.getHalfhour_solar_exposure().put(forecastedDate, solarHalfhourExposureKwh);
+                }
+
+                //Set the month for the forecast
+                c.add(Calendar.MINUTE, 30);
+
+            }
+
+            baseYear++;
+
+        }
+    }
+
 
     public static void
     selectConsumption(Gr4spSim data, String startDate, String endDate) {
@@ -348,6 +752,13 @@ public class LoadData {
             System.out.println(e.getMessage());
         }
 
+
+        /**
+         * Create Consumption Forecast
+         * */
+
+        createConsumptionAndDemandForecast(data);
+
         /**
          * Load domestic consumers
          * */
@@ -380,6 +791,8 @@ public class LoadData {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        createForecastDomesticConsumers(data);
 
         /**
          * Compute linear Monthly growth from Yearly data
@@ -448,6 +861,7 @@ public class LoadData {
 
             data.getMonthly_consumption_register().put(month, newMwh);
         }
+
     }
 
     public static void
@@ -505,9 +919,7 @@ public class LoadData {
         }
     }
 
-    public static void
-
-    selectSolarExposure(Gr4spSim data) {
+    public static void selectMonthlySolarExposure(Gr4spSim data) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -542,7 +954,7 @@ public class LoadData {
                 } catch (ParseException e) {
                 }
 
-                data.getSolar_exposure().put(date, solarExposure);
+                data.getMonthly_solar_exposure().put(date, solarExposure);
 
 
             }
@@ -551,13 +963,43 @@ public class LoadData {
         }
     }
 
-    public static void
-    selectSolarInstallation(Gr4spSim data) {
+    public static void selectHalfHourSolarExposure(Gr4spSim data) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        String sql = "SELECT time , ghi" +
+                " FROM solar_ghi;";
+
+        //Loading Solar Exposure data
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                Date date = rs.getTimestamp("time");
+                float toKwh = (float) 1000.0;
+
+
+                float solarHalfhourExposure = rs.getFloat("ghi") / toKwh;
+
+                System.out.println("\t" + date + "\t" +
+                        solarHalfhourExposure
+                );
+
+                data.getHalfhour_solar_exposure().put(date, solarHalfhourExposure);
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void selectSolarInstallation(Gr4spSim data) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
-        String sql = "SELECT year, month, average_installation_kw" +
+        String sql = "SELECT year, month, number_installations, aggregated_capacity_kw, system_capacity" +
                 " FROM solar_installation_monthly;";
 
         //Loading Solar installation data
@@ -573,11 +1015,13 @@ public class LoadData {
                 Date date = null;
 
 
-                float solarInstallation = rs.getFloat("average_installation_kw");
+                Integer number_installations = rs.getInt("number_installations");
+                Integer aggregater_capacity_kw = rs.getInt("aggregated_capacity_kw");
+                Float system_capacity = rs.getFloat("system_capacity");
 
                 System.out.println("\t" + year + "\t" +
                         month + "\t" +
-                        solarInstallation
+                        number_installations
                 );
 
 
@@ -586,7 +1030,10 @@ public class LoadData {
                 } catch (ParseException e) {
                 }
 
-                data.getSolar_installation_kw().put(date, solarInstallation);
+                data.getSolar_number_installs().put(date, number_installations);
+                data.getSolar_aggregated_kw().put(date, aggregater_capacity_kw);
+                data.getSolar_system_capacity_kw().put(date, system_capacity);
+
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -600,7 +1047,7 @@ public class LoadData {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT " + tableName + ".id as id, actortype.name as typename, " + tableName + ".name as name, govrole, businessstructure, ownershipmodel, startdate, actorschange.changedate" +
+        String sql = "SELECT " + tableName + ".id as id, actortype.name as typename, " + tableName + ".name as name, role, businessstructure, ownershipmodel, startdate, actorschange.changedate" +
                 " FROM " + tableName + ", actorschange, actortype WHERE " +
                 "actortype.id = actors.type AND actors.id = actorschange.idactora AND actors.startdate <= '" + endDate + "'" +
                 " AND actorschange.changedate > '" + startDate + "';";
@@ -615,7 +1062,7 @@ public class LoadData {
                 System.out.println("\t" + rs.getInt("id") + "\t" +
                         rs.getString("typename") + "\t" +
                         rs.getString("name") + "\t" +
-                        rs.getString("govrole") + "\t" +
+                        rs.getString("role") + "\t" +
                         rs.getString("businessStructure") + "\t" +
                         rs.getDate("startdate") + "\t" +
                         rs.getDate("changedate") + "\t" +
@@ -788,7 +1235,7 @@ public class LoadData {
     /**
      * select all rows in the Generation Technologies table
      */
-    public static ArrayList<Generator> selectGenTech(Gr4spSim data, String idgen) {
+    public static ArrayList<Generator> selectGenTech(Gr4spSim data, String min_nameplate_capacity, String max_nameplate_capacity) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; // url for sqlite "jdbc:sqlite:Spm_archetypes.db";
 
 
@@ -796,8 +1243,10 @@ public class LoadData {
 
         String sql = "SELECT asset_id, region, asset_type, site_name, owner_name, technology_type, fuel_type, nameplate_capacity_mw, dispatch_type, full_commercial_use_date, closure_date, " +
                 " duid, no_units, storage_capacity_mwh, expected_closure_date, fuel_bucket_summary" +
-                " FROM generationassets WHERE asset_id = '" + idgen + "' AND full_commercial_use_date <= '" + DateToString.format(data.getEndSimDate()) + "'" +
-                " AND ( closure_date > '" + DateToString.format(data.getStartSimDate()) + "'"+
+                " FROM generationassets WHERE nameplate_capacity_mw >= '" + min_nameplate_capacity + "'AND nameplate_capacity_mw < '" + max_nameplate_capacity +
+                "'AND full_commercial_use_date <= '" + DateToString.format(data.getEndSimDate()) + "'" +
+                " AND region = 'VIC'" +
+                " AND ( closure_date > '" + DateToString.format(data.getStartSimDate()) + "'" +
                 " OR expected_closure_date > '" + DateToString.format(data.getStartSimDate()) + "');";
 
         ArrayList<Generator> gens = new ArrayList<Generator>();
@@ -854,7 +1303,7 @@ public class LoadData {
 
                 data.getGen_register().get(idGen).add(gen);
 
-                data.setNumGenerators(data.getNumGenerators() + 1 );
+                data.setNumGenerators(data.getNumGenerators() + 1);
 
                 //Add gen to ArrayList<Generator>. This will be used in the constructor of SPM
                 gens.add(gen);
@@ -898,7 +1347,7 @@ public class LoadData {
                         rs.getDouble("storage_cycleLife"),
                         rs.getDouble("storage_costRange"));
 
-                data.setNumStorage(data.getNumStorage() + 1 );
+                data.setNumStorage(data.getNumStorage() + 1);
                 strs.add(str);
             }
         } catch (SQLException e) {
@@ -909,15 +1358,15 @@ public class LoadData {
 
 
     //Select and create the type of energy grid
-    public static ArrayList<NetworkAssets> selectNetwork(Gr4spSim data, String id) {
+    public static ArrayList<NetworkAssets> selectNetwork(Gr4spSim data, String subname) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT networkassets.id as netid, networkassettype.type as type, networkassettype.subtype as subtype, " +
-                "networkassettype.grid as grid, assetname, grid_node_name, location_mb, gridlosses, gridvoltage, owner, startdate, enddate " +
+                "networkassettype.grid as grid, assetname, ownername, locationmb, gridlosses, gridvoltage, startdate, changedate " +
                 " FROM networkassets " +
                 "JOIN networkassettype ON networkassets.assettype = networkassettype.id " +
-                "and  networkassets.id = '" + id + "' ";
+                "and  networkassets.assetname SIMILAR TO '" + subname + "%' ";
         ArrayList<NetworkAssets> nets = new ArrayList<NetworkAssets>();
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -938,19 +1387,18 @@ public class LoadData {
                         rs.getDate("enddate") + "\t" +
                         rs.getString("owner"));
 */
-                int idNet = rs.getInt("netId");
+                int idNet = rs.getInt("netid");
                 NetworkAssets grid = new NetworkAssets(idNet,
                         rs.getString("type"),
                         rs.getString("subtype"),
                         rs.getString("grid"),
                         rs.getString("assetName"),
-                        rs.getString("grid_node_name"),
-                        rs.getString("location_MB"),
+                        rs.getString("ownername"),
+                        rs.getString("locationmb"),
                         rs.getDouble("gridLosses"),
-                        rs.getInt("gridVoltage"),
-                        rs.getString("owner"),
+                        rs.getString("gridVoltage"),
                         rs.getDate("startdate"),
-                        rs.getDate("enddate"));
+                        rs.getDate("changedate"));
                 nets.add(grid);
 
                 //Get from Map the vector of Networks with key = idNet, and add the new Network to the vector
@@ -1000,7 +1448,7 @@ public class LoadData {
                         rs.getString("cpoint_owner"),
                         rs.getInt("Ownership"));
 
-                data.setNumcpoints(data.getNumcpoints() + 1 );
+                data.setNumcpoints(data.getNumcpoints() + 1);
                 cpoints.add(cpoint);
 
             }
@@ -1077,5 +1525,172 @@ public class LoadData {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Create SPM function
+     */
+
+    public static Spm createSpm(Gr4spSim data, int idSpmActor) {
+
+        /**
+         *  Check if spm.id is shared. If so, check if we already created an object for that spm.id.
+         *  If it's the first time this spm.id is needed, then we create its object,
+         *  If it already exists, we just retrieve the object from the spm_register
+         */
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        String spmGenSql = "SELECT id, spm.shared, spm_contains, generation, network_assets, interface, storage, description FROM spm WHERE spm.id = '" + idSpmActor + "' ";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(spmGenSql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+
+                int shared = rs.getInt("shared");
+
+                //If it is shared and
+                //we already created the spm, then the id should exist in the spm_register
+                //if so, we can return the existing object
+                if (shared == 1 && data.spm_register.containsKey(idSpmActor)) {
+                    return data.spm_register.get(idSpmActor).firstElement();
+                }
+
+                /**
+                 *  Get list of SPMs recursively from DB. Base case when there's no spm_contains.contained_id
+                 */
+                ArrayList<Spm> spms_contained = new ArrayList<Spm>();
+
+                String[] spm_contains = rs.getString("spm_contains").split(",");
+                for (String id : spm_contains) {
+                    if (id.equalsIgnoreCase("")) break;
+                    int contained_id = Integer.parseInt(id);
+
+                    //Create SPM if contained_id is different than NULL
+                    //Base Case of recursion
+                    if (contained_id != 0) {
+                        //System.out.println("SPM '" + idSpmActor + "' contains:" + contained_id);
+
+                        // Recursive call to load the contained SPMs before creating the current SPM with idSpmActor
+                        Spm spm_returned = createSpm(data, contained_id);
+
+                        // Add Spms created to the ArrayList<Spm>
+                        spms_contained.add(spm_returned);
+                    }
+                }
+
+                /**
+                 *  Get list of Generators from DB
+                 */
+
+                ArrayList<Generator> gens = null;
+                switch (idSpmActor) {
+                    case 9: //ID for Generators connected at the large gen unit SPM (generators with minimum 30 MW inclusive)
+                        gens = LoadData.selectGenTech(data, "30", "100000");
+                        break;
+                    case 5: //ID for Generators connected at the Distribution SPM. Generators with minimum 100KW inclusive and max 30 MW non inclusive.
+                        gens = LoadData.selectGenTech(data, "0.1", "30");
+                        break;
+                    case 6: //ID for generators connected to the subdistribution SPM. Generators with minimum 0 and maximum 100 KW non inclusive.
+                        gens = LoadData.selectGenTech(data, "0.0", "0.1");
+                        break;
+                    default:
+                        gens = new ArrayList<>();
+                        break;
+                }
+
+                /**
+                 * Get list of STORAGE from DB
+                 */
+
+                ArrayList<Storage> strs = new ArrayList<Storage>();
+                String[] st_contained = rs.getString("storage").split(",");
+                for (String id : st_contained) {
+                    if (id.equalsIgnoreCase("")) break;
+                    //System.out.println("SPM '" + rs.getString("id") + "' Storages:");
+
+                    ArrayList<Storage> SpmStrs = LoadData.selectStorage(data, id);
+                    strs.addAll(SpmStrs);
+                }
+
+                /**
+                 * Get list of NetworkAssets from DB
+                 */
+
+                ArrayList<NetworkAssets> networkAssets = null;
+
+                switch (idSpmActor) {
+                    case 1: //ID for Household nets
+                        networkAssets = LoadData.selectNetwork(data, "customer");
+                        break;
+                    case 5: //ID for Distribution nets
+                        networkAssets = LoadData.selectNetwork(data, "distribution");
+                        break;
+                    case 6: //ID for SubDistribution nets
+                        networkAssets = LoadData.selectNetwork(data, "400V");
+                        break;
+                    case 7: //ID for Transmission nets
+                        networkAssets = LoadData.selectNetwork(data, "transmission");
+                        break;
+                    default:
+                        networkAssets = new ArrayList<>();
+                        break;
+                }
+
+
+                /**
+                 * Create new SPM
+                 */
+                Spm spmx = new Spm(idSpmActor, spms_contained, gens, networkAssets, strs, null);
+
+                //Get from Map the vector of SPM with key = idSpmActor, and add the new spm to the vector
+                if (!data.spm_register.containsKey(idSpmActor))
+                    data.spm_register.put(idSpmActor, new Vector<>());
+
+                data.spm_register.get(idSpmActor).add(spmx);
+
+                return spmx;
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+
+
+//        /**
+//         * Get list of CONNECTION POINTS from DB
+//         */
+//        String spmCptSql = "SELECT Spm.id, Spm.name, ConnectionPoint.cpoint_id, ConnectionPoint.cpoint_name FROM Spm as Spm JOIN Spm_connection_mapping join ConnectionPoint " +
+//                "on ConnectionPoint.cpoint_id = Spm_connection_mapping.connectionId and Spm.id = Spm_connection_mapping.spmId and Spm.name = '" + name + "' ";
+//        Bag cpoints = new Bag();
+//
+//        try (Connection conn = DriverManager.getConnection(url);
+//             Statement stmt = conn.createStatement();
+//             ResultSet rs = stmt.executeQuery(spmCptSql)) {
+//            Boolean printed = false;
+//            // loop through the result set
+//            while (rs.next()) {
+//                if (!printed) {
+//                    System.out.println("SPM '" + rs.getString("name") + "' Connection Points:");
+//                    printed = true;
+//                }
+//                Bag SpmCpoints = selectConnectionPoint( rs.getString("cpoint_name"));
+//                cpoints.addAll(SpmCpoints);
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+
+
+        //Bag cpoints = selectConnectionPoint("BK Brunswick");
+        //double embGHG = random.nextDouble() * 100.0; todo: this has to be calculated according to the components of the spm!
+        //double efficiency = 0.80; //efficiency all SPM
+
+        return null;
+
+    }
+
 
 }

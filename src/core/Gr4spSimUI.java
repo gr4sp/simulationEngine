@@ -24,6 +24,7 @@ public class Gr4spSimUI extends GUIState {
 
     JFrame consumtionChartFrame;
     JFrame tariffChartFrame;
+    JFrame wholesaleChartFrame;
     JFrame ghgChartFrame;
     JFrame numDomesticConsumersChartFrame;
 
@@ -100,11 +101,17 @@ public class Gr4spSimUI extends GUIState {
         c.registerFrame(consumtionChartFrame);
         consumtionChartFrame.add(new ChartPanel(data.saveData.consumptionChart.getChart()), BorderLayout.CENTER);
 
-        tariffChartFrame = new JFrame("Average Households Tariffs (c/KWh) area code: " + data.getAreaCode());
+        tariffChartFrame = new JFrame("Households Tariffs (c/KWh) area code: " + data.getAreaCode());
         tariffChartFrame.setVisible(true);
         tariffChartFrame.setSize(800, 800);
         c.registerFrame(tariffChartFrame);
-        tariffChartFrame.add(new ChartPanel(data.saveData.WholesaleChart.getChart()), BorderLayout.CENTER);
+        tariffChartFrame.add(new ChartPanel(data.saveData.TariffUsageChart.getChart()), BorderLayout.CENTER);
+
+        wholesaleChartFrame = new JFrame("Wholesale Price ($/MWh) area code: " + data.getAreaCode());
+        wholesaleChartFrame.setVisible(true);
+        wholesaleChartFrame.setSize(800, 800);
+        c.registerFrame(wholesaleChartFrame);
+        wholesaleChartFrame.add(new ChartPanel(data.saveData.WholesaleChart.getChart()), BorderLayout.CENTER);
 
         ghgChartFrame = new JFrame("Total Households GHG (MtCO2-e/MWh) area code: " + data.getAreaCode());
         ghgChartFrame.setVisible(true);
@@ -144,6 +151,9 @@ public class Gr4spSimUI extends GUIState {
 
         if (tariffChartFrame != null) tariffChartFrame.dispose();
         tariffChartFrame = null;
+
+        if (wholesaleChartFrame != null) wholesaleChartFrame.dispose();
+        wholesaleChartFrame = null;
 
         if (ghgChartFrame != null) ghgChartFrame.dispose();
         ghgChartFrame = null;

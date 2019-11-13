@@ -6,8 +6,10 @@ import core.Relationships.Contract;
 import core.Gr4spSim;
 import core.Technical.Generation;
 import core.Technical.Spm;
+import org.jfree.data.xy.XYDataItem;
 import sim.engine.SimState;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -101,6 +103,98 @@ public class ConsumerUnit extends Actor implements ConsumptionActor {
         this.hasGas = hasGas;
     }
 
+    private void computeTariff(SimState simState){
+
+        Gr4spSim data = (Gr4spSim) simState;
+
+        int currentMonth = (int)simState.schedule.getSteps()%12;
+
+        Date today = data.getCurrentSimDate();
+        Arena a = null;
+
+        //Finds the Retail Arena, and asks for his currentTariff, following the Simulation policy defined in Gr4spSim.Start()
+        for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
+            a = entry.getValue();
+
+            if (a.getType().equalsIgnoreCase("Retail")) {
+                break;
+            }
+        }
+
+        //If Spot Market hasn't started yet, get historic prices
+        if (data.getStartSpotMarketDate().after(today)) {
+            //Historic tariff is given in c/KWh
+            this.currentTariff = (float) a.getTariff(simState);
+
+        }
+        else {
+            Calendar c = Calendar.getInstance();
+            c.setTime(data.getStartSpotMarketDate());
+            c.add(Calendar.MONTH, 5);
+            Date spotStartSixMonthAfter = c.getTime();
+
+            //Lets run the first 6 months of the spot market to be able to get an average of wholesale price
+            //Get tariff from historic for the first 6 months of starting the spot
+            if(spotStartSixMonthAfter.after(today)){
+                //Historic tariff is given in c/KWh
+                this.currentTariff = (float) a.getEndConsumerTariff(simState);
+            }
+            //Update tariff every 6 months
+            else if( (currentMonth + 1) % 6 == 0 ){
+
+                //Find out wholesale price contribution percentage to the tariff (other values given in yaml file)
+                float wholesalePriceComponent = (float)1.0 - (float)(data.settings.getUsageTariff("transmissionCosts")
+                        + data.settings.getUsageTariff("distributionCosts")
+                        + data.settings.getUsageTariff("retailCosts")
+                        + data.settings.getUsageTariff("environmentalCosts"));
+
+                //Get CPI conversion
+                c.setTime(today);
+                c.set(Calendar.MONTH, 0);
+                Date cpiDate = c.getTime();
+                float conversion_rate = data.getCpi_conversion().get(cpiDate);
+
+                //Compute Average Wholesale Price using the last 6 months values saved in SaveData.java
+                //Current month price hasn't been stored yet, so we initialize it with the price for the current month
+                // Convert $/MWh -> c/KWh
+                double avgWholesalePrice = (float) (a.getTariff(simState) * conversion_rate) / (float) 10.0;
+                int nmonths = 1;
+                for (nmonths = 1 ; nmonths < 6 ; nmonths++) {
+
+                    //Get Wholesale price from the past nmonth(s)
+                    int idx = data.saveData.wholesaleSeries.get(0).getItems().size() - nmonths;
+                    XYDataItem item = (XYDataItem) data.saveData.wholesaleSeries.get(0).getItems().get(idx);
+                    double wholesale = item.getYValue();
+
+                    // Convert $/MWh -> c/KWh
+                    float wholesalePrice = (float) (wholesale * conversion_rate) / (float) 10.0;
+                    avgWholesalePrice += wholesalePrice / wholesalePriceComponent;
+                }
+                avgWholesalePrice /= nmonths;
+
+                this.currentTariff = (float) avgWholesalePrice;
+            }
+            else{
+                //Use the tariff from this semester
+                int idx = data.saveData.tariffUsageConsumptionActorSeries.get(0).getItems().size() - 1;
+                if(idx > 0){
+                    //Make sure there's data for the semester. If starting after spotStartDate, there may not be any data for the first 5 months
+                    XYDataItem item = (XYDataItem) data.saveData.tariffUsageConsumptionActorSeries.get(0).getItems().get(idx);
+                    double tariffSemester = item.getYValue();
+                    this.currentTariff = (float) tariffSemester;
+                }else{
+                    this.currentTariff = (float) 0.0;
+                }
+
+            }
+
+
+
+        }
+
+
+    }
+
     @Override
     public void step(SimState simState) {
 
@@ -138,7 +232,7 @@ public class ConsumerUnit extends Actor implements ConsumptionActor {
                     consumption = 0;
                 }
 
-                spm.computeIndicators(simState,consumption);
+                 spm.computeIndicators(simState,consumption);
                 this.currentEmissions = spm.currentEmissions;
 
 //                //Compute emissions multiplying Emission factor t-CO2/MWh * consumption in MWh
@@ -153,18 +247,9 @@ public class ConsumerUnit extends Actor implements ConsumptionActor {
             }
         }
 
-        //Finds the Retail Arena, and asks for his currentTariff, following the Simulation policy defined in Gr4spSim.Start()
-        for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
-            Arena a = entry.getValue();
-
-            if(a.getType().equalsIgnoreCase("Retail") ) {
-                this.currentTariff = (float)a.getTariff(simState);
-                //this.currentTariffContract = a.getEndConsumerTariff(simState);
-                //this.currentTariff = this.currentTariffContract.getPricecKWh();
-                //Need to take into account service Fee when computing costs
-            }
-        }
+        computeTariff(simState);
     }
+
 
 
         @Override

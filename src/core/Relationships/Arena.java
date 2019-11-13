@@ -49,12 +49,17 @@ public class Arena implements Steppable {
         rounds = 0;
     }
 
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRounds() {
+        return rounds;
     }
 
     public String getName() {
@@ -85,9 +90,8 @@ public class Arena implements Steppable {
     /**
      * This tariff represents price for $/MWh
      */
-    public Contract getEndConsumerTariff(SimState state) {
+    public Float getEndConsumerTariff(SimState state) {
         float tariff = 0;
-        Contract selectedContract = null;
 
         Gr4spSim data = (Gr4spSim) state;
 
@@ -115,30 +119,23 @@ public class Arena implements Steppable {
         switch (data.getPolicies().getEndConsumerTariff()) {
             case MAX:
                 tariff = Collections.max(availableTariffs);
-                for (Contract c : availableTariffsContracts) {
-                    if (c.getPricecKWh() == tariff) {
-                        selectedContract = c;
-                        break;
-                    }
-                }
                 break;
             case MIN:
                 tariff = Collections.min(availableTariffs);
-                for (Contract c : availableTariffsContracts) {
-                    if (c.getPricecKWh() == tariff) {
-                        selectedContract = c;
-                        break;
-                    }
-                }
+                break;
+            case AVG:
+                tariff = (float) availableTariffs.stream()
+                        .mapToDouble(a -> a)
+                        .average()
+                        .orElse(0);
                 break;
             case RND:
                 int index = randomGenerator.nextInt(availableTariffs.size());
                 tariff = availableTariffs.get(index);
-                selectedContract = availableTariffsContracts.get(index);
                 break;
         }
 
-        return selectedContract;
+        return tariff;
     }
 
     /**
@@ -150,7 +147,7 @@ public class Arena implements Steppable {
 
         //If Spot Market hasn't started yet, get historic prices
         if (data.getStartSpotMarketDate().after(today)) {
-            return getEndConsumerTariff(state).getPricecKWh();
+            return getEndConsumerTariff(state);
         }
 
         //If spot is on, get the price market
@@ -161,20 +158,10 @@ public class Arena implements Steppable {
                 spotPrice = a.spot.getMarketPrice();
             }
         }
-        // TODO: 16/09/2019 check percentage of contribution on tariffs from regulated networks (transmission and distribution),
-        //  competitive markets (spot and retail), environmental policies and fix charges.
-        double networkChargesFix = 0;
-        double transmissionCharges = 0.12;
-        double distributionCharges = 0.76;
-        double retailerExtra = 0;
-        double environmental_policies = 0.12;
 
-        double spotPriceCentsKWh = spotPrice; /// 10.0;
-        return spotPriceCentsKWh;
+        //$/MWh
+        return spotPrice;
 
-//        double tariff = spotPriceCentsKWh + (transmissionCharges * spotPriceCentsKWh) + (distributionCharges * spotPriceCentsKWh) +
-//                (environmental_policies * spotPriceCentsKWh) + retailerExtra + networkChargesFix;
-//        return tariff;
     }
 
     /**
@@ -182,7 +169,7 @@ public class Arena implements Steppable {
      * Capacity factors of each generator vary depending on the season.  Data on max capacity is obtained from
      * the "Generation_Information_VIC" (May 2019)
     */
-    public void createBids(SimState state){
+    public void createBids(SimState state, Date currentTime){
 
         Gr4spSim data = (Gr4spSim) state;
         Date today = data.getCurrentSimDate();
@@ -216,7 +203,7 @@ public class Arena implements Steppable {
 
             g.updateHistoricCapacityFactor(state);
 
-            double availableCapacity = g.computeAvailableCapacity(state);
+            double availableCapacity = g.computeAvailableCapacity(state,currentTime);
             double dollarMWh = g.priceMWhLCOE();
 
             Bid b = new Bid(null, g, dollarMWh, availableCapacity);
@@ -273,17 +260,28 @@ public class Arena implements Steppable {
 
             c.setTime(today);
 
+            double monthlyAverageDemand = 0;
             double monthlyAveragePrice = 0;
             double monthlyAverageEmissions = 0;
             int num_half_hours = 1;
+            this.rounds = num_half_hours;
             double totalDemand  = 0;
+
+            //Reset Monthly generation data for each Generator
+            for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
+                Vector<Generator> gens = entry.getValue();
+                for (Generator g : gens) {
+                    g.setMonthlyGeneratedMWh(0.0);
+                }
+            }
+
 
             while(c.getTime().before(nextMonth)) {
 
                 Date currentTime = c.getTime();
 
-                if(data.getHalf_hour_demand_register().containsKey(currentTime))
-                    totalDemand  = data.getHalf_hour_demand_register().get(currentTime);
+                if(data.getHalfhour_demand_register().containsKey(currentTime))
+                    totalDemand  = data.getHalfhour_demand_register().get(currentTime);
                 else{
                     System.out.println("\t\t\t" + currentTime + " For some reason we loose this key");
                 }
@@ -292,7 +290,7 @@ public class Arena implements Steppable {
 
                 System.out.println(currentTime + " Demand: " + totalDemand);
 
-                createBids(state);
+                createBids(state, currentTime);
 
                 /**
                  * Compute spot price using current consumption - consumption met by non scheduled gen
@@ -310,8 +308,11 @@ public class Arena implements Steppable {
                                 //Check nominal capacity is smaller than 30 MW in order to know participation in spot Market
                                 //if (g.getMaxCapacity() < 30) {
                                 //only consider Semi-Scheduled (SS) and (NS)
-                                if( g.getDispatchTypeDescriptor().equals("S") == false ) {
-                                    availableCapacityNonScheduled += g.computeAvailableCapacity(state);
+                                if( g.getDispatchTypeDescriptor().equals("S") == false || g.getMaxCapacity() < 30) {
+                                    double capacity = g.computeAvailableCapacity(state, currentTime);
+                                    g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + capacity );
+                                    availableCapacityNonScheduled += capacity;
+
                                 }
                             }
                         }
@@ -319,11 +320,15 @@ public class Arena implements Steppable {
                 }
 
                 //remove consumption met by non scheduled generation (see assumptions in Word Document)
-                totalDemand -= availableCapacityNonScheduled;
+                double totalDemandWholesale = totalDemand - availableCapacityNonScheduled;
 
-                this.spot.computeMarketPrice(totalDemand);
+                //If non scheduled covered more than the demand, set the demand of the wholesale to 0
+                if(totalDemandWholesale < 0.0 ) totalDemandWholesale = 0.0;
+
+                this.spot.computeMarketPrice(totalDemandWholesale);
 
                 //Update average
+                monthlyAverageDemand = (monthlyAverageDemand * num_half_hours ) + totalDemand;
                 monthlyAveragePrice = (monthlyAveragePrice * num_half_hours) + this.spot.getMarketPrice();
                 monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + this.spot.getEmissionsIntensity();
 
@@ -361,6 +366,7 @@ public class Arena implements Steppable {
 
             spot.setEmissionsIntensity(monthlyAverageEmissions);
             spot.setMarketPrice(monthlyAveragePrice);
+            spot.setDemand(monthlyAverageDemand);
 
         }
 
