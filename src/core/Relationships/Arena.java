@@ -288,7 +288,7 @@ public class Arena implements Steppable {
 
                 //double totalDemand = data.getMonthly_demand_register().get(today);
 
-                System.out.println(currentTime + " Demand: " + totalDemand);
+                //System.out.println(currentTime + " Demand: " + totalDemand);
 
                 createBids(state, currentTime);
 
@@ -313,6 +313,12 @@ public class Arena implements Steppable {
                                     g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + capacity );
                                     availableCapacityNonScheduled += capacity;
 
+                                    //Historic Capacity Factor Off Spot non scheduled
+                                    g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + capacity );
+                                    g.setBidsOffSpot( g.getBidsOffSpot() + 1 );
+                                    g.setHistoricCapacityFactor( g.getHistoricGeneratedMWh() / (g.getMaxCapacity() * (g.getBidsOffSpot())) );
+
+
                                 }
                             }
                         }
@@ -333,7 +339,8 @@ public class Arena implements Steppable {
                 monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + this.spot.getEmissionsIntensity();
 
                 Generator lastGenBid = (Generator) this.getSpot().getSuccessfulBids().get(this.getSpot().getSuccessfulBids().size()-1).asset;
-                System.out.println("Price - " + currentTime + ": " + this.spot.getMarketPrice() + " - Last Bid in "+ lastGenBid.getFuelSourceDescriptor() + "Gen Name: " +lastGenBid.getName() + "Gen Id: " +lastGenBid.getId()  +" Historic Capacity Factor: "+ lastGenBid.getHistoricCapacityFactor() );
+                //System.out.println("Price - " + currentTime + ": " + this.spot.getMarketPrice() + " - Last Bid in "+ lastGenBid.getFuelSourceDescriptor() + "Gen Name: " +lastGenBid.getName()
+                //        + "Gen Id: " +lastGenBid.getId()  +" Historic Capacity Factor: "+ lastGenBid.getHistoricCapacityFactor() );
 
                 /**
                  * Compute spot Emissions Intensity using successful bidders
@@ -353,13 +360,13 @@ public class Arena implements Steppable {
                 c.add(Calendar.MINUTE, 30);
 
 
-                //----------DEBUG AND REMOVE--------------
-                // creating a Calendar object
-                Date date = new Date(118, 3, 24);
-
-                if(currentTime.after(date) )
-                    System.out.println("Foo");
-                //-------------------------------------------------
+//                //----------DEBUG AND REMOVE--------------
+//                // creating a Calendar object
+//                Date date = new Date(120, 6, 0);
+//
+//                if(currentTime.after(date) )
+//                    System.out.println("Foo");
+//                //-------------------------------------------------
 
             }
 

@@ -87,9 +87,7 @@ public class MeritOrder {
         double totalCapacitySamePrice = getCapacitySamePrice( init_idx );
 
         //if total capacity offered at price X is greater than (demand-offered_cheaper), then this it is residual
-        if(offered + totalCapacitySamePrice > demand) return true;
-
-        return false;
+        return offered + totalCapacitySamePrice > demand;
     }
 
 

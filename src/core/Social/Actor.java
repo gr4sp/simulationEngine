@@ -30,7 +30,7 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
     private BusinessStructure businessType; // cooperative, public company, private, etc.
     private OwnershipModel ownershipModel;
     private Date start;
-    private Date end;
+    private Date changeDate;
     private String region; //VIC, NSW, ACT, etc
     private String reg_number; //ABN or any other official id
     private String actor_role;
@@ -49,14 +49,14 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
         this.contracts = new ArrayList<>();
         this.assetRelationships = new ArrayList<>();
         this.start = null;
-        this.end = null;
+        this.changeDate = null;
     }
 
     public Actor(int id, String name, java.sql.Date registrationDate, java.sql.Date changeDate, String reg_number, String region, String actor_role, String businessStructure) {
         this.id = id;
         this.name = name;
-        this.start = start;
-        this.end = end;
+        this.start = registrationDate;
+        this.changeDate = changeDate;
         this.reg_number = reg_number;
         this.region = region;
         this.actor_role = actor_role;
@@ -67,6 +67,14 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
 
     public int getId() {
         return id;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public Date getChangeDate() {
+        return changeDate;
     }
 
     public String getName() {

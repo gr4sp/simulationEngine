@@ -57,6 +57,10 @@ public class Generator implements java.io.Serializable, Asset {
     public double maxCapacityFactor;
     public double maxCapacityFactorSummer;
 
+    //NonScheduled evolution
+    private int bidsOffSpot;
+
+
     //Emission Factor
     public double minEF;
     public double linRateEF;
@@ -127,6 +131,7 @@ public class Generator implements java.io.Serializable, Asset {
         monthlyGeneratedMWh = 0.0;
         historicRevenue = 0.0;
         bidsInSpot = 0;
+        bidsOffSpot = 0;
 
         //Load Settings specified through YAML settings file
         priceMinMWh = settings.getPriceMinMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
@@ -310,7 +315,7 @@ public class Generator implements java.io.Serializable, Asset {
         // Update Capacity based on historic amount sold
         if (bidsInSpot > 0) {
             //double historicCapacityFactorOld = historicGeneratedMW / (maxCapacity * (double) (bidsInSpot / 2.0));
-            historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh * (double) (bidsInSpot / 2.0));
+            historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh * (bidsInSpot / 2.0));
             historicCapacityFactor = (double) Math.round(historicCapacityFactor * 100000d) / 100000d;
 
             if (historicCapacityFactor > 1.0) {
@@ -391,7 +396,7 @@ public class Generator implements java.io.Serializable, Asset {
 
 
             //generation in KWh given sun
-            double halfHourGeneration = this.getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0);
+            double halfHourGeneration = getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0);
 
             //Solar capacity is the same as half hour generation in this case. MWh each half hour will be capacity in MW
             double availableCapacity = halfHourGeneration / (float) 1000.0;
@@ -452,6 +457,14 @@ public class Generator implements java.io.Serializable, Asset {
 
     public void setBidsInSpot(int bidsInSpot) {
         this.bidsInSpot = bidsInSpot;
+    }
+
+    public int getBidsOffSpot() {
+        return bidsOffSpot;
+    }
+
+    public void setBidsOffSpot(int bidsOffSpot) {
+        this.bidsOffSpot = bidsOffSpot;
     }
 
     public double getMonthlyGeneratedMWh() {
@@ -569,6 +582,8 @@ public class Generator implements java.io.Serializable, Asset {
     public double getHistoricCapacityFactor() {
         return historicCapacityFactor;
     }
+
+    public void setHistoricCapacityFactor(double h){ historicCapacityFactor = h;}
 
     public String getDispatchTypeDescriptor() {
         return dispatchTypeDescriptor;

@@ -26,7 +26,14 @@ public class Gr4spSimUI extends GUIState {
     JFrame tariffChartFrame;
     JFrame wholesaleChartFrame;
     JFrame ghgChartFrame;
+    JFrame genCapacityFactorInSpotChartFrame;
+    JFrame genCapacityFactorOffSpotChartFrame;
+    JFrame systemProductionInSpotChartFrame;
+    JFrame systemProductionOffSpotChartFrame;
+    JFrame systemProductionAggSpotChartFrame;
     JFrame numDomesticConsumersChartFrame;
+    JFrame numActiveActorsChartFrame;
+
 
 
 
@@ -93,8 +100,8 @@ public class Gr4spSimUI extends GUIState {
 
         Gr4spSim data = (Gr4spSim) state;
 
+        // create the frames for every time series that we want to plot
 
-        // perhaps you might move the consumptionChart to where you like.
         consumtionChartFrame = new JFrame("Total Households Consumption (MWh) area code: " + data.getAreaCode());
         consumtionChartFrame.setVisible(true);
         consumtionChartFrame.setSize(800, 800);
@@ -125,6 +132,41 @@ public class Gr4spSimUI extends GUIState {
         c.registerFrame(numDomesticConsumersChartFrame);
         numDomesticConsumersChartFrame.add(new ChartPanel(data.saveData.numDomesticConsumersChart.getChart()), BorderLayout.CENTER);
 
+        numActiveActorsChartFrame = new JFrame("Number of Actors area code: " + data.getAreaCode());
+        numActiveActorsChartFrame.setVisible(true);
+        numActiveActorsChartFrame.setSize(800, 800);
+        c.registerFrame(numActiveActorsChartFrame);
+        numActiveActorsChartFrame.add(new ChartPanel(data.saveData.numActorsChart.getChart()), BorderLayout.CENTER);
+
+        genCapacityFactorInSpotChartFrame = new JFrame("Spot Historic Generators Capacity Factors: " + data.getAreaCode());
+        genCapacityFactorInSpotChartFrame.setVisible(true);
+        genCapacityFactorInSpotChartFrame.setSize(800, 800);
+        c.registerFrame(genCapacityFactorInSpotChartFrame);
+        genCapacityFactorInSpotChartFrame.add(new ChartPanel(data.saveData.genCapacityFactorInSpotChart.getChart()), BorderLayout.CENTER);
+
+        genCapacityFactorOffSpotChartFrame = new JFrame("Off-Spot Historic Generators Capacity Factors: " + data.getAreaCode());
+        genCapacityFactorOffSpotChartFrame.setVisible(true);
+        genCapacityFactorOffSpotChartFrame.setSize(800, 800);
+        c.registerFrame(genCapacityFactorOffSpotChartFrame);
+        genCapacityFactorOffSpotChartFrame.add(new ChartPanel(data.saveData.genCapacityFactorOffSpotChart.getChart()), BorderLayout.CENTER);
+
+        systemProductionOffSpotChartFrame = new JFrame("Off-Spot System Production " + data.getAreaCode());
+        systemProductionOffSpotChartFrame.setVisible(true);
+        systemProductionOffSpotChartFrame.setSize(800, 800);
+        c.registerFrame(systemProductionOffSpotChartFrame);
+        systemProductionOffSpotChartFrame.add(new ChartPanel(data.saveData.systemProductionOffSpotChart.getChart()), BorderLayout.CENTER);
+
+        systemProductionInSpotChartFrame = new JFrame("Spot System Production " + data.getAreaCode());
+        systemProductionInSpotChartFrame.setVisible(true);
+        systemProductionInSpotChartFrame.setSize(800, 800);
+        c.registerFrame(systemProductionInSpotChartFrame);
+        systemProductionInSpotChartFrame.add(new ChartPanel(data.saveData.systemProductionInSpotChart.getChart()), BorderLayout.CENTER);
+
+        systemProductionAggSpotChartFrame = new JFrame("Aggregated System Production " + data.getAreaCode());
+        systemProductionAggSpotChartFrame.setVisible(true);
+        systemProductionAggSpotChartFrame.setSize(800, 800);
+        c.registerFrame(systemProductionAggSpotChartFrame);
+        systemProductionAggSpotChartFrame.add(new ChartPanel(data.saveData.systemProductionAggChart.getChart()), BorderLayout.CENTER);
 
     }
 
@@ -144,10 +186,8 @@ public class Gr4spSimUI extends GUIState {
         this.displayFrame = null;
         this.display = null;
 
-
         if (consumtionChartFrame != null) consumtionChartFrame.dispose();
         consumtionChartFrame = null;
-
 
         if (tariffChartFrame != null) tariffChartFrame.dispose();
         tariffChartFrame = null;
@@ -158,6 +198,23 @@ public class Gr4spSimUI extends GUIState {
         if (ghgChartFrame != null) ghgChartFrame.dispose();
         ghgChartFrame = null;
 
+        if (genCapacityFactorInSpotChartFrame != null) genCapacityFactorInSpotChartFrame.dispose();
+        genCapacityFactorInSpotChartFrame = null;
+
+        if (genCapacityFactorOffSpotChartFrame != null) genCapacityFactorOffSpotChartFrame.dispose();
+        genCapacityFactorOffSpotChartFrame = null;
+
+        if (systemProductionOffSpotChartFrame != null) systemProductionOffSpotChartFrame.dispose();
+        systemProductionOffSpotChartFrame = null;
+
+        if (systemProductionInSpotChartFrame != null) systemProductionInSpotChartFrame.dispose();
+        systemProductionInSpotChartFrame = null;
+
+        if (systemProductionAggSpotChartFrame != null) systemProductionAggSpotChartFrame.dispose();
+        systemProductionAggSpotChartFrame = null;
+
+        if (numActiveActorsChartFrame != null) numActiveActorsChartFrame.dispose();
+        numActiveActorsChartFrame = null;
 
         if (numDomesticConsumersChartFrame != null) numDomesticConsumersChartFrame.dispose();
         numDomesticConsumersChartFrame = null;
