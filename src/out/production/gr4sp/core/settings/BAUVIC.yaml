@@ -1,7 +1,7 @@
 simulationDates:
 
   # Simulation Date Range
-  startDate:  1999-01-01
+  startDate:  1927-01-01
   endDate: 2036-01-01
 
   # Spot Market Start Date
@@ -30,7 +30,8 @@ population:
   domesticConsumptionPercentage: 0.3
 
 forecast:
-  scenario: Slow change
+  #Forecast from ISP annual consumption includes: Slow change, Fast change, High DER, Central, and Step change
+  scenario: Step change
   baseYear: 2018
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
   annualCpi: 0.019

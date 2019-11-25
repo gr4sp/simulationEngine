@@ -25,7 +25,7 @@ public class Gr4spSim extends SimState {
 
     public Continuous2D layout;
     HashMap<Integer, Vector<Spm>> spm_register;
-    HashMap<Integer, Vector<Generator>> gen_register;
+    HashMap<Integer, Vector<Generator>> gen_register; // If a new Generator is added, make its id to be numGenerators+1
     HashMap<Integer, Vector<NetworkAssets>> network_register;
     HashMap<Integer, Actor> actor_register;
     HashMap<Integer, Arena> arena_register;
@@ -68,13 +68,13 @@ public class Gr4spSim extends SimState {
     HashMap<Date, Float> solar_system_capacity_kw;
 
     //this is the array to be traversed to get the total consumption
-    ArrayList<ConsumptionActor> consumptionActors = new ArrayList<ConsumptionActor>();
+    ArrayList<EndUserActor> consumptionActors = new ArrayList<EndUserActor>();
 
     //this is the array to be traverse to get the total conventional consumption
-    ArrayList<ConsumptionActor> conventionalConsumptionActors = new ArrayList<ConsumptionActor>();
+    ArrayList<EndUserActor> conventionalConsumptionActors = new ArrayList<EndUserActor>();
 
     //this is the array to be traverse to get the total non conventional consumption
-    ArrayList<ConsumptionActor> nonConventionalConsumptionActors = new ArrayList<ConsumptionActor>();
+    ArrayList<EndUserActor> nonConventionalConsumptionActors = new ArrayList<EndUserActor>();
 
     ArrayList<ActorActorRelationship> actorActorRelationships = new ArrayList<ActorActorRelationship>();
     ArrayList<ActorAssetRelationship> actorAssetRelationships = new ArrayList<ActorAssetRelationship>();
@@ -118,6 +118,7 @@ public class Gr4spSim extends SimState {
 
     //Simulation Settings specified via YAML file
     public Settings settings;
+    public String yamlFileName;
 
 
     public Gr4spSim(long seed) {
@@ -167,7 +168,8 @@ public class Gr4spSim extends SimState {
 
         try {
 
-            YamlReader reader = new YamlReader(new FileReader("core/settings/BAUVIC.yaml"));
+            yamlFileName = "BAUVIC";
+            YamlReader reader = new YamlReader(new FileReader("core/settings/"+yamlFileName+".yaml"));
             settings = reader.read(Settings.class);
             System.out.println(settings);
 
@@ -400,7 +402,7 @@ public class Gr4spSim extends SimState {
         return maxHouseholdsPerConsumerUnit;
     }
 
-    public ArrayList<ConsumptionActor> getConsumptionActors() {
+    public ArrayList<EndUserActor> getConsumptionActors() {
         return consumptionActors;
     }
 
@@ -503,12 +505,12 @@ public class Gr4spSim extends SimState {
 
         //If currentYear is after the forecast, then do not adapt the population percentage, as the forecast already has data for regions.
         if( settings.getBaseYearConsumptionForecast() >= currentYear)
-            numHouseholds = (int) householdsGrowth;
+            numHouseholds = householdsGrowth;
 
         //Get Last conventional ConsumerUnit, which may have space for more households
-        ConsumerUnit consumer = null;
+        EndUserUnit consumer = null;
         if (conventionalConsumptionActors.size() >= 1)
-            consumer = (ConsumerUnit) conventionalConsumptionActors.get(conventionalConsumptionActors.size() - 1);
+            consumer = (EndUserUnit) conventionalConsumptionActors.get(conventionalConsumptionActors.size() - 1);
 
         int householdsLeft = numHouseholds;
 
@@ -545,17 +547,17 @@ public class Gr4spSim extends SimState {
 
 
             //Create new Consumer Unit
-            Actor actor = new ConsumerUnit(numActors++, ActorType.HDCONSUMER, name,
+            Actor actor = new EndUserUnit(numActors++, ActorType.HDCONSUMER, name,
                     stringToGovRole("RULEFOLLOWER"), BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
                     numPeople, householdsCreated, hasGas, true, 0, today);
 
-            consumptionActors.add((ConsumptionActor) actor);
-            conventionalConsumptionActors.add((ConsumptionActor) actor);
+            consumptionActors.add((EndUserActor) actor);
+            conventionalConsumptionActors.add((EndUserActor) actor);
 
             householdsLeft -= householdsCreated;
 
             //Schedule the actor in order to make decissions at every step
-            this.schedule.scheduleRepeating(0.0, 1, (Actor) actor);
+            this.schedule.scheduleRepeating(0.0, 1, actor);
 
             //Id of conventional SPM
             int idSpm = 1;
@@ -591,7 +593,7 @@ public class Gr4spSim extends SimState {
              **/
 
             //Add Random Location of EU in the layout
-            Double2D euLoc = new Double2D((i * 80) % 1600, ((int) i / 20 + 1) * 80);
+            Double2D euLoc = new Double2D((i * 80) % 1600, (i / 20 + 1) * 80);
             layout.setObjectLocation(actor, euLoc);
 
             //Use same Loc for the SPM
@@ -600,7 +602,7 @@ public class Gr4spSim extends SimState {
                 //Add all SPMs location for this EU recursively, decreasing the diameter and
                 //shifting when more than one smp is contained
                 //Only draw SPMs in the meantime
-                if (Spm.class.isInstance(rel.getAsset()))
+                if (rel.getAsset() instanceof Spm)
                     addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
             }
 
@@ -615,7 +617,7 @@ public class Gr4spSim extends SimState {
 
     void decreaseConventionalHouseholds(int numHouseholds) {
         //Get Last conventional ConsumerUnit, which may have space for more households
-        ConsumerUnit conventionalConsumer = null;
+        EndUserUnit conventionalConsumer = null;
         int lastConvConsumer = conventionalConsumptionActors.size() - 1;
 
         Date today = getCurrentSimDate();
@@ -626,7 +628,7 @@ public class Gr4spSim extends SimState {
 
             //if index is positive, retrieve consumption actor to decrease households
             if (lastConvConsumer >= 0)
-                conventionalConsumer = (ConsumerUnit) conventionalConsumptionActors.get(lastConvConsumer);
+                conventionalConsumer = (EndUserUnit) conventionalConsumptionActors.get(lastConvConsumer);
 
             //how many households remain if we remove them all from the last consumer unit?
             int householdsLeft = conventionalConsumer.getNumberOfHouseholds() - numHouseholds;
@@ -669,8 +671,8 @@ public class Gr4spSim extends SimState {
         int householdsToday = 0;
 
         //sum population of each conventional consumer unit
-        for (ConsumptionActor c : conventionalConsumptionActors) {
-            ConsumerUnit cu = (ConsumerUnit) c;
+        for (EndUserActor c : conventionalConsumptionActors) {
+            EndUserUnit cu = (EndUserUnit) c;
             householdsToday += cu.getNumberOfHouseholds();
         }
 
@@ -678,9 +680,9 @@ public class Gr4spSim extends SimState {
 
 
         //Get Last Non conventional ConsumerUnit, which may has space for more households
-        ConsumerUnit NonConventionalConsumer = null;
+        EndUserUnit NonConventionalConsumer = null;
         if (nonConventionalConsumptionActors.size() >= 1)
-            NonConventionalConsumer = (ConsumerUnit) nonConventionalConsumptionActors.get(nonConventionalConsumptionActors.size() - 1);
+            NonConventionalConsumer = (EndUserUnit) nonConventionalConsumptionActors.get(nonConventionalConsumptionActors.size() - 1);
 
         int householdsLeft = numHouseholdsConverted;
 
@@ -723,7 +725,7 @@ public class Gr4spSim extends SimState {
             int householdsCreated = maxHouseholdsPerConsumerUnit;
             if (householdsLeft < maxHouseholdsPerConsumerUnit) householdsCreated = householdsLeft;
 
-            Actor actor = new ConsumerUnit(numActors++, ActorType.HDCONSUMER, name,
+            Actor actor = new EndUserUnit(numActors++, ActorType.HDCONSUMER, name,
                     RULEFOLLOW, BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
                     numPeople, householdsCreated, hasGas, true, 0, today);
 
@@ -731,13 +733,13 @@ public class Gr4spSim extends SimState {
             decreaseConventionalHouseholds(householdsCreated);
 
 
-            consumptionActors.add((ConsumptionActor) actor);
-            nonConventionalConsumptionActors.add((ConsumptionActor) actor);
+            consumptionActors.add((EndUserActor) actor);
+            nonConventionalConsumptionActors.add((EndUserActor) actor);
 
             householdsLeft -= householdsCreated;
 
             //Schedule the actor in order to make decisions at every step
-            this.schedule.scheduleRepeating(0.0, 1, (Actor) actor);
+            this.schedule.scheduleRepeating(0.0, 1, actor);
 
             //Id of Non Conventional SPM
             int idSpm = 2;
@@ -772,7 +774,7 @@ public class Gr4spSim extends SimState {
              **/
 
             //Add Random Location of EU in the layout
-            Double2D euLoc = new Double2D((i * 80) % 1600, ((int) i / 20 + 1) * 80);
+            Double2D euLoc = new Double2D((i * 80) % 1600, (i / 20 + 1) * 80);
             layout.setObjectLocation(actor, euLoc);
 
             //Use same Loc for the SPM
@@ -781,7 +783,7 @@ public class Gr4spSim extends SimState {
                 //Add all SPMs location for this EU recursively, decreasing the diameter and
                 //shifting when more than one smp is contained
                 //Only draw SPMs in the meantime
-                if (Spm.class.isInstance(rel.getAsset()))
+                if (rel.getAsset() instanceof Spm)
                     addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
             }
 
@@ -813,7 +815,7 @@ public class Gr4spSim extends SimState {
         LoadData.selectHalfHourSolarExposure(this);
         LoadData.createHalfHourSolarExposureForecast(this);
         LoadData.selectSolarInstallation(this);
-        LoadData.selectActors(this, "actors", startDate, endDate);
+        LoadData.selectActors(this,  startDate, endDate);
 
         LoadData.selectMaximumDemandForecast(this);
         LoadData.selectMinimumDemandForecast(this);

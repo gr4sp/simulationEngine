@@ -78,8 +78,10 @@ public class SimPolicies implements java.io.Serializable, Steppable {
             c.add(Calendar.YEAR, 30);
             Date endDate = c.getTime();
 
-            // Defalut id for solar rooftop is -1.
-            int idGen = -1;
+            // If a new Generator is added, make its id to be numGenerators+1
+            Integer maxkey = data.getNumGenerators(); //Collections.max(data.getGen_register().entrySet(), Map.Entry.comparingByKey()).getKey();
+            // Defalut id for solar rooftop is numGenerators + 1.
+            int idGen = maxkey+1;
 
             //created a Vector to access the subdistribution SPMs
             Vector<Spm> subdistribution_spms = data.getSpm_register().get(6);

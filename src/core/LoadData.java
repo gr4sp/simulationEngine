@@ -16,7 +16,7 @@ import static java.lang.System.setOut;
 //Class to load all the data to start the simulation
 public class LoadData {
 
-
+//todo: use these actor-asset relationsihps
     //Functions to convert readings from text in DB to Actor type, etc.
     public static ActorAssetRelationshipType stringToActorAssetTypeRelType(String actorAssetRelType) {
 
@@ -306,7 +306,7 @@ public class LoadData {
                 Contract contract = new Contract(
                         rs.getString("tariff_name"),
                         0,
-                        arena.EndConsumer,
+                        Arena.EndConsumer,
                         0,
                         rs.getFloat("average_dckwh") * conversion_rate,
                         serviceFee,
@@ -1043,15 +1043,12 @@ public class LoadData {
     //Select actors function
 
     public static void
-    selectActors(Gr4spSim data, String tableName, String startDate, String endDate) {
+    selectActors(Gr4spSim data, String startDate, String changeDate) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
-        String sql = "SELECT " + tableName + ".id as id, actortype.name as typename, " + tableName + ".name as name, role, businessstructure, ownershipmodel, startdate, actorschange.changedate" +
-                " FROM " + tableName + ", actorschange, actortype WHERE " +
-                "actortype.id = actors.type AND actors.id = actorschange.idactora AND actors.startdate <= '" + endDate + "'" +
-                " AND actorschange.changedate > '" + startDate + "';";
-
+        String sql = "SELECT id, name, registration_date, change_date, reg_number, region, role, business_structure"  +
+                " FROM  actors;";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -1060,32 +1057,21 @@ public class LoadData {
             // loop through the result set
             while (rs.next()) {
                 System.out.println("\t" + rs.getInt("id") + "\t" +
-                        rs.getString("typename") + "\t" +
                         rs.getString("name") + "\t" +
-                        rs.getString("role") + "\t" +
-                        rs.getString("businessStructure") + "\t" +
-                        rs.getDate("startdate") + "\t" +
-                        rs.getDate("changedate") + "\t" +
-                        rs.getString("ownershipModel"));
-
-
-                /*Actor actor = new Actor(rs.getInt("id"),
-                        ActorType.valueOf(rs.getString("typename")),
-                        rs.getString("name"),
-                        core.Social.GovRole.stringToGovRole(rs.getString("govrole")),
-                        core.Social.BusinessStructure.stringToBusinessStructure(rs.getString("businessStructure")),
-                        core.Social.OwnershipModel.stringToOwnershipModel(rs.getString("ownershipModel")),
-                        rs.getDate("startdate"),
-                        rs.getDate("changedate"));*/
+                        rs.getDate("registration_date") + "\t" +
+                        rs.getDate("change_date")+ "\t" +
+                        rs.getString("reg_number") + "\t" +
+                        rs.getString("region") + "\t" +
+                        rs.getString("business_structure"));
 
                 Actor actor = new Actor(rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getDate("registrationDate"),
-                        rs.getDate("changeDate"),
+                        rs.getDate("registration_date"),
+                        rs.getDate("change_date"),
                         rs.getString("reg_number"),
                         rs.getString("region"),
                         rs.getString("role"),
-                        rs.getString("businessStructure"));
+                        rs.getString("business_structure"));
 
 
                 int idActor = rs.getInt("id");
@@ -1095,7 +1081,6 @@ public class LoadData {
                     data.getActor_register().put(idActor, actor);
                 else
                     System.err.println("Two actors cannot have the same ID");
-
 
                 data.setNumActors(data.getNumActors() + 1);
 

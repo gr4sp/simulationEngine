@@ -13,7 +13,7 @@
       <ObjectId>13012</ObjectId>
       <Comment>default administrative connection database</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4753</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4823</IntrospectionStateNumber>
       <Current>1</Current>
       <Relations>sequence|table|16652|16654|1
 sequence|table|16770|16667|1
@@ -94,7 +94,7 @@ sequence|table|33216|33218|1
       <Comment>standard public schema</Comment>
       <StateNumber>360</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4754</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4824</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="17" parent="3" name="btree">
