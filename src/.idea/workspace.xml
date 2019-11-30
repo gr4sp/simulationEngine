@@ -2,38 +2,227 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b436bec-4e4c-4add-8cc8-015eabbeedef" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../csv/SimData2019-11-08-10_06_46.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimData2019-11-14-00_50_12.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimData2019-11-14-00_53_51.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimData2019-11-14-01_02_55.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimDataMonthlySummary2019-11-08-10_06_46.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimDataMonthlySummary2019-11-14-00_50_12.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimDataMonthlySummary2019-11-14-00_53_51.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimDataMonthlySummary2019-11-14-01_02_55.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimDataYearSummary2019-11-08-10_06_46.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimDataYearSummary2019-11-14-00_50_12.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimDataYearSummary2019-11-14-00_53_51.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../csv/SimDataYearSummary2019-11-14-01_02_55.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-08-10_06_47.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-14-00_50_12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-14-00_53_51.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-14-01_02_55.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-08-10_06_47.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-14-00_50_12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-14-00_53_51.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-14-01_02_55.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-08-10_06_47.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-14-00_50_12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-14-00_53_51.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-14-01_02_55.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-08-10_06_47.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-14-00_50_12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-14-00_53_51.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-14-01_02_55.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-08-10_06_47.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-14-00_50_12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-14-00_53_51.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-14-01_02_55.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/Central_HouseholdConsumption2019-11-14-21_41_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/Central_HouseholdGHG2019-11-14-21_41_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/Central_HouseholdTariff2019-11-14-21_41_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/Central_NumberHouseholds2019-11-14-21_41_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/Central_WholesalePrice2019-11-14-21_41_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/FastChange_HouseholdConsumption2019-11-14-21_47_54.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/FastChange_HouseholdGHG2019-11-14-21_47_54.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/FastChange_HouseholdTariff2019-11-14-21_47_54.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/FastChange_NumberHouseholds2019-11-14-21_47_54.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/FastChange_WholesalePrice2019-11-14-21_47_54.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-23-19_47_34.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-23-19_54_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-23-20_04_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-23-20_09_26.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-23-20_35_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-23-20_47_49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-23-20_49_57.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-01_12_51.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-11_10_44.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-11_13_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-11_21_07.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-11_51_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-11_56_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-11_58_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-12_02_13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactors2019-11-24-12_06_16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsOffSpot2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsOffSpot2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsOffSpot2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsOffSpot2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsOffSpot2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsSpot2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsSpot2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsSpot2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsSpot2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/GenCapFactorsSpot2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HighDER_HouseholdConsumption2019-11-14-21_54_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HighDER_HouseholdGHG2019-11-14-21_54_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HighDER_HouseholdTariff2019-11-14-21_54_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HighDER_NumberHouseholds2019-11-14-21_54_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HighDER_WholesalePrice2019-11-14-21_54_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-18_53_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-19_47_34.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-19_54_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-20_04_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-20_04_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-20_09_26.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-20_35_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-20_47_49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-23-20_49_57.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-01_12_51.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-11_10_44.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-11_13_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-11_21_07.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-11_51_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-11_56_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-11_58_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-12_02_13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-12_06_16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-19_17_47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-19_28_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-20_09_15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-20_23_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-20_33_48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-20_36_37.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdConsumption2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-23-18_53_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-23-19_47_34.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-23-19_54_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-23-20_04_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-23-20_09_26.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-23-20_35_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-23-20_47_49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-23-20_49_57.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-01_12_51.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-11_10_44.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-11_13_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-11_21_07.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-11_51_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-11_56_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-11_58_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-12_02_13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-12_06_16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-19_17_47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-19_28_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-20_09_15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-20_23_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-20_33_48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-20_36_37.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdGHG2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-23-18_53_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-23-19_47_34.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-23-19_54_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-23-20_04_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-23-20_09_26.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-23-20_35_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-23-20_47_49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-23-20_49_57.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-01_12_51.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-11_10_44.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-11_13_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-11_21_07.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-11_51_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-11_56_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-11_58_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-12_02_13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-12_06_16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-19_17_47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-19_28_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-20_09_15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-20_23_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-20_33_48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-20_36_37.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/HouseholdTariff2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-23-18_53_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-23-19_47_34.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-23-19_54_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-23-20_04_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-23-20_09_26.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-23-20_35_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-23-20_47_49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-23-20_49_57.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-01_12_51.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-11_10_44.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-11_13_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-11_21_07.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-11_51_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-11_56_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-11_58_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-12_02_13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-12_06_16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-19_17_47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-19_28_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-20_09_15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-20_23_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-20_33_48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-20_36_37.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-25-19_53_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/NumberHouseholds2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/OffSpotGenCapFactors2019-11-24-19_17_47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/OffSpotGenCapFactors2019-11-24-19_28_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/OffSpotGenCapFactors2019-11-24-20_09_15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/OffSpotGenCapFactors2019-11-24-20_23_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/OffSpotGenCapFactors2019-11-24-20_33_48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/OffSpotGenCapFactors2019-11-24-20_36_37.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SlowChange_HouseholdConsumption2019-11-14-10_03_06.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SlowChange_HouseholdGHG2019-11-14-10_03_06.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SlowChange_HouseholdTariff2019-11-14-10_03_06.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SlowChange_NumberHouseholds2019-11-14-10_03_06.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SlowChange_WholesalePrice2019-11-14-10_03_06.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SpotGenCapFactors2019-11-24-19_17_47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SpotGenCapFactors2019-11-24-19_28_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SpotGenCapFactors2019-11-24-20_09_15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SpotGenCapFactors2019-11-24-20_23_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SpotGenCapFactors2019-11-24-20_33_48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SpotGenCapFactors2019-11-24-20_36_37.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/StepChange_HouseholdConsumption2019-11-14-21_58_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/StepChange_HouseholdGHG2019-11-14-21_58_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/StepChange_HouseholdTariff2019-11-14-21_58_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/StepChange_NumberHouseholds2019-11-14-21_58_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/StepChange_WholesalePrice2019-11-14-21_58_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-25-19_53_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionSpot2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionSpot2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionSpot2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionSpot2019-11-25-19_53_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionSpot2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionSpot2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-23-18_53_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-23-19_47_34.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-23-19_54_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-23-20_04_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-23-20_09_26.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-23-20_35_32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-23-20_47_49.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-23-20_49_57.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-01_12_51.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-11_10_44.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-11_13_56.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-11_21_07.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-11_51_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-11_56_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-11_58_25.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-12_02_13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-12_06_16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-19_17_47.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-19_28_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-20_09_15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-20_23_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-20_33_48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-20_36_37.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/WholesalePrice2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/numActors2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/numActors2019-11-25-19_53_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/numActors2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/numActors2019-11-26-01_38_58.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -41,17 +230,13 @@
       <change beforePath="$PROJECT_DIR$/core/Gr4spSimUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSimUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/LoadData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/LoadData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Policies/SimPolicies.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Policies/SimPolicies.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Relationships/ActorActorRelationshipType.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/ActorActorRelationshipType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Relationships/ActorAssetRelationshipType.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/ActorAssetRelationshipType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Relationships/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/Arena.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Relationships/MeritOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/MeritOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/SaveData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/SaveData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Social/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/Actor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Social/ConsumerUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/EndUserUnit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Social/ConsumptionActor.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/EndUserActor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Social/ConsumptionProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/EndUserProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Social/EndUserUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/EndUserUnit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Technical/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Generator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/BAUVIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/Settings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" afterDir="false" />
@@ -60,14 +245,16 @@
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/SimPolicies.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/SimPolicies.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/MeritOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/MeritOrder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/Actor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/Actor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/ConsumerUnit.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/ConsumptionActor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/ConsumptionProfile.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserUnit.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ArenaSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ArenaSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/BAUVIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ForecastSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ForecastSetting.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/GeneratorSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/GeneratorSettings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/Settings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/Settings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/TariffSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/TariffSettings.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -108,6 +295,23 @@
         <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="postgres: database" type="162271b6:PgImplModel$Database" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
     </expand>
     <select />
@@ -259,12 +463,17 @@
           <expand>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@6d416891" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@bc4489c8" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@6d416891" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@7b2a896d" type="9fbbdea:ServiceModel$ServiceNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@bc4489c8" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@17068767" type="9fbbdea:ServiceModel$ServiceNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@bc4489c8" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@7d32c73a" type="9fbbdea:ServiceModel$ServiceNode" />
             </path>
           </expand>
           <select />
@@ -350,7 +559,11 @@
       <workItem from="1574492863326" duration="11037000" />
       <workItem from="1574551808617" duration="11277000" />
       <workItem from="1574586931591" duration="13783000" />
-      <workItem from="1574683403975" duration="9289000" />
+      <workItem from="1574683403975" duration="9406000" />
+      <workItem from="1574752548323" duration="8168000" />
+      <workItem from="1574893566093" duration="20433000" />
+      <workItem from="1575019902348" duration="448000" />
+      <workItem from="1575020490287" duration="20890000" />
     </task>
     <servers />
   </component>
@@ -377,6 +590,11 @@
           <url>file://$PROJECT_DIR$/core/Policies/SimPolicies.java</url>
           <line>65</line>
           <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/LoadData.java</url>
+          <line>1356</line>
+          <option name="timeStamp" value="105" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

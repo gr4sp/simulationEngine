@@ -33,6 +33,7 @@ public class Gr4spSimUI extends GUIState {
     JFrame systemProductionAggSpotChartFrame;
     JFrame numDomesticConsumersChartFrame;
     JFrame numActiveActorsChartFrame;
+    JFrame PriceGenAvgChartFrame;
 
 
 
@@ -168,6 +169,14 @@ public class Gr4spSimUI extends GUIState {
         c.registerFrame(systemProductionAggSpotChartFrame);
         systemProductionAggSpotChartFrame.add(new ChartPanel(data.saveData.systemProductionAggChart.getChart()), BorderLayout.CENTER);
 
+
+        PriceGenAvgChartFrame = new JFrame("Average Price ($/MWh) area code: " + data.getAreaCode());
+        PriceGenAvgChartFrame.setVisible(true);
+        PriceGenAvgChartFrame.setSize(800, 800);
+        c.registerFrame(PriceGenAvgChartFrame);
+        PriceGenAvgChartFrame.add(new ChartPanel(data.saveData.PriceGenAvgChart.getChart()), BorderLayout.CENTER);
+
+
     }
 
 
@@ -218,6 +227,9 @@ public class Gr4spSimUI extends GUIState {
 
         if (numDomesticConsumersChartFrame != null) numDomesticConsumersChartFrame.dispose();
         numDomesticConsumersChartFrame = null;
+
+        if (PriceGenAvgChartFrame != null) PriceGenAvgChartFrame.dispose();
+        PriceGenAvgChartFrame = null;
     }
 }
 

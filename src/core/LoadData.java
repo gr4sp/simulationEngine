@@ -87,6 +87,18 @@ public class LoadData {
                         rs.getString("consumptionForecastScenario") + "\t" +
                         gwh );
 
+                //Increase rooftopPV by 25% to concile the latest info in pv-map. ISP used solar forecast from CSRIO model and real data on
+                // solar pv installations has been higher than predicted
+                if(rs.getString("consumptionForecastCategory").equals("RooftopPV")){
+                    gwh *= 1.25;
+                    if (!data.getAnnual_forecast_rooftopPv_register().containsKey(year)) {
+                        data.getAnnual_forecast_rooftopPv_register().put(year, gwh);
+                    }else{
+                        //Sum the existing category forecast with the new value (Operational,PriceImpact, etc.)
+                        float existingGWh = data.getAnnual_forecast_rooftopPv_register().get(year);
+                        data.getAnnual_forecast_rooftopPv_register().put(year, gwh + existingGWh);
+                    }
+                }
 
                 //If year consumption forecast doesn't exist, create it
                 if (!data.getAnnual_forecast_consumption_register().containsKey(year)) {
@@ -550,6 +562,66 @@ public class LoadData {
             data.getCpi_conversion().put(forecastedDate, forecastedConsumption);
 
             baseDate = c.getTime();
+            baseYear++;
+
+        }
+    }
+
+    //Increase solar capacity from forecast, dividing the increased amount of KW across 12 months every year
+    public static void createSolarInstallationForecast(Gr4spSim data) {
+
+        //Set Base Date
+        Date baseDate = null;
+        int baseYear = 2020;
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+        String dateInString = baseYear + "-01-01";
+        try {
+            baseDate = stringToDate.parse(dateInString);
+        } catch (java.text.ParseException e) {
+            System.out.println(e);
+        }
+
+        GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        Calendar fc = Calendar.getInstance();
+
+        c.setTime(baseDate);
+
+
+        while (baseYear < 2050) {
+            float baseGwh = data.getAnnual_forecast_rooftopPv_register().get(baseYear);
+            float nextGwh = data.getAnnual_forecast_rooftopPv_register().get(baseYear + 1);
+            float percentageChange = (nextGwh-baseGwh) / baseGwh;
+            float increasedGhw = nextGwh-baseGwh;
+            float inceasedKW = (increasedGhw / 8760) * 1000000; //divided #hours in a year, and transform to KW from GW
+            inceasedKW /= 0.20; //divided the avd generation factor of RooftopPV
+
+
+            for (int month = 0; month < 12; month++) {
+
+                //Set the month for the forecast
+                c.set(Calendar.MONTH, month);
+                baseDate = c.getTime();
+
+                Integer number_installations = 1;
+                Integer aggregated_capacity_kw = (int)inceasedKW / 12;
+                Float system_capacity = inceasedKW / 12;
+
+
+                //Set the 1 year forecast date
+                c.add(Calendar.YEAR, 1);
+                Date forecastedDate = c.getTime();
+                c.add(Calendar.YEAR, -1);
+
+                data.getSolar_number_installs().put(forecastedDate, number_installations);
+                data.getSolar_aggregated_kw().put(forecastedDate, aggregated_capacity_kw);
+                data.getSolar_system_capacity_kw().put(forecastedDate, system_capacity);
+
+
+            }
+
+            c.add(Calendar.YEAR, 1);
             baseYear++;
 
         }
@@ -1048,7 +1120,7 @@ public class LoadData {
 
 
         String sql = "SELECT id, name, registration_date, change_date, reg_number, region, role, business_structure"  +
-                " FROM  actors;";
+                " FROM  actors  WHERE region = '" + data.settings.getAreaCode() + "';";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -1226,13 +1298,19 @@ public class LoadData {
 
         SimpleDateFormat DateToString = new SimpleDateFormat("yyyy-MM-dd");
 
+
         String sql = "SELECT asset_id, region, asset_type, site_name, owner_name, technology_type, fuel_type, nameplate_capacity_mw, dispatch_type, full_commercial_use_date, closure_date, " +
-                " duid, no_units, storage_capacity_mwh, expected_closure_date, fuel_bucket_summary" +
+                " duid, no_units, storage_capacity_mwh, expected_closure_date, fuel_bucket_summary, unit_status" +
                 " FROM generationassets WHERE nameplate_capacity_mw >= '" + min_nameplate_capacity + "'AND nameplate_capacity_mw < '" + max_nameplate_capacity +
                 "'AND full_commercial_use_date <= '" + DateToString.format(data.getEndSimDate()) + "'" +
-                " AND region = 'VIC'" +
+                " AND region = '" + data.settings.getAreaCode() + "'" +
                 " AND ( closure_date > '" + DateToString.format(data.getStartSimDate()) + "'" +
-                " OR expected_closure_date > '" + DateToString.format(data.getStartSimDate()) + "');";
+                " OR expected_closure_date > '" + DateToString.format(data.getStartSimDate()) + "')";
+
+        // to include publically announced projects or not.
+        if (data.settings.getIncludePublicallyAnnouncedGen() == false){
+            sql += "AND unit_status != 'Publically Announced'";
+        }
 
         ArrayList<Generator> gens = new ArrayList<Generator>();
         try (Connection conn = DriverManager.getConnection(url);
@@ -1261,37 +1339,90 @@ public class LoadData {
 
                 );*/
 
-                Generator gen = new Generator(
-                        rs.getInt("asset_id"),
-                        rs.getString("region"),
-                        rs.getString("asset_type"),
-                        rs.getString("site_name"),
-                        rs.getString("owner_name"),
-                        rs.getString("technology_type"),
-                        rs.getString("fuel_type"),
-                        rs.getDouble("nameplate_capacity_mw"),
-                        rs.getString("dispatch_type"),
-                        rs.getDate("full_commercial_use_date"),
-                        rs.getDate("expected_closure_date"),
-                        rs.getDate("closure_date"),
-                        rs.getString("duid"),
-                        rs.getInt("no_units"),
-                        rs.getFloat("storage_capacity_mwh"),
-                        rs.getString("fuel_bucket_summary"),
-                        data.settings
-                );
+                String unit_status = rs.getString("unit_status");
+                if ( unit_status.equals("Publically Announced") ) {
+                    int rolloutPeriod = 1;
+                    for(int year = 0; year < rolloutPeriod; year++) {
 
-                int idGen = rs.getInt("asset_id");
-                //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
-                if (!data.getGen_register().containsKey(idGen))
-                    data.getGen_register().put(idGen, new Vector<>());
+                        //Compute end Date 1 year after
+                        Calendar cStartDate = Calendar.getInstance();
+                        try {
+                            Date startDate = DateToString.parse(rs.getString("full_commercial_use_date"));
+                            cStartDate.setTime(startDate);
+                        } catch (ParseException e) {
+                            System.err.println("Cannot parse Start Date: " + e.toString());
+                        }
+                        cStartDate.add(Calendar.YEAR, year);
 
-                data.getGen_register().get(idGen).add(gen);
+                        int idGen = rs.getInt("asset_id") +10000+year;
 
-                data.setNumGenerators(data.getNumGenerators() + 1);
+                        Generator gen = new Generator(
+                                idGen,
+                                rs.getString("region"),
+                                rs.getString("asset_type"),
+                                rs.getString("site_name"),
+                                rs.getString("owner_name"),
+                                rs.getString("technology_type"),
+                                rs.getString("fuel_type"),
+                                rs.getDouble("nameplate_capacity_mw") / rolloutPeriod,
+                                rs.getString("dispatch_type"),
+                                cStartDate.getTime(),
+                                rs.getDate("expected_closure_date"),
+                                rs.getDate("closure_date"),
+                                rs.getString("duid"),
+                                rs.getInt("no_units"),
+                                rs.getFloat("storage_capacity_mwh"),
+                                rs.getString("fuel_bucket_summary"),
+                                rs.getString("unit_status"),
+                                data.settings
+                        );
 
-                //Add gen to ArrayList<Generator>. This will be used in the constructor of SPM
-                gens.add(gen);
+                        //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
+                        if (!data.getGen_register().containsKey(idGen))
+                            data.getGen_register().put(idGen, new Vector<>());
+
+                        data.getGen_register().get(idGen).add(gen);
+
+                        data.setNumGenerators(data.getNumGenerators() + 1);
+
+                        //Add gen to ArrayList<Generator>. This will be used in the constructor of SPM
+                        gens.add(gen);
+                    }
+                }
+                else{
+                    Generator gen = new Generator(
+                            rs.getInt("asset_id"),
+                            rs.getString("region"),
+                            rs.getString("asset_type"),
+                            rs.getString("site_name"),
+                            rs.getString("owner_name"),
+                            rs.getString("technology_type"),
+                            rs.getString("fuel_type"),
+                            rs.getDouble("nameplate_capacity_mw"),
+                            rs.getString("dispatch_type"),
+                            rs.getDate("full_commercial_use_date"),
+                            rs.getDate("expected_closure_date"),
+                            rs.getDate("closure_date"),
+                            rs.getString("duid"),
+                            rs.getInt("no_units"),
+                            rs.getFloat("storage_capacity_mwh"),
+                            rs.getString("fuel_bucket_summary"),
+                            rs.getString("unit_status"),
+                            data.settings
+                    );
+
+                    int idGen = rs.getInt("asset_id");
+                    //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
+                    if (!data.getGen_register().containsKey(idGen))
+                        data.getGen_register().put(idGen, new Vector<>());
+
+                    data.getGen_register().get(idGen).add(gen);
+
+                    data.setNumGenerators(data.getNumGenerators() + 1);
+
+                    //Add gen to ArrayList<Generator>. This will be used in the constructor of SPM
+                    gens.add(gen);
+                }
 
             }
         } catch (SQLException e) {

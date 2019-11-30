@@ -90,7 +90,7 @@ public class Generator implements java.io.Serializable, Asset {
     public Generator(int genId, String region, String assetType,
                      String genName, String owner, String techType, String fuelType,
                      Double gencap, String dispachType, Date start, Date expectedEnd, Date end,
-                     String duid, int no_units, double storageCapacityMwh, String fuelBucketSummary, Settings settings) {
+                     String duid, int no_units, double storageCapacityMwh, String fuelBucketSummary, String unit_status, Settings settings) {
         this.id = genId;
         this.region = region;
         this.assetType = assetType;
@@ -344,6 +344,7 @@ public class Generator implements java.io.Serializable, Asset {
 
         //double result =  priceMinMWh() +  ( (priceMaxMWh()-priceMinMWh()) * (Math.exp( - priceRateParameterMWh() * historicCF)) );
 
+        if(result > priceMaxMWh ) result = priceMaxMWh;
 
         return result;
     }
@@ -391,7 +392,7 @@ public class Generator implements java.io.Serializable, Asset {
                 //get Generation in KWh
                 solarExposure = data.getHalfhour_solar_exposure().get(currentTime);
             } else {
-                System.out.println("\t\t\t" + currentTime + " For some reason we loose this key");
+                System.out.println("\t\t\t" + currentTime + " For some reason this key is lost, use last available value ");
             }
 
 

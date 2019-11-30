@@ -40,6 +40,7 @@ public class Gr4spSim extends SimState {
 
     //Forecast ISP consumption from 2019 to 2050 in GWh for various scenarios and regions
     HashMap<Integer, Float> annual_forecast_consumption_register;
+    HashMap<Integer, Float> annual_forecast_rooftopPv_register;
 
     //Consumption per Domestic Costumer
     HashMap<Date, Double> monthly_consumption_register;
@@ -152,6 +153,7 @@ public class Gr4spSim extends SimState {
         solar_number_installs = new HashMap<>();
         solar_system_capacity_kw = new HashMap<>();
         annual_forecast_consumption_register = new HashMap<>();
+        annual_forecast_rooftopPv_register = new HashMap<>();
         maximum_demand_forecast_register = new HashMap<>();
         minimum_demand_forecast_register = new HashMap<>();
 
@@ -412,6 +414,14 @@ public class Gr4spSim extends SimState {
 
     public void setAnnual_forecast_consumption_register(HashMap<Integer, Float> annual_forecast_consumption_register) {
         this.annual_forecast_consumption_register = annual_forecast_consumption_register;
+    }
+
+    public HashMap<Integer, Float> getAnnual_forecast_rooftopPv_register() {
+        return annual_forecast_rooftopPv_register;
+    }
+
+    public void setAnnual_forecast_rooftopPv_register(HashMap<Integer, Float> annual_forecast_rooftopPv_register) {
+        this.annual_forecast_rooftopPv_register = annual_forecast_rooftopPv_register;
     }
 
     public HashMap<Integer, Float> getMaximum_demand_forecast_register() {
@@ -815,6 +825,7 @@ public class Gr4spSim extends SimState {
         LoadData.selectHalfHourSolarExposure(this);
         LoadData.createHalfHourSolarExposureForecast(this);
         LoadData.selectSolarInstallation(this);
+        LoadData.createSolarInstallationForecast(this);
         LoadData.selectActors(this,  startDate, endDate);
 
         LoadData.selectMaximumDemandForecast(this);
@@ -822,7 +833,7 @@ public class Gr4spSim extends SimState {
 
         //selectActorActorRelationships("actoractor93");
 
-        LoadData.selectActorAssetRelationships(this, "actorasset");//from https://www.secv.vic.gov.au/history/
+        //LoadData.selectActorAssetRelationships(this, "actorasset");//from https://www.secv.vic.gov.au/history/
     }
 
     public void start() {

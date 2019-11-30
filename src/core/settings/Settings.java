@@ -37,7 +37,8 @@ class EmissionFactor {
 }
 
 class ArenaSettings {
-    public int minCapMarketGen;
+    public boolean allowed;
+    public double minCapMarketGen;
 
 }
 
@@ -84,11 +85,14 @@ class ForecastSetting{
     public String scenario;
     public int baseYear;
     public double annualCpi;
+    public Boolean IncludePublicallyAnnouncedGen;
+
+
 }
 
 public class Settings {
     //public int ConstantMaxInt;
-    public ArenaSettings arena;
+    public Map<String, ArenaSettings> arena;
     public SimulationDatesSettings simulationDates;
     public PopulationSettings population;
     public PolicySettings policy;
@@ -231,9 +235,37 @@ public class Settings {
      * Arena
      */
 
-    public int getMinCapMarketGen() {
-        return arena.minCapMarketGen;
+    //Get the Generator Settings with a composite Key
+    private ArenaSettings getArenaSettings(String dispatchType) {
+        if (arena.containsKey(dispatchType)) {
+            return arena.get(dispatchType);
+        }
+
+        return null;
     }
+
+    public double getMinCapMarketGen(String dispatchType) {
+        return getArenaSettings(dispatchType).minCapMarketGen;
+    }
+    public boolean getAllowedMarket(String dispatchType) {
+        return getArenaSettings(dispatchType).allowed;
+    }
+
+    public boolean isMarketPaticipant(String dispatchType, double capacity ){
+        String fullDispatchName = "";
+        if(dispatchType.equals("S"))
+            fullDispatchName = "scheduled";
+        if(dispatchType.equals("SS"))
+            fullDispatchName = "semiScheduled";
+        if(dispatchType.equals("NS"))
+            fullDispatchName = "nonScheduled";
+
+        if(getAllowedMarket(fullDispatchName) && capacity >= getMinCapMarketGen(fullDispatchName) )
+            return true;
+        else
+            return false;
+    }
+
 
     /**
      *  Forecast
@@ -244,5 +276,8 @@ public class Settings {
     public int getBaseYearConsumptionForecast() { return forecast.baseYear;  }
 
     public double getAnnualCpiForecast() { return forecast.annualCpi; }
+
+    public Boolean getIncludePublicallyAnnouncedGen() { return forecast.IncludePublicallyAnnouncedGen;  }
+
 
 }
