@@ -28,7 +28,8 @@ public class EndUserUnit extends Actor implements EndUserActor {
     public Date creationDate;
 
 
-    public EndUserUnit(int actor, ActorType actorType, String name, GovRole mainRole, BusinessStructure businessType, OwnershipModel ownershipModel, int numberOfPerson, int numberOfHouseholds, boolean gas,
+    public EndUserUnit(int actor, ActorType actorType, String name, GovRole mainRole, BusinessStructure businessType,
+                       OwnershipModel ownershipModel, int numberOfPerson, int numberOfHouseholds, boolean gas,
                        boolean family, double income, Date CreationDate ) {
         super(actor, actorType, name, mainRole, businessType, ownershipModel);
         this.numberOfPerson = numberOfPerson;

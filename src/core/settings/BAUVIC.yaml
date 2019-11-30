@@ -1,7 +1,7 @@
 simulationDates:
 
   # Simulation Date Range
-  startDate:  1927-01-01
+  startDate:  1998-01-01
   endDate: 2036-01-01
 
   # Spot Market Start Date
@@ -31,10 +31,12 @@ population:
 
 forecast:
   #Forecast from ISP annual consumption includes: Slow change, Fast change, High DER, Central, and Step change
-  scenario: Step change
+  scenario: Central
   baseYear: 2018
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
   annualCpi: 0.019
+  #true means new generation that has been publically announced but not committed is included.
+  IncludePublicallyAnnouncedGen: true
 
 policy:
   # goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
@@ -45,12 +47,23 @@ policy:
   endConsumerTariff: AVG
 
   # Apply inflation to the max and min value used by generators to define the LCOE
-  annualInflation: 0.025
+  annualInflation: 0.0
 
 
 arena:
-  # minimum nameplate capacity required to participate in spot market (MW)
-  minCapMarketGen: 30
+
+  scheduled:
+    allowed: true
+    minCapMarketGen: 30
+  semiScheduled:
+    allowed: false
+    minCapMarketGen: 0.1
+  nonScheduled:
+    allowed: false
+    minCapMarketGen: 0.1
+
+
+
 
 generators:
 
@@ -238,7 +251,7 @@ tariffs:
   transmissionCosts:
     fixed: 1
     #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.10
+    usage: 0.15
 
   distributionCosts:
     fixed: 1
@@ -248,7 +261,7 @@ tariffs:
   retailCosts:
     fixed: 1
     #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.20
+    usage: 0.25
 
   environmentalCosts:
     #percentage contribution of final tariff with respect to wholesale price

@@ -22,6 +22,7 @@ public class Arena implements Steppable {
     //    private float transactionFee; //percentage fee
 
     private MeritOrder spot;
+    //private MeritOrder secondarySpot; //Merit order type of market at the distribution level.
     private ArrayList<Contract> bilateral; //can be billing with retailers, PPAs and other types of OTCs with two known parties involved.
     private ArrayList<Contract> fiTs;
 
@@ -199,17 +200,18 @@ public class Arena implements Steppable {
         for (Generator g : activeGensSPOT) {
 
             //only consider Scheduled (S)
-            if( g.getDispatchTypeDescriptor().equals("S") == false ) continue;
+            //if( g.getDispatchTypeDescriptor().equals("S") == true && g.getMaxCapacity() >= 30) {
+            if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(), g.getMaxCapacity() ) ) {
+                g.updateHistoricCapacityFactor(state);
 
-            g.updateHistoricCapacityFactor(state);
+                double availableCapacity = g.computeAvailableCapacity(state, currentTime);
+                double dollarMWh = g.priceMWhLCOE();
 
-            double availableCapacity = g.computeAvailableCapacity(state,currentTime);
-            double dollarMWh = g.priceMWhLCOE();
+                Bid b = new Bid(null, g, dollarMWh, availableCapacity);
+                this.spot.addBidder(b);
 
-            Bid b = new Bid(null, g, dollarMWh, availableCapacity);
-            this.spot.addBidder(b);
-
-            g.setBidsInSpot( g.getBidsInSpot() + 1 );
+                g.setBidsInSpot(g.getBidsInSpot() + 1);
+            }
         }
 
     }
@@ -247,7 +249,7 @@ public class Arena implements Steppable {
             int currentMonth = c.get(Calendar.MONTH) + 1;
             int currentYear = c.get(Calendar.YEAR);
 
-            if (currentMonth == 1){
+            if (currentMonth == 1 && currentYear > data.settings.getBaseYearConsumptionForecast()) {
                 applyInflation(state);
             }
 
@@ -283,7 +285,7 @@ public class Arena implements Steppable {
                 if(data.getHalfhour_demand_register().containsKey(currentTime))
                     totalDemand  = data.getHalfhour_demand_register().get(currentTime);
                 else{
-                    System.out.println("\t\t\t" + currentTime + " For some reason we loose this key");
+                    System.out.println("\t\t\t" + currentTime + " For some reason this key is lost, use last available value ");
                 }
 
                 //double totalDemand = data.getMonthly_demand_register().get(today);
@@ -298,6 +300,7 @@ public class Arena implements Steppable {
 
                 // Substract from Consumption the amount supplied by generators smaller than 30MW
                 double availableCapacityNonScheduled = 0;
+                //(This for is to include the restrictions on which generators participate in the bidding process)
                 for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
                     Vector<Generator> gens = entry.getValue();
                     for (Generator g : gens) {
@@ -305,10 +308,11 @@ public class Arena implements Steppable {
                         if (g.getStart().before(today) || g.getStart().equals(today)) {
                             //Has not finished operations?
                             if (g.getEnd().after(today)) {
-                                //Check nominal capacity is smaller than 30 MW in order to know participation in spot Market
+                                //Check nominal capacity is smaller than 30 MW in order to know if participates in spot Market
                                 //if (g.getMaxCapacity() < 30) {
                                 //only consider Semi-Scheduled (SS) and (NS)
-                                if( g.getDispatchTypeDescriptor().equals("S") == false || g.getMaxCapacity() < 30) {
+                                //if( g.getDispatchTypeDescriptor().equals("S") == false || g.getMaxCapacity() < 30) {
+                                if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(), g.getMaxCapacity() ) == false ){
                                     double capacity = g.computeAvailableCapacity(state, currentTime);
                                     g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + capacity );
                                     availableCapacityNonScheduled += capacity;

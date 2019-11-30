@@ -3,6 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.16">
     <root id="1">
       <ServerVersion>11.4</ServerVersion>
+      <StartupTime>1575019698</StartupTime>
     </root>
     <database id="2" parent="1" name="flaskapp">
       <ObjectId>16730</ObjectId>
@@ -13,62 +14,44 @@
       <ObjectId>13012</ObjectId>
       <Comment>default administrative connection database</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4823</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4842</IntrospectionStateNumber>
       <Current>1</Current>
-      <Relations>sequence|table|16652|16654|1
-sequence|table|16770|16667|1
-sequence|table|16745|16747|1
+      <Relations>sequence|table|16745|16747|1
+sequence|table|16652|16654|1
 sequence|table|33216|33218|1
+sequence|table|16770|16667|1
 </Relations>
     </database>
     <role id="4" parent="1" name="pg_execute_server_program">
       <ObjectId>4571</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="5" parent="1" name="pg_monitor">
       <ObjectId>3373</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="6" parent="1" name="pg_read_all_settings">
       <ObjectId>3374</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="7" parent="1" name="pg_read_all_stats">
       <ObjectId>3375</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="8" parent="1" name="pg_read_server_files">
       <ObjectId>4569</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="9" parent="1" name="pg_signal_backend">
       <ObjectId>4200</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="10" parent="1" name="pg_stat_scan_tables">
       <ObjectId>3377</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="11" parent="1" name="pg_write_server_files">
       <ObjectId>4570</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="12" parent="1" name="postgres">
       <ObjectId>10</ObjectId>
       <SuperRole>1</SuperRole>
-      <Inherit>1</Inherit>
       <CreateRole>1</CreateRole>
       <CreateDb>1</CreateDb>
       <CanLogin>1</CanLogin>
-      <ConnectionLimit>-1</ConnectionLimit>
       <Replication>1</Replication>
       <BypassRls>1</BypassRls>
     </role>
@@ -94,7 +77,7 @@ sequence|table|33216|33218|1
       <Comment>standard public schema</Comment>
       <StateNumber>360</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4824</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4843</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="17" parent="3" name="btree">
@@ -303,7 +286,7 @@ de bottom 10 demand periods were used.&quot; (page. 31, Electricity Demand Forec
     </table>
     <table id="46" parent="16" name="isp_minimum_demand">
       <ObjectId>41497</ObjectId>
-      <Comment>Maximum demand forecast in MW per year from the ISP 2019. More info here: http://forecasting.aemo.com.au/Electricity/MaximumDemand/Operational
+      <Comment>Minimum demand forecast in MW per year from the ISP 2019. More info here: http://forecasting.aemo.com.au/Electricity/MaximumDemand/Operational
 Effective date 29/10/2019
 &quot;For maximum demand, the top 10 highest demand half hours each year were used to calculate the average generation at time of maximum demand. For minimum demand, 
 de bottom 10 demand periods were used.&quot; (page. 31, Electricity Demand Forecasting Methodology Information paper February 2019.)</Comment>
@@ -1730,7 +1713,7 @@ More details: https://energylive.aemo.com.au/Energy-Explained/POEs-are-cool</Com
     </column>
     <column id="266" parent="56" name="system_capacity">
       <Position>5</Position>
-      <Comment>total capacity/number of installations</Comment>
+      <Comment>total capacity/number of installations in that month. Assumes each system has the same capacity.</Comment>
       <DataType>double precision|0s</DataType>
       <StateNumber>4378</StateNumber>
       <TypeId>701</TypeId>

@@ -12,12 +12,6 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Date;
 
-
-
-
-
-
-
 public class
 Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
     private static final long serialVersionUID = 1;
@@ -41,7 +35,6 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
 
     public Actor(int id, ActorType actorType, String name, GovRole role, BusinessStructure businessType, OwnershipModel ownershipModel) {
         this.id = id;
-        this.actorType = actorType;
         this.name = name;
         this.role = role;
         this.businessType = businessType;

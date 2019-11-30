@@ -96,7 +96,7 @@ public class SimPolicies implements java.io.Serializable, Steppable {
                 Generator gen = new Generator(idGen, "VIC1", "Rooftop Solar PV",
                         "Solar Rooftop", "Household", "Solar - Rooftop",
                         "Solar", solar_cap_per_spm , "NS", date, endDate, endDate,
-                        "", 1, 0.0, "Solar", data.settings);
+                        "", 1, 0.0, "Solar", "In Service",data.settings);
 
                 //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
                 if (!data.getGen_register().containsKey(idGen))
