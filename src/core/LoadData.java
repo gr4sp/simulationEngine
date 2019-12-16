@@ -68,9 +68,9 @@ public class LoadData {
                 "isp_annual_consumption.category as consumptionForecastCategory, isp_annual_consumption.subcategory as consumptionForecastSubCategory, " +
                 "isp_annual_consumption.scenario as consumptionForecastScenario, isp_annual_consumption.annual_consumption as annualConsumptionForecast " +
                 "FROM  isp_annual_consumption " +
-                "WHERE (category = 'Operational' OR category = 'PriceImpact' OR category ='EnergyEfficiency' OR category = 'RooftopPV' OR category = 'SmallNonScheduledGeneration') " +
+                "WHERE (category = 'Operational' OR category = 'PriceImpact' OR category ='EnergyEfficiency' OR category = 'SmallNonScheduledGeneration') " +
                 "AND region = 'VIC' " +
-                "AND (scenario = 'Actual' OR scenario ='"+ data.settings.getScenarioForecast()+"') ";
+                "AND (scenario = 'Actual' OR scenario ='"+ data.settings.getForecastScenarioConsumption()+"') ";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -80,25 +80,12 @@ public class LoadData {
             while (rs.next()) {
                 int year = rs.getInt("consumptionForecastYear");
                 float gwh = rs.getFloat("annualConsumptionForecast");
-                System.out.println("\t" + rs.getString("consumptionForecastRegion") + "\t" +
+                data.LOGGER.info("\t" + rs.getString("consumptionForecastRegion") + "\t" +
                         year + "\t" +
                         rs.getString("consumptionForecastCategory") + "\t" +
                         rs.getString("consumptionForecastSubCategory") + "\t" +
                         rs.getString("consumptionForecastScenario") + "\t" +
                         gwh );
-
-                //Increase rooftopPV by 25% to concile the latest info in pv-map. ISP used solar forecast from CSRIO model and real data on
-                // solar pv installations has been higher than predicted
-                if(rs.getString("consumptionForecastCategory").equals("RooftopPV")){
-                    gwh *= 1.25;
-                    if (!data.getAnnual_forecast_rooftopPv_register().containsKey(year)) {
-                        data.getAnnual_forecast_rooftopPv_register().put(year, gwh);
-                    }else{
-                        //Sum the existing category forecast with the new value (Operational,PriceImpact, etc.)
-                        float existingGWh = data.getAnnual_forecast_rooftopPv_register().get(year);
-                        data.getAnnual_forecast_rooftopPv_register().put(year, gwh + existingGWh);
-                    }
-                }
 
                 //If year consumption forecast doesn't exist, create it
                 if (!data.getAnnual_forecast_consumption_register().containsKey(year)) {
@@ -110,7 +97,160 @@ public class LoadData {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
+        }
+    }
+
+    public static void
+    selectForecastEnergyEfficency(Gr4spSim data) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        String sql = "SELECT isp_annual_consumption.region as consumptionForecastRegion, isp_annual_consumption.year as consumptionForecastYear, " +
+                "isp_annual_consumption.category as consumptionForecastCategory, isp_annual_consumption.subcategory as consumptionForecastSubCategory, " +
+                "isp_annual_consumption.scenario as consumptionForecastScenario, isp_annual_consumption.annual_consumption as annualConsumptionForecast " +
+                "FROM  isp_annual_consumption " +
+                "WHERE (category ='EnergyEfficiency') " +
+                "AND region = 'VIC' " +
+                "AND (scenario ='"+ data.settings.getForecastScenarioEnergyEfficiency()+"') ";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                int year = rs.getInt("consumptionForecastYear");
+                float gwh = rs.getFloat("annualConsumptionForecast");
+                data.LOGGER.info("\t" + rs.getString("consumptionForecastRegion") + "\t" +
+                        year + "\t" +
+                        rs.getString("consumptionForecastCategory") + "\t" +
+                        rs.getString("consumptionForecastSubCategory") + "\t" +
+                        rs.getString("consumptionForecastScenario") + "\t" +
+                        gwh );
+
+
+                //Subtract Energy Efficiency from Consumption
+                float existingGWh = data.getAnnual_forecast_consumption_register().get(year);
+                data.getAnnual_forecast_consumption_register().put(year, existingGWh - gwh);
+
+            }
+        } catch (SQLException e) {
+            data.LOGGER.warning(e.getMessage());
+        }
+    }
+
+    public static void
+    selectForecastOnsiteGeneration(Gr4spSim data) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        String sql = "SELECT isp_annual_consumption.region as consumptionForecastRegion, isp_annual_consumption.year as consumptionForecastYear, " +
+                "isp_annual_consumption.category as consumptionForecastCategory, isp_annual_consumption.subcategory as consumptionForecastSubCategory, " +
+                "isp_annual_consumption.scenario as consumptionForecastScenario, isp_annual_consumption.annual_consumption as annualConsumptionForecast " +
+                "FROM  isp_annual_consumption " +
+                "WHERE (category ='SmallNonScheduledGeneration') " +
+                "AND region = 'VIC' " +
+                "AND (scenario ='"+ data.settings.getForecastScenarioOnsiteGeneration()+"') ";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                int year = rs.getInt("consumptionForecastYear");
+                float gwh = rs.getFloat("annualConsumptionForecast");
+                data.LOGGER.info("\t" + rs.getString("consumptionForecastRegion") + "\t" +
+                        year + "\t" +
+                        rs.getString("consumptionForecastCategory") + "\t" +
+                        rs.getString("consumptionForecastSubCategory") + "\t" +
+                        rs.getString("consumptionForecastScenario") + "\t" +
+                        gwh );
+
+
+                //Subtract Energy Efficiency from Consumption
+                float existingGWh = data.getAnnual_forecast_consumption_register().get(year);
+                data.getAnnual_forecast_consumption_register().put(year, existingGWh - gwh);
+
+            }
+        } catch (SQLException e) {
+            data.LOGGER.warning(e.getMessage());
+        }
+    }
+
+    public static void
+    selectForecastSolarUptake(Gr4spSim data) {
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        String sql = "SELECT isp_annual_consumption.region as consumptionForecastRegion, isp_annual_consumption.year as consumptionForecastYear, " +
+                "isp_annual_consumption.category as consumptionForecastCategory, isp_annual_consumption.subcategory as consumptionForecastSubCategory, " +
+                "isp_annual_consumption.scenario as consumptionForecastScenario, isp_annual_consumption.annual_consumption as annualConsumptionForecast " +
+                "FROM  isp_annual_consumption " +
+                "WHERE (category = 'RooftopPV') " +
+                "AND region = 'VIC' " +
+                "AND (scenario ='"+ data.settings.getForecastScenarioSolarUptake()+"') ";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                int year = rs.getInt("consumptionForecastYear");
+                float gwh = rs.getFloat("annualConsumptionForecast");
+                data.LOGGER.info("\t" + rs.getString("consumptionForecastRegion") + "\t" +
+                        year + "\t" +
+                        rs.getString("consumptionForecastCategory") + "\t" +
+                        rs.getString("consumptionForecastSubCategory") + "\t" +
+                        rs.getString("consumptionForecastScenario") + "\t" +
+                        gwh );
+
+
+
+
+                // solar pv installations has been higher than predicted
+                //Increase rooftopPV by 25% to concile the latest info in pv-map. ISP used solar forecast from CSRIO model and real data on
+                gwh *= 1.25;
+                float rooftopPvGwh = gwh;
+
+                if(data.settings.getRooftopPVForecast().equals("both") == true){
+                    rooftopPvGwh = gwh;
+                }
+                else if(rs.getString("consumptionForecastSubCategory").equals("Residential") == true &&
+                        data.settings.getRooftopPVForecast().equals("residential") == false){
+                    rooftopPvGwh = 0;
+                }else if(rs.getString("consumptionForecastSubCategory").equals("Business") == true &&
+                        data.settings.getRooftopPVForecast().equals("business") == false){
+                    rooftopPvGwh = 0;
+                }
+
+
+                if (!data.getAnnual_forecast_rooftopPv_register().containsKey(year)) {
+                    data.getAnnual_forecast_rooftopPv_register().put(year, rooftopPvGwh);
+                }else{
+
+                    //Sum the existing category forecast with the new value (Operational,PriceImpact, etc.)
+                    float existingGWh = data.getAnnual_forecast_rooftopPv_register().get(year);
+                    data.getAnnual_forecast_rooftopPv_register().put(year, rooftopPvGwh + existingGWh);
+
+                }
+
+
+                //Sum the existing category forecast with the new value (Operational,PriceImpact, etc.)
+                float existingGWh = data.getAnnual_forecast_consumption_register().get(year);
+                data.getAnnual_forecast_consumption_register().put(year, rooftopPvGwh + existingGWh);
+
+            }
+        } catch (SQLException e) {
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -134,7 +274,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getString("maxDemandForecastRegion") + "\t" +
+                data.LOGGER.info("\t" + rs.getString("maxDemandForecastRegion") + "\t" +
                         rs.getInt("maxDemandForecastYear") + "\t" +
                         rs.getString("maxDemandForecastCategory") + "\t" +
                         rs.getString("maxDemandForecastSubCategory") + "\t" +
@@ -143,7 +283,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -163,7 +303,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getString("minDemandForecastRegion") + "\t" +
+                data.LOGGER.info("\t" + rs.getString("minDemandForecastRegion") + "\t" +
                         rs.getInt("minDemandForecastYear") + "\t" +
                         rs.getString("minDemandForecastCategory") + "\t" +
                         rs.getString("minDemandForecastSubCategory") + "\t" +
@@ -172,7 +312,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
     // Select Arena Function
@@ -193,7 +333,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getInt("id") + "\t" +
+                data.LOGGER.info("\t" + rs.getInt("id") + "\t" +
                         rs.getString("arenaname") + "\t" +
                         rs.getString("arenatype"));
 
@@ -202,14 +342,14 @@ public class LoadData {
 
                 //If arena doesn't exist, create it
                 if (!data.getArena_register().containsKey(arenaId)) {
-                    Arena arena = new Arena(arenaId, rs.getString("arenaname"), rs.getString("arenatype"));
+                    Arena arena = new Arena(arenaId, rs.getString("arenaname"), rs.getString("arenatype"), data);
                     data.getArena_register().put(arenaId, arena);
                 }
 
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -231,7 +371,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getString("date") + "\t" +
+                data.LOGGER.info("\t" + rs.getString("date") + "\t" +
                         rs.getFloat("conversion_variable"));
 
 
@@ -243,7 +383,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
 
         createCPIForecast(data);
@@ -270,7 +410,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getInt("id") + "\t" +
+                data.LOGGER.info("\t" + rs.getInt("id") + "\t" +
                         rs.getString("casestudy_area") + "\t" +
                         rs.getString("date") + "\t" +
                         rs.getString("tariff_name") + "\t" +
@@ -337,51 +477,10 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
-
-    //Select Demand monthly Historic
-
-    public static void
-    selectDemand(Gr4spSim data, String startDate, String endDate) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
-
-        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
-
-        /**
-         * Load Total Consumption per month
-         * */
-        String sql = "SELECT date, operational_demand_mw" +
-                " FROM  generation_demand_historic WHERE " +
-                " date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            // loop through the result set
-            while (rs.next()) {
-                //System.out.println("\t" + rs.getString("date") + "\t" +
-                //      rs.getString("operational_demand_mw"));
-
-
-                Date d = rs.getDate("date");
-                Double mw = rs.getDouble("operational_demand_mw");
-
-                //If monthly consumption doesn't exist, create it
-                if (!data.getMonthly_demand_register().containsKey(d)) {
-                    data.getMonthly_demand_register().put(d, mw);
-                }
-
-
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     //Select Demand Historic half hours for spot market
 
@@ -403,7 +502,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getTimestamp("settlement_date") + "\t" +
+                data.LOGGER.info("\t" + rs.getTimestamp("settlement_date") + "\t" +
                         rs.getFloat("total_demand") + "\t" +
                         rs.getFloat("price"));
 
@@ -419,7 +518,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
             exit(1);
         }
     }
@@ -436,7 +535,7 @@ public class LoadData {
         try {
             baseDate = stringToDate.parse(dateInString);
         } catch (java.text.ParseException e) {
-            System.out.println(e);
+            data.LOGGER.warning(e.toString());
         }
 
         GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -482,7 +581,7 @@ public class LoadData {
                 try {
                     leapYearFeb = stringToDate.parse(dateInString);
                 } catch (java.text.ParseException e) {
-                    System.out.println(e);
+                    data.LOGGER.warning(e.toString());
                 }
             }
 
@@ -545,7 +644,7 @@ public class LoadData {
         try {
             baseDate = stringToDate.parse(dateInString);
         } catch (java.text.ParseException e) {
-            System.out.println(e);
+            data.LOGGER.warning(e.toString());
         }
         Calendar c = Calendar.getInstance();
         c.setTime(baseDate);
@@ -579,7 +678,7 @@ public class LoadData {
         try {
             baseDate = stringToDate.parse(dateInString);
         } catch (java.text.ParseException e) {
-            System.out.println(e);
+            data.LOGGER.warning(e.toString());
         }
 
         GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -649,7 +748,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-  /*              System.out.println("\t" + rs.getString("date") + "\t" +
+  /*              data.LOGGER.info("\t" + rs.getString("date") + "\t" +
                         rs.getString("domesticconsumers"));
 */
 
@@ -665,7 +764,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
 
         //Create linear interpolation of the forecasted years
@@ -692,7 +791,7 @@ public class LoadData {
                 try {
                     date = stringToDate.parse(dateInString);
                 } catch (java.text.ParseException e) {
-                    System.out.println(e);
+                    data.LOGGER.warning(e.toString());
                 }
 
                 data.getMonthly_domestic_consumers_register().put(date, consumers);
@@ -715,7 +814,7 @@ public class LoadData {
         try {
             baseDate = stringToDate.parse(dateInString);
         } catch (java.text.ParseException e) {
-            System.out.println(e);
+            data.LOGGER.warning(e.toString());
         }
 
         GregorianCalendar cal = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -735,7 +834,7 @@ public class LoadData {
                 try {
                     leapYearFeb = stringToDate.parse(dateInString);
                 } catch (java.text.ParseException e) {
-                    System.out.println(e);
+                    data.LOGGER.warning(e.toString());
                 }
             }
 
@@ -806,7 +905,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getString("date") + "\t" +
+                data.LOGGER.info("\t" + rs.getString("date") + "\t" +
                         rs.getString("total_consumption_gwh"));
 
 
@@ -821,7 +920,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
 
 
@@ -846,7 +945,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-  /*              System.out.println("\t" + rs.getString("date") + "\t" +
+  /*              data.LOGGER.info("\t" + rs.getString("date") + "\t" +
                         rs.getString("domesticconsumers"));
 */
 
@@ -861,7 +960,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
 
         createForecastDomesticConsumers(data);
@@ -964,7 +1063,7 @@ public class LoadData {
             while (rs.next()) {
 
 
- /*               System.out.println("\t" + rs.getString("date") + "\t" +
+ /*               data.LOGGER.info("\t" + rs.getString("date") + "\t" +
                         rs.getString("temperaturec") + "\t" +
                         rs.getString("total_gen_gwh"));
 */
@@ -987,7 +1086,7 @@ public class LoadData {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -1015,7 +1114,7 @@ public class LoadData {
 
                 float solarExposure = rs.getFloat("solar_exposure") / toKwh;
 
-                System.out.println("\t" + year + "\t" +
+                data.LOGGER.info("\t" + year + "\t" +
                         month + "\t" +
                         solarExposure
                 );
@@ -1031,7 +1130,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -1054,7 +1153,7 @@ public class LoadData {
 
                 float solarHalfhourExposure = rs.getFloat("ghi") / toKwh;
 
-                System.out.println("\t" + date + "\t" +
+                data.LOGGER.info("\t" + date + "\t" +
                         solarHalfhourExposure
                 );
 
@@ -1062,7 +1161,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -1091,7 +1190,7 @@ public class LoadData {
                 Integer aggregater_capacity_kw = rs.getInt("aggregated_capacity_kw");
                 Float system_capacity = rs.getFloat("system_capacity");
 
-                System.out.println("\t" + year + "\t" +
+                data.LOGGER.info("\t" + year + "\t" +
                         month + "\t" +
                         number_installations
                 );
@@ -1108,7 +1207,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -1128,7 +1227,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getInt("id") + "\t" +
+                data.LOGGER.info("\t" + rs.getInt("id") + "\t" +
                         rs.getString("name") + "\t" +
                         rs.getDate("registration_date") + "\t" +
                         rs.getDate("change_date")+ "\t" +
@@ -1161,7 +1260,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
         //return actors;
     }
@@ -1184,7 +1283,7 @@ public class LoadData {
 
                 // loop through the result set
                 while (rs.next()) {
-                    System.out.println("\t" + rs.getInt("ActorId") + "\t" +
+                    data.LOGGER.info("\t" + rs.getInt("ActorId") + "\t" +
                             rs.getInt("AssetId") + "\t" +
                             rs.getDouble("Percentage") + "\t" +
                             rs.getString("AssetType") + "\t" +
@@ -1204,7 +1303,7 @@ public class LoadData {
                         //For this we need to create another SPM for 90s, and make sure that it uses
                         //The gen from the 90s.
                         if (gens == null) {
-                            System.out.println("Actor " + actor.getName() + " - Generation Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
+                            data.LOGGER.info("Actor " + actor.getName() + " - Generation Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
                         } else {
                             for (Generator gen : gens) {
                                 ActorAssetRelationship actorRel = new ActorAssetRelationship(actor, gen,
@@ -1220,7 +1319,7 @@ public class LoadData {
                     } else if (assetType.equalsIgnoreCase("Network asset")) {
                         Vector<NetworkAssets> nets = data.getNetwork_register().get(rs.getInt("AssetId"));
                         if (nets == null) {
-                            System.out.println("Actor " + actor.getName() + " - Network Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
+                            data.LOGGER.info("Actor " + actor.getName() + " - Network Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
                         } else {
                             for (NetworkAssets net : nets) {
                                 ActorAssetRelationship actorRel = new ActorAssetRelationship(actor, net,
@@ -1233,7 +1332,7 @@ public class LoadData {
                     } else if (assetType.equalsIgnoreCase("SPM")) {
                         Vector<Spm> spms = data.getSpm_register().get(rs.getInt("AssetId"));
                         if (spms == null) {
-                            System.out.println("Actor " + actor.getName() + " - SPM Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
+                            data.LOGGER.info("Actor " + actor.getName() + " - SPM Asset id " + rs.getInt("AssetId") + " Relationship not existent for this period of time");
                         } else {
                             for (Spm spm : spms) {
                                 ActorAssetRelationship actorRel = new ActorAssetRelationship(actor, spm,
@@ -1247,7 +1346,7 @@ public class LoadData {
 
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                data.LOGGER.warning(e.getMessage());
             }
         }
     }
@@ -1271,7 +1370,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getInt("Actor1") + "\t" +
+                data.LOGGER.info("\t" + rs.getInt("Actor1") + "\t" +
                         rs.getInt("Actor2") + "\t" +
                         rs.getString("RelType"));
 
@@ -1285,7 +1384,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -1319,7 +1418,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                /*System.out.println("\t Generator: " +
+                /*data.LOGGER.info("\t Generator: " +
                         rs.getInt("asset_id")+ "\t" +
                         rs.getString("region")+ "\t" +
                         rs.getString("asset_type")+ "\t" +
@@ -1339,12 +1438,22 @@ public class LoadData {
 
                 );*/
 
+                //Shift forecast for Coal generators retirement
+                Date expectedEndDate = rs.getDate("expected_closure_date");
+                Calendar cEndDate = Calendar.getInstance();
+                if(expectedEndDate != null && rs.getString("fuel_type").equals("Brown Coal")){
+                    cEndDate.setTime(expectedEndDate);
+                    cEndDate.add(Calendar.YEAR, data.settings.getForecastGeneratorRetirement());
+                    expectedEndDate = cEndDate.getTime();
+                }
+
+                //Publically announced Generators are rolled out incrementally (each with capacity/rolloutYears) across a period specified in YAML settings.
                 String unit_status = rs.getString("unit_status");
-                if ( unit_status.equals("Publically Announced") ) {
-                    int rolloutPeriod = 1;
+                if ( unit_status.equals("Publically Announced") || unit_status.equals("Committed") || unit_status.equals("Committed*")
+                        || unit_status.equals("Emerging") || unit_status.equals("In Commissioning")) {
+                    int rolloutPeriod = data.settings.getForecastGenerationRolloutPeriod();
                     for(int year = 0; year < rolloutPeriod; year++) {
 
-                        //Compute end Date 1 year after
                         Calendar cStartDate = Calendar.getInstance();
                         try {
                             Date startDate = DateToString.parse(rs.getString("full_commercial_use_date"));
@@ -1367,7 +1476,7 @@ public class LoadData {
                                 rs.getDouble("nameplate_capacity_mw") / rolloutPeriod,
                                 rs.getString("dispatch_type"),
                                 cStartDate.getTime(),
-                                rs.getDate("expected_closure_date"),
+                                expectedEndDate,
                                 rs.getDate("closure_date"),
                                 rs.getString("duid"),
                                 rs.getInt("no_units"),
@@ -1401,7 +1510,7 @@ public class LoadData {
                             rs.getDouble("nameplate_capacity_mw"),
                             rs.getString("dispatch_type"),
                             rs.getDate("full_commercial_use_date"),
-                            rs.getDate("expected_closure_date"),
+                            expectedEndDate,
                             rs.getDate("closure_date"),
                             rs.getString("duid"),
                             rs.getInt("no_units"),
@@ -1426,7 +1535,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
         return gens;
     }
@@ -1445,7 +1554,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                /*System.out.println("\t" + rs.getInt("storage_id") + "\t" +
+                /*data.LOGGER.info("\t" + rs.getInt("storage_id") + "\t" +
                         rs.getString("storage_name") + "\t" +
                         rs.getInt("storageType") + "\t" +
                         rs.getDouble("storageOutputCap") + "\t" +
@@ -1467,7 +1576,7 @@ public class LoadData {
                 strs.add(str);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
         return strs;
     }
@@ -1490,7 +1599,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-               /* System.out.println("\t" + rs.getInt("netId") + "\t" +
+               /* data.LOGGER.info("\t" + rs.getInt("netId") + "\t" +
                         rs.getString("type") + "\t" +
                         rs.getString("subtype") + "\t" +
                         rs.getString("grid") + "\t" +
@@ -1525,7 +1634,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
         return nets;
     }
@@ -1548,7 +1657,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-               /* System.out.println("\t" + rs.getInt("cpoint_id") + "\t" +
+               /* data.LOGGER.info("\t" + rs.getInt("cpoint_id") + "\t" +
                         rs.getString("cpoint_name") + "\t" +
                         rs.getInt("CPoint_Type") + "\t" +
                         rs.getDouble("distanceToDemand") + "\t" +
@@ -1569,7 +1678,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
         return cpoints;
     }
@@ -1593,7 +1702,7 @@ public class LoadData {
 
             // loop through the result set
             while (rs.next()) {
-                System.out.println("\t" + rs.getInt("arenaid") + "\t" +
+                data.LOGGER.info("\t" + rs.getInt("arenaid") + "\t" +
                         rs.getString("arenaname") + "\t" +
                         rs.getString("arenatype") + "\t" +
                         rs.getString("seller") + "\t" +
@@ -1609,7 +1718,7 @@ public class LoadData {
 
                 //If arena doesn't exist, create it
                 if (!data.getArena_register().containsKey(arenaId)) {
-                    Arena arena = new Arena(arenaId, rs.getString("arenaname"), rs.getString("arenatype"));
+                    Arena arena = new Arena(arenaId, rs.getString("arenaname"), rs.getString("arenatype"), data);
                     data.getArena_register().put(arenaId, arena);
                 }
 
@@ -1638,7 +1747,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -1686,7 +1795,7 @@ public class LoadData {
                     //Create SPM if contained_id is different than NULL
                     //Base Case of recursion
                     if (contained_id != 0) {
-                        //System.out.println("SPM '" + idSpmActor + "' contains:" + contained_id);
+                        //data.LOGGER.info("SPM '" + idSpmActor + "' contains:" + contained_id);
 
                         // Recursive call to load the contained SPMs before creating the current SPM with idSpmActor
                         Spm spm_returned = createSpm(data, contained_id);
@@ -1724,7 +1833,7 @@ public class LoadData {
                 String[] st_contained = rs.getString("storage").split(",");
                 for (String id : st_contained) {
                     if (id.equalsIgnoreCase("")) break;
-                    //System.out.println("SPM '" + rs.getString("id") + "' Storages:");
+                    //data.LOGGER.info("SPM '" + rs.getString("id") + "' Storages:");
 
                     ArrayList<Storage> SpmStrs = LoadData.selectStorage(data, id);
                     strs.addAll(SpmStrs);
@@ -1770,7 +1879,7 @@ public class LoadData {
 
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            data.LOGGER.warning(e.getMessage());
 
         }
 
@@ -1789,14 +1898,14 @@ public class LoadData {
 //            // loop through the result set
 //            while (rs.next()) {
 //                if (!printed) {
-//                    System.out.println("SPM '" + rs.getString("name") + "' Connection Points:");
+//                    data.LOGGER.info("SPM '" + rs.getString("name") + "' Connection Points:");
 //                    printed = true;
 //                }
 //                Bag SpmCpoints = selectConnectionPoint( rs.getString("cpoint_name"));
 //                cpoints.addAll(SpmCpoints);
 //            }
 //        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
+//            data.LOGGER.warning(e.getMessage());
 //        }
 
 

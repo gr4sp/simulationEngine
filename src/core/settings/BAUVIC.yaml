@@ -1,8 +1,10 @@
+folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
+
 simulationDates:
 
   # Simulation Date Range
-  startDate:  1998-01-01
-  endDate: 2036-01-01
+  startDate:  2017-01-01
+  endDate: 2026-01-01
 
   # Spot Market Start Date
   startDateSpotMarket: 1999-01-01
@@ -30,18 +32,37 @@ population:
   domesticConsumptionPercentage: 0.3
 
 forecast:
-  #Forecast from ISP annual consumption includes: Slow change, Fast change, High DER, Central, and Step change
-  scenario: Central
+  #Forecast from ISP annual consumption includes for each category can be: (Slow change), (Fast change), (High DER), (Central), and (Step change)
+  scenario:
+    consumption: Central # consumptions = OpSentOut + PV + EE + ONSG
+    energyEfficiency: Central # consumption = consumption - EE
+    onsiteGeneration: Central # consumption = consumption - ONSG
+    solarUptake: Slow change
+
   baseYear: 2018
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
   annualCpi: 0.019
   #true means new generation that has been publically announced but not committed is included.
   IncludePublicallyAnnouncedGen: true
+  #Rollout period of announced generation: including "Publically announced", "Emerging", "Committed",
+  # and "In Commissioning". This are all the projects that are on their way to be integrated in the generation pool but haven't
+  # start operating
+  generationRolloutPeriod: 2
+
+  # Include subcategory of rooftop pv. (residential), (business) or (both)
+  rooftopPV: both
+
+  #shift on closure date for Fossil Fuel Generators. Ex: -5 means 5 years earlier than expected
+  generatorRetirement: 0
+
+  #improves capacity factors of renewable technologies by a constant factor every year (Wind, added to cap factor [0,0.5], Solar, solarEfficiency losses [0.7,1])
+  technologicalImprovement: 0.0
+
 
 policy:
   # goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
   # for example, 0.01 represents 1% per month, around 12% a year
-  uptakeRate: 0.0
+  uptakeRate: 0.0 # not yet implemented
 
   # Consumers will choose the Best (MIN), Worst (MAX), Random (RND), Average (AVG) available retail price
   endConsumerTariff: AVG
@@ -49,20 +70,19 @@ policy:
   # Apply inflation to the max and min value used by generators to define the LCOE
   annualInflation: 0.0
 
-
+# market settings
 arena:
 
   scheduled:
-    allowed: true
+    # primary/secondary/none
+    spotMarket: primary
     minCapMarketGen: 30
   semiScheduled:
-    allowed: false
+    spotMarket: none
     minCapMarketGen: 0.1
   nonScheduled:
-    allowed: false
+    spotMarket: none
     minCapMarketGen: 0.1
-
-
 
 
 generators:
@@ -241,9 +261,8 @@ generators:
         linRateEF: 0
         expRateEF: 0
 
-        #TODO: Solar. According to LCOE report, varies from 12% to 26%. But they truncated solar at 40 and wind at 50
-        #TODO: battery storage LCOE? only discharge
-         # ALso, include 30 min solar data!
+
+
 
 
 tariffs:
@@ -289,3 +308,6 @@ tariffs:
 #  double ninv_sb: 1 - 0.01
 
 #some settings to change the extra charge for: network (transmission and distribution charges), jurisdictional charges (environemntal costs, including FiTs) and retail service costs.
+
+    #TODO: Solar. According to LCOE report, varies from 12% to 26%. But they truncated solar at 40 and wind at 50
+    #TODO: battery storage LCOE? only discharge

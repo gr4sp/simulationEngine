@@ -11,16 +11,35 @@ import sim.field.continuous.Continuous2D;
 import sim.util.Double2D;
 
 import java.io.FileReader;
+import java.io.IOException;
+import java.security.Permission;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.Random;
+
+import core.Gr4spLogger;
 
 import static core.Social.GovRole.*;
 import static java.lang.System.exit;
 
+class MySecurityManager extends SecurityManager {
+    @Override public void checkExit(int status) {
+        throw new SecurityException();
+    }
+
+    @Override public void checkPermission(Permission perm) {
+        // Allow other activities by default
+    }
+}
 
 public class Gr4spSim extends SimState {
     private static final long serialVersionUID = 1;
+
+    public final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 
     public Continuous2D layout;
@@ -31,7 +50,6 @@ public class Gr4spSim extends SimState {
     HashMap<Integer, Arena> arena_register;
 
     //Demand
-    HashMap<Date, Double> monthly_demand_register;
     HashMap<Date, Double> halfhour_demand_register;
 
     //forecast ISP maximum and minimum demand (MW) from 2019 to 2050; various scenarios
@@ -120,11 +138,26 @@ public class Gr4spSim extends SimState {
     //Simulation Settings specified via YAML file
     public Settings settings;
     public String yamlFileName;
+    public static String outputID;
+
 
 
     public Gr4spSim(long seed) {
 
         super(seed);
+
+        //Generate Unique ID to represent all generated data Files (SaveData and Logger)
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
+        Calendar cal = Calendar.getInstance();
+        outputID = sdf.format(cal.getTime())+"_seed"+seed;
+
+        //Setup Logger
+        try {
+            Gr4spLogger.setup(outputID);
+        }catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Problems with creating the log files");
+        }
 
         //Num generator, storage, grid to generate unique id
         numGenerators = 0; //for real example, it is going to be the number of generators supplying the area under study at the scale under study.
@@ -140,9 +173,10 @@ public class Gr4spSim extends SimState {
         network_register = new HashMap<>();
         actor_register = new HashMap<>();
         arena_register = new HashMap<>();
-        monthly_demand_register = new HashMap<>();
+
         halfhour_demand_register = new HashMap<>();
         monthly_consumption_register = new HashMap<>();
+
         total_monthly_consumption_register = new HashMap<>();
         monthly_generation_register = new HashMap<>();
         monthly_domestic_consumers_register = new HashMap<>();
@@ -169,11 +203,14 @@ public class Gr4spSim extends SimState {
     private void simulParametres() {
 
         try {
+            //Setup logging level
+            LOGGER.setLevel(Level.WARNING);
 
             yamlFileName = "BAUVIC";
-            YamlReader reader = new YamlReader(new FileReader("core/settings/"+yamlFileName+".yaml"));
+            String folderYaml = "C:\\Users\\angel\\Documents\\GitHub\\gr4sp\\src\\core\\settings";
+            YamlReader reader = new YamlReader(new FileReader(folderYaml+"\\"+yamlFileName+".yaml"));
+
             settings = reader.read(Settings.class);
-            System.out.println(settings);
 
 
             /**
@@ -279,9 +316,6 @@ public class Gr4spSim extends SimState {
         return cpi_conversion;
     }
 
-    public HashMap<Date, Double> getMonthly_demand_register() {
-        return monthly_demand_register;
-    }
 
     public HashMap<Date, Double> getHalfhour_demand_register() {
         return halfhour_demand_register;
@@ -547,7 +581,7 @@ public class Gr4spSim extends SimState {
 
             boolean hasGas = false;
 
-            System.out.println("Num Actors: " + numActors);
+            LOGGER.info("Num Actors: " + numActors);
 
             int numPeople = 2;
             String name = "Household Conventional " + conventionalConsumptionActors.size();
@@ -727,7 +761,7 @@ public class Gr4spSim extends SimState {
 
             boolean hasGas = true;
 
-            System.out.println("Num Actors: " + numActors);
+            LOGGER.info("Num Actors: " + numActors);
 
             int numPeople = 2;
             String name = "Household Non Conventional " + nonConventionalConsumptionActors.size();
@@ -816,9 +850,11 @@ public class Gr4spSim extends SimState {
         LoadData.selectArena(this);
         LoadData.selectTariffs(this, startDate, endDate, areaCode);
 
-        LoadData.selectDemand(this, startDate, endDate);
         LoadData.selectDemandHalfHour(this, startDate, endDate);
         LoadData.selectForecastConsumption(this);
+        LoadData.selectForecastSolarUptake(this);
+        LoadData.selectForecastEnergyEfficency(this);
+        LoadData.selectForecastOnsiteGeneration(this);
         LoadData.selectConsumption(this, startDate, endDate);
         LoadData.selectGenerationHistoricData(this, startDate, endDate);
         LoadData.selectMonthlySolarExposure(this);
@@ -838,7 +874,6 @@ public class Gr4spSim extends SimState {
 
     public void start() {
         super.start();
-        simulParametres();
         loadData();
         generateHouseholds();
         saveData.plotSeries(this);
@@ -853,12 +888,104 @@ public class Gr4spSim extends SimState {
 
     }
 
+    public void runFromPythonEMA() {
+        //Before running the external Command
+        MySecurityManager secManager = new MySecurityManager();
+        System.setSecurityManager(secManager);
+
+        NumberFormat rateFormat = NumberFormat.getInstance();
+        rateFormat.setMaximumFractionDigits(5);
+        rateFormat.setMinimumIntegerDigits(1);
+
+        SimState state = this;
+        try {
+//            Random rand = new Random();
+//            state = new Gr4spSim( rand.nextInt() );
+            state.start();
+            long oldClock = System.currentTimeMillis();
+
+            while(true){
+                if (!state.schedule.step(state)) break;
+
+                //Print info
+                if (state.schedule.getSteps() % 12 == 0L) {
+                    long clock = System.currentTimeMillis();
+                    SimState.printlnSynchronized("Job " + this.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + getCurrentSimDate() +
+                                " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
+                    LOGGER.info("Job " + this.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + getCurrentSimDate() +
+                            " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
+                    oldClock = clock;
+                }
+            }
+            state.finish();
+        } catch (SecurityException e) {
+            //Do something if the external code used System.exit()
+            //System.out.println("We avoided the Exit!");
+        }
+
+    }
+
+    public static void runPythonEMA() {
+        //Before running the external Command
+        MySecurityManager secManager = new MySecurityManager();
+        System.setSecurityManager(secManager);
+
+        NumberFormat rateFormat = NumberFormat.getInstance();
+        rateFormat.setMaximumFractionDigits(5);
+        rateFormat.setMinimumIntegerDigits(1);
+
+        long oldClock = System.currentTimeMillis();
+
+        SimState state = null;
+        try {
+            Random rand = new Random();
+            state = new Gr4spSim( rand.nextInt() );
+            state.start();
+            Gr4spSim data  = (Gr4spSim) state;
+            while(true){
+                if (!state.schedule.step(state)) break;
+
+                //Print info
+                if (state.schedule.getSteps() % 12 == 0L) {
+                    long clock = System.currentTimeMillis();
+                    SimState.printlnSynchronized("Job " + data.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + data.getCurrentSimDate() +
+                            " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
+                    LOGGER.info("Job " + data.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + data.getCurrentSimDate() +
+                            " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
+                    oldClock = clock;
+                }
+            }
+            state.finish();
+        } catch (SecurityException e) {
+            //Do something if the external code used System.exit()
+            //System.out.println("We avoided the Exit!");
+        }
+
+    }
 
     public static void main(String[] args) {
-        doLoop(Gr4spSim.class, args);
+
+        //Before running the external Command
+        MySecurityManager secManager = new MySecurityManager();
+        System.setSecurityManager(secManager);
+
+        try {
+
+//            Gr4spSim data = new Gr4spSim(0);
+//            data.runFromPythonEMA();
+//            data = new Gr4spSim(1);
+//            data.runFromPythonEMA();
+
+            doLoop(Gr4spSim.class, args);
+        } catch (SecurityException e) {
+            //Do something if the external code used System.exit()
+            //System.out.println("We avoided the Exit!");
+        }
 
 
-        exit(0);
+        //exit(0);
     }
 
 }
+
+
