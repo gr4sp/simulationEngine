@@ -66,6 +66,9 @@ public class Generator implements java.io.Serializable, Asset {
     public double linRateEF;
     public double expRateEF;
 
+    //Solar Efficiency Generator
+    public double solarEfficiency;
+
 
     private Double2D location;//coordinates where the generation is located
 
@@ -147,24 +150,7 @@ public class Generator implements java.io.Serializable, Asset {
         expRateEF = settings.getExpRateEF(this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear);
 
 
-        //Price if a generator sells always at full capacity
-        //double targetPrice =  priceMinMWh();
-        //double targetGen = maxCapacity * 8760;
-
-        //Max capacity (MW)* hours per year (H) * TargetPrice ($/MWH) => $
-        // double targetReveneueYear = targetGen * targetPrice;
-
-       /* System.out.println("Gen " + this.fuelSourceDescriptor);
-        System.out.println("Target Price $/MWh: "+ targetPrice);
-        System.out.println("Target Generation MWh: "+ targetGen);
-        System.out.println("Target Historic Revenue per year $: "+ targetReveneueYear);*/
-    }
-
-    // get solar generation using monthly or half hour solar exposure
-    static public double getSolarGeneration(float solarExposure, float capacitySolar) {
-
-        double generation = 0.0;
-
+        //Solar Efficiency
         //de-rating factor for manufacturing tolerance, dimensionless
         double fman = 1 - 0.03;
         //de-rating factor for dirt, dimensionless
@@ -182,7 +168,28 @@ public class Generator implements java.io.Serializable, Asset {
         // recommended voltage drop between inverter and main switch shouldn't be greater than 1%
         double ninv_sb = 1 - 0.01;
         //solar exposure in data base is in MJ/m2 but converted to KWh/m2 when loaded. Capacity is assumed to be in m^2
-        generation = capacitySolar * fman * fdirt * ftemp * solarExposure * npv_inv * ninv * ninv_sb;
+
+        solarEfficiency = fman * fdirt * ftemp  * npv_inv * ninv * ninv_sb;
+
+        //Price if a generator sells always at full capacity
+        //double targetPrice =  priceMinMWh();
+        //double targetGen = maxCapacity * 8760;
+
+        //Max capacity (MW)* hours per year (H) * TargetPrice ($/MWH) => $
+        // double targetReveneueYear = targetGen * targetPrice;
+
+       /* System.out.println("Gen " + this.fuelSourceDescriptor);
+        System.out.println("Target Price $/MWh: "+ targetPrice);
+        System.out.println("Target Generation MWh: "+ targetGen);
+        System.out.println("Target Historic Revenue per year $: "+ targetReveneueYear);*/
+    }
+
+    // get solar generation using monthly or half hour solar exposure
+    static public double getSolarGeneration(float solarExposure, float capacitySolar, double solarEfficiency) {
+
+        double generation = 0.0;
+
+        generation = capacitySolar * solarExposure * solarEfficiency;
 
         //in this case, the energy yield is given in energy output per area, or energy generated in KWh//m2 per month
         return generation;
@@ -217,7 +224,7 @@ public class Generator implements java.io.Serializable, Asset {
                     }
 
                     //half hour generation in MWh given sun
-                    double halfHourGeneration = getSolarGeneration(solarExposure, solar_installation_capacity) / 1000.0;
+                    double halfHourGeneration = getSolarGeneration(solarExposure, solar_installation_capacity,this.solarEfficiency) / 1000.0;
 
                     //Generation per half hour over all households that installed solarpv on that month in MWh
                     generation += (halfHourGeneration / 2.0) * numNewHouseholds;
@@ -253,7 +260,7 @@ public class Generator implements java.io.Serializable, Asset {
                     }
 
                     //daily generation in MWh given sun
-                    double dailyGeneration = getSolarGeneration(solarExposure, solar_installation_capacity) / 1000.0;
+                    double dailyGeneration = getSolarGeneration(solarExposure, solar_installation_capacity,this.solarEfficiency) / 1000.0;
 
                     //Generation per month over all households that installed solarpv on that month
                     generation += (dailyGeneration * (double) daysInMonth) * numNewHouseholds;
@@ -391,13 +398,14 @@ public class Generator implements java.io.Serializable, Asset {
             if (data.getHalfhour_solar_exposure().containsKey(currentTime)) {
                 //get Generation in KWh
                 solarExposure = data.getHalfhour_solar_exposure().get(currentTime);
-            } else {
-                System.out.println("\t\t\t" + currentTime + " For some reason this key is lost, use last available value ");
             }
+//            else {
+//                System.out.println("\t\t\t" + currentTime + " For some reason this key is lost, use last available value ");
+//            }
 
 
             //generation in KWh given sun
-            double halfHourGeneration = getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0);
+            double halfHourGeneration = getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0, this.solarEfficiency);
 
             //Solar capacity is the same as half hour generation in this case. MWh each half hour will be capacity in MW
             double availableCapacity = halfHourGeneration / (float) 1000.0;

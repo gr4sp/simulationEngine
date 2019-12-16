@@ -306,7 +306,8 @@ public class SaveData implements Steppable {
 
         /**
          * Add series to hashmap of series of aggregated
-         * -1 InSpot
+         *  0 PrimarySpot
+         * -1 SecondaySpot
          * -2 Offspot
          * -3 RooftopPV
          * -4 Coal
@@ -316,16 +317,29 @@ public class SaveData implements Steppable {
          * -8 Solar
          * -9 Battery
          */
-        XYSeries seriesSystemProductionIn = new org.jfree.data.xy.XYSeries(
-                "InSpot",
-                false);
-        systemProductionSeries.put(-1, seriesSystemProductionIn);
-        systemProductionAggChart.addSeries(seriesSystemProductionIn, null);
-        XYSeries seriesSystemProductionOff = new org.jfree.data.xy.XYSeries(
-                "OffSpot",
-                false);
-        systemProductionSeries.put(-2, seriesSystemProductionOff);
-        systemProductionAggChart.addSeries(seriesSystemProductionOff, null);
+        if (data.settings.existsMarket("primary")) {
+            XYSeries seriesSystemProductionIn = new org.jfree.data.xy.XYSeries(
+                    "PrimarySpot",
+                    false);
+            systemProductionSeries.put(0, seriesSystemProductionIn);
+            systemProductionAggChart.addSeries(seriesSystemProductionIn, null);
+        }
+
+        if (data.settings.existsMarket("secondary")) {
+            XYSeries seriesSystemProductionOff = new org.jfree.data.xy.XYSeries(
+                    "SecondarySpot",
+                    false);
+            systemProductionSeries.put(-1, seriesSystemProductionOff);
+            systemProductionAggChart.addSeries(seriesSystemProductionOff, null);
+        }
+        if (data.settings.existsOffMarket()) {
+
+            XYSeries seriesSystemProductionOff = new org.jfree.data.xy.XYSeries(
+                    "OffSpot",
+                    false);
+            systemProductionSeries.put(-2, seriesSystemProductionOff);
+            systemProductionAggChart.addSeries(seriesSystemProductionOff, null);
+        }
 
         XYSeries seriesSystemProductionRooftopPV = new org.jfree.data.xy.XYSeries(
                 "RooftopPV",
@@ -373,16 +387,30 @@ public class SaveData implements Steppable {
          * Price series
          * */
 
-        XYSeries seriesPriceAvgIn = new org.jfree.data.xy.XYSeries(
-                "InSpot",
-                false);
-        PriceGenAvgSeries.put(-1, seriesPriceAvgIn);
-        PriceGenAvgChart.addSeries(seriesPriceAvgIn, null);
-        XYSeries seriesPriceAvgOff = new org.jfree.data.xy.XYSeries(
-                "OffSpot",
-                false);
-        PriceGenAvgSeries.put(-2, seriesPriceAvgOff);
-        PriceGenAvgChart.addSeries(seriesPriceAvgOff, null);
+        if (data.settings.existsMarket("primary")) {
+
+            XYSeries seriesPriceAvgIn = new org.jfree.data.xy.XYSeries(
+                    "PrimarySpot",
+                    false);
+            PriceGenAvgSeries.put(0, seriesPriceAvgIn);
+            PriceGenAvgChart.addSeries(seriesPriceAvgIn, null);
+        }
+
+        if (data.settings.existsMarket("secondary")) {
+            XYSeries seriesPriceAvgIn = new org.jfree.data.xy.XYSeries(
+                    "SecondarySpot",
+                    false);
+            PriceGenAvgSeries.put(-1, seriesPriceAvgIn);
+            PriceGenAvgChart.addSeries(seriesPriceAvgIn, null);
+        }
+
+        if (data.settings.existsOffMarket()){
+            XYSeries seriesPriceAvgOff = new org.jfree.data.xy.XYSeries(
+                        "OffSpot",
+                        false);
+            PriceGenAvgSeries.put(-2, seriesPriceAvgOff);
+            PriceGenAvgChart.addSeries(seriesPriceAvgOff, null);
+        }
 
         XYSeries seriesPriceAvgRooftopPV = new org.jfree.data.xy.XYSeries(
                 "RooftopPV",
@@ -448,7 +476,7 @@ public class SaveData implements Steppable {
 
                 //Add series to the correct chart
                 //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
-                if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(), gens.elementAt(i).getMaxCapacity() ) == false){
+                if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false){
                     genCapacityFactorOffSpotChart.addSeries(seriesGenCapacityFactors, null);
                     systemProductionOffSpotChart.addSeries(seriesSystemProduction, null);
                 } else {
@@ -521,7 +549,8 @@ public class SaveData implements Steppable {
             //save data for Spot maket from its start date
             if (data.getStartSpotMarketDate().after(currentDate) == false) {
                 //Save Gen Factors Data
-                double MWhInSpot = 0.0;
+                double MWhPrimarySpot = 0.0;
+                double MWhSecondarySpot = 0.0;
                 double MWhOffSpot = 0.0;
                 double MWhRooftopPV = 0.0;
                 double MWhCoal = 0.0;
@@ -569,7 +598,8 @@ public class SaveData implements Steppable {
 
                             //Add series to the correct chart
                             //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
-                            if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(), gens.elementAt(i).getMaxCapacity() ) == false){
+                            if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false &&
+                                data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) == false){
                                 genCapacityFactorOffSpotChart.addSeries(seriesGenCapacityFactors, null);
                                 systemProductionOffSpotChart.addSeries(seriesSystemProduction, null);
                             } else {
@@ -584,11 +614,12 @@ public class SaveData implements Steppable {
                         genCapacityFactorSeries.get(integer).add(floatDate, gens.get(i).getHistoricCapacityFactor(), false);
                         systemProductionSeries.get(integer).add(floatDate, gens.get(i).getMonthlyGeneratedMWh(), false);
 
-                        //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
-                        if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(), gens.elementAt(i).getMaxCapacity() ) == false){
-                            MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
+                        if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ){
+                            MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                        } else if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ) {
+                            MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
                         } else {
-                            MWhInSpot += gens.get(i).getMonthlyGeneratedMWh();
+                            MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
                         }
 
                         if (gens.elementAt(i).getTechTypeDescriptor().equals("Solar - Rooftop")) {
@@ -639,7 +670,8 @@ public class SaveData implements Steppable {
 
                 /**
                  * Add series to hashmap of series of aggregated
-                 * -1 InSpot
+                 *  0 PrimarySpot
+                 * -1 SecondarySpot
                  * -2 Offspot
                  * -3 RooftopPV
                  * -4 Coal
@@ -649,8 +681,11 @@ public class SaveData implements Steppable {
                  * -8 Solar
                  * -9 Battery
                  */
-                systemProductionSeries.get(-1).add(floatDate, MWhInSpot, false);
-                systemProductionSeries.get(-2).add(floatDate, MWhOffSpot, false);
+                systemProductionSeries.get(0).add(floatDate, MWhPrimarySpot, false);
+                if (data.settings.existsMarket("secondary"))
+                    systemProductionSeries.get(-1).add(floatDate, MWhSecondarySpot, false);
+                if(data.settings.existsOffMarket())
+                    systemProductionSeries.get(-2).add(floatDate, MWhOffSpot, false);
                 systemProductionSeries.get(-3).add(floatDate, MWhRooftopPV, false);
                 systemProductionSeries.get(-4).add(floatDate, MWhCoal, false);
                 systemProductionSeries.get(-5).add(floatDate, MWhWater, false);
@@ -747,7 +782,7 @@ public class SaveData implements Steppable {
         if (data.getCurrentSimDate().after(data.getEndSimDate()) || data.getCurrentSimDate().equals(data.getEndSimDate())) {
             finalizeCharts(simState);
             saveData(simState);
-            savePlots();
+            savePlots(simState);
 
             //Stop Simulation
             data.finish();
@@ -814,26 +849,27 @@ public class SaveData implements Steppable {
 
     }
 
-    public void savePlots() {
+    public void savePlots(SimState simState) {
+        Gr4spSim data = (Gr4spSim) simState;
 
-        Calendar cal = Calendar.getInstance();
+
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
-        File fc = new File("../plots/HouseholdConsumption" + sdf.format(cal.getTime()) + ".png");
-        File ft = new File("../plots/HouseholdTariff" + sdf.format(cal.getTime()) + ".png");
-        File fw = new File("../plots/WholesalePrice" + sdf.format(cal.getTime()) + ".png");
-        File fg = new File("../plots/HouseholdGHG" + sdf.format(cal.getTime()) + ".png");
-        File fgenspot = new File("../plots/GenCapFactorsSpot" + sdf.format(cal.getTime()) + ".png");
-        File fgenoffspot = new File("../plots/GenCapFactorsOffSpot" + sdf.format(cal.getTime()) + ".png");
+        File fc = new File(data.settings.folderOutput+"\\plots\\HouseholdConsumption" + data.outputID + ".png");
+        File ft = new File(data.settings.folderOutput+"\\plots\\HouseholdTariff" + data.outputID + ".png");
+        File fw = new File(data.settings.folderOutput+"\\plots\\WholesalePrice" + data.outputID + ".png");
+        File fg = new File(data.settings.folderOutput+"\\plots\\HouseholdGHG" + data.outputID + ".png");
+        File fgenspot = new File(data.settings.folderOutput+"\\plots\\GenCapFactorsSpot" + data.outputID + ".png");
+        File fgenoffspot = new File(data.settings.folderOutput+"\\plots\\GenCapFactorsOffSpot" + data.outputID + ".png");
 
-        File fspis = new File("../plots/SystemProductionSpot" + sdf.format(cal.getTime()) + ".png");
-        File fspos = new File("../plots/SystemProductionOffSpot" + sdf.format(cal.getTime()) + ".png");
-        File fspagg = new File("../plots/SystemProductionAggregated" + sdf.format(cal.getTime()) + ".png");
-        File fna = new File("../plots/numActors" + sdf.format(cal.getTime()) + ".png");
-        File fpavg = new File("../plots/PriceGenAvg" + sdf.format(cal.getTime()) + ".png");
+        File fspis = new File(data.settings.folderOutput+"\\plots\\SystemProductionSpot" + data.outputID + ".png");
+        File fspos = new File(data.settings.folderOutput+"\\plots\\SystemProductionOffSpot" + data.outputID + ".png");
+        File fspagg = new File(data.settings.folderOutput+"\\plots\\SystemProductionAggregated" + data.outputID + ".png");
+        File fna = new File(data.settings.folderOutput+"\\plots\\numActors" + data.outputID + ".png");
+        File fpavg = new File(data.settings.folderOutput+"\\plots\\PriceGenAvg" + data.outputID + ".png");
 
 
 
-        File fd = new File("../plots/NumberHouseholds" + sdf.format(cal.getTime()) + ".png");
+        File fd = new File(data.settings.folderOutput+"\\plots\\NumberHouseholds" + data.outputID + ".png");
 
         int width = 1920;
         int height = 1080;
@@ -917,14 +953,12 @@ public class SaveData implements Steppable {
     }
 
     public void saveData(SimState simState) {
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
-        Calendar cal = Calendar.getInstance();
         Gr4spSim data = (Gr4spSim) simState;
 
         //final String dir = System.getProperty("user.dir");
         //System.out.println("current dir = " + dir);
 
-        String folderName = "../csv/" + data.yamlFileName;
+        String folderName = data.settings.folderOutput+"\\csv\\" + data.yamlFileName;
         File directory = new File(folderName);
         if (!directory.exists()) {
             directory.mkdir();
@@ -934,7 +968,7 @@ public class SaveData implements Steppable {
         try (
 
 
-                Writer writer = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimData" + sdf.format(cal.getTime()) + ".csv"));
+                Writer writer = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimData" + data.outputID + ".csv"));
 
                 CSVWriter csvWriter = new CSVWriter(writer,
                         CSVWriter.DEFAULT_SEPARATOR,
@@ -942,7 +976,7 @@ public class SaveData implements Steppable {
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                         CSVWriter.DEFAULT_LINE_END);
 
-                Writer writerMonthly = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySummary" + sdf.format(cal.getTime()) + ".csv"));
+                Writer writerMonthly = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySummary" + data.outputID + ".csv"));
 
                 CSVWriter csvWriterMonthly = new CSVWriter(writerMonthly,
                         CSVWriter.DEFAULT_SEPARATOR,
@@ -950,7 +984,7 @@ public class SaveData implements Steppable {
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                         CSVWriter.DEFAULT_LINE_END);
 
-                Writer writerYear = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataYearSummary" + sdf.format(cal.getTime()) + ".csv"));
+                Writer writerYear = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataYearSummary" + data.outputID + ".csv"));
 
                 CSVWriter csvWriterYear = new CSVWriter(writerYear,
                         CSVWriter.DEFAULT_SEPARATOR,
@@ -958,7 +992,7 @@ public class SaveData implements Steppable {
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                         CSVWriter.DEFAULT_LINE_END);
 
-                Writer writerGensCapFactorInSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyGensCapFactorInSpot" + sdf.format(cal.getTime()) + ".csv"));
+                Writer writerGensCapFactorInSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyGensCapFactorInSpot" + data.outputID + ".csv"));
 
                 CSVWriter csvWriterGensCapFactorInSpot = new CSVWriter(writerGensCapFactorInSpot,
                         CSVWriter.DEFAULT_SEPARATOR,
@@ -967,7 +1001,7 @@ public class SaveData implements Steppable {
                         CSVWriter.DEFAULT_LINE_END);
 
 
-                Writer writerGensCapFactorOffSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyGensCapFactorOFFspot" + sdf.format(cal.getTime()) + ".csv"));
+                Writer writerGensCapFactorOffSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyGensCapFactorOFFspot" + data.outputID + ".csv"));
 
                 CSVWriter csvWriterGensCapFactorOffSpot = new CSVWriter(writerGensCapFactorOffSpot,
                         CSVWriter.DEFAULT_SEPARATOR,
@@ -975,7 +1009,7 @@ public class SaveData implements Steppable {
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                         CSVWriter.DEFAULT_LINE_END);
 
-                Writer writerSystemProductionInSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySystemProductionInSpot" + sdf.format(cal.getTime()) + ".csv"));
+                Writer writerSystemProductionInSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySystemProductionInSpot" + data.outputID + ".csv"));
 
                 CSVWriter csvWriterSystemProductionInSpot = new CSVWriter(writerSystemProductionInSpot,
                         CSVWriter.DEFAULT_SEPARATOR,
@@ -984,7 +1018,7 @@ public class SaveData implements Steppable {
                         CSVWriter.DEFAULT_LINE_END);
 
 
-                Writer writerSystemProductionOffSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySystemProductionOFFspot" + sdf.format(cal.getTime()) + ".csv"));
+                Writer writerSystemProductionOffSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySystemProductionOFFspot" + data.outputID + ".csv"));
 
                 CSVWriter csvWriterSystemProductionOffSpot = new CSVWriter(writerSystemProductionOffSpot,
                         CSVWriter.DEFAULT_SEPARATOR,
@@ -999,11 +1033,11 @@ public class SaveData implements Steppable {
             String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (MWh)", "Tariff (c/KWh)", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
             csvWriter.writeNext(headerRecord);
 
-            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production In Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
+            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
 
             csvWriterYear.writeNext(headerRecordYear);
 
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production In Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
 
             csvWriterMonthly.writeNext(headerRecordMonthly);
 
@@ -1022,7 +1056,7 @@ public class SaveData implements Steppable {
                             + gens.elementAt(i).getName() + " - " + gens.elementAt(i).getMaxCapacity() + " - " + gens.elementAt(i).getDispatchTypeDescriptor() + " - " + gens.elementAt(i).getStart();
                     name = name.replace(",", "-");
                     //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
-                    if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(), gens.elementAt(i).getMaxCapacity() ) == false){
+                    if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false){
                         headerGenrecordOffSpot.add(name);
                     } else {
                         headerGenrecordInSpot.add(name);
@@ -1045,7 +1079,8 @@ public class SaveData implements Steppable {
             HashMap<String, ArrayList<Double>> datasetWholesaleSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetKWhSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetConsumersSummary = new HashMap<>();
-            HashMap<String, ArrayList<Double>> datasetSysProdInSpotSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdPrimarySpotSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdSecondarySpotSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdOffSpotSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdRooftopSummary = new HashMap<>();
 
@@ -1057,7 +1092,8 @@ public class SaveData implements Steppable {
                 XYSeries wseries = wholesaleSeries.get(0);
                 XYSeries gseries = ghgConsumptionActorSeries.get(i);
                 XYSeries dseries = numDomesticConsumersSeries.get(i);
-                XYSeries spisaggseries = systemProductionSeries.get(-1);
+                XYSeries spprimaggseries = systemProductionSeries.get(0);
+                XYSeries spsecondaggseries = systemProductionSeries.get(-1);
                 XYSeries sposaggseries = systemProductionSeries.get(-2);
                 XYSeries sproofaggseries = systemProductionSeries.get(-3);
                 XYSeries naseries = numActorsSeries;
@@ -1076,7 +1112,7 @@ public class SaveData implements Steppable {
                 for (int t = 0; t < cseries.getItems().size(); t++) {
                     //for (Object o : series.getItems()) {
 
-                    int shifttimeseries = cseries.getItemCount() - spisaggseries.getItemCount();
+                    int shifttimeseries = cseries.getItemCount() - spprimaggseries.getItemCount();
 
 
                     XYDataItem citem = (XYDataItem) cseries.getItems().get(t);
@@ -1084,14 +1120,18 @@ public class SaveData implements Steppable {
                     XYDataItem witem = (XYDataItem) wseries.getItems().get(t);
                     XYDataItem gitem = (XYDataItem) gseries.getItems().get(t);
                     XYDataItem ditem = (XYDataItem) dseries.getItems().get(t);
-                    XYDataItem spisaggitem = null;
+                    XYDataItem spprimaggitem = null;
+                    XYDataItem spsecondaggitem = null;
                     XYDataItem sposaggitem = null;
                     XYDataItem sproofaggitem = null;
 
                     XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
                     if (shifttimeseries <= t) {
-                        spisaggitem = (XYDataItem) spisaggseries.getItems().get(t - shifttimeseries);
-                        sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
+                        spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
+                        if(spsecondaggitem != null)
+                            spsecondaggitem = (XYDataItem) spsecondaggseries.getItems().get(t - shifttimeseries);
+                        if(sposaggseries != null)
+                            sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
                         sproofaggitem = (XYDataItem) sproofaggseries.getItems().get(t - shifttimeseries);
 
                     }
@@ -1101,14 +1141,18 @@ public class SaveData implements Steppable {
                     double wholesale = witem.getYValue();
                     double emissions = gitem.getYValue();
                     double consumers = ditem.getYValue();
-                    double MWhInSpotAgg = 0.0;
+                    double MWhPrimarySpotAgg = 0.0;
+                    double MWhSecondarySpotAgg = 0.0;
                     double MWhOffSpotAgg = 0.0;
                     double MWhRoofSpotAgg = 0.0;
                     double numActors = naitem.getYValue();
 
                     if (shifttimeseries <= t) {
-                        MWhInSpotAgg = spisaggitem.getYValue();
-                        MWhOffSpotAgg = sposaggitem.getYValue();
+                        MWhPrimarySpotAgg = spprimaggitem.getYValue();
+                        if(spsecondaggitem != null)
+                            MWhSecondarySpotAgg = spsecondaggitem.getYValue();
+                        if(sposaggitem != null)
+                            MWhOffSpotAgg = sposaggitem.getYValue();
                         MWhRoofSpotAgg = sproofaggitem.getYValue();
 
                     }
@@ -1118,7 +1162,7 @@ public class SaveData implements Steppable {
                     //First series starts from beginning simulation, the rest follows a consumtionUnit, which has a creationDate
                     if (i == 0) {
                         String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions / consumers),
-                                Double.toString(consumers), Double.toString(MWhInSpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg), Double.toString(numActors)};
+                                Double.toString(consumers), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg), Double.toString(numActors)};
                         csvWriterMonthly.writeNext(record);
 
                         //Store data about Gen cap factors
@@ -1145,7 +1189,7 @@ public class SaveData implements Steppable {
                             //If Generator hasn't started yet, print "-"
                             if (shift > t) {
                                 //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
-                                if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(), gens.elementAt(i).getMaxCapacity() ) == false){
+                                if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false){
                                     genrecordOffSpot.add("-");
                                     sysprodOffSpot.add("-");
                                 } else {
@@ -1158,7 +1202,7 @@ public class SaveData implements Steppable {
                                 XYDataItem spitem = (XYDataItem) sysprodseries.getItems().get(t - shift);
 
                                 //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
-                                if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(), gens.elementAt(i).getMaxCapacity() ) == false){
+                                if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false){
                                     genrecordOffSpot.add(Double.toString(genitem.getYValue()));
                                     sysprodOffSpot.add(Double.toString(spitem.getYValue()));
 
@@ -1226,11 +1270,17 @@ public class SaveData implements Steppable {
                         datasetConsumersSummary.get(year).add(consumers);
 
 
-                        if (!datasetSysProdInSpotSummary.containsKey(year)) {
+                        if (!datasetSysProdPrimarySpotSummary.containsKey(year)) {
                             ArrayList<Double> yearData = new ArrayList<>();
-                            datasetSysProdInSpotSummary.put(year, yearData);
+                            datasetSysProdPrimarySpotSummary.put(year, yearData);
                         }
-                        datasetSysProdInSpotSummary.get(year).add(MWhInSpotAgg);
+                        datasetSysProdPrimarySpotSummary.get(year).add(MWhPrimarySpotAgg);
+
+                        if (!datasetSysProdSecondarySpotSummary.containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetSysProdSecondarySpotSummary.put(year, yearData);
+                        }
+                        datasetSysProdSecondarySpotSummary.get(year).add(MWhSecondarySpotAgg);
 
                         if (!datasetSysProdOffSpotSummary.containsKey(year)) {
                             ArrayList<Double> yearData = new ArrayList<>();
@@ -1250,12 +1300,12 @@ public class SaveData implements Steppable {
                     c.add(Calendar.MONTH, 1);
                 }
             }
-            csvWriter.close();
-            csvWriterMonthly.close();
-            csvWriterGensCapFactorInSpot.close();
-            csvWriterGensCapFactorOffSpot.close();
-            csvWriterSystemProductionInSpot.close();
-            csvWriterSystemProductionOffSpot.close();
+//            csvWriter.close();
+//            csvWriterMonthly.close();
+//            csvWriterGensCapFactorInSpot.close();
+//            csvWriterGensCapFactorOffSpot.close();
+//            csvWriterSystemProductionInSpot.close();
+//            csvWriterSystemProductionOffSpot.close();
 
 
             //Save Year summary to csv file
@@ -1267,7 +1317,8 @@ public class SaveData implements Steppable {
                 ArrayList<Double> yearDataWholesale = datasetWholesaleSummary.get(year);
                 ArrayList<Double> yearDataKWh = datasetKWhSummary.get(year);
                 ArrayList<Double> yearDataConsumers = datasetConsumersSummary.get(year);
-                ArrayList<Double> spInSpotAggConsumers = datasetSysProdInSpotSummary.get(year);
+                ArrayList<Double> spPrimarySpotAggConsumers = datasetSysProdPrimarySpotSummary.get(year);
+                ArrayList<Double> spSecondarySpotAggConsumers = datasetSysProdSecondarySpotSummary.get(year);
                 ArrayList<Double> spOffSpotAggConsumers = datasetSysProdOffSpotSummary.get(year);
                 ArrayList<Double> spRooftopAggConsumers = datasetSysProdRooftopSummary.get(year);
 
@@ -1277,7 +1328,8 @@ public class SaveData implements Steppable {
                 Double avgWholesale = 0.0;
                 Double totalKWh = 0.0;
                 Double maxDwellings = 0.0;
-                Double spinspotagg = 0.0;
+                Double spprimspotagg = 0.0;
+                Double spsecondspotagg = 0.0;
                 Double spoffspotagg = 0.0;
                 Double sproofagg = 0.0;
 
@@ -1306,8 +1358,12 @@ public class SaveData implements Steppable {
                     if (con > maxDwellings) maxDwellings = con;
                 }
 
-                for (Double k : spInSpotAggConsumers) {
-                    spinspotagg += k;
+                for (Double k : spPrimarySpotAggConsumers) {
+                    spprimspotagg += k;
+                }
+
+                for (Double k : spSecondarySpotAggConsumers) {
+                    spsecondspotagg += k;
                 }
 
                 for (Double k : spOffSpotAggConsumers) {
@@ -1319,11 +1375,11 @@ public class SaveData implements Steppable {
                 }
 
                 String[] record = {year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(avgWholesale), Double.toString(totalGHG),
-                        Double.toString(maxDwellings), Double.toString(spinspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg)};
+                        Double.toString(maxDwellings), Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg)};
                 csvWriterYear.writeNext(record);
             }
 
-            csvWriterYear.close();
+            //csvWriterYear.close();
 
         } catch (IOException ex) {
             System.out.println(ex);

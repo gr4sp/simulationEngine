@@ -15,7 +15,7 @@
               <node kind="schema" qname="@" />
             </node>
             <node kind="database" qname="postgres">
-              <node kind="schema" qname="other_data" />
+              <node kind="schema" negative="1" />
             </node>
           </node>
         </introspection-scope>

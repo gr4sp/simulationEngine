@@ -67,13 +67,33 @@ public class SimPolicies implements java.io.Serializable, Steppable {
 //            data.convertIntoNonConventionalHouseholds(uptakePercentage);
 //        }
 
+        Calendar c = Calendar.getInstance();
+        c.setTime(data.getCurrentSimDate());
+        int currentMonth = c.get(Calendar.MONTH) + 1;
+        int currentYear = c.get(Calendar.YEAR);
+
+        //Improve capacity factors of Wind renewable generators as a proxy of Technology Improvement (YAML)
+        if(currentMonth==1 && currentYear > data.settings.getBaseYearConsumptionForecast()) {
+            for (Vector<Generator> gens : data.getGen_register().values()) {
+                for (Generator g : gens) {
+                    if (g.getfuelSourceDescriptor().equals("Wind")) {
+                        double factor = data.settings.getForecastTechnologicalImprovement();
+                        if (g.maxCapacityFactor + factor < 0.5) g.maxCapacityFactor += factor;
+                        if (g.maxCapacityFactorSummer + factor < 0.5) g.maxCapacityFactorSummer += factor;
+                    }else if (g.getfuelSourceDescriptor().equals("Solar")) {
+                        double factor = data.settings.getForecastTechnologicalImprovement();
+                        if (g.solarEfficiency + factor < 1.0) g.solarEfficiency += factor;
+
+                    }
+                }
+            }
+        }
         Date date = data.getCurrentSimDate();
         if (data.getSolar_number_installs().containsKey(date) == true) {
 
             float solar_capacity_agg = data.getSolar_aggregated_kw().get(date) / (float) 1000.0; //to MW
 
             //Create the end date 30 years after
-            Calendar c = Calendar.getInstance();
             c.setTime(date);
             c.add(Calendar.YEAR, 30);
             Date endDate = c.getTime();

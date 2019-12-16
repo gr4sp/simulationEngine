@@ -1,6 +1,5 @@
 package core.settings;
 
-import com.sun.media.protocol.DelegateDataSource;
 import core.Policies.EndConsumerTariff;
 
 import java.util.List;
@@ -37,7 +36,7 @@ class EmissionFactor {
 }
 
 class ArenaSettings {
-    public boolean allowed;
+    public String spotMarket;
     public double minCapMarketGen;
 
 }
@@ -81,17 +80,27 @@ class TariffSettings {
 
 }
 
+class ScenarioSetting{
+    public String consumption;
+    public String energyEfficiency;
+    public String onsiteGeneration;
+    public String solarUptake;
+}
+
 class ForecastSetting{
-    public String scenario;
+    public ScenarioSetting scenario;
     public int baseYear;
     public double annualCpi;
     public Boolean IncludePublicallyAnnouncedGen;
-
-
+    public String rooftopPV;
+    public int generatorRetirement;
+    public double technologicalImprovement;
+    public int generationRolloutPeriod;
 }
 
 public class Settings {
     //public int ConstantMaxInt;
+    public String folderOutput;
     public Map<String, ArenaSettings> arena;
     public SimulationDatesSettings simulationDates;
     public PopulationSettings population;
@@ -247,11 +256,11 @@ public class Settings {
     public double getMinCapMarketGen(String dispatchType) {
         return getArenaSettings(dispatchType).minCapMarketGen;
     }
-    public boolean getAllowedMarket(String dispatchType) {
-        return getArenaSettings(dispatchType).allowed;
+    public String getSpotMarket(String dispatchType) {
+        return getArenaSettings(dispatchType).spotMarket;
     }
 
-    public boolean isMarketPaticipant(String dispatchType, double capacity ){
+    public boolean isMarketPaticipant(String dispatchType, String spotMarketName, double capacity ){
         String fullDispatchName = "";
         if(dispatchType.equals("S"))
             fullDispatchName = "scheduled";
@@ -260,10 +269,31 @@ public class Settings {
         if(dispatchType.equals("NS"))
             fullDispatchName = "nonScheduled";
 
-        if(getAllowedMarket(fullDispatchName) && capacity >= getMinCapMarketGen(fullDispatchName) )
+        if(getSpotMarket(fullDispatchName).equals(spotMarketName) && capacity >= getMinCapMarketGen(fullDispatchName) )
             return true;
         else
             return false;
+    }
+
+    public boolean existsMarket(String spotMarketName){
+        for (ArenaSettings as : arena.values()) {
+            if(as.spotMarket.equals(spotMarketName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existsOffMarket(){
+        for (ArenaSettings as : arena.values()) {
+            if(as.spotMarket.equals("none")){
+                return true;
+            }else if(as.minCapMarketGen > 0){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -271,7 +301,13 @@ public class Settings {
      *  Forecast
      */
 
-    public String getScenarioForecast() { return  forecast.scenario; }
+    public String getForecastScenarioConsumption() { return forecast.scenario.consumption; }
+
+    public String getForecastScenarioEnergyEfficiency() { return forecast.scenario.energyEfficiency; }
+
+    public String getForecastScenarioOnsiteGeneration() { return forecast.scenario.onsiteGeneration; }
+
+    public String getForecastScenarioSolarUptake() { return forecast.scenario.solarUptake; }
 
     public int getBaseYearConsumptionForecast() { return forecast.baseYear;  }
 
@@ -279,5 +315,12 @@ public class Settings {
 
     public Boolean getIncludePublicallyAnnouncedGen() { return forecast.IncludePublicallyAnnouncedGen;  }
 
+    public String getRooftopPVForecast() { return forecast.rooftopPV;  }
+
+    public int getForecastGeneratorRetirement() { return forecast.generatorRetirement; }
+
+    public double getForecastTechnologicalImprovement() { return forecast.technologicalImprovement; }
+
+    public int getForecastGenerationRolloutPeriod() { return forecast.generationRolloutPeriod; }
 
 }

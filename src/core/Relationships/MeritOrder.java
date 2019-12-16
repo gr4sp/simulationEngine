@@ -1,23 +1,32 @@
 package core.Relationships;
 
+import core.Gr4spSim;
 import core.Technical.Generator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 public class MeritOrder {
     private double marketPrice;
     private double emissionsIntensity;
     private double demand;
+    private double unmetDemand;
+    private String name;
 
     private ArrayList<Bid> bidders;
     private ArrayList<Bid> successfulBids;
 
-    public MeritOrder() {
+    public MeritOrder(String name) {
         this.marketPrice = 0;
+        this.unmetDemand = 0;
+        this.demand = 0;
         this.bidders = new ArrayList<Bid>();
         this.successfulBids= new ArrayList<Bid>();
+        this.name = name;
     }
+
+    public String getName() { return name; }
 
     public double getDemand() {
         return demand;
@@ -41,6 +50,10 @@ public class MeritOrder {
 
     public double getMarketPrice() {
         return marketPrice;
+    }
+
+    public double getUnmetDemand() {
+        return unmetDemand;
     }
 
     public void clearBidders(){
@@ -91,9 +104,11 @@ public class MeritOrder {
     }
 
 
-    public void computeMarketPrice(double demand){
+    public void computeMarketPrice(double demand, Gr4spSim state, Date currentTime) {
+        Gr4spSim data = (Gr4spSim) state;
 
         this.demand = demand;
+        this.unmetDemand = 0;
 
         //Reset MarketPrice
         marketPrice=0;
@@ -138,7 +153,8 @@ public class MeritOrder {
 
         if(Math.ceil(offered) < Math.floor(demand) ) {
             marketPrice *= 1.2;
-            System.out.println("Unmet Demand (imported) " + (demand - offered) );
+            unmetDemand = demand - offered;
+            data.LOGGER.warning(currentTime + " - " + this.name+" - Unmet Demand (imported) " + unmetDemand );
         }
 
         /**

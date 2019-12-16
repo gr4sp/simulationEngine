@@ -2,6 +2,82 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b436bec-4e4c-4add-8cc8-015eabbeedef" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/.idea/emaWorkbench.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/.idea/other.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/analyzeExperiments.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/connector.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../emaWorkbench/runExperiments.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/Gr4spLogger.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/settings/JTVIC.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/settings/LCFVIC.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/settings/RTVIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-26-00_43_16.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-26-00_59_20.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-26-01_18_50.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-26-01_28_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-26-01_31_28.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-26-01_33_29.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-26-01_38_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-26-00_43_16.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-26-00_59_20.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-26-01_18_50.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-26-01_28_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-26-01_31_28.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-26-01_33_29.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-26-01_38_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-26-00_43_16.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-26-00_59_20.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-26-01_18_50.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-26-01_28_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-26-01_31_28.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-26-01_33_29.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-26-01_38_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-26-00_43_16.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-26-00_59_20.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-26-01_18_50.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-26-01_28_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-26-01_31_28.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-26-01_33_29.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySummary2019-11-26-01_38_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-26-00_43_16.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-26-00_59_20.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-26-01_18_50.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-26-01_28_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-26-01_31_28.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-26-01_33_29.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionInSpot2019-11-26-01_38_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-26-00_43_16.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-26-00_59_20.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-26-01_18_50.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-26-01_28_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-26-01_31_28.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-26-01_33_29.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-26-01_38_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-00_43_16.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-00_59_20.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-01_18_50.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-01_28_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-01_31_28.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-01_33_29.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-01_38_56.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/Central_HouseholdConsumption2019-11-14-21_41_25.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/Central_HouseholdGHG2019-11-14-21_41_25.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/Central_HouseholdTariff2019-11-14-21_41_25.png" beforeDir="false" />
@@ -179,6 +255,12 @@
       <change beforePath="$PROJECT_DIR$/../plots/StepChange_HouseholdTariff2019-11-14-21_58_42.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/StepChange_NumberHouseholds2019-11-14-21_58_42.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/StepChange_WholesalePrice2019-11-14-21_58_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionAggregated2019-11-24-21_48_41.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionAggregated2019-11-24-22_12_09.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionAggregated2019-11-25-00_52_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionAggregated2019-11-25-19_53_42.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionAggregated2019-11-26-01_33_29.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../plots/SystemProductionAggregated2019-11-26-01_38_58.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-24-21_48_41.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-24-22_12_09.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/SystemProductionOffSpot2019-11-25-00_52_11.png" beforeDir="false" />
@@ -223,38 +305,48 @@
       <change beforePath="$PROJECT_DIR$/../plots/numActors2019-11-25-19_53_42.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/numActors2019-11-26-01_33_29.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/numActors2019-11-26-01_38_58.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSim.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Gr4spSimUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSimUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/LoadData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/LoadData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Policies/SimPolicies.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Policies/SimPolicies.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Relationships/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/Arena.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Relationships/MeritOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/MeritOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/SaveData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/SaveData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Social/Actor.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/Actor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Social/EndUserUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/EndUserUnit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Technical/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Generator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Technical/Spm.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Spm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/BAUVIC.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSim.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSim.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/SimPolicies.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/SimPolicies.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/MeritOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/MeritOrder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/Actor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/Actor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserUnit.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Spm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Spm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ArenaSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ArenaSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/BAUVIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/EmissionFactor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/EmissionFactor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ForecastSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ForecastSetting.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/GeneratorSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/GeneratorSettings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/PolicySettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/PolicySettings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/PopulationSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/PopulationSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/Settings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/Settings.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/TariffSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/TariffSettings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/SimulationDatesSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/SimulationDatesSettings.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -348,14 +440,14 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -377,7 +469,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Gr4spSimUI">
+  <component name="RunManager" selected="Application.Gr4spSim">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
@@ -385,9 +477,10 @@
       </method>
     </configuration>
     <configuration name="Gr4spSim" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="$APPLICATION_HOME_DIR$/jbr" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="core.Gr4spSim" />
       <module name="gr4sp" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="core.Policies.*" />
@@ -399,9 +492,10 @@
       </method>
     </configuration>
     <configuration name="Gr4spSimUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="$APPLICATION_HOME_DIR$/jbr" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="core.Gr4spSimUI" />
       <module name="gr4sp" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="core.Policies.*" />
@@ -443,6 +537,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Gr4spSim" />
+      <item itemvalue="Application.Gr4spSimUI" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Gr4spSimUI" />
@@ -463,17 +561,12 @@
           <expand>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@bc4489c8" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@2affffec" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@bc4489c8" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@17068767" type="9fbbdea:ServiceModel$ServiceNode" />
-            </path>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@bc4489c8" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@7d32c73a" type="9fbbdea:ServiceModel$ServiceNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@2affffec" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@1a6ed150" type="9fbbdea:ServiceModel$ServiceNode" />
             </path>
           </expand>
           <select />
@@ -482,7 +575,10 @@
     </option>
   </component>
   <component name="StructuralSearchPlugin">
-    <searchConfiguration name="user defined" created="1573641779636" text="&quot;For some reason we loose this key&quot;" recursive="true" caseInsensitive="true" type="JAVA" pattern_context="default" scope_type="NAMED" scope_descriptor="All Places" history="1">
+    <searchConfiguration name="user defined" created="1575807595016" text="&quot;For some reason this key is lost, use last available value&quot;" recursive="true" caseInsensitive="true" type="JAVA" pattern_context="default" scope_type="PROJECT" scope_descriptor="" history="1">
+      <constraint name="__context__" within="" contains="" />
+    </searchConfiguration>
+    <searchConfiguration name="user defined" created="1575807455869" text="&quot;For some reason we loose this key&quot;" recursive="true" caseInsensitive="true" type="JAVA" pattern_context="default" scope_type="NAMED" scope_descriptor="All Places" history="1">
       <constraint name="__context__" within="" contains="" />
     </searchConfiguration>
   </component>
@@ -563,7 +659,13 @@
       <workItem from="1574752548323" duration="8168000" />
       <workItem from="1574893566093" duration="20433000" />
       <workItem from="1575019902348" duration="448000" />
-      <workItem from="1575020490287" duration="20890000" />
+      <workItem from="1575020490287" duration="82135000" />
+      <workItem from="1575798816726" duration="1142000" />
+      <workItem from="1575799979424" duration="273000" />
+      <workItem from="1575800367712" duration="12260000" />
+      <workItem from="1575928088857" duration="2572000" />
+      <workItem from="1576156512269" duration="2738000" />
+      <workItem from="1576185274555" duration="25566000" />
     </task>
     <servers />
   </component>
@@ -593,8 +695,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/LoadData.java</url>
-          <line>1356</line>
-          <option name="timeStamp" value="105" />
+          <line>1500</line>
+          <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/engine/SimState.class</url>
+          <line>457</line>
+          <option name="timeStamp" value="140" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -606,6 +713,7 @@
         <watch expression="((Generator)((Bid)((ArrayList)((MeritOrder)((Arena)this).spot).bidders).get(0)).asset).techTypeDescriptor" custom="core.Relationships.Arena,core.Relationships.Bid,core.Technical.Generator,core.Relationships.MeritOrder,java.util.ArrayList" />
         <watch expression="spm.spms_contained.get(0).spms_contained.get(0).spms_contained.get(0)" />
         <watch expression="this" />
+        <watch expression="handlers.length" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
@@ -613,92 +721,5 @@
     <SUITE FILE_PATH="coverage/src$Gr4spSimUI.ic" NAME="Gr4spSimUI Coverage Results" MODIFIED="1573473980352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>core.Policies.*</FILTER>
     </SUITE>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <last-edited>courserajava</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>11</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>gr4sp</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>9</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>
