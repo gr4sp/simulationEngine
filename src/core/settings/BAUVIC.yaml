@@ -3,8 +3,8 @@ folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
 simulationDates:
 
   # Simulation Date Range
-  startDate:  2017-01-01
-  endDate: 2026-01-01
+  startDate:  1998-01-01
+  endDate: 2036-01-01
 
   # Spot Market Start Date
   startDateSpotMarket: 1999-01-01
@@ -92,7 +92,10 @@ generators:
   # Fuel Oil, Gaseous fossil fuels - other, Green and air dried wood, Kerosene, Landfill Gas, Landfill Methane / Landfill Gas,
   # Default parametres are used for generators with minimum participation (less than 2 generators of this type).
   # E.g. Municipal Solid Waste, Bagasse, other. Default will be similar to other Biomass numbers e.g. Dry Wood
-  #
+
+  #TODO: Solar. According to LCOE report, varies from 12% to 26%. But they truncated solar at 40 and wind at 50
+  #TODO: battery storage LCOE? only discharge
+
   Default:
     #LCOE Price Parameters
     priceMinMWh: 0
@@ -261,10 +264,6 @@ generators:
         linRateEF: 0
         expRateEF: 0
 
-
-
-
-
 tariffs:
 
   transmissionCosts:
@@ -308,6 +307,3 @@ tariffs:
 #  double ninv_sb: 1 - 0.01
 
 #some settings to change the extra charge for: network (transmission and distribution charges), jurisdictional charges (environemntal costs, including FiTs) and retail service costs.
-
-    #TODO: Solar. According to LCOE report, varies from 12% to 26%. But they truncated solar at 40 and wind at 50
-    #TODO: battery storage LCOE? only discharge
