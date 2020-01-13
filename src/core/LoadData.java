@@ -1463,7 +1463,7 @@ public class LoadData {
                         }
                         cStartDate.add(Calendar.YEAR, year);
 
-                        int idGen = rs.getInt("asset_id") +10000+year;
+                        int idGen = (rs.getInt("asset_id") *1000) +year;
 
                         Generator gen = new Generator(
                                 idGen,
