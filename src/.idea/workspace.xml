@@ -312,14 +312,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSim.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/LoadData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/LoadData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/Policies/SimPolicies.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Policies/SimPolicies.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Relationships/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/Arena.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/SaveData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/SaveData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Social/EndUserUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/EndUserUnit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Technical/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Generator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/BAUVIC.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Technical/Spm.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Spm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
@@ -328,9 +325,12 @@
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/MySecurityManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/MySecurityManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/SimPolicies.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/SimPolicies.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserUnit.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Spm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Spm.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/BAUVIC.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ForecastSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ForecastSetting.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/GeneratorSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/GeneratorSettings.class" afterDir="false" />
@@ -463,7 +463,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Gr4spSimUI">
+  <component name="RunManager" selected="Application.Gr4spSim">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
@@ -672,7 +672,7 @@
       <workItem from="1578904132869" duration="25421000" />
       <workItem from="1579068864829" duration="4802000" />
       <workItem from="1579148845136" duration="6848000" />
-      <workItem from="1579239142037" duration="24877000" />
+      <workItem from="1579239142037" duration="39709000" />
     </task>
     <servers />
   </component>
@@ -697,7 +697,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/Policies/SimPolicies.java</url>
-          <line>65</line>
+          <line>73</line>
           <option name="timeStamp" value="99" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -719,7 +719,7 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="((java.util.ArrayList)((MeritOrder)((Arena)this).spot).bidders).get(6)" custom="core.Relationships.Arena,core.Relationships.MeritOrder,java.util.ArrayList" />
+        <watch expression="g.priceMWhLCOE()" language="JAVA" custom="core.Relationships.Arena,core.Relationships.MeritOrder,java.util.ArrayList" />
       </configuration>
     </watches-manager>
   </component>

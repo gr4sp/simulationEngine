@@ -51,7 +51,7 @@ public class SaveData implements Steppable {
 
     HashMap<Integer, XYSeries> genCapacityFactorSeries;  // the data series that will be added to
     HashMap<Integer, XYSeries> systemProductionSeries;  // the data series that will be added to
-    HashMap<Integer, XYSeries> PriceGenAvgSeries;  // the data series that will be added to
+    public HashMap<Integer, XYSeries> PriceGenAvgSeries;  // the data series that will be added to
     HashMap<Integer, XYSeries> PriceGenMaxSeries;  // the data series that will be added to
     HashMap<Integer, XYSeries> PriceGenMinSeries;  // the data series that will be added to
 
@@ -387,6 +387,12 @@ public class SaveData implements Steppable {
          * Price series
          * */
 
+        XYSeries seriesPriceAvgTariff = new org.jfree.data.xy.XYSeries(
+                "TariffSpot",
+                false);
+        PriceGenAvgSeries.put(1, seriesPriceAvgTariff);
+        PriceGenAvgChart.addSeries(seriesPriceAvgTariff, null);
+
         if (data.settings.existsMarket("primary")) {
 
             XYSeries seriesPriceAvgIn = new org.jfree.data.xy.XYSeries(
@@ -670,6 +676,7 @@ public class SaveData implements Steppable {
 
                 /**
                  * Add series to hashmap of series of aggregated
+                 *  1 CombinedTariff (only in PriceGenAvgSeries)
                  *  0 PrimarySpot
                  * -1 SecondarySpot
                  * -2 Offspot
@@ -738,12 +745,21 @@ public class SaveData implements Steppable {
 
             for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
                 Arena a = entry.getValue();
-                if (a.getType().equalsIgnoreCase("Retail")) {
+                if (a.getType().equalsIgnoreCase("Spot")) {
                     //If Spot Market hasn't started yet, get historic prices
                     if (data.getStartSpotMarketDate().after(currentDate)) {
                         wholesaleSeries.get(0).add(floatDate, 0, false);
                     } else {
-                        wholesaleSeries.get(0).add(floatDate, (float) a.getTariff(simState), false);
+                        wholesaleSeries.get(0).add(floatDate, (float) a.getAvgMonthlyPricePrimarySpot(), false);
+
+                        PriceGenAvgSeries.get(1).add(floatDate, (float) a.getTariff(data), false);
+
+                        PriceGenAvgSeries.get(0).add(floatDate, a.getAvgMonthlyPricePrimarySpot(), false);
+                        if (data.settings.existsMarket("secondary"))
+                            PriceGenAvgSeries.get(-1).add(floatDate, a.getAvgMonthlyPriceSecondarySpot(), false);
+                        if(data.settings.existsOffMarket())
+                            PriceGenAvgSeries.get(-2).add(floatDate, a.getAvgMonthlyPriceOffSpot(), false);
+
                     }
                 }
             }
