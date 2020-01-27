@@ -15,11 +15,13 @@ public class SimPolicies implements java.io.Serializable, Steppable {
 
     private EndConsumerTariff endConsumerTariff;
     private AccelerateSolarPV accelerateSolarPV;
+    private int availableIDGen;
     Random random;
 
     public SimPolicies() {
         this.endConsumerTariff = EndConsumerTariff.MAX;
         this.accelerateSolarPV = new AccelerateSolarPV(0.0);
+        availableIDGen = 1;
         random = new Random();
     }
 
@@ -49,6 +51,12 @@ public class SimPolicies implements java.io.Serializable, Steppable {
             System.err.println("Cannot parse Start Date: " + e.toString());
         }
         return date;
+    }
+
+    private int findAvailableIDGen( SimState simState ){
+        Gr4spSim data = (Gr4spSim) simState;
+        while ( data.getGen_register().containsKey(availableIDGen) ) availableIDGen++;
+        return availableIDGen;
     }
 
     @Override
@@ -98,10 +106,8 @@ public class SimPolicies implements java.io.Serializable, Steppable {
             c.add(Calendar.YEAR, 30);
             Date endDate = c.getTime();
 
-            // If a new Generator is added, make its id to be numGenerators+1
-            Integer maxkey = data.getNumGenerators(); //Collections.max(data.getGen_register().entrySet(), Map.Entry.comparingByKey()).getKey();
-            // Defalut id for solar rooftop is numGenerators + 1.
-            int idGen = maxkey+1;
+            // If a new Generator is added, make sure its id hasn't been used
+            int idGen = findAvailableIDGen(data);
 
             //created a Vector to access the subdistribution SPMs
             Vector<Spm> subdistribution_spms = data.getSpm_register().get(6);
