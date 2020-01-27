@@ -228,6 +228,10 @@ public class Arena implements Steppable {
             //only consider Scheduled (S)
             g.updateHistoricCapacityFactor(state);
             double availableCapacity = g.computeAvailableCapacity(state, currentTime);
+            if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
+                availableCapacity = g.getSolarSurplusCapacity();
+            }
+
             double dollarMWh = g.priceMWhLCOE();
 
             if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(),"primary", g.getMaxCapacity() ) ) {
@@ -278,9 +282,9 @@ public class Arena implements Steppable {
             int currentMonth = c.get(Calendar.MONTH) + 1;
             int currentYear = c.get(Calendar.YEAR);
 
-//            if (currentMonth == 1 && currentYear > data.settings.getBaseYearConsumptionForecast()) {
-//                applyInflation(state);
-//            }
+            if (currentMonth == 1 && currentYear > data.settings.getBaseYearConsumptionForecast()) {
+                applyInflation(state);
+            }
 
             /**
              * Get all the half hour info of the month if available
@@ -333,6 +337,7 @@ public class Arena implements Steppable {
 
                 // Substract from Consumption the amount supplied by generators smaller than 30MW
                 double availableCapacityOffMarket = 0;
+                double consumptionSuppliedBySolar = 0;
                 //(This for is to include the restrictions on which generators participate in the bidding process)
                 for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
                     Vector<Generator> gens = entry.getValue();
@@ -341,15 +346,25 @@ public class Arena implements Steppable {
                         if (g.getStart().before(today) || g.getStart().equals(today)) {
                             //Has not finished operations?
                             if (g.getEnd().after(today)) {
-                                //Check nominal capacity is smaller than 30 MW in order to know if participates in spot Market
-                                //if (g.getMaxCapacity() < 30) {
-                                //only consider Semi-Scheduled (SS) and (NS)
-                                //if( g.getDispatchTypeDescriptor().equals("S") == false || g.getMaxCapacity() < 30) {
+                                double capacity = g.computeAvailableCapacity(state, currentTime);
+
+                                //Add consumption supplied already by solar so it can be removed from the demand
+                                if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
+                                    consumptionSuppliedBySolar = capacity - g.getSolarSurplusCapacity();
+                                }
+
                                 if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(), "primary", g.getMaxCapacity() ) == false &&
                                         data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(), "secondary", g.getMaxCapacity() ) == false ){
-                                    double capacity = g.computeAvailableCapacity(state, currentTime);
+
                                     g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + capacity );
-                                    availableCapacityOffMarket += capacity;
+
+                                    //If going through Off spot (OTC), then account only for surplus
+                                    if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
+                                        availableCapacityOffMarket += g.getSolarSurplusCapacity();
+                                    }
+                                    else {
+                                        availableCapacityOffMarket += capacity;
+                                    }
 
                                     //Historic Capacity Factor Off Spot non scheduled
                                     g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + capacity );
@@ -364,7 +379,7 @@ public class Arena implements Steppable {
                 }
 
                 //remove consumption met by non scheduled generation (see assumptions in Word Document)
-                double totalDemandWholesale = totalDemand - availableCapacityOffMarket;
+                double totalDemandWholesale = totalDemand - availableCapacityOffMarket - consumptionSuppliedBySolar;
 
                 //If non scheduled covered more than the demand, set the demand of the wholesale to 0
                 if(totalDemandWholesale < 0.0 ) totalDemandWholesale = 0.0;
