@@ -1310,6 +1310,7 @@ public class SaveData implements Steppable {
 
             //Save Year summary to csv file
             Object[] years = datasetGHGsummary.keySet().toArray();
+            Arrays.sort(years, Collections.reverseOrder());
             for (int i = years.length - 1; i >= 0; i--) {
                 String year = (String) years[i];
                 ArrayList<Double> yearDataGHG = datasetGHGsummary.get(year);

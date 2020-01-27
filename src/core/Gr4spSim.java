@@ -8,6 +8,7 @@ import core.Technical.*;
 import core.settings.Settings;
 import sim.engine.*;
 import sim.field.continuous.Continuous2D;
+import sim.field.network.Network;
 import sim.util.Double2D;
 
 import java.io.FileReader;
@@ -20,6 +21,9 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Random;
+
+import sim.portrayal.network.stats.*;
+import sim.portrayal.network.*;
 
 import core.Gr4spLogger;
 
@@ -43,6 +47,10 @@ public class Gr4spSim extends SimState {
 
 
     public Continuous2D layout;
+//    SocialNetworkInspector networkInspector = new SocialNetworkInspector();
+//    public Network actorsNetwork = new Network();
+
+
     HashMap<Integer, Vector<Spm>> spm_register;
     HashMap<Integer, Vector<Generator>> gen_register; // If a new Generator is added, make its id to be numGenerators+1
     HashMap<Integer, Vector<NetworkAssets>> network_register;
@@ -200,11 +208,12 @@ public class Gr4spSim extends SimState {
 
     }
 
+
     private void simulParametres() {
 
         try {
             //Setup logging level
-            LOGGER.setLevel(Level.WARNING);
+            LOGGER.setLevel(Level.OFF); //WARNING
 
             yamlFileName = "BAUVIC";
             String folderYaml = "C:\\Users\\angel\\Documents\\GitHub\\gr4sp\\src\\core\\settings";
@@ -600,7 +609,7 @@ public class Gr4spSim extends SimState {
 
             householdsLeft -= householdsCreated;
 
-            //Schedule the actor in order to make decissions at every step
+            //Schedule the actor in order to make decisions at every step
             this.schedule.scheduleRepeating(0.0, 1, actor);
 
             //Id of conventional SPM
@@ -867,10 +876,27 @@ public class Gr4spSim extends SimState {
         LoadData.selectMaximumDemandForecast(this);
         LoadData.selectMinimumDemandForecast(this);
 
+        //loadNetwork();
         //selectActorActorRelationships("actoractor93");
 
         //LoadData.selectActorAssetRelationships(this, "actorasset");//from https://www.secv.vic.gov.au/history/
     }
+
+//    private void loadNetwork(){
+//
+//        int numActiveActors = 0;
+//        for (Integer integer : actor_register.keySet()) {
+//            Actor actor = actor_register.get(integer);
+//            // if start of actor is after current date (it started) and has not ended (change date is after current date)
+//            if (simCalendar.getTime().after(actor.getStart()) && actor.getChangeDate().after(simCalendar.getTime())) {
+//                this.actorsNetwork.addNode(actor);
+//                numActiveActors++;
+//            }
+//        }
+//
+//        System.out.println(numActiveActors);
+//    }
+
 
     public void start() {
         super.start();

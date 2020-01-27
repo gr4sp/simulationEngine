@@ -44,7 +44,6 @@ class ArenaSettings {
 class GeneratorSettings {
     public double priceMinMWh;
     public double priceMaxMWh;
-    public double priceRateParameterMWh;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -96,6 +95,8 @@ class ForecastSetting{
     public int generatorRetirement;
     public double technologicalImprovement;
     public int generationRolloutPeriod;
+    public double solarInstallCapacity;
+
 }
 
 public class Settings {
@@ -159,9 +160,6 @@ public class Settings {
         return getGenSettings(fuelType, techType).priceMaxMWh;
     }
 
-    public double getPriceRateParameterMWh(String fuelType, String techType) {
-        return getGenSettings(fuelType, techType).priceRateParameterMWh;
-    }
 
     public double getMinCapacityFactor(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).minCapacityFactor;
@@ -322,5 +320,8 @@ public class Settings {
     public double getForecastTechnologicalImprovement() { return forecast.technologicalImprovement; }
 
     public int getForecastGenerationRolloutPeriod() { return forecast.generationRolloutPeriod; }
+
+
+    public double getForecastSolarInstallCapacity() { return forecast.solarInstallCapacity; }
 
 }

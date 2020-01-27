@@ -113,10 +113,13 @@ public class SimPolicies implements java.io.Serializable, Steppable {
                 //Divide agg capacity by num of SPMs
                 double solar_cap_per_spm = (double) solar_capacity_agg /  (double)  num_subdistribution_spms;
 
+                //Divide num_installations by num of SPMs
+                int num_installs = data.getSolar_number_installs().get(date) / num_subdistribution_spms;
+
                 Generator gen = new Generator(idGen, "VIC1", "Rooftop Solar PV",
                         "Solar Rooftop", "Household", "Solar - Rooftop",
                         "Solar", solar_cap_per_spm , "NS", date, endDate, endDate,
-                        "", 1, 0.0, "Solar", "In Service",data.settings);
+                        "", num_installs, 0.0, "Solar", "In Service",data.settings);
 
                 //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
                 if (!data.getGen_register().containsKey(idGen))

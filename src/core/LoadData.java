@@ -68,7 +68,7 @@ public class LoadData {
                 "isp_annual_consumption.category as consumptionForecastCategory, isp_annual_consumption.subcategory as consumptionForecastSubCategory, " +
                 "isp_annual_consumption.scenario as consumptionForecastScenario, isp_annual_consumption.annual_consumption as annualConsumptionForecast " +
                 "FROM  isp_annual_consumption " +
-                "WHERE (category = 'Operational' OR category = 'PriceImpact' OR category ='EnergyEfficiency' OR category = 'SmallNonScheduledGeneration') " +
+                "WHERE (category = 'Operational' OR category = 'PriceImpact' OR category ='EnergyEfficiency' OR category = 'SmallNonScheduledGeneration' OR category = 'RooftopPV') " +
                 "AND region = 'VIC' " +
                 "AND (scenario = 'Actual' OR scenario ='"+ data.settings.getForecastScenarioConsumption()+"') ";
 
@@ -173,7 +173,7 @@ public class LoadData {
                         gwh );
 
 
-                //Subtract Energy Efficiency from Consumption
+                //Subtract SmallNonScheduledGeneration from Consumption
                 float existingGWh = data.getAnnual_forecast_consumption_register().get(year);
                 data.getAnnual_forecast_consumption_register().put(year, existingGWh - gwh);
 
@@ -242,11 +242,6 @@ public class LoadData {
                     data.getAnnual_forecast_rooftopPv_register().put(year, rooftopPvGwh + existingGWh);
 
                 }
-
-
-                //Sum the existing category forecast with the new value (Operational,PriceImpact, etc.)
-                float existingGWh = data.getAnnual_forecast_consumption_register().get(year);
-                data.getAnnual_forecast_consumption_register().put(year, rooftopPvGwh + existingGWh);
 
             }
         } catch (SQLException e) {
@@ -649,10 +644,11 @@ public class LoadData {
         Calendar c = Calendar.getInstance();
         c.setTime(baseDate);
 
-
+        //This is applied to the tariffs. If price rises in year baseYear+1 2% and annualCpi=0.02 and inflation=0.01, then it will appear as 0.1 wrt the price as in baseYear.
+        //AnnualCPI corrects the value given as inflation below.
         while (baseYear < 2050) {
             float baseConsumption = data.getCpi_conversion().get(baseDate);
-            float forecastedConsumption = baseConsumption + (float) data.settings.getAnnualCpiForecast();
+            float forecastedConsumption = baseConsumption - (float) data.settings.getAnnualCpiForecast();
 
             //Add 1 year to the base reference date
             c.add(Calendar.YEAR, 1);
@@ -703,9 +699,9 @@ public class LoadData {
                 c.set(Calendar.MONTH, month);
                 baseDate = c.getTime();
 
-                Integer number_installations = 1;
                 Integer aggregated_capacity_kw = (int)inceasedKW / 12;
-                Float system_capacity = inceasedKW / 12;
+                Float system_capacity = (float) data.settings.getForecastSolarInstallCapacity();
+                Integer number_installations = (int) (aggregated_capacity_kw / system_capacity);
 
 
                 //Set the 1 year forecast date

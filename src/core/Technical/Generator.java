@@ -40,10 +40,13 @@ public class Generator implements java.io.Serializable, Asset {
     //private double fixedCosts; //fixed costs operation and maintenance in AUD/capacity unit per year
     //private double peakContribFactor; //peak contribution factor in percentage
 
+    //Surplus capacity after supplying households with solar. The number of
+    //households equals the no_units
+    public double solarSurplusCapacity;
+
     //LCOE Price Parameters
     public double priceMinMWh;
     public double priceMaxMWh;
-    public double priceRateParameterMWh;
 
     //Price Evolution
     private double historicCapacityFactor;
@@ -139,7 +142,6 @@ public class Generator implements java.io.Serializable, Asset {
         //Load Settings specified through YAML settings file
         priceMinMWh = settings.getPriceMinMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
         priceMaxMWh = settings.getPriceMaxMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
-        priceRateParameterMWh = settings.getPriceRateParameterMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
 
         minCapacityFactor = settings.getMinCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         maxCapacityFactor = settings.getMaxCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
@@ -343,7 +345,9 @@ public class Generator implements java.io.Serializable, Asset {
 
         if (historicCF < minCapacityFactor) historicCF = minCapacityFactor;
 
-        if (bidsInSpot == 0) {
+        //If the generator has never bid and never produced even off market (OTC), then use the LCOE assuming it starts with maxCapacity
+        //otherwise just use the historicCF
+        if (bidsInSpot == 0 && historicCF < 0.01) {
             result = priceMinMWh() / maxCapacityFactor;
         } else {
             result = priceMinMWh() / historicCF;
@@ -356,6 +360,7 @@ public class Generator implements java.io.Serializable, Asset {
         return result;
     }
 
+    public double getSolarSurplusCapacity() { return solarSurplusCapacity; }
 
     //$/MWH
     public double priceMinMWh() {
@@ -364,11 +369,6 @@ public class Generator implements java.io.Serializable, Asset {
 
     public double priceMaxMWh() {
         return priceMaxMWh;
-    }
-
-
-    public double priceRateParameterMWh() {
-        return priceRateParameterMWh;
     }
 
 
@@ -409,6 +409,10 @@ public class Generator implements java.io.Serializable, Asset {
 
             //Solar capacity is the same as half hour generation in this case. MWh each half hour will be capacity in MW
             double availableCapacity = halfHourGeneration / (float) 1000.0;
+
+            //Solar suplus as a function of generation and number of units consuming
+            solarSurplusCapacity = availableCapacity - (numUnits * data.getMonthly_consumption_register().get(today) / 1440 );
+            if(solarSurplusCapacity < 0 ) solarSurplusCapacity = 0;
 
             return availableCapacity;
 
