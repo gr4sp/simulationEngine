@@ -21,7 +21,15 @@ public class Arena implements Steppable {
 
     //    private float transactionFee; //percentage fee
 
-    private MeritOrder spot;
+    private MeritOrder primarySpot;
+    private double avgMonthlyPricePrimarySpot;
+    private double avgMonthlyPriceSecondarySpot;
+    private double avgMonthlyPriceOffSpot;
+
+    private double avgMonthlyDemandPrimarySpot;
+    private double avgMonthlyDemandSecondarySpot;
+    private double avgMonthlyDemandOffSpot;
+
     private MeritOrder secondarySpot; //Merit order type of market at the distribution level.
     private ArrayList<Contract> bilateral; //can be billing with retailers, PPAs and other types of OTCs with two known parties involved.
     private ArrayList<Contract> fiTs;
@@ -46,9 +54,9 @@ public class Arena implements Steppable {
             fiTs = new ArrayList<Contract>();
         if (type.equalsIgnoreCase("Spot")) {
             if(data.settings.existsMarket("primary"))
-                spot = new MeritOrder("Primary");
+                primarySpot = new MeritOrder("Primary");
             else
-                spot = null;
+                primarySpot = null;
             if(data.settings.existsMarket("secondary"))
                 secondarySpot = new MeritOrder("secondary");
             else
@@ -84,8 +92,8 @@ public class Arena implements Steppable {
         return type;
     }
 
-    public MeritOrder getSpot() {
-        return spot;
+    public MeritOrder getPrimarySpot() {
+        return primarySpot;
     }
 
     public MeritOrder getSecondarySpot() {
@@ -100,7 +108,11 @@ public class Arena implements Steppable {
         return fiTs;
     }
 
+    public double getAvgMonthlyPricePrimarySpot() { return avgMonthlyPricePrimarySpot; }
 
+    public double getAvgMonthlyPriceSecondarySpot() { return avgMonthlyPriceSecondarySpot; }
+
+    public double getAvgMonthlyPriceOffSpot() { return avgMonthlyPriceOffSpot; }
     /**
      * This tariff represents price for $/MWh
      */
@@ -165,25 +177,28 @@ public class Arena implements Steppable {
         }
 
         //If spot is on, get the price market
-        double spotPrice = 0;
+        double price = 0;
         for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
             Arena a = entry.getValue();
             if (a.type.equalsIgnoreCase("Spot")) {
 
                 //Weighted average between secondaryPrice and unmet demand supplied by the primary spot
                 if(data.settings.existsMarket("secondary")) {
-                    double metDemand = a.secondarySpot.getDemand() - a.secondarySpot.getUnmetDemand();
-                    spotPrice = (a.spot.getMarketPrice() * a.secondarySpot.getUnmetDemand() +
-                            a.secondarySpot.getMarketPrice() * metDemand) /
-                            (a.secondarySpot.getUnmetDemand() + metDemand);
+                    price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
+                            avgMonthlyPriceSecondarySpot * avgMonthlyDemandSecondarySpot +
+                            avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot ) /
+                            (avgMonthlyDemandPrimarySpot + avgMonthlyDemandSecondarySpot + avgMonthlyDemandOffSpot);
+
                 }
                 else
-                    spotPrice = a.spot.getMarketPrice();
+                    price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
+                            avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot ) /
+                            (avgMonthlyDemandPrimarySpot  + avgMonthlyDemandOffSpot);
             }
         }
 
         //$/MWh
-        return spotPrice;
+        return price;
 
     }
 
@@ -218,7 +233,7 @@ public class Arena implements Steppable {
          * Create a bid for each Generator that participates in the SPOT market
          */
 
-        this.spot.clearBidders();
+        this.primarySpot.clearBidders();
         if(data.settings.existsMarket("secondary")) {
             this.secondarySpot.clearBidders();
         }
@@ -236,7 +251,7 @@ public class Arena implements Steppable {
 
             if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(),"primary", g.getMaxCapacity() ) ) {
                 Bid b = new Bid(null, g, dollarMWh, availableCapacity);
-                this.spot.addBidder(b);
+                this.primarySpot.addBidder(b);
                 g.setBidsInSpot(g.getBidsInSpot() + 1);
             }else{
                 if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(),"secondary", g.getMaxCapacity() ) ) {
@@ -295,9 +310,13 @@ public class Arena implements Steppable {
 
             c.setTime(today);
 
-            double monthlyAverageDemand = 0;
-            double monthlyAveragePrice = 0;
-            double monthlyAverageEmissions = 0;
+            avgMonthlyPriceOffSpot = 0;
+            avgMonthlyPricePrimarySpot = 0;
+            avgMonthlyPriceSecondarySpot = 0;
+            avgMonthlyDemandOffSpot = 0;
+            avgMonthlyDemandPrimarySpot = 0;
+            avgMonthlyDemandSecondarySpot = 0;
+
             int num_half_hours = 1;
             this.rounds = num_half_hours;
             double totalDemand  = 0;
@@ -337,6 +356,7 @@ public class Arena implements Steppable {
 
                 // Substract from Consumption the amount supplied by generators smaller than 30MW
                 double availableCapacityOffMarket = 0;
+                double priceOffMarket = 0;
                 double consumptionSuppliedBySolar = 0;
                 //(This for is to include the restrictions on which generators participate in the bidding process)
                 for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
@@ -350,7 +370,7 @@ public class Arena implements Steppable {
 
                                 //Add consumption supplied already by solar so it can be removed from the demand
                                 if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
-                                    consumptionSuppliedBySolar = capacity - g.getSolarSurplusCapacity();
+                                    consumptionSuppliedBySolar += capacity - g.getSolarSurplusCapacity();
                                 }
 
                                 if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(), "primary", g.getMaxCapacity() ) == false &&
@@ -360,10 +380,17 @@ public class Arena implements Steppable {
 
                                     //If going through Off spot (OTC), then account only for surplus
                                     if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
+                                        priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (g.getSolarSurplusCapacity() * g.priceMWhLCOE());
                                         availableCapacityOffMarket += g.getSolarSurplusCapacity();
+                                        if(availableCapacityOffMarket > 0.0)
+                                            priceOffMarket /= availableCapacityOffMarket;
                                     }
                                     else {
+                                        priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (capacity * g.priceMWhLCOE());
                                         availableCapacityOffMarket += capacity;
+                                        if(availableCapacityOffMarket > 0.0)
+                                            priceOffMarket /= availableCapacityOffMarket;
+
                                     }
 
                                     //Historic Capacity Factor Off Spot non scheduled
@@ -400,7 +427,7 @@ public class Arena implements Steppable {
                     }
                 }
 
-                this.spot.computeMarketPrice(totalDemandWholesale, data, currentTime);
+                this.primarySpot.computeMarketPrice(totalDemandWholesale, data, currentTime);
 
 
 
@@ -412,21 +439,27 @@ public class Arena implements Steppable {
                  * Compute spot Emissions Intensity using successful bidders
                  */
 
-                spot.computeGenEmissionIntensity(currentYear);
-
-                //Update weighted average among both spots
-                monthlyAverageDemand = (monthlyAverageDemand * num_half_hours ) + totalDemand;
+                primarySpot.computeGenEmissionIntensity(currentYear);
 
 
                if(totalDemandWholesale + totalDemandResidential > 0.0001) {
+                   avgMonthlyDemandPrimarySpot = (avgMonthlyDemandPrimarySpot * num_half_hours) + totalDemandWholesale;
+                   avgMonthlyDemandOffSpot = (avgMonthlyDemandOffSpot * num_half_hours ) + availableCapacityOffMarket;
+
+                   avgMonthlyPricePrimarySpot = (avgMonthlyPricePrimarySpot * num_half_hours) + this.primarySpot.getMarketPrice() ;
+                   avgMonthlyPriceOffSpot = (avgMonthlyPriceOffSpot * num_half_hours ) + priceOffMarket;
                    if(data.settings.existsMarket("secondary")) {
-                       monthlyAveragePrice = (monthlyAveragePrice * num_half_hours) + (this.spot.getMarketPrice() * totalDemandWholesale + this.secondarySpot.getMarketPrice() * totalDemandResidential) / (totalDemandWholesale + totalDemandResidential);
-                       monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + (this.spot.getEmissionsIntensity() * totalDemandWholesale + this.secondarySpot.getEmissionsIntensity() * totalDemandResidential) / (totalDemandWholesale + totalDemandResidential);
+                       avgMonthlyPriceSecondarySpot = (avgMonthlyPriceSecondarySpot * num_half_hours) + this.secondarySpot.getMarketPrice();
+                       avgMonthlyDemandSecondarySpot = (avgMonthlyDemandSecondarySpot * num_half_hours) + totalDemandResidential;
                    }
-                   else{
-                       monthlyAveragePrice = (monthlyAveragePrice * num_half_hours) + (this.spot.getMarketPrice() * totalDemandWholesale) / (totalDemandWholesale);
-                       monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + (this.spot.getEmissionsIntensity() * totalDemandWholesale ) / (totalDemandWholesale );
-                       }
+//                   if(data.settings.existsMarket("secondary")) {
+//                       monthlyAveragePrice = (monthlyAveragePrice * num_half_hours) + (this.primarySpot.getMarketPrice() * totalDemandWholesale + this.secondarySpot.getMarketPrice() * totalDemandResidential) / (totalDemandWholesale + totalDemandResidential);
+//                       monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + (this.primarySpot.getEmissionsIntensity() * totalDemandWholesale + this.secondarySpot.getEmissionsIntensity() * totalDemandResidential) / (totalDemandWholesale + totalDemandResidential);
+//                   }
+//                   else{
+//                       monthlyAveragePrice = (monthlyAveragePrice * num_half_hours) + (this.primarySpot.getMarketPrice() * totalDemandWholesale) / (totalDemandWholesale);
+//                       monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + (this.primarySpot.getEmissionsIntensity() * totalDemandWholesale ) / (totalDemandWholesale );
+//                       }
                 }else{
                     data.LOGGER.warning("demand in Spots was 0!! all covered off market");
                 }
@@ -439,10 +472,14 @@ public class Arena implements Steppable {
                 rounds++;
                 num_half_hours++;
 
-                monthlyAverageDemand /= num_half_hours;
                 if(totalDemandWholesale + totalDemandResidential > 0.0001) {
-                    monthlyAveragePrice /= num_half_hours;
-                    monthlyAverageEmissions /= num_half_hours;
+                    avgMonthlyPricePrimarySpot /= num_half_hours;
+                    avgMonthlyPriceSecondarySpot /= num_half_hours;
+                    avgMonthlyPriceOffSpot /= num_half_hours;
+
+                    avgMonthlyDemandPrimarySpot /= num_half_hours;
+                    avgMonthlyDemandSecondarySpot /= num_half_hours;
+                    avgMonthlyDemandOffSpot /= num_half_hours;
                 }
 
 
@@ -463,9 +500,14 @@ public class Arena implements Steppable {
 
 
             //Currently not in use for reporting emissions, but it just captures the emissions of the succesful biders.
-            spot.setEmissionsIntensity(monthlyAverageEmissions);
-            spot.setMarketPrice(monthlyAveragePrice);
-            spot.setDemand(monthlyAverageDemand);
+            primarySpot.setMarketPrice(avgMonthlyPricePrimarySpot);
+            primarySpot.setDemand(avgMonthlyDemandPrimarySpot);
+            if(data.settings.existsMarket("secondary")) {
+
+                secondarySpot.setMarketPrice(avgMonthlyPriceSecondarySpot);
+                secondarySpot.setDemand(avgMonthlyDemandSecondarySpot);
+            }
+
 
         }
 

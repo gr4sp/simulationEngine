@@ -110,21 +110,25 @@ public class EndUserUnit extends Actor implements EndUserActor {
         int currentMonth = (int)simState.schedule.getSteps()%12;
 
         Date today = data.getCurrentSimDate();
-        Arena a = null;
+        Arena spotArena = null;
+        Arena retail = null;
 
-        //Finds the Retail Arena, and asks for his currentTariff, following the Simulation policy defined in Gr4spSim.Start()
+        //Finds the Retail and Spot Arena, and asks for his currentTariff, following the Simulation policy defined in Gr4spSim.Start()
         for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
-            a = entry.getValue();
+            Arena a = entry.getValue();
 
+            if (a.getType().equalsIgnoreCase("Spot")) {
+                spotArena = a;
+            }
             if (a.getType().equalsIgnoreCase("Retail")) {
-                break;
+                retail = a;
             }
         }
 
         //If Spot Market hasn't started yet, get historic prices
         if (data.getStartSpotMarketDate().after(today)) {
             //Historic tariff is given in c/KWh
-            this.currentTariff = (float) a.getTariff(simState);
+            this.currentTariff = (float) retail.getTariff(simState);
 
         }
         else {
@@ -137,7 +141,7 @@ public class EndUserUnit extends Actor implements EndUserActor {
             //Get tariff from historic for the first 6 months of starting the spot
             if(spotStartSixMonthAfter.after(today)){
                 //Historic tariff is given in c/KWh
-                this.currentTariff = a.getEndConsumerTariff(simState);
+                this.currentTariff = retail.getEndConsumerTariff(simState);
             }
             //Update tariff every 6 months
             else if( (currentMonth + 1) % 6 == 0 ){
@@ -157,13 +161,13 @@ public class EndUserUnit extends Actor implements EndUserActor {
                 //Compute Average Wholesale Price using the last 6 months values saved in SaveData.java
                 //Current month price hasn't been stored yet, so we initialize it with the price for the current month
                 // Convert $/MWh -> c/KWh
-                double avgWholesalePrice = (float) (a.getTariff(simState) * conversion_rate) / (float) 10.0;
+                double avgWholesalePrice = (float) (spotArena.getTariff(simState) * conversion_rate) / (float) 10.0;
                 int nmonths = 1;
                 for (nmonths = 1 ; nmonths < 6 ; nmonths++) {
 
                     //Get Wholesale price from the past nmonth(s)
-                    int idx = data.saveData.wholesaleSeries.get(0).getItems().size() - nmonths;
-                    XYDataItem item = (XYDataItem) data.saveData.wholesaleSeries.get(0).getItems().get(idx);
+                    int idx = data.saveData.PriceGenAvgSeries.get(1).getItems().size() - nmonths;
+                    XYDataItem item = (XYDataItem) data.saveData.PriceGenAvgSeries.get(1).getItems().get(idx);
                     double wholesale = item.getYValue();
 
                     // Convert $/MWh -> c/KWh

@@ -347,7 +347,7 @@ public class Generator implements java.io.Serializable, Asset {
 
         //If the generator has never bid and never produced even off market (OTC), then use the LCOE assuming it starts with maxCapacity
         //otherwise just use the historicCF
-        if (bidsInSpot == 0 && historicCF < 0.01) {
+        if (bidsInSpot == 0 || historicCF < 0.01) {
             result = priceMinMWh() / maxCapacityFactor;
         } else {
             result = priceMinMWh() / historicCF;
