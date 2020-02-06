@@ -80,8 +80,8 @@ def getResults(outputID):
            secondarySpotYear, offSpotYear, rooftopPVYear, numActorsYear
 
 
-def runGr4sp(annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV, IncludePublicallyAnnouncedGen,
-             generationRolloutPeriod, generatorRetirement, technologicalImprovement,
+def runGr4sp(annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV, includePublicallyAnnouncedGen,
+             generationRolloutPeriod, generatorRetirement, technologicalImprovement, learningCurve,
              priceChangePercentageBattery, priceChangePercentageBrownCoal, priceChangePercentageOcgt,
              priceChangePercentageCcgt, priceChangePercentageWind, priceChangePercentageWater,
              capacityFactorChangeBattery, capacityFactorChangeBrownCoal, capacityFactorChangeOcgt,
@@ -117,10 +117,11 @@ def runGr4sp(annualCpi, annualInflation, consumption, energyEfficiency, onsiteGe
         gr4spObj.settings.forecast.scenario.solarUptake = solarUptake
         gr4spObj.settings.forecast.rooftopPV = rooftopPV
 
-        gr4spObj.settings.forecast.IncludePublicallyAnnouncedGen = jpype.java.lang.Boolean(IncludePublicallyAnnouncedGen)
+        gr4spObj.settings.forecast.includePublicallyAnnouncedGen = jpype.java.lang.Boolean(includePublicallyAnnouncedGen)
         gr4spObj.settings.forecast.generationRolloutPeriod = generationRolloutPeriod
         gr4spObj.settings.forecast.generatorRetirement = generatorRetirement
         gr4spObj.settings.forecast.technologicalImprovement = technologicalImprovement
+        gr4spObj.settings.forecast.learningCurve = learningCurve
 
         # LCOEs and CFs variations
 
