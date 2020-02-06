@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
     with MultiprocessingEvaluator(model) as evaluator:
         results = evaluator.perform_experiments(scenarios=0, policies=15, levers_sampling=MORRIS)
+        #results = evaluator.perform_experiments(scenarios=0, policies=1050, levers_sampling=SOBOL)
 
     '''
     Print Results

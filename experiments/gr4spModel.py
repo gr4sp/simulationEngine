@@ -15,13 +15,29 @@ def getModel():
     #model.uncertainties = [RealParameter('annualCpi', 0.01, 0.05)]
     #model.uncertainties += [RealParameter('annualInflation', 0.01, 0.05)]
 
+    # specify constants - levers deemed not significant by EET
+    # model.constants = [Constant('onsiteGeneration', 'Central')]
+    # model.constants += [Constant('rooftopPV', 'residential')]
+    # model.constants += [Constant('priceChangePercentageBattery', 0)]
+    # model.constants += [Constant('priceChangePercentageOcgt', 0)]
+    # model.constants += [Constant('priceChangePercentageCcgt', 0)]
+    # model.constants += [Constant('capacityFactorChangeBattery', 0)]
+    # model.constants += [Constant('capacityFactorChangeOcgt', 0)]
+    # model.constants += [Constant('capacityFactorChangeCcgt', 0)]
+    # model.constants += [Constant('capacityFactorChangeWind', 0)]
+    # model.constants += [Constant('transmissionUsageChange', 0)]
+    # model.constants += [Constant('distributionUsageChange', 0)]
+    # model.constants += [Constant('retailUsageChange', 0)]
+    # model.constants += [Constant('environmentalCostsChange', 0)]
+    # model.constants += [Constant('scheduleMinCapMarketGen', 30)]
+
+
     # set levers
 
     model.levers = [
         CategoricalParameter('consumption', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.levers += [CategoricalParameter('energyEfficiency', ['Central', 'Slow change', 'Step change'])]
-    model.levers += [
-        CategoricalParameter('onsiteGeneration', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
+    model.levers += [CategoricalParameter('onsiteGeneration', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.levers += [
         CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.levers += [CategoricalParameter('rooftopPV', ['residential', 'business', 'both'])]
@@ -29,10 +45,11 @@ def getModel():
     model.levers += [RealParameter('annualCpi', 0.01, 0.05)]
     model.levers += [RealParameter('annualInflation', 0.01, 0.05)]
 
-    model.levers += [BooleanParameter('IncludePublicallyAnnouncedGen')]
+    model.levers += [BooleanParameter('includePublicallyAnnouncedGen')]
     model.levers += [IntegerParameter('generationRolloutPeriod', 0, 10)]
     model.levers += [IntegerParameter('generatorRetirement', -5, 5)]
     model.levers += [RealParameter('technologicalImprovement', 0.0, 0.1)]
+    model.levers += [RealParameter('learningCurve', 0.0, 0.05)]
 
     # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
     # This could represent a subsidy
@@ -52,13 +69,13 @@ def getModel():
     model.levers += [IntegerParameter('capacityFactorChangeWater', -10, 10)]
 
     # variation of contribution of networks, retail and other charges in the tariff
-    model.levers += [IntegerParameter('transmissionUsageChange', -5, 5)]
-    model.levers += [IntegerParameter('distributionUsageChange', -5, 5)]
-    model.levers += [IntegerParameter('retailUsageChange', -5, 5)]
-    model.levers += [IntegerParameter('environmentalCostsChange', -5, 5)]
+    model.levers += [IntegerParameter('transmissionUsageChange', -10, 10)]
+    model.levers += [IntegerParameter('distributionUsageChange', -10, 10)]
+    model.levers += [IntegerParameter('retailUsageChange', -10, 10)]
+    model.levers += [IntegerParameter('environmentalCostsChange', -10, 10)]
 
     # arenas
-    model.levers += [IntegerParameter('scheduleMinCapMarketGen', 15, 30)]
+    model.levers += [IntegerParameter('scheduleMinCapMarketGen', 10, 30)]
     model.levers += [CategoricalParameter('semiScheduleGenSpotMarket', ['primary', 'secondary','none'])]
     model.levers += [RealParameter('semiScheduleMinCapMarketGen', 0.1, 30)]
     model.levers += [CategoricalParameter('nonScheduleGenSpotMarket', ['primary', 'secondary', 'none'])]
