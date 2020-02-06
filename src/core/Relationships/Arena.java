@@ -8,7 +8,7 @@ import sim.engine.Steppable;
 
 import java.util.*;
 
-public class Arena implements Steppable {
+public class Arena implements Steppable,  java.io.Serializable  {
     private int id;
     private String name;
     private String type;
@@ -40,6 +40,8 @@ public class Arena implements Steppable {
     //FeedInTariff - Contracts Act-Act over the counterarenas
 
     private Random randomGenerator;
+    boolean existsSecondary;
+    Calendar c;
 
 
     public Arena(int id, String name, String type, Gr4spSim state) {
@@ -63,6 +65,13 @@ public class Arena implements Steppable {
                 secondarySpot = null;
         }
         randomGenerator = new Random();
+
+        if(data.settings.existsMarket("secondary"))
+            existsSecondary = true;
+        else
+            existsSecondary = false;
+
+        c = Calendar.getInstance();
 
         rounds = 0;
     }
@@ -207,54 +216,38 @@ public class Arena implements Steppable {
      * Capacity factors of each generator vary depending on the season.  Data on max capacity is obtained from
      * the "Generation_Information_VIC" (May 2019)
     */
-    public void createBids(SimState state, Date currentTime){
+    public void createBids(SimState state, Date currentTime, int currentMonth, ArrayList<Generator> activeGens){
 
         Gr4spSim data = (Gr4spSim) state;
         Date today = data.getCurrentSimDate();
-
-        ArrayList<Generator> activeGensSPOT = new ArrayList<Generator>();
-        ArrayList<Generator> activeGensOutSPOT = new ArrayList<Generator>();
-
-        /**
-         * Go through each SPM and check if active generators today have more than 30MW
-         */
-
-        for (Map.Entry<Integer, Vector<Spm>> entry : data.getSpm_register().entrySet()) {
-            Vector<Spm> spm_gens = entry.getValue();
-            for (Spm s : spm_gens) {
-
-                //Get Active Gens Today
-                s.getActiveGensThisSPM(today, activeGensSPOT, activeGensOutSPOT);
-
-            }
-        }
 
         /**
          * Create a bid for each Generator that participates in the SPOT market
          */
 
         this.primarySpot.clearBidders();
-        if(data.settings.existsMarket("secondary")) {
+        if(existsSecondary) {
             this.secondarySpot.clearBidders();
         }
 
-        for (Generator g : activeGensSPOT) {
+
+        for (Generator g : activeGens) {
 
             //only consider Scheduled (S)
             g.updateHistoricCapacityFactor(state);
-            double availableCapacity = g.computeAvailableCapacity(state, currentTime);
+            double availableCapacity = g.getAvailableCapacity();
             if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
                 availableCapacity = g.getSolarSurplusCapacity();
             }
 
             double dollarMWh = g.priceMWhLCOE();
 
-            if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(),"primary", g.getMaxCapacity() ) ) {
+            if( g.getInPrimaryMarket() ) {
                 Bid b = new Bid(null, g, dollarMWh, availableCapacity);
                 this.primarySpot.addBidder(b);
                 g.setBidsInSpot(g.getBidsInSpot() + 1);
             }else{
-                if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(),"secondary", g.getMaxCapacity() ) ) {
+                if( g.getInSecondaryMarket() ) {
                     Bid b = new Bid(null, g, dollarMWh, availableCapacity);
                     this.secondarySpot.addBidder(b);
                     g.setBidsInSpot(g.getBidsInSpot() + 1);
@@ -290,8 +283,6 @@ public class Arena implements Steppable {
                 return;
             }
 
-
-            Calendar c = Calendar.getInstance();
             c.setTime(today);
             int daysInMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
             int currentMonth = c.get(Calendar.MONTH) + 1;
@@ -330,6 +321,35 @@ public class Arena implements Steppable {
             }
 
 
+            ArrayList<Generator> activeGens = new ArrayList<Generator>();
+
+            /**
+             * Go through each SPM and check if active generators today have more than 30MW
+             */
+
+            for (Map.Entry<Integer, Vector<Spm>> entry : data.getSpm_register().entrySet()) {
+                Vector<Spm> spm_gens = entry.getValue();
+                for (Spm s : spm_gens) {
+
+                    //Get Active Gens Today
+                    s.getActiveGensThisSPM(today, activeGens);
+
+                }
+            }
+
+            /**
+             * Compute Available Capcities for this month. Solar available capacity is recomputed every 30 min below
+             * */
+
+
+            for (Generator g : activeGens) {
+                if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") == false) {
+                    g.computeAvailableCapacity(state, today, today, currentMonth);
+                }
+            }
+
+            double consumption = data.getMonthly_consumption_register().get(today);
+
             while(c.getTime().before(nextMonth)) {
 
                 Date currentTime = c.getTime();
@@ -348,7 +368,7 @@ public class Arena implements Steppable {
 
                 //System.out.println(currentTime + " Demand: " + totalDemand);
 
-                createBids(state, currentTime);
+                createBids(state, currentTime, currentMonth, activeGens);
 
                 /**
                  * Compute spot price using current consumption - consumption met by non scheduled gen
@@ -359,53 +379,47 @@ public class Arena implements Steppable {
                 double priceOffMarket = 0;
                 double consumptionSuppliedBySolar = 0;
                 //(This for is to include the restrictions on which generators participate in the bidding process)
-                for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
-                    Vector<Generator> gens = entry.getValue();
-                    for (Generator g : gens) {
-                        //Has started today or earlier?
-                        if (g.getStart().before(today) || g.getStart().equals(today)) {
-                            //Has not finished operations?
-                            if (g.getEnd().after(today)) {
-                                double capacity = g.computeAvailableCapacity(state, currentTime);
+                for (Generator g : activeGens) {
+                    double capacity = g.getAvailableCapacity();
 
-                                //Add consumption supplied already by solar so it can be removed from the demand
-                                if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
-                                    consumptionSuppliedBySolar += capacity - g.getSolarSurplusCapacity();
-                                }
+                    //Add consumption supplied already by solar so it can be removed from the demand
+                    //Recompute capacity for solar every 30 min
+                    if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
+                        g.computeAvailableSolarCapacity(state, today, currentTime, currentMonth, consumption);
+                        capacity = g.getAvailableCapacity();
+                        consumptionSuppliedBySolar += capacity - g.getSolarSurplusCapacity();
+                    }
 
-                                if( data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(), "primary", g.getMaxCapacity() ) == false &&
-                                        data.settings.isMarketPaticipant( g.getDispatchTypeDescriptor(), "secondary", g.getMaxCapacity() ) == false ){
+                    if( g.getInPrimaryMarket() == false && g.getInSecondaryMarket()  == false ){
 
-                                    g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + capacity );
+                        g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + capacity );
 
-                                    //If going through Off spot (OTC), then account only for surplus
-                                    if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
-                                        priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (g.getSolarSurplusCapacity() * g.priceMWhLCOE());
-                                        availableCapacityOffMarket += g.getSolarSurplusCapacity();
-                                        if(availableCapacityOffMarket > 0.0)
-                                            priceOffMarket /= availableCapacityOffMarket;
-                                    }
-                                    else {
-                                        priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (capacity * g.priceMWhLCOE());
-                                        availableCapacityOffMarket += capacity;
-                                        if(availableCapacityOffMarket > 0.0)
-                                            priceOffMarket /= availableCapacityOffMarket;
-
-                                    }
-
-                                    //Historic Capacity Factor Off Spot non scheduled
-                                    g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + capacity );
-                                    g.setBidsOffSpot( g.getBidsOffSpot() + 1 );
-                                    g.setHistoricCapacityFactor( g.getHistoricGeneratedMWh() / (g.getMaxCapacity() * (g.getBidsOffSpot())) );
-
-
-                                }
-                            }
+                        //If going through Off spot (OTC), then account only for surplus
+                        if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
+                            priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (g.getSolarSurplusCapacity() * g.priceMWhLCOE());
+                            availableCapacityOffMarket += g.getSolarSurplusCapacity();
+                            if(availableCapacityOffMarket > 0.0)
+                                priceOffMarket /= availableCapacityOffMarket;
                         }
+                        else {
+                            priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (capacity * g.priceMWhLCOE());
+                            availableCapacityOffMarket += capacity;
+                            if(availableCapacityOffMarket > 0.0)
+                                priceOffMarket /= availableCapacityOffMarket;
+
+                        }
+
+                        //Historic Capacity Factor Off Spot non scheduled
+                        g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + capacity );
+                        g.setBidsOffSpot( g.getBidsOffSpot() + 1 );
+                        g.setHistoricCapacityFactor( g.getHistoricGeneratedMWh() / (g.getMaxCapacity() * (g.getBidsOffSpot())) );
+
+
                     }
                 }
 
-                //remove consumption met by non scheduled generation (see assumptions in Word Document)
+
+                //remove consumption met by off Market generation (see assumptions in Word Document)
                 double totalDemandWholesale = totalDemand - availableCapacityOffMarket - consumptionSuppliedBySolar;
 
                 //If non scheduled covered more than the demand, set the demand of the wholesale to 0

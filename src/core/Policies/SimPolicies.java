@@ -81,21 +81,31 @@ public class SimPolicies implements java.io.Serializable, Steppable {
         int currentYear = c.get(Calendar.YEAR);
 
         //Improve capacity factors of Wind renewable generators as a proxy of Technology Improvement (YAML)
-        if(currentMonth==1 && currentYear > data.settings.getBaseYearConsumptionForecast()) {
+        //Improve price LCOE according to learning curve.
+        //&& currentYear > data.settings.getBaseYearConsumptionForecast()
+        if(currentMonth==1 ) {
             for (Vector<Generator> gens : data.getGen_register().values()) {
                 for (Generator g : gens) {
                     if (g.getfuelSourceDescriptor().equals("Wind")) {
                         double factor = data.settings.getForecastTechnologicalImprovement();
                         if (g.maxCapacityFactor + factor < 0.5) g.maxCapacityFactor += factor;
                         if (g.maxCapacityFactorSummer + factor < 0.5) g.maxCapacityFactorSummer += factor;
+
+                        double leaerningCurve = data.settings.getLearningCurve();
+                        g.priceMinMWh = g.priceMinMWh * (1-leaerningCurve);
+                        g.priceMaxMWh = g.priceMaxMWh * (1-leaerningCurve);
                     }else if (g.getfuelSourceDescriptor().equals("Solar")) {
                         double factor = data.settings.getForecastTechnologicalImprovement();
                         if (g.solarEfficiency + factor < 1.0) g.solarEfficiency += factor;
 
+                        double leaerningCurve = data.settings.getLearningCurve();
+                        g.priceMinMWh = g.priceMinMWh * (1-leaerningCurve);
+                        g.priceMaxMWh = g.priceMaxMWh * (1-leaerningCurve);
                     }
                 }
             }
         }
+
         Date date = data.getCurrentSimDate();
         if (data.getSolar_number_installs().containsKey(date) == true) {
 

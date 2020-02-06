@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class EndUserProfile {
+public class EndUserProfile implements java.io.Serializable {
 
     private String demandType; //householdA, householdB, householdC, ..., commercialA, commercialB,...,industryA, industryB
     private HashMap<Date, Double> consumption; //monthly consumption in KwH

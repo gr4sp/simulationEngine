@@ -1,4 +1,4 @@
 package core.Relationships;
 
-public class Market {
+public class Market implements java.io.Serializable{
 }

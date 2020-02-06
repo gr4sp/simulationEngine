@@ -1,6 +1,6 @@
 package core.Policies;
 
-public class AccelerateSolarPV {
+public class AccelerateSolarPV implements java.io.Serializable{
 
     private double monthlyHousholdsPercentageConversion;
 

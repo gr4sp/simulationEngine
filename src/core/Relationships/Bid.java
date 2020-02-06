@@ -4,7 +4,7 @@ package core.Relationships;
 import core.Social.Actor;
 import core.Technical.Asset;
 
-public class Bid implements Comparable<Bid>{
+public class Bid implements java.io.Serializable, Comparable<Bid>{
     public Actor actor;
     public Asset asset;
     public double dollarMWh;

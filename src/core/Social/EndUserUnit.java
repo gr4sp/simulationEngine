@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EndUserUnit extends Actor implements EndUserActor {
+public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializable  {
     private int numberOfPerson;
     private int numberOfHouseholds;
     private HashMap<Date, Integer > newHousholdsPerDate;
@@ -151,6 +151,9 @@ public class EndUserUnit extends Actor implements EndUserActor {
                         + data.settings.getUsageTariff("distributionCosts")
                         + data.settings.getUsageTariff("retailCosts")
                         + data.settings.getUsageTariff("environmentalCosts"));
+
+                //Wholesale component cannot fall below 0.01
+                if(wholesalePriceComponent < 0.01) wholesalePriceComponent = (float)0.01;
 
                 //Get CPI conversion
                 c.setTime(today);

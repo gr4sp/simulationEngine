@@ -15,8 +15,8 @@ import javax.swing.*;
 import java.awt.Color;
 
 
-public class InspectedNetworkWithUI extends GUIState
-    {
+public class InspectedNetworkWithUI extends GUIState implements java.io.Serializable
+        {
     public Display2D display;
     public JFrame displayFrame;
 
@@ -53,14 +53,14 @@ public class InspectedNetworkWithUI extends GUIState
     public void setupPortrayals()
         {
         Tutorial5 tut = (Tutorial5) state;
-        
+
         // tell the portrayals what to portray and how to portray them
         edgePortrayal.setField( new SpatialNetwork2D( tut.balls, tut.bands ) );
         edgePortrayal.setPortrayalForAll(new BandPortrayal2D());
         nodePortrayal.setField( tut.balls );
-        
+
         inspector.setField(tut.bands, this);
-        
+
         // reschedule the displayer
         display.reset();
         display.setBackdrop(Color.white);

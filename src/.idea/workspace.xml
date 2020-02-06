@@ -75,6 +75,14 @@
       <change beforePath="$PROJECT_DIR$/../emaWorkbench/connector.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../emaWorkbench/pic.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../emaWorkbench/runExperiments.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../experiments/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../experiments/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../experiments/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../experiments/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../experiments/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../experiments/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../experiments/connector.py" beforeDir="false" afterPath="$PROJECT_DIR$/../experiments/connector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../experiments/gr4spModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/../experiments/gr4spModel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../experiments/notebookGr4sp/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../experiments/notebookGr4sp/EE__sigma_mu_star_V2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../experiments/notebookGr4sp/EE__sigma_mu_star_V2.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../experiments/runExperiments.py" beforeDir="false" afterPath="$PROJECT_DIR$/../experiments/runExperiments.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/BAUVIC full sim - 2019-11-25/GenCapFactorsOffSpot2019-11-25-19_53_42.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/BAUVIC full sim - 2019-11-25/GenCapFactorsSpot2019-11-25-19_53_42.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/BAUVIC full sim - 2019-11-25/HouseholdConsumption2019-11-25-19_53_42.png" beforeDir="false" />
@@ -312,30 +320,64 @@
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Gr4spLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSim.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Gr4spSimUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Gr4spSimUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/InspectedNetworkWithUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/InspectedNetworkWithUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/LoadData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/LoadData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Policies/AccelerateSolarPV.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Policies/AccelerateSolarPV.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Policies/SimPolicies.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Policies/SimPolicies.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Relationships/ActorActorRelationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/ActorActorRelationship.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Relationships/ActorAssetRelationship.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/ActorAssetRelationship.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Relationships/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/Arena.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Relationships/Bid.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/Bid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Relationships/Contract.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/Contract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Relationships/Market.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/Market.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Relationships/MeritOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Relationships/MeritOrder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/SaveData.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/SaveData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Social/EndUserProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/EndUserProfile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Social/EndUserUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Social/EndUserUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/Technical/Generation.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Generation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Technical/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Generator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/Technical/Spm.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/Technical/Spm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/BAUVIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings/Settings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spLogger.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spLogger.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSim.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSim.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Gr4spSimUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/LoadData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/MyHtmlFormatter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/MyHtmlFormatter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/MySecurityManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/MySecurityManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/AccelerateSolarPV.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/AccelerateSolarPV.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/SimPolicies.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Policies/SimPolicies.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/ActorActorRelationship.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/ActorActorRelationship.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/ActorAssetRelationship.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/ActorAssetRelationship.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Arena.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Bid.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Bid.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Contract.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Contract.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Market.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/Market.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/MeritOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Relationships/MeritOrder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/SaveData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserProfile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserProfile.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Social/EndUserUnit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generation.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Generator.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Spm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/Technical/Spm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ArenaSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ArenaSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/BAUVIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/EmissionFactor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/EmissionFactor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ForecastSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ForecastSetting.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/GeneratorSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/GeneratorSettings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/PolicySettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/PolicySettings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/PopulationSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/PopulationSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ScenarioSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/ScenarioSetting.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/Settings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/Settings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/SimulationDatesSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/SimulationDatesSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gr4sp/core/settings/TariffSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gr4sp/core/settings/TariffSettings.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -430,14 +472,14 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../libraries/socialnets.4.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="profiler.jvm" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -672,7 +714,16 @@
       <workItem from="1578904132869" duration="25421000" />
       <workItem from="1579068864829" duration="4802000" />
       <workItem from="1579148845136" duration="6848000" />
-      <workItem from="1579239142037" duration="39709000" />
+      <workItem from="1579239142037" duration="41450000" />
+      <workItem from="1580182698209" duration="9620000" />
+      <workItem from="1580342951483" duration="3899000" />
+      <workItem from="1580371999990" duration="954000" />
+      <workItem from="1580390326961" duration="748000" />
+      <workItem from="1580391096259" duration="32000" />
+      <workItem from="1580807582282" duration="6713000" />
+      <workItem from="1580903679358" duration="9364000" />
+      <workItem from="1580915205066" duration="47000" />
+      <workItem from="1580985161303" duration="1349000" />
     </task>
     <servers />
   </component>
@@ -712,8 +763,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/Gr4spSim.java</url>
-          <line>896</line>
+          <line>898</line>
           <option name="timeStamp" value="166" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/Relationships/Arena.java</url>
+          <line>387</line>
+          <option name="timeStamp" value="169" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/../libraries/mason.19.jar!/sim/engine/SimState.class</url>
+          <line>185</line>
+          <option name="timeStamp" value="171" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

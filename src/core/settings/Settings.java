@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 
-class SimulationDatesSettings {
+class SimulationDatesSettings implements java.io.Serializable {
     public String startDate;
     public String endDate;
     public String startDateSpotMarket;
 
 }
 
-class PopulationSettings {
+class PopulationSettings implements java.io.Serializable {
     public String areaCode;
     public double populationPercentageAreacCode;
     public int maxHouseholdsPerConsumerUnit;
@@ -21,27 +21,27 @@ class PopulationSettings {
 
 }
 
-class PolicySettings {
+class PolicySettings implements java.io.Serializable {
     public double uptakeRate;
     public EndConsumerTariff endConsumerTariff;
     public double annualInflation;
 
 }
 
-class EmissionFactor {
+class EmissionFactor implements java.io.Serializable  {
     public int startYear;
     public double minEF;
     public double linRateEF;
     public double expRateEF;
 }
 
-class ArenaSettings {
+class ArenaSettings implements java.io.Serializable {
     public String spotMarket;
     public double minCapMarketGen;
 
 }
 
-class GeneratorSettings {
+class GeneratorSettings implements java.io.Serializable {
     public double priceMinMWh;
     public double priceMaxMWh;
 
@@ -73,33 +73,34 @@ class GeneratorSettings {
 
 }
 
-class TariffSettings {
+class TariffSettings implements java.io.Serializable  {
     public double fixed;
     public double usage;
 
 }
 
-class ScenarioSetting{
+class ScenarioSetting implements java.io.Serializable {
     public String consumption;
     public String energyEfficiency;
     public String onsiteGeneration;
     public String solarUptake;
 }
 
-class ForecastSetting{
+class ForecastSetting implements java.io.Serializable {
     public ScenarioSetting scenario;
     public int baseYear;
     public double annualCpi;
-    public Boolean IncludePublicallyAnnouncedGen;
+    public Boolean includePublicallyAnnouncedGen;
     public String rooftopPV;
     public int generatorRetirement;
     public double technologicalImprovement;
+    public double learningCurve;
     public int generationRolloutPeriod;
     public double solarInstallCapacity;
 
 }
 
-public class Settings {
+public class Settings implements java.io.Serializable {
     //public int ConstantMaxInt;
     public String folderOutput;
     public Map<String, ArenaSettings> arena;
@@ -133,6 +134,8 @@ public class Settings {
         return getTariffSettings(actorType).usage;
     }
 
+    public void setUsageTariff(String actorType, double tariff) {  getTariffSettings(actorType).usage = tariff;}
+
     /*
      * Generator
      * */
@@ -160,6 +163,14 @@ public class Settings {
         return getGenSettings(fuelType, techType).priceMaxMWh;
     }
 
+    public void setPriceMinMWh(String fuelType, String techType, double price) {
+        getGenSettings(fuelType, techType).priceMinMWh = price;
+    }
+
+    public void setPriceMaxMWh(String fuelType, String techType,  double price) {
+        getGenSettings(fuelType, techType).priceMaxMWh = price;
+    }
+
 
     public double getMinCapacityFactor(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).minCapacityFactor;
@@ -167,6 +178,14 @@ public class Settings {
 
     public double getMaxCapacityFactor(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).maxCapacityFactor;
+    }
+
+    public void setMinCapacityFactor(String fuelType, String techType, double minCapacityFactor) {
+        getGenSettings(fuelType, techType).minCapacityFactor = minCapacityFactor;
+    }
+
+    public void setMaxCapacityFactor(String fuelType, String techType,  double maxCapacityFactor) {
+        getGenSettings(fuelType, techType).maxCapacityFactor = maxCapacityFactor;
     }
 
     public double getMaxCapacityFactorSummer(String fuelType, String techType) {
@@ -258,6 +277,14 @@ public class Settings {
         return getArenaSettings(dispatchType).spotMarket;
     }
 
+    public void setMinCapMarketGen(String dispatchType, double minCapMarketGen) {
+        getArenaSettings(dispatchType).minCapMarketGen = minCapMarketGen;
+    }
+    public void setSpotMarket(String dispatchType, String marketType) {
+         getArenaSettings(dispatchType).spotMarket = marketType;
+    }
+
+
     public boolean isMarketPaticipant(String dispatchType, String spotMarketName, double capacity ){
         String fullDispatchName = "";
         if(dispatchType.equals("S"))
@@ -311,13 +338,15 @@ public class Settings {
 
     public double getAnnualCpiForecast() { return forecast.annualCpi; }
 
-    public Boolean getIncludePublicallyAnnouncedGen() { return forecast.IncludePublicallyAnnouncedGen;  }
+    public Boolean getIncludePublicallyAnnouncedGen() { return forecast.includePublicallyAnnouncedGen;  }
 
     public String getRooftopPVForecast() { return forecast.rooftopPV;  }
 
     public int getForecastGeneratorRetirement() { return forecast.generatorRetirement; }
 
     public double getForecastTechnologicalImprovement() { return forecast.technologicalImprovement; }
+
+    public double getLearningCurve() { return forecast.learningCurve; }
 
     public int getForecastGenerationRolloutPeriod() { return forecast.generationRolloutPeriod; }
 
