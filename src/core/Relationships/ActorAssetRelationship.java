@@ -5,7 +5,7 @@ import core.Technical.Asset;
 
 
 
-public class ActorAssetRelationship {
+public class ActorAssetRelationship implements java.io.Serializable{
 
     private Actor actor;
     private ActorAssetRelationshipType type; // ownership, lease

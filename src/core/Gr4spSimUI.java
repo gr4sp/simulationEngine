@@ -15,11 +15,11 @@ import org.jfree.chart.ChartPanel;
 import java.awt.BorderLayout;
 
 
-public class Gr4spSimUI extends GUIState {
+public class Gr4spSimUI extends GUIState implements java.io.Serializable {
     public Display2D display;
     public JFrame displayFrame;
-    NetworkPortrayal2D edgePortrayal = new NetworkPortrayal2D();
-    ContinuousPortrayal2D nodePortrayal = new ContinuousPortrayal2D();
+    //NetworkPortrayal2D edgePortrayal = new NetworkPortrayal2D();
+    //ContinuousPortrayal2D nodePortrayal = new ContinuousPortrayal2D();
 
 
     JFrame consumtionChartFrame;
@@ -72,9 +72,8 @@ public class Gr4spSimUI extends GUIState {
 
     public void setupPortrayals() {
         Gr4spSim gr4sp = (Gr4spSim) this.state;
-        //this.edgePortrayal.setField(new SpatialNetwork2D(gr4sp.balls, gr4sp.bands));
-        //this.edgePortrayal.setPortrayalForAll(new BandPortrayal2D());
-        this.nodePortrayal.setField(gr4sp.layout);
+
+        //this.nodePortrayal.setField(gr4sp.layout);
         this.display.reset();
         this.display.setBackdrop(Color.white);
         this.display.repaint();
@@ -88,8 +87,7 @@ public class Gr4spSimUI extends GUIState {
         this.displayFrame.setTitle("Gr4spSim Display");
         c.registerFrame(this.displayFrame);
         this.displayFrame.setVisible(true);
-        //this.display.attach(this.edgePortrayal, "Bands");
-        this.display.attach(this.nodePortrayal, "End Users and SPMs");
+        //this.display.attach(this.nodePortrayal, "End Users and SPMs");
 
         plotting(c);
     }

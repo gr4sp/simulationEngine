@@ -14,7 +14,7 @@ import static java.lang.System.exit;
 import static java.lang.System.setOut;
 
 //Class to load all the data to start the simulation
-public class LoadData {
+public class LoadData implements java.io.Serializable {
 
 //todo: use these actor-asset relationsihps
     //Functions to convert readings from text in DB to Actor type, etc.

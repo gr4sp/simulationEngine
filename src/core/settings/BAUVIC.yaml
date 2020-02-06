@@ -48,7 +48,7 @@ forecast:
   annualCpi: 0.03
 
   #true means new generation that has been publically announced but not committed is included.
-  IncludePublicallyAnnouncedGen: true
+  includePublicallyAnnouncedGen: true
   #Rollout period of announced generation: including "Publically announced", "Emerging", "Committed",
   # and "In Commissioning". This are all the projects that are on their way to be integrated in the generation pool but haven't
   # start operating
@@ -63,14 +63,13 @@ forecast:
   #improves capacity factors of renewable technologies by a constant factor every year (Wind, added to cap factor [0,0.5], Solar, solarEfficiency losses [0.7,1])
   technologicalImprovement: 0.0
 
+  learningCurve: 0.00
+
   #size of solar systems capacity. Used to estimate number of units installed from the forecasted MW solar uptake
   solarInstallCapacity: 6.3
 
 
 policy:
-  # goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
-  # for example, 0.01 represents 1% per month, around 12% a year
-  uptakeRate: 0.0 # not yet implemented
 
   # Consumers will choose the Best (MIN), Worst (MAX), Random (RND), Average (AVG) available retail price
   endConsumerTariff: AVG
@@ -86,8 +85,8 @@ arena:
     spotMarket: primary
     minCapMarketGen: 30
   semiScheduled:
-    spotMarket: none #none
-    minCapMarketGen: 30 #0.1
+    spotMarket: none
+    minCapMarketGen: 0.1 #0.1
   nonScheduled:
     spotMarket: none
     minCapMarketGen: 0.1
@@ -137,8 +136,8 @@ generators:
   # usual CO2EII for landfill biogas methane: 0.062
   Biogas:
     #LCOE Price Parameters
-    priceMinMWh: 0
-    priceMaxMWh: 0
+    priceMinMWh: 14
+    priceMaxMWh: 40
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -153,9 +152,9 @@ generators:
   # Fuel bucket: Other
   # usual CO2EII Diesel oil: 0.957
   Diesel:
-    #LCOE Price Parameters
-    priceMinMWh: 0
-    priceMaxMWh: 0
+    #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
+    priceMinMWh: 250
+    priceMaxMWh: 300
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -185,8 +184,8 @@ generators:
   # usual CO2EII for landfill biogas methane: 0.062
   Landfill:
     #LCOE Price Parameters
-    priceMinMWh: 0
-    priceMaxMWh: 0
+    priceMinMWh: 14
+    priceMaxMWh: 40
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -248,8 +247,9 @@ generators:
         expRateEF: 0.151
 
   Wind:
-    #LCOE Price Parameters
-    priceMinMWh: 20
+    #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
+
+    priceMinMWh: 80
     priceMaxMWh: 200
     # Capacity Factor
     minCapacityFactor: 0.28
@@ -280,8 +280,8 @@ generators:
   Solar:
     #TODO: Solar. According to LCOE report, varies from 12% to 26%. But they truncated solar at 40 and wind at 50
     #LCOE Price Parameters
-    priceMinMWh: 22
-    priceMaxMWh: 150
+    priceMinMWh: 100
+    priceMaxMWh: 170
     # Capacity Factor
     minCapacityFactor: 0.10
     maxCapacityFactor: 0.25

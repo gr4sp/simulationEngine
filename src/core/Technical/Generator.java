@@ -26,6 +26,7 @@ public class Generator implements java.io.Serializable, Asset {
     private String fuelSourceDescriptor; //fuel source descriptor: according to AEMO it can be: brown coal, black coal, natural gas, Diesel, waste coal mine gas, landfill methane, etc.
     private String ownership;//public, private, PPP, Cooperative?
     private double maxCapacity; //I assume the maximum capacity as being the nameplate capacity in MW
+    private double availableCapacity; //Capacity available once the capacity factor is taken into account. It can change every month for all techs, but for solar it changes every 30min.
     private double storageCapacity; // in MWh
     private String dispatchTypeDescriptor; // scheduled (S), Semi-scheduled (SS), non-scheduled (NS)
 
@@ -53,6 +54,7 @@ public class Generator implements java.io.Serializable, Asset {
     private double historicGeneratedMWh;
     private double monthlyGeneratedMWh;
     private double historicRevenue;
+    private double potentialRevenue;
     private int bidsInSpot;
 
     //Capacity Factor
@@ -86,6 +88,9 @@ public class Generator implements java.io.Serializable, Asset {
     //TODO: Ownership and Management definition
     ArrayList<ActorAssetRelationship> assetRelationships;
 
+    //Market Participation
+    Boolean inPrimaryMarket;
+    Boolean inSecondaryMarket;
 
     /**
      * Create here other constructors that call the main constructor to include fix values to the parameters and make the class more flexible:
@@ -136,6 +141,7 @@ public class Generator implements java.io.Serializable, Asset {
         historicGeneratedMWh = 0.0;
         monthlyGeneratedMWh = 0.0;
         historicRevenue = 0.0;
+        potentialRevenue = 0.0;
         bidsInSpot = 0;
         bidsOffSpot = 0;
 
@@ -151,8 +157,17 @@ public class Generator implements java.io.Serializable, Asset {
         linRateEF = settings.getLinRateEF(this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear);
         expRateEF = settings.getExpRateEF(this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear);
 
+        if( settings.isMarketPaticipant( dispatchTypeDescriptor,"primary", maxCapacity ) )
+            inPrimaryMarket = true;
+        else
+            inPrimaryMarket = false;
 
-        //Solar Efficiency
+        if( settings.isMarketPaticipant( dispatchTypeDescriptor,"secondary", maxCapacity ) )
+            inSecondaryMarket = true;
+        else
+            inSecondaryMarket = false;
+
+            //Solar Efficiency
         //de-rating factor for manufacturing tolerance, dimensionless
         double fman = 1 - 0.03;
         //de-rating factor for dirt, dimensionless
@@ -323,8 +338,8 @@ public class Generator implements java.io.Serializable, Asset {
 
         // Update Capacity based on historic amount sold
         if (bidsInSpot > 0) {
-            //double historicCapacityFactorOld = historicGeneratedMW / (maxCapacity * (double) (bidsInSpot / 2.0));
-            historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh * (bidsInSpot / 2.0));
+            //            historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh * (bidsInSpot / 2.0));
+            historicCapacityFactor = historicRevenue / potentialRevenue;
             historicCapacityFactor = (double) Math.round(historicCapacityFactor * 100000d) / 100000d;
 
             if (historicCapacityFactor > 1.0) {
@@ -381,16 +396,11 @@ public class Generator implements java.io.Serializable, Asset {
     }
 
     //returns MW
-    public double computeAvailableCapacity(SimState state, Date currentTime) {
+    public void computeAvailableSolarCapacity(SimState state, Date today, Date currentTime, int currentMonth, double consumption) {
         Gr4spSim data = (Gr4spSim) state;
-        Date today = data.getCurrentSimDate();
-        Calendar c = Calendar.getInstance();
-        c.setTime(today);
-        int currentMonth = c.get(Calendar.MONTH) + 1;
 
         //Solar doesn't use capacity factor, but instead uses the available solar exposure by month
-
-        if (this.getFuelSourceDescriptor().equalsIgnoreCase("Solar") && currentTime != null) {
+        if (currentTime != null) {
             double dollarMWh = 0;
 
             //get Generation in KWh
@@ -408,21 +418,17 @@ public class Generator implements java.io.Serializable, Asset {
             double halfHourGeneration = getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0, this.solarEfficiency);
 
             //Solar capacity is the same as half hour generation in this case. MWh each half hour will be capacity in MW
-            double availableCapacity = halfHourGeneration / (float) 1000.0;
+            availableCapacity = halfHourGeneration / (float) 1000.0;
 
             //Solar suplus as a function of generation and number of units consuming
-            solarSurplusCapacity = availableCapacity - (numUnits * data.getMonthly_consumption_register().get(today) / 1440 );
+            solarSurplusCapacity = availableCapacity - (numUnits * consumption / 1440 );
             if(solarSurplusCapacity < 0 ) solarSurplusCapacity = 0;
 
-            return availableCapacity;
-
         }
-
-        double capacityFactor = getCapacityFactor(currentMonth);
-
-        double availableCapacity = this.getMaxCapacity() * capacityFactor;
-
-        return availableCapacity;
+    }
+    public void computeAvailableCapacity(SimState state, Date today, Date currentTime, int currentMonth) {
+            double capacityFactor = getCapacityFactor(currentMonth);
+            availableCapacity = this.getMaxCapacity() * capacityFactor;
     }
 
     @Override
@@ -468,8 +474,11 @@ public class Generator implements java.io.Serializable, Asset {
         return bidsInSpot;
     }
 
+    //When a Bid is added, keep track of the potential historic revenue;
     public void setBidsInSpot(int bidsInSpot) {
         this.bidsInSpot = bidsInSpot;
+        potentialRevenue += (maxCapacity * priceMinMWh) / 2.0;
+
     }
 
     public int getBidsOffSpot() {
@@ -617,4 +626,10 @@ public class Generator implements java.io.Serializable, Asset {
     public double getPriceMaxMWh() {
         return priceMaxMWh;
     }
+
+    public Boolean getInPrimaryMarket() { return inPrimaryMarket; }
+
+    public Boolean getInSecondaryMarket() { return inSecondaryMarket; }
+
+    public double getAvailableCapacity() { return availableCapacity; }
 }

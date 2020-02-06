@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class SaveData implements Steppable {
+public class SaveData implements Steppable, java.io.Serializable {
 
     public TimeSeriesChartGenerator consumptionChart;
     public TimeSeriesChartGenerator WholesaleChart;
@@ -326,11 +326,11 @@ public class SaveData implements Steppable {
         }
 
         if (data.settings.existsMarket("secondary")) {
-            XYSeries seriesSystemProductionOff = new org.jfree.data.xy.XYSeries(
+            XYSeries seriesSystemProductionSec = new org.jfree.data.xy.XYSeries(
                     "SecondarySpot",
                     false);
-            systemProductionSeries.put(-1, seriesSystemProductionOff);
-            systemProductionAggChart.addSeries(seriesSystemProductionOff, null);
+            systemProductionSeries.put(-1, seriesSystemProductionSec);
+            systemProductionAggChart.addSeries(seriesSystemProductionSec, null);
         }
         if (data.settings.existsOffMarket()) {
 
@@ -770,6 +770,7 @@ public class SaveData implements Steppable {
             // we're in the model thread right now, so we shouldn't directly
             // update the consumptionChart/WholesaleChart/GHGChart/etc.  Instead we request an update to occur the next
             // time that control passes back to the Swing event thread.
+
             consumptionChart.updateChartWithin(simState.schedule.getSteps(), 1000);
             WholesaleChart.updateChartWithin(simState.schedule.getSteps(), 1000);
             TariffUsageChart.updateChartWithin(simState.schedule.getSteps(), 1000);
@@ -1144,7 +1145,7 @@ public class SaveData implements Steppable {
                     XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
                     if (shifttimeseries <= t) {
                         spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
-                        if(spsecondaggitem != null)
+                        if(spsecondaggseries != null)
                             spsecondaggitem = (XYDataItem) spsecondaggseries.getItems().get(t - shifttimeseries);
                         if(sposaggseries != null)
                             sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
