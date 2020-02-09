@@ -159,7 +159,172 @@
 
   <!-- Modules -->
 
-  <import file="${basedir}/module_gr4sp.xml"/>
+
+  <!-- Module gr4sp -->
+
+  <dirname property="module.gr4sp.basedir" file="${ant.file}"/>
+
+
+  <property name="module.jdk.home.gr4sp" value="${jdk.home.11}"/>
+  <property name="module.jdk.bin.gr4sp" value="${jdk.bin.11}"/>
+  <property name="module.jdk.classpath.gr4sp" value="jdk.classpath.11"/>
+
+  <property name="compiler.args.gr4sp" value="-encoding UTF-8 -source 9 -target 9 ${compiler.args}"/>
+
+  <property name="gr4sp.output.dir" value="${module.gr4sp.basedir}/out/production/gr4sp"/>
+  <property name="gr4sp.testoutput.dir" value="${module.gr4sp.basedir}/out/test/gr4sp"/>
+
+  <path id="gr4sp.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+
+  <path id="gr4sp.module.production.classpath">
+    <path refid="${module.jdk.classpath.gr4sp}"/>
+    <pathelement location="${basedir}/../libraries/bsh-2.0b4.jar"/>
+    <pathelement location="${basedir}/../libraries/itext-1.2.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dcore.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dutils.jar"/>
+    <pathelement location="${basedir}/../libraries/jcommon-1.0.21.jar"/>
+    <pathelement location="${basedir}/../libraries/jfreechart-1.0.17.jar"/>
+    <pathelement location="${basedir}/../libraries/jmf.jar"/>
+    <pathelement location="${basedir}/../libraries/mason.19.jar"/>
+    <pathelement location="${basedir}/../libraries/portfolio.jar"/>
+    <pathelement location="${basedir}/../libraries/sqlite-jdbc-3.23.1.jar"/>
+    <pathelement location="${basedir}/../libraries/vecmath.jar"/>
+    <pathelement location="${basedir}/../libraries/postgresql-42.2.6.jar"/>
+    <path refid="library.opencsv-4.6.classpath"/>
+    <pathelement location="${basedir}/../libraries/yamlbeans-1.13.jar"/>
+  </path>
+
+  <path id="gr4sp.runtime.production.module.classpath">
+    <pathelement location="${gr4sp.output.dir}"/>
+    <pathelement location="${basedir}/../libraries/bsh-2.0b4.jar"/>
+    <pathelement location="${basedir}/../libraries/itext-1.2.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dcore.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dutils.jar"/>
+    <pathelement location="${basedir}/../libraries/jcommon-1.0.21.jar"/>
+    <pathelement location="${basedir}/../libraries/jfreechart-1.0.17.jar"/>
+    <pathelement location="${basedir}/../libraries/jmf.jar"/>
+    <pathelement location="${basedir}/../libraries/mason.19.jar"/>
+    <pathelement location="${basedir}/../libraries/portfolio.jar"/>
+    <pathelement location="${basedir}/../libraries/sqlite-jdbc-3.23.1.jar"/>
+    <pathelement location="${basedir}/../libraries/vecmath.jar"/>
+    <pathelement location="${basedir}/../libraries/postgresql-42.2.6.jar"/>
+    <path refid="library.opencsv-4.6.classpath"/>
+    <pathelement location="${basedir}/../libraries/yamlbeans-1.13.jar"/>
+  </path>
+
+  <path id="gr4sp.module.classpath">
+    <path refid="${module.jdk.classpath.gr4sp}"/>
+    <pathelement location="${gr4sp.output.dir}"/>
+    <pathelement location="${basedir}/../libraries/bsh-2.0b4.jar"/>
+    <pathelement location="${basedir}/../libraries/itext-1.2.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dcore.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dutils.jar"/>
+    <pathelement location="${basedir}/../libraries/jcommon-1.0.21.jar"/>
+    <pathelement location="${basedir}/../libraries/jfreechart-1.0.17.jar"/>
+    <pathelement location="${basedir}/../libraries/jmf.jar"/>
+    <pathelement location="${basedir}/../libraries/mason.19.jar"/>
+    <pathelement location="${basedir}/../libraries/portfolio.jar"/>
+    <pathelement location="${basedir}/../libraries/sqlite-jdbc-3.23.1.jar"/>
+    <pathelement location="${basedir}/../libraries/vecmath.jar"/>
+    <pathelement location="${basedir}/../libraries/postgresql-42.2.6.jar"/>
+    <path refid="library.opencsv-4.6.classpath"/>
+    <pathelement location="${basedir}/../libraries/yamlbeans-1.13.jar"/>
+  </path>
+
+  <path id="gr4sp.runtime.module.classpath">
+    <pathelement location="${gr4sp.testoutput.dir}"/>
+    <pathelement location="${gr4sp.output.dir}"/>
+    <pathelement location="${basedir}/../libraries/bsh-2.0b4.jar"/>
+    <pathelement location="${basedir}/../libraries/itext-1.2.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dcore.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dutils.jar"/>
+    <pathelement location="${basedir}/../libraries/jcommon-1.0.21.jar"/>
+    <pathelement location="${basedir}/../libraries/jfreechart-1.0.17.jar"/>
+    <pathelement location="${basedir}/../libraries/jmf.jar"/>
+    <pathelement location="${basedir}/../libraries/mason.19.jar"/>
+    <pathelement location="${basedir}/../libraries/portfolio.jar"/>
+    <pathelement location="${basedir}/../libraries/sqlite-jdbc-3.23.1.jar"/>
+    <pathelement location="${basedir}/../libraries/vecmath.jar"/>
+    <pathelement location="${basedir}/../libraries/postgresql-42.2.6.jar"/>
+    <path refid="library.opencsv-4.6.classpath"/>
+    <pathelement location="${basedir}/../libraries/yamlbeans-1.13.jar"/>
+  </path>
+
+
+  <patternset id="excluded.from.module.gr4sp">
+    <patternset refid="ignored.files"/>
+    <exclude name="out/**"/>
+    <exclude name="out/production/**"/>
+    <exclude name="out/production/gr4sp/**"/>
+    <exclude name="out/production/gr4sp/sim/**"/>
+    <exclude name="out/production/gr4sp/sim/util/**"/>
+    <exclude name="out/production/gr4sp/sim/util/mantissa/**"/>
+    <exclude name="out/production/gr4sp/sim/util/mantissa/linalg/**"/>
+    <exclude name="out/production/gr4sp/sim/field/**"/>
+    <exclude name="out/production/gr4sp/sim/field/network/**"/>
+    <exclude name="out/production/gr4sp/sim/field/network/stats/**"/>
+    <exclude name="out/production/gr4sp/sim/field/network/stats/actorcentrality/**"/>
+    <exclude name="out/production/gr4sp/sim/portrayal/**"/>
+    <exclude name="out/production/gr4sp/sim/portrayal/network/**"/>
+    <exclude name="out/production/gr4sp/sim/portrayal/network/stats/**"/>
+    <exclude name="out/production/gr4sp/core/**"/>
+    <exclude name="out/production/gr4sp/core/images/**"/>
+    <exclude name="out/production/gr4sp/core/Social/**"/>
+    <exclude name="out/production/gr4sp/core/Policies/**"/>
+    <exclude name="out/production/gr4sp/core/settings/**"/>
+    <exclude name="out/production/gr4sp/core/Technical/**"/>
+    <exclude name="out/production/gr4sp/core/Relationships/**"/>
+    <exclude name="out/production/gr4sp/.idea/**"/>
+    <exclude name="out/production/gr4sp/.idea/libraries/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/**"/>
+    <exclude name="out/production/gr4sp/META-INF/**"/>
+  </patternset>
+
+  <patternset id="excluded.from.compilation.gr4sp">
+    <patternset refid="excluded.from.module.gr4sp"/>
+  </patternset>
+
+  <path id="gr4sp.module.sourcepath">
+    <dirset dir="${module.gr4sp.basedir}/../../gr4sp">
+      <include name="src"/>
+    </dirset>
+  </path>
+
+
+  <target name="compile.module.gr4sp" depends="compile.module.gr4sp.production,compile.module.gr4sp.tests" description="Compile module gr4sp"/>
+
+  <target name="compile.module.gr4sp.production" depends="register.custom.compilers" description="Compile module gr4sp; production classes">
+    <mkdir dir="${gr4sp.output.dir}"/>
+    <javac2 destdir="${gr4sp.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.gr4sp}/javac">
+      <compilerarg line="${compiler.args.gr4sp}"/>
+      <bootclasspath refid="gr4sp.module.bootclasspath"/>
+      <classpath refid="gr4sp.module.production.classpath"/>
+      <src refid="gr4sp.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.gr4sp"/>
+    </javac2>
+
+    <copy todir="${gr4sp.output.dir}">
+      <fileset dir="${module.gr4sp.basedir}">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="compile.module.gr4sp.tests" depends="register.custom.compilers,compile.module.gr4sp.production" description="compile module gr4sp; test classes" unless="skip.tests"/>
+
+  <target name="clean.module.gr4sp" description="cleanup module">
+    <delete dir="${gr4sp.output.dir}"/>
+    <delete dir="${gr4sp.testoutput.dir}"/>
+  </target>
 
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
