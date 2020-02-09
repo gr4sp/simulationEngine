@@ -18,7 +18,7 @@ def startJVM():
     with open('settingsExperiments.json') as f:
         settings = json.load(f)
 
-    jvmpath = settings["jvmpath"]
+    jvmpath = settings[ settings["jvmPath"] ]
     gr4spPath = os.getcwd() + "/.."
 
     ## Startup Jpype and import the messaging java package
