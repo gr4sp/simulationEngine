@@ -11,7 +11,7 @@ import java.io.IOException;
  * */
 
 // this custom formatter formats parts of a log record to a single line
-class MyHtmlFormatter extends Formatter {
+class MyHtmlFormatter extends Formatter implements java.io.Serializable {
     // this method is called for every log records
     public String format(LogRecord rec) {
         StringBuffer buf = new StringBuffer(1000);
@@ -73,7 +73,7 @@ class MyHtmlFormatter extends Formatter {
     }
 }
 
-public class Gr4spLogger {
+public class Gr4spLogger implements java.io.Serializable {
     static private FileHandler fileTxt;
     static private SimpleFormatter formatterTxt;
 

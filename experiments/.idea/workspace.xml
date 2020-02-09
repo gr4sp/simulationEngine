@@ -2,8 +2,58 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d475c5da-1907-4d8f-9003-cc7c3d3fc882" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../notebookGr4sp/ema_import_from_gr4sp.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/core/InspectedNetworkWithUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Actor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/ActorActorRelationship.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/ActorActorRelationshipType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/ActorAssetRelationship.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/ActorAssetRelationshipType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/ActorType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Asset.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/BusinessStructure.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/ConnectionPoint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/ConsumptionActor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/ConsumptionProfile.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Enduse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Generator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/GovRole.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Gr4spSim.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Gr4spSimUI$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Gr4spSimUI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Gr4spUI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Household.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Market.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/NetworkAssets.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/OwnershipModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/SocialOrgStructure.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/SocialOrganisations.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Spm.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/Storage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/images/Parkville_SA1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/core/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/gr4sp.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/out/production/gr4sp/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/out/production/gr4sp/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/out/production/gr4sp/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/out/production/gr4sp/core/images/Parkville_SA1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/out/production/gr4sp/core/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bin/out/production/gr4sp/gr4sp.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimData2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimData2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlyGensCapFactorInSpot2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlyGensCapFactorOFFspot2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlySummary2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlySummary2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlySystemProductionInSpot2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlySystemProductionInSpot2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataMonthlySystemProductionOFFspot2019-11-25-19_53_41.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataYearSummary2019-11-25-00_52_11.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/BAUVIC - fullSim - 2019-11-25/BAUVICSimDataYearSummary2019-11-25-19_53_41.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-25-00_52_11.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-25-19_53_41.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimData2019-11-26-00_43_16.csv" beforeDir="false" />
@@ -67,9 +117,60 @@
       <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-01_31_28.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-01_33_29.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../csv/BAUVIC/BAUVICSimDataYearSummary2019-11-26-01_38_56.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/Central_ISPConsumptionScenario/SimData2019-11-14-21_41_25.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/Central_ISPConsumptionScenario/SimDataMonthlySummary2019-11-14-21_41_25.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/Central_ISPConsumptionScenario/SimDataYearSummary2019-11-14-21_41_25.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/FastChange_ISPConsumptionScenario/SimData2019-11-14-21_47_54.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/FastChange_ISPConsumptionScenario/SimDataMonthlySummary2019-11-14-21_47_54.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/FastChange_ISPConsumptionScenario/SimDataYearSummary2019-11-14-21_47_54.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/HighDER_ISPConsumptionScenario/SimData2019-11-14-21_54_01.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/HighDER_ISPConsumptionScenario/SimDataMonthlySummary2019-11-14-21_54_01.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/HighDER_ISPConsumptionScenario/SimDataYearSummary2019-11-14-21_54_01.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/SimData2019-11-24-20_36_37.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/SimDataMonthlyGensCapFactorInSpot2019-11-24-20_36_37.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/SimDataMonthlyGensCapFactorOFFspot2019-11-24-20_36_37.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/SimDataMonthlySummary2019-11-24-20_36_37.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/SimDataYearSummary2019-11-24-20_36_37.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/SlowChange_ISPConsumptionScenario/SimData2019-11-14-10_03_06.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/SlowChange_ISPConsumptionScenario/SimDataMonthlySummary2019-11-14-10_03_06.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/SlowChange_ISPConsumptionScenario/SimDataYearSummary2019-11-14-10_03_06.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/StepChange_ISPConsumptionScenario/SimData2019-11-14-21_58_42.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/StepChange_ISPConsumptionScenario/SimDataMonthlySummary2019-11-14-21_58_42.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../csv/StepChange_ISPConsumptionScenario/SimDataYearSummary2019-11-14-21_58_42.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/.idea/emaWorkbench.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/.idea/other.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/analyzeExperiments.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/connector.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/pic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../emaWorkbench/runExperiments.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analyzeExperiments.py" beforeDir="false" afterPath="$PROJECT_DIR$/analyzeExperiments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/salib_samplers.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/salib_samplers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connector.py" beforeDir="false" afterPath="$PROJECT_DIR$/connector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gr4spModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/gr4spModel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/EE__sigma_mu_star_V2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/EE__sigma_mu_star_V2.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_GHGYear_filtered.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_GHGYear_filtered.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_offSpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_offSpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_offSpotProductionYear_filtered.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_offSpotProductionYear_filtered.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_primarySpotProductionYear_filtered.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_primarySpotProductionYear_filtered.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_rooftopPVProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_rooftopPVProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_rooftopPVProductionYear_filtered.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_rooftopPVProductionYear_filtered.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_secondarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_secondarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_secondarySpotProductionYear_filtered.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_secondarySpotProductionYear_filtered.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_tariffsYear_filtered.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_tariffsYear_filtered.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_wholesalePriceYear_filtered.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_wholesalePriceYear_filtered.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/runExperiments.py" beforeDir="false" afterPath="$PROJECT_DIR$/runExperiments.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/BAUVIC full sim - 2019-11-25/GenCapFactorsOffSpot2019-11-25-19_53_42.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../plots/BAUVIC full sim - 2019-11-25/GenCapFactorsSpot2019-11-25-19_53_42.png" beforeDir="false" />
@@ -308,28 +409,44 @@
       <change beforePath="$PROJECT_DIR$/../src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/core/Gr4spLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/Gr4spLogger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/Gr4spSim.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/core/LoadData.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/LoadData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/core/Relationships/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/Relationships/Arena.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/core/SaveData.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/SaveData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/core/Technical/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/Technical/Generator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/settings/BAUVIC.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/core/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/settings/Settings.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Gr4spLogger.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Gr4spLogger.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Gr4spSim.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Gr4spSim.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Gr4spSimUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Gr4spSimUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/LoadData.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/LoadData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/MyHtmlFormatter.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/MyHtmlFormatter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/MySecurityManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/MySecurityManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Policies/AccelerateSolarPV.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Policies/AccelerateSolarPV.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Policies/SimPolicies.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Policies/SimPolicies.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/ActorActorRelationship.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/ActorActorRelationship.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/ActorAssetRelationship.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/ActorAssetRelationship.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Arena$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Arena$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Arena.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Arena.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Bid.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Bid.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Contract.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Contract.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Market.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/Market.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/MeritOrder.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Relationships/MeritOrder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/SaveData.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/SaveData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Social/EndUserProfile.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Social/EndUserProfile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Social/EndUserUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Social/EndUserUnit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Technical/Generation.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Technical/Generation.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Technical/Generator.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Technical/Generator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Technical/Spm.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/Technical/Spm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/ArenaSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/ArenaSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/BAUVIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/EmissionFactor.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/EmissionFactor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/ForecastSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/ForecastSetting.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/GeneratorSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/GeneratorSettings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/PolicySettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/PolicySettings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/PopulationSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/PopulationSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/ScenarioSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/ScenarioSetting.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/Settings.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/Settings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/SimulationDatesSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/SimulationDatesSettings.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/TariffSettings.class" beforeDir="false" afterPath="$PROJECT_DIR$/../src/out/production/gr4sp/core/settings/TariffSettings.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -347,17 +464,10 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>TimeSeriesOutcome</find>
-      <find>shutdownJVM</find>
-      <find>l</find>
-      <find>loggin</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="JupyterTrust" id="65719883-4c47-4024-b29d-d82b40acc990" />
   <component name="ProjectId" id="1WjLEdeKwEBHRLuij3oBRTD59AO" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -366,12 +476,13 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../jupyter_notebooks/ema_import_from_matisse.ipynb" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -505,11 +616,86 @@
       <workItem from="1579147598947" duration="10577000" />
       <workItem from="1579182554936" duration="10864000" />
       <workItem from="1579657948319" duration="6106000" />
+      <workItem from="1580120863205" duration="7659000" />
+      <workItem from="1580169347142" duration="2265000" />
+      <workItem from="1580171719962" duration="6777000" />
+      <workItem from="1580190175565" duration="11718000" />
+      <workItem from="1580265264721" duration="2618000" />
+      <workItem from="1580338706184" duration="1105000" />
+      <workItem from="1580348877718" duration="3000" />
+      <workItem from="1580390108519" duration="5968000" />
+      <workItem from="1580808835965" duration="5970000" />
+      <workItem from="1580913067788" duration="1125000" />
+      <workItem from="1580985944747" duration="1076000" />
+      <workItem from="1580987116183" duration="6520000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="360" y="70" key="#Inspections" timestamp="1580348452811">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="360" y="70" key="#Inspections/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580348452811" />
+    <state width="1459" height="466" key="DebuggerActiveHint" timestamp="1580123105573">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1459" height="466" key="DebuggerActiveHint/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1580123105573" />
+    <state width="1875" height="303" key="GridCell.Tab.0.bottom" timestamp="1581038667823">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1875" height="303" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581038667823" />
+    <state width="1491" height="303" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176363731" />
+    <state width="1875" height="303" key="GridCell.Tab.0.center" timestamp="1581038667822">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1875" height="303" key="GridCell.Tab.0.center/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581038667822" />
+    <state width="1491" height="303" key="GridCell.Tab.0.center/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176363731" />
+    <state width="1875" height="303" key="GridCell.Tab.0.left" timestamp="1581038667822">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1875" height="303" key="GridCell.Tab.0.left/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581038667822" />
+    <state width="1491" height="303" key="GridCell.Tab.0.left/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176363731" />
+    <state width="1875" height="303" key="GridCell.Tab.0.right" timestamp="1581038667823">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1875" height="303" key="GridCell.Tab.0.right/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581038667823" />
+    <state width="1491" height="303" key="GridCell.Tab.0.right/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176363731" />
+    <state width="1875" height="303" key="GridCell.Tab.1.bottom" timestamp="1581038704401">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1875" height="303" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581038704401" />
+    <state width="1491" height="303" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176401655" />
+    <state width="1875" height="303" key="GridCell.Tab.1.center" timestamp="1581038704401">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1875" height="303" key="GridCell.Tab.1.center/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581038704401" />
+    <state width="1491" height="303" key="GridCell.Tab.1.center/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176401654" />
+    <state width="1875" height="303" key="GridCell.Tab.1.left" timestamp="1581038704401">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1875" height="303" key="GridCell.Tab.1.left/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581038704401" />
+    <state width="1491" height="303" key="GridCell.Tab.1.left/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176401654" />
+    <state width="1875" height="303" key="GridCell.Tab.1.right" timestamp="1581038704401">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="1875" height="303" key="GridCell.Tab.1.right/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581038704401" />
+    <state width="1491" height="303" key="GridCell.Tab.1.right/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176401654" />
+    <state x="-1395" y="-296" key="SettingsEditor" timestamp="1580121803981">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state x="-1395" y="-296" key="SettingsEditor/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1580121803981" />
+    <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1580815403150">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1580815403150" />
+    <state width="775" height="419" key="XDebugger.FullValuePopup/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580173281798" />
+    <state x="-1297" y="-204" width="672" height="678" key="search.everywhere.popup" timestamp="1580214729578">
+      <screen x="-1920" y="-429" width="1920" height="1040" />
+    </state>
+    <state x="-1297" y="-204" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1580214729578" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -529,6 +715,31 @@
           <line>23</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/callbacks.py</url>
+          <line>208</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/callbacks.py</url>
+          <line>223</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/connector.py</url>
+          <line>249</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/salib_samplers.py</url>
+          <line>137</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py</url>
+          <line>388</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/../notebooks/ema_import_from_matisse.ipynb</url>
           <line>401</line>
@@ -543,18 +754,16 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self.categories[index]" language="Python" />
+        <watch expression="self.policy" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/experiments$runExperiments.coverage" NAME="runExperiments Coverage Results" MODIFIED="1581038667429" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/emaWorkbench$analyzeExperiments.coverage" NAME="analyzeExperiments Coverage Results" MODIFIED="1576635416654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/emaWorkbench$runExperiments.coverage" NAME="runExperiments Coverage Results" MODIFIED="1579076110610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="watch">
-      <expression>
-        <expression-string>_jpype</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
   </component>
 </project>

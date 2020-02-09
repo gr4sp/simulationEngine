@@ -3,8 +3,8 @@ folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
 simulationDates:
 
   # Simulation Date Range
-  startDate:  2017-01-01
-  endDate: 2026-01-01
+  startDate:  1998-01-01
+  endDate: 2036-01-01
 
   # Spot Market Start Date
   startDateSpotMarket: 1999-01-01
@@ -37,13 +37,18 @@ forecast:
     consumption: Central # consumptions = OpSentOut + PV + EE + ONSG
     energyEfficiency: Central # consumption = consumption - EE
     onsiteGeneration: Central # consumption = consumption - ONSG
-    solarUptake: Slow change
+    solarUptake: Central #Slow change
 
   baseYear: 2018
+
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
-  annualCpi: 0.019
+
+  #This is applied to the tariffs. If price rises in year baseYear+1 2% and annualCpi=0.02 and inflation=0.01, then it will appear as 0.1 wrt the price as in baseYear.
+  #AnnualCPI corrects the value given as inflation below.
+  annualCpi: 0.03
+
   #true means new generation that has been publically announced but not committed is included.
-  IncludePublicallyAnnouncedGen: true
+  includePublicallyAnnouncedGen: true
   #Rollout period of announced generation: including "Publically announced", "Emerging", "Committed",
   # and "In Commissioning". This are all the projects that are on their way to be integrated in the generation pool but haven't
   # start operating
@@ -58,17 +63,19 @@ forecast:
   #improves capacity factors of renewable technologies by a constant factor every year (Wind, added to cap factor [0,0.5], Solar, solarEfficiency losses [0.7,1])
   technologicalImprovement: 0.0
 
+  learningCurve: 0.00
+
+  #size of solar systems capacity. Used to estimate number of units installed from the forecasted MW solar uptake
+  solarInstallCapacity: 6.3
+
 
 policy:
-  # goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
-  # for example, 0.01 represents 1% per month, around 12% a year
-  uptakeRate: 0.0 # not yet implemented
 
   # Consumers will choose the Best (MIN), Worst (MAX), Random (RND), Average (AVG) available retail price
   endConsumerTariff: AVG
 
   # Apply inflation to the max and min value used by generators to define the LCOE
-  annualInflation: 0.0
+  annualInflation: 0.03
 
 # market settings
 arena:
@@ -79,7 +86,7 @@ arena:
     minCapMarketGen: 30
   semiScheduled:
     spotMarket: none
-    minCapMarketGen: 0.1
+    minCapMarketGen: 0.1 #0.1
   nonScheduled:
     spotMarket: none
     minCapMarketGen: 0.1
@@ -92,12 +99,13 @@ generators:
   # Fuel Oil, Gaseous fossil fuels - other, Green and air dried wood, Kerosene, Landfill Gas, Landfill Methane / Landfill Gas,
   # Default parametres are used for generators with minimum participation (less than 2 generators of this type).
   # E.g. Municipal Solid Waste, Bagasse, other. Default will be similar to other Biomass numbers e.g. Dry Wood
-  #
+
+  #TODO: battery storage LCOE? only discharge
+
   Default:
     #LCOE Price Parameters
     priceMinMWh: 0
     priceMaxMWh: 0
-    priceRateParameterMWh: 0
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -109,12 +117,27 @@ generators:
         linRateEF: 0.01
         expRateEF: 0.151
 
+  # LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11
+  Battery:
+    #LCOE Price Parameters
+    priceMinMWh: 200
+    priceMaxMWh: 300
+    # Capacity Factor
+    minCapacityFactor: 0
+    maxCapacityFactor: 0.9
+    maxCapacityFactorSummer: 0
+    # Emission Factor List, by increasing start year.
+    emissionFactors:
+      - startYear: 1800
+        minEF: 0.00
+        linRateEF: 0.0
+        expRateEF: 0.0
+
   # usual CO2EII for landfill biogas methane: 0.062
   Biogas:
     #LCOE Price Parameters
-    priceMinMWh: 0
-    priceMaxMWh: 0
-    priceRateParameterMWh: 0
+    priceMinMWh: 14
+    priceMaxMWh: 40
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -129,10 +152,9 @@ generators:
   # Fuel bucket: Other
   # usual CO2EII Diesel oil: 0.957
   Diesel:
-    #LCOE Price Parameters
-    priceMinMWh: 0
-    priceMaxMWh: 0
-    priceRateParameterMWh: 0
+    #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
+    priceMinMWh: 250
+    priceMaxMWh: 300
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -148,7 +170,6 @@ generators:
     #LCOE Price Parameters
     priceMinMWh: 0
     priceMaxMWh: 0
-    priceRateParameterMWh: 0
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -163,9 +184,8 @@ generators:
   # usual CO2EII for landfill biogas methane: 0.062
   Landfill:
     #LCOE Price Parameters
-    priceMinMWh: 0
-    priceMaxMWh: 0
-    priceRateParameterMWh: 0
+    priceMinMWh: 14
+    priceMaxMWh: 40
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -181,7 +201,6 @@ generators:
     #LCOE Price Parameters
     priceMinMWh: 15
     priceMaxMWh: 80
-    priceRateParameterMWh: 7
     # Capacity Factor
     minCapacityFactor: 0.47
     maxCapacityFactor: 0.9
@@ -201,7 +220,6 @@ generators:
     #LCOE Price Parameters
     priceMinMWh: 63
     priceMaxMWh: 800
-    priceRateParameterMWh: 5
     # Capacity Factor
     minCapacityFactor: 0.08
     maxCapacityFactor: 0.26   #0.928 works. 30% in LCOE report truncation assuming more usage of this tech
@@ -217,7 +235,6 @@ generators:
     #LCOE Price Parameters
     priceMinMWh: 58
     priceMaxMWh: 300
-    priceRateParameterMWh: 5
     # Capacity Factor
     minCapacityFactor: 0.22
     maxCapacityFactor: 0.64
@@ -230,13 +247,13 @@ generators:
         expRateEF: 0.151
 
   Wind:
-    #LCOE Price Parameters
-    priceMinMWh: 20
+    #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
+
+    priceMinMWh: 80
     priceMaxMWh: 200
-    priceRateParameterMWh: 7
     # Capacity Factor
     minCapacityFactor: 0.28
-    maxCapacityFactor: 0.38 # in LCOE repoert this is truncated at 50% assuming improvements in technology and costs
+    maxCapacityFactor: 0.38 # in LCOE report this is truncated at 50% assuming improvements in technology and costs
     maxCapacityFactorSummer: 0.38
     # Emission Factor, by increasing start year
     emissionFactors:
@@ -249,7 +266,6 @@ generators:
     #LCOE Price Parameters
     priceMinMWh: 22
     priceMaxMWh: 150
-    priceRateParameterMWh: 7
     # Capacity Factor
     minCapacityFactor: 0.05
     maxCapacityFactor: 0.90
@@ -261,8 +277,21 @@ generators:
         linRateEF: 0
         expRateEF: 0
 
-
-
+  Solar:
+    #TODO: Solar. According to LCOE report, varies from 12% to 26%. But they truncated solar at 40 and wind at 50
+    #LCOE Price Parameters
+    priceMinMWh: 100
+    priceMaxMWh: 170
+    # Capacity Factor
+    minCapacityFactor: 0.10
+    maxCapacityFactor: 0.25
+    maxCapacityFactorSummer: 0.4
+    # Emission Factor, by increasing start year
+    emissionFactors:
+      - startYear: 1800
+        minEF: 0
+        linRateEF: 0
+        expRateEF: 0
 
 
 tariffs:
@@ -308,6 +337,3 @@ tariffs:
 #  double ninv_sb: 1 - 0.01
 
 #some settings to change the extra charge for: network (transmission and distribution charges), jurisdictional charges (environemntal costs, including FiTs) and retail service costs.
-
-    #TODO: Solar. According to LCOE report, varies from 12% to 26%. But they truncated solar at 40 and wind at 50
-    #TODO: battery storage LCOE? only discharge
