@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.16">
     <root id="1">
       <ServerVersion>11.4</ServerVersion>
-      <StartupTime>1576185223</StartupTime>
+      <StartupTime>1579144451</StartupTime>
     </root>
     <database id="2" parent="1" name="flaskapp">
       <ObjectId>16730</ObjectId>
@@ -14,12 +14,12 @@
       <ObjectId>13012</ObjectId>
       <Comment>default administrative connection database</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4876</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4927</IntrospectionStateNumber>
       <Current>1</Current>
-      <Relations>sequence|table|16652|16654|1
-sequence|table|16770|16667|1
-sequence|table|16745|16747|1
+      <Relations>sequence|table|16770|16667|1
 sequence|table|33216|33218|1
+sequence|table|16745|16747|1
+sequence|table|16652|16654|1
 </Relations>
     </database>
     <role id="4" parent="1" name="pg_execute_server_program">
@@ -59,26 +59,27 @@ sequence|table|33216|33218|1
       <ObjectId>12716</ObjectId>
       <StateNumber>366</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4877</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4928</IntrospectionStateNumber>
     </schema>
     <schema id="14" parent="3" name="other_data">
       <ObjectId>33190</ObjectId>
       <StateNumber>2881</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4873</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4929</IntrospectionStateNumber>
     </schema>
     <schema id="15" parent="3" name="pg_catalog">
       <ObjectId>11</ObjectId>
       <Comment>system catalog schema</Comment>
       <StateNumber>359</StateNumber>
       <Owner>postgres</Owner>
+      <IntrospectionStateNumber>4930</IntrospectionStateNumber>
     </schema>
     <schema id="16" parent="3" name="public">
       <ObjectId>2200</ObjectId>
       <Comment>standard public schema</Comment>
       <StateNumber>360</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>4875</IntrospectionStateNumber>
+      <IntrospectionStateNumber>4931</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="17" parent="3" name="btree">
