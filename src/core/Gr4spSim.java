@@ -217,8 +217,15 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
             String pathSRC = Paths.get(".").toAbsolutePath().normalize().toString();
             yamlFileName = "BAUVIC";
-            String folderYaml = pathSRC+"\\core\\settings";
-            YamlReader reader = new YamlReader(new FileReader(folderYaml+"\\"+yamlFileName+".yaml"));
+            String sysName = System.getProperty("os.name");
+
+            String folderYaml = pathSRC;
+            if( System.getProperty("os.name").contains("Windows") )
+                folderYaml+="\\core\\settings\\"+yamlFileName+".yaml";
+            else
+                folderYaml+="/core/settings/"+yamlFileName+".yaml";
+
+            YamlReader reader = new YamlReader(new FileReader(folderYaml));
 
             settings = reader.read(Settings.class);
 
