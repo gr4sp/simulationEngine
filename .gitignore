@@ -20,6 +20,7 @@
 *.zip
 *.tar.gz
 *.rar
+*.pyc
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
@@ -32,3 +33,5 @@ src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml
 src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta
 *.meta
 src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml
+experiments/__pycache__/connector.cpython-37.pyc
+experiments/.idea/inspectionProfiles/Project_Default.xml
