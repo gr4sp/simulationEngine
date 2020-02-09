@@ -27,6 +27,7 @@ experiments/notebooksMatisse/.idea/modules.xml
 experiments/notebooksMatisse/.idea/notebooks.iml
 experiments/notebooksMatisse/.idea/vcs.xml
 experiments/notebooksMatisse/ema_import_from_matisse.ipynb
-logs
-plots
-csv/*
+logs/
+plots/
+csv/
+bin/
