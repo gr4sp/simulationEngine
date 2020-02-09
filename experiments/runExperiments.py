@@ -1,5 +1,6 @@
-import sys
-sys.path.append(r'C:\Users\angel\Documents\GitHub\gr4sp\experiments\EMAworkbench')
+import os, sys
+
+sys.path.append(r'{}\EMAworkbench'.format(os.getcwd()))
 
 from gr4spModel import getModel
 from datetime import date
