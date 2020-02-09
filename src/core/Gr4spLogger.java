@@ -1,5 +1,6 @@
 package core;
 
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
@@ -80,7 +81,7 @@ public class Gr4spLogger implements java.io.Serializable {
     static private FileHandler fileHTML;
     static private Formatter formatterHTML;
 
-    static public void setup(String outputID) throws IOException {
+    static public void setup(String outputID, String folderLogs) throws IOException {
 
         // get the global logger to configure it
         Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -94,7 +95,10 @@ public class Gr4spLogger implements java.io.Serializable {
 
         logger.setLevel(Level.INFO);
 
-        String folderLogs = "C:\\Users\\angel\\Documents\\GitHub\\gr4sp\\logs\\";
+        if( System.getProperty("os.name").contains("Windows") )
+            folderLogs += "\\logs\\";
+        else
+            folderLogs += "/logs/";
 
         fileTxt = new FileHandler(folderLogs+"Logging" + outputID + ".txt");
         fileHTML = new FileHandler(folderLogs+"Logging" + outputID + ".html");
