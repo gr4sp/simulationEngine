@@ -12,6 +12,7 @@ import sim.field.network.Network;
 //import sim.util.Double2D;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.security.Permission;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -214,8 +215,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             //Setup logging level
             LOGGER.setLevel(Level.OFF); //WARNING
 
+            String pathSRC = Paths.get(".").toAbsolutePath().normalize().toString();
             yamlFileName = "BAUVIC";
-            String folderYaml = "C:\\Users\\angel\\Documents\\GitHub\\gr4sp\\src\\core\\settings";
+            String folderYaml = pathSRC+"\\core\\settings";
             YamlReader reader = new YamlReader(new FileReader(folderYaml+"\\"+yamlFileName+".yaml"));
 
             settings = reader.read(Settings.class);
