@@ -31,3 +31,8 @@ logs/
 plots/
 csv/
 bin/
+src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml
+src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml
+src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/other_data.eRMc9Q.meta
+*.meta
+src/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca.xml

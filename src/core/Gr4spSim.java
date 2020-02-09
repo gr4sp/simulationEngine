@@ -9,10 +9,9 @@ import core.settings.Settings;
 import sim.engine.*;
 import sim.field.continuous.Continuous2D;
 import sim.field.network.Network;
-import sim.util.Double2D;
+//import sim.util.Double2D;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.security.Permission;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -40,13 +39,13 @@ class MySecurityManager extends SecurityManager {
     }
 }
 
-public class Gr4spSim extends SimState {
+public class Gr4spSim extends SimState implements java.io.Serializable {
     private static final long serialVersionUID = 1;
 
     public final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 
-    public Continuous2D layout;
+    //public Continuous2D layout;
 //    SocialNetworkInspector networkInspector = new SocialNetworkInspector();
 //    public Network actorsNetwork = new Network();
 
@@ -128,7 +127,7 @@ public class Gr4spSim extends SimState {
     //Area Code for Simulation [M1,M2,R1,R2]
     private String areaCode;
 
-    //Poplation percentage over VIC population
+    //Population percentage over VIC population
     private double populationPercentageAreacCode;
 
     //Max num Dwellings in ConsumerUnit
@@ -199,7 +198,7 @@ public class Gr4spSim extends SimState {
         maximum_demand_forecast_register = new HashMap<>();
         minimum_demand_forecast_register = new HashMap<>();
 
-        layout = new Continuous2D(10.0, 600.0, 600.0);
+        //layout = new Continuous2D(10.0, 600.0, 600.0);
         policies = new SimPolicies();
 
         simulParametres();
@@ -495,18 +494,18 @@ public class Gr4spSim extends SimState {
     }
 
 
-    void addSPMLocation(Spm s, Double2D loc, double diameter) {
-        layout.setObjectLocation(s, loc);
-        Double2D shift = new Double2D(10, 10);
-
-
-        for (Spm spmc : s.getSpms_contained()) {
-            spmc.diameter = diameter - 10;
-            addSPMLocation(spmc, loc, spmc.diameter);
-            loc = loc.add(shift);
-
-        }
-    }
+//    void addSPMLocation(Spm s, Double2D loc, double diameter) {
+//        //layout.setObjectLocation(s, loc);
+//        Double2D shift = new Double2D(10, 10);
+//
+//
+//        for (Spm spmc : s.getSpms_contained()) {
+//            spmc.diameter = diameter - 10;
+//            addSPMLocation(spmc, loc, spmc.diameter);
+//            loc = loc.add(shift);
+//
+//        }
+//    }
 
 
     void addNewActorActorRel(Actor act1, Actor act2, ActorActorRelationshipType type) {
@@ -646,18 +645,18 @@ public class Gr4spSim extends SimState {
              **/
 
             //Add Random Location of EU in the layout
-            Double2D euLoc = new Double2D((i * 80) % 1600, (i / 20 + 1) * 80);
-            layout.setObjectLocation(actor, euLoc);
-
-            //Use same Loc for the SPM
-            Double2D spmLoc = new Double2D(euLoc.x + 0, euLoc.y + 0);
-            for (ActorAssetRelationship rel : actor.assetRelationships) {
-                //Add all SPMs location for this EU recursively, decreasing the diameter and
-                //shifting when more than one smp is contained
-                //Only draw SPMs in the meantime
-                if (rel.getAsset() instanceof Spm)
-                    addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
-            }
+//            Double2D euLoc = new Double2D((i * 80) % 1600, (i / 20 + 1) * 80);
+//            layout.setObjectLocation(actor, euLoc);
+//
+//            //Use same Loc for the SPM
+//            Double2D spmLoc = new Double2D(euLoc.x + 0, euLoc.y + 0);
+//            for (ActorAssetRelationship rel : actor.assetRelationships) {
+//                //Add all SPMs location for this EU recursively, decreasing the diameter and
+//                //shifting when more than one smp is contained
+//                //Only draw SPMs in the meantime
+//                if (rel.getAsset() instanceof Spm)
+//                    addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
+//            }
 
 
         }
@@ -827,18 +826,18 @@ public class Gr4spSim extends SimState {
              **/
 
             //Add Random Location of EU in the layout
-            Double2D euLoc = new Double2D((i * 80) % 1600, (i / 20 + 1) * 80);
-            layout.setObjectLocation(actor, euLoc);
-
-            //Use same Loc for the SPM
-            Double2D spmLoc = new Double2D(euLoc.x + 0, euLoc.y + 0);
-            for (ActorAssetRelationship rel : actor.assetRelationships) {
-                //Add all SPMs location for this EU recursively, decreasing the diameter and
-                //shifting when more than one smp is contained
-                //Only draw SPMs in the meantime
-                if (rel.getAsset() instanceof Spm)
-                    addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
-            }
+//            Double2D euLoc = new Double2D((i * 80) % 1600, (i / 20 + 1) * 80);
+//            layout.setObjectLocation(actor, euLoc);
+//
+//            //Use same Loc for the SPM
+//            Double2D spmLoc = new Double2D(euLoc.x + 0, euLoc.y + 0);
+//            for (ActorAssetRelationship rel : actor.assetRelationships) {
+//                //Add all SPMs location for this EU recursively, decreasing the diameter and
+//                //shifting when more than one smp is contained
+//                //Only draw SPMs in the meantime
+//                if (rel.getAsset() instanceof Spm)
+//                    addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
+//            }
 
 
         }
@@ -897,11 +896,126 @@ public class Gr4spSim extends SimState {
 //        System.out.println(numActiveActors);
 //    }
 
+    private void serialize(){
+
+        HashMap<String, Object> dataToSerialize = new HashMap<String, Object>();
+        dataToSerialize.put("spm_register", spm_register);
+        dataToSerialize.put("gen_register", gen_register);
+        dataToSerialize.put("network_register", network_register);
+        dataToSerialize.put("actor_register", actor_register);
+        dataToSerialize.put("arena_register", arena_register);
+
+        dataToSerialize.put("halfhour_demand_register", halfhour_demand_register);
+        dataToSerialize.put("maximum_demand_forecast_register", maximum_demand_forecast_register);
+        dataToSerialize.put("minimum_demand_forecast_register", minimum_demand_forecast_register);
+
+        dataToSerialize.put("annual_forecast_consumption_register", annual_forecast_consumption_register);
+        dataToSerialize.put("annual_forecast_rooftopPv_register", annual_forecast_rooftopPv_register);
+        dataToSerialize.put("monthly_consumption_register", monthly_consumption_register);
+        dataToSerialize.put("total_monthly_consumption_register", total_monthly_consumption_register);
+
+        dataToSerialize.put("monthly_generation_register", monthly_generation_register);
+        dataToSerialize.put("monthly_domestic_consumers_register", monthly_domestic_consumers_register);
+        dataToSerialize.put("cpi_conversion", cpi_conversion);
+        dataToSerialize.put("monthly_solar_exposure", monthly_solar_exposure);
+        dataToSerialize.put("halfhour_solar_exposure", halfhour_solar_exposure);
+
+        dataToSerialize.put("solar_number_installs", solar_number_installs);
+        dataToSerialize.put("solar_aggregated_kw", solar_aggregated_kw);
+        dataToSerialize.put("solar_system_capacity_kw", solar_system_capacity_kw);
+
+        dataToSerialize.put("numGenerators", numGenerators);
+        dataToSerialize.put("numStorage", numStorage);
+        dataToSerialize.put("numGrid", numGrid);
+        dataToSerialize.put("numcpoints", numcpoints);
+        dataToSerialize.put("numOrg", numOrg);
+        dataToSerialize.put("numActors", numActors);
+
+        dataToSerialize.put("consumptionActors", consumptionActors);
+        dataToSerialize.put("conventionalConsumptionActors", conventionalConsumptionActors);
+        dataToSerialize.put("nonConventionalConsumptionActors", nonConventionalConsumptionActors);
+        dataToSerialize.put("actorActorRelationships", actorActorRelationships);
+        dataToSerialize.put("actorAssetRelationships", actorAssetRelationships);
+
+
+
+
+         try {
+            FileOutputStream fileOut = new FileOutputStream(this.settings.folderOutput+"/SimStateDB.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(dataToSerialize);
+            out.close();
+            fileOut.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    private void deserialize(){
+
+        try {
+
+            FileInputStream fis = new FileInputStream(this.settings.folderOutput+"/SimStateDB.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            HashMap<String,Object> retreived = (HashMap<String,Object>)ois.readObject();
+            fis.close();
+
+            spm_register = (HashMap<Integer, Vector<Spm>> ) retreived.get("spm_register");
+
+            gen_register = (HashMap<Integer, Vector<Generator>> ) retreived.get("gen_register");
+            network_register = (HashMap<Integer, Vector<NetworkAssets>> ) retreived.get("network_register");
+            actor_register = (HashMap<Integer, Actor>) retreived.get("actor_register");
+            arena_register = (HashMap<Integer, Arena>) retreived.get("arena_register");
+
+            halfhour_demand_register = (HashMap<Date, Double>) retreived.get("halfhour_demand_register");
+            maximum_demand_forecast_register = (HashMap<Integer, Float> ) retreived.get("maximum_demand_forecast_register");
+            minimum_demand_forecast_register = (HashMap<Integer, Float> ) retreived.get("minimum_demand_forecast_register");
+            annual_forecast_consumption_register = (HashMap<Integer, Float> ) retreived.get("annual_forecast_consumption_register");
+            annual_forecast_rooftopPv_register = (HashMap<Integer, Float> ) retreived.get("annual_forecast_rooftopPv_register");
+
+            monthly_consumption_register = (HashMap<Date, Double>) retreived.get("monthly_consumption_register");
+            total_monthly_consumption_register = (HashMap<Date, Double>) retreived.get("total_monthly_consumption_register");
+
+            monthly_generation_register = (HashMap<Date, Generation>) retreived.get("monthly_generation_register");
+            monthly_domestic_consumers_register = (HashMap<Date, Integer>) retreived.get("monthly_domestic_consumers_register");
+            cpi_conversion = (HashMap<Date, Float>) retreived.get("cpi_conversion");
+            monthly_solar_exposure = (HashMap<Date, Float>) retreived.get("monthly_solar_exposure");
+            halfhour_solar_exposure = (HashMap<Date, Float>) retreived.get("halfhour_solar_exposure");
+
+            solar_number_installs = (HashMap<Date, Integer>) retreived.get("solar_number_installs");
+            solar_aggregated_kw = (HashMap<Date, Integer>) retreived.get("solar_aggregated_kw");
+            solar_system_capacity_kw = (HashMap<Date, Float>) retreived.get("solar_system_capacity_kw");
+
+            numGenerators = (int) retreived.get("numGenerators");
+            numStorage = (int) retreived.get("numStorage");
+            numGrid = (int) retreived.get("numGrid");
+            numcpoints = (int) retreived.get("numcpoints");
+            numOrg = (int) retreived.get("numOrg");
+            numActors = (int) retreived.get("numActors");
+
+
+            consumptionActors = (ArrayList<EndUserActor>) retreived.get("consumptionActors");
+            conventionalConsumptionActors = (ArrayList<EndUserActor>) retreived.get("conventionalConsumptionActors");
+            nonConventionalConsumptionActors = (ArrayList<EndUserActor>) retreived.get("nonConventionalConsumptionActors");
+            actorActorRelationships = (ArrayList<ActorActorRelationship>) retreived.get("actorActorRelationships");
+            actorAssetRelationships = (ArrayList<ActorAssetRelationship>) retreived.get("actorAssetRelationships");
+
+
+        } catch (IOException | ClassNotFoundException i) {
+            i.printStackTrace();
+        }
+
+    }
 
     public void start() {
         super.start();
         loadData();
         generateHouseholds();
+
+//        serialize();
+//        deserialize();
+
         saveData.plotSeries(this);
         this.schedule.scheduleRepeating(policies);
         this.schedule.scheduleRepeating(0.0, 2, saveData);
