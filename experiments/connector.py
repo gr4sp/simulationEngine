@@ -6,21 +6,28 @@ import jpype.imports
 
 import pandas as pd
 from random import randint
-
+import os
+import json
 '''
 Create Java Virtual Machine (jpype.getDefaultJVMPath())
 '''
 
 
 def startJVM():
-    jvmpath = "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2019.1.3\\jbr\\bin\\server\\jvm.dll"
+
+    with open('settingsExperiments.json') as f:
+        settings = json.load(f)
+
+    jvmpath = settings["jvmpath"]
+    gr4spPath = os.getcwd() + "/.."
 
     ## Startup Jpype and import the messaging java package
     if jpype.isJVMStarted():
         return
 
+
     jpype.startJVM(jvmpath,
-                   "-Djava.class.path=C:/Users/angel/Documents/GitHub/gr4sp/src/out/production/gr4sp;C:/Users/angel/Documents/GitHub/gr4sp/libraries/bsh-2.0b4.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/itext-1.2.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/j3dcore.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/j3dutils.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/jcommon-1.0.21.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/jfreechart-1.0.17.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/jmf.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/mason.19.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/portfolio.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/sqlite-jdbc-3.23.1.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/vecmath.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/postgresql-42.2.6.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/opencsv-4.6.jar;C:/Users/angel/Documents/GitHub/gr4sp/libraries/yamlbeans-1.13.jar",
+                   "-Djava.class.path={0}/src/out/production/gr4sp;{0}/libraries/bsh-2.0b4.jar;{0}/libraries/itext-1.2.jar;{0}/libraries/j3dcore.jar;{0}/libraries/j3dutils.jar;{0}/libraries/jcommon-1.0.21.jar;{0}/libraries/jfreechart-1.0.17.jar;{0}/libraries/jmf.jar;{0}/libraries/mason.19.jar;{0}/libraries/portfolio.jar;{0}/libraries/vecmath.jar;{0}/libraries/postgresql-42.2.6.jar;{0}/libraries/opencsv-4.6.jar;{0}/libraries/yamlbeans-1.13.jar".format(gr4spPath),
                    "-Xmx2048M"
                    )
 
@@ -42,7 +49,9 @@ def getResults(outputID):
     # System Production Rooftop PV	
     # Number of Active Actors
 
-    csvFileName = 'C:\\Users\\angel\\Documents\\GitHub\\gr4sp\\csv\\BAUVIC\\BAUVICSimDataMonthlySummary' + outputID + '.csv'
+    gr4spPath = os.getcwd() + "/.."
+
+    csvFileName = '{0}\\csv\\BAUVIC\\BAUVICSimDataMonthlySummary{1}.csv'.format(gr4spPath,outputID)
     results = pd.read_csv(csvFileName)
 
     # Prepare time series
@@ -58,7 +67,7 @@ def getResults(outputID):
     rooftopPVMonth = results['System Production Rooftop PV'].to_numpy()
     numActorsMonth = results['Number of Active Actors'].to_numpy()
 
-    csvFileName = 'C:\\Users\\angel\\Documents\\GitHub\\gr4sp\\csv\\BAUVIC\\BAUVICSimDataYearSummary' + outputID + '.csv'
+    csvFileName = '{0}\\csv\\BAUVIC\\BAUVICSimDataYearSummary{1}.csv'.format(gr4spPath,outputID)
     results = pd.read_csv(csvFileName)
 
     # Prepare time series
