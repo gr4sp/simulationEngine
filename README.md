@@ -1,5 +1,7 @@
 # gr4sp
 
+
+
 ## Set up Gr4sp
 
 Clone repo:
@@ -13,10 +15,10 @@ mdkir logs
 mkdir csv
 mkdir plots
 ```
-## Dependencies
 
-To run the model, you need to install JAVA JRE and JDK.
 ## JAVA 
+To run the model, you need to install JAVA JRE and JDK.
+
 ### Ubuntu
 ```
 sudo apt install default-jre
@@ -25,21 +27,15 @@ sudo apt install default-jdk
 
 See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04) more details on how to setup JAVA in ubuntu
 ### Windows
-...
 
-### Set JVM library
+follow [this instructions](https://java.com/en/download/help/windows_manual_download.xml)
 
-open [experiments/settingsExperiments.json](experiments/settingsExperiments.json) file, and edit the file setting the variable `jvmPath` accordingly to `jvmPathWindows` or `jvmPathUbuntu` , making sure that the folders contain the `jvm.dll` or `libjvm.so` library.
 
-## Python
+## Build/Compile Gr4sp Simulator
 
-Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
+You can use [InteliJ](https://www.jetbrains.com/idea/). Once installed, open the project clicking on the gr4sp.iml file. You can compile/build and run from InteliJ.
 
-```pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib```
-
-## compile java files
-
-run this command from the root of the repo to make the bash script executable
+Alternatively, run this command from the root of the repo to make the bash script executable
 
 ```
 chmod +x *.sh
@@ -98,9 +94,11 @@ and then run
 ```
 sudo service postgresql restart
 ```
-## Run
+## Run Gr4sp Simulation
 
-make sure you added executable rights to `run_gr4sp.sh` by running 
+You can run from InteliJ.
+
+Otherwise, make sure you added executable rights to `run_gr4sp.sh` by running 
 
 ```
 chmod +x *.sh
@@ -126,5 +124,24 @@ java -classpath classes/production/gr4sp:/mnt/data/gr4sp/libraries/bsh-2.0b4.jar
 
 ```
 
+## Run Experiments with EMA Workbench
+
+### Python dependencies
+Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
+
+```pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib```
+
+### Set JVM library
+
+open [experiments/settingsExperiments.json](experiments/settingsExperiments.json) file, and edit the file setting the variable `jvmPath` accordingly to `jvmPathWindows` or `jvmPathUbuntu` , making sure that the folders contain the `jvm.dll` or `libjvm.so` library.
+
+### Run EET or Variance-based SA
+
+go to `experiments` folder, edit the experiment you want to run in [experiments/runExperiments.py:26](experiments/runExperiments.py:26) and execute:
 
 ```
+python runExperiments.py
+```
+## Analyze results
+
+see notebooks in [experiments/notebookGr4sp](experiments/notebookGr4sp)
