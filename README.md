@@ -20,6 +20,7 @@ To run the model, you need to install JAVA JRE and JDK.
 ## JAVA
 ### Ubuntu
 ```
+sudo apt update
 sudo apt install default-jre
 sudo apt install default-jdk
 ```
