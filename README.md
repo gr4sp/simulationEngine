@@ -1,5 +1,7 @@
 # gr4sp
 
+
+
 ## Set up Gr4sp
 
 Clone repo:
@@ -27,17 +29,8 @@ See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install
 
 follow [this instructions](https://java.com/en/download/help/windows_manual_download.xml)
 
-### Set JVM library
 
-open [experiments/settingsExperiments.json](experiments/settingsExperiments.json) file, and edit the file setting the variable `jvmPath` accordingly to `jvmPathWindows` or `jvmPathUbuntu` , making sure that the folders contain the `jvm.dll` or `libjvm.so` library.
-
-## Python
-
-Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
-
-```pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib```
-
-## compile java files
+## Build/Compile Gr4sp Simulator
 
 run this command from the root of the repo
 ```
@@ -83,7 +76,7 @@ and then run
 ```
 sudo service postgresql restart
 ```
-## Run
+## Run Gr4sp Simulation
 
 Go to `src` folder and run
 
@@ -92,5 +85,24 @@ java -classpath ../classes:/mnt/data/gr4sp/experiments/../libraries/bsh-2.0b4.ja
 
 ```
 
+## Run Experiments with EMA Workbench
+
+### Python dependencies
+Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
+
+```pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib```
+
+### Set JVM library
+
+open [experiments/settingsExperiments.json](experiments/settingsExperiments.json) file, and edit the file setting the variable `jvmPath` accordingly to `jvmPathWindows` or `jvmPathUbuntu` , making sure that the folders contain the `jvm.dll` or `libjvm.so` library.
+
+### Run EET or Variance-based SA
+
+go to `experiments` folder, edit the experiment you want to run in [experiments/runExperiments.py:26](experiments/runExperiments.py:26) and execute:
 
 ```
+python runExperiments.py
+```
+## Analyze results
+
+see notebooks in [experiments/notebookGr4sp](experiments/notebookGr4sp)
