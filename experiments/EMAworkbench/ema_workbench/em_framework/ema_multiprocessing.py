@@ -3,7 +3,7 @@ support for using the multiprocessing library in combination with the workbench
 
 '''
 from collections import defaultdict
-
+import logging.handlers
 import logging
 import multiprocessing
 import os
