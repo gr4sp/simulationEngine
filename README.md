@@ -64,6 +64,8 @@ For example, if you clone the repo in windows in this folder `c:\\Users\\MyUserN
 folderOutput: "C:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp"
 ```
 
+```
+
 ## Install PostGres and load database
 
 Install postgres
