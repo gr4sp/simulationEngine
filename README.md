@@ -98,6 +98,7 @@ Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_
  sudo nano /etc/postgresql/10/main/pg_hba.conf
 ```
 
+See [this guide](https://linuxize.com/post/how-to-use-nano-text-editor/#opening-and-creating-files) about how to edit files with nano
 and make sure that at the end of the file, all the lines below finish with the word `trust`
 
 ```local   all             postgres                                trust 
@@ -148,7 +149,10 @@ java -classpath classes/production/gr4sp:/mnt/data/gr4sp/libraries/bsh-2.0b4.jar
 ### Python dependencies
 Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
 
-```pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib```
+```
+pip update
+pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib
+```
 
 ### Set JVM library
 
