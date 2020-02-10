@@ -8,28 +8,40 @@ import pandas as pd
 from random import randint
 import os
 import json
+
 '''
 Create Java Virtual Machine (jpype.getDefaultJVMPath())
 '''
 
 
 def startJVM():
-
     with open('settingsExperiments.json') as f:
         settings = json.load(f)
 
-    jvmpath = settings[ settings["jvmPath"] ]
+    jvmpath = settings[settings["jvmPath"]]
+
     gr4spPath = os.getcwd() + "/.."
+
+    gr4spPath = gr4spPath.replace("\\", "/")
 
     ## Startup Jpype and import the messaging java package
     if jpype.isJVMStarted():
         return
+    classpath = "-Djava.class.path=" \
+                "{0}/{1};" \
+                "{0}/libraries/bsh-2.0b4.jar;{0}/libraries/itext-1.2.jar;" \
+                "{0}/libraries/j3dcore.jar;{0}/libraries/j3dutils.jar;" \
+                "{0}/libraries/jcommon-1.0.21.jar;" \
+                "{0}/libraries/jfreechart-1.0.17.jar;" \
+                "{0}/libraries/jmf.jar;" \
+                "{0}/libraries/mason.19.jar;" \
+                "{0}/libraries/portfolio.jar;" \
+                "{0}/libraries/vecmath.jar;" \
+                "{0}/libraries/postgresql-42.2.6.jar;" \
+                "{0}/libraries/opencsv-4.6.jar;" \
+                "{0}/libraries/yamlbeans-1.13.jar".format(gr4spPath, settings["gr4spClasses"])
 
-
-    jpype.startJVM(jvmpath,
-                   "-Djava.class.path={0}/src/out/production/gr4sp;{0}/libraries/bsh-2.0b4.jar;{0}/libraries/itext-1.2.jar;{0}/libraries/j3dcore.jar;{0}/libraries/j3dutils.jar;{0}/libraries/jcommon-1.0.21.jar;{0}/libraries/jfreechart-1.0.17.jar;{0}/libraries/jmf.jar;{0}/libraries/mason.19.jar;{0}/libraries/portfolio.jar;{0}/libraries/vecmath.jar;{0}/libraries/postgresql-42.2.6.jar;{0}/libraries/opencsv-4.6.jar;{0}/libraries/yamlbeans-1.13.jar".format(gr4spPath),
-                   "-Xmx2048M"
-                   )
+    jpype.startJVM(jvmpath, classpath, "-Xmx1536M")  # 1.5GB
 
 
 def shutdownJVM():
@@ -49,9 +61,16 @@ def getResults(outputID):
     # System Production Rooftop PV	
     # Number of Active Actors
 
-    gr4spPath = os.getcwd() + "/.."
+    with open('settingsExperiments.json') as f:
+        settings = json.load(f)
 
-    csvFileName = '{0}\\csv\\BAUVIC\\BAUVICSimDataMonthlySummary{1}.csv'.format(gr4spPath,outputID)
+    slash = "\\"
+    if settings["jvmPath"] == "jvmPathUbuntu":
+        slash = "/"
+
+    gr4spPath = os.getcwd() + slash + ".."
+
+    csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
     results = pd.read_csv(csvFileName)
 
     # Prepare time series
@@ -67,7 +86,7 @@ def getResults(outputID):
     rooftopPVMonth = results['System Production Rooftop PV'].to_numpy()
     numActorsMonth = results['Number of Active Actors'].to_numpy()
 
-    csvFileName = '{0}\\csv\\BAUVIC\\BAUVICSimDataYearSummary{1}.csv'.format(gr4spPath,outputID)
+    csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataYearSummary{2}.csv'.format(gr4spPath, slash, outputID)
     results = pd.read_csv(csvFileName)
 
     # Prepare time series
