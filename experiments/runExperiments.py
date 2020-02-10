@@ -46,6 +46,6 @@ if __name__ == '__main__':
     # Month abbreviation, day and year
     today = date.today()
     datekey = today.strftime("%Y-%b-%d")
-    from ema_workbench import save_results
+    from EMAworkbench.ema_workbench import save_results
 
     save_results(results, r'./data/gr4sp_' + datekey + '.tar.gz')

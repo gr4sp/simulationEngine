@@ -1,6 +1,7 @@
 import sys
+import os
 
-sys.path.append(r'C:\Users\angel\Documents\GitHub\gr4sp\experiments\EMAworkbench')
+sys.path.append(r'{}\EMAworkbench'.format(os.getcwd()))
 
 import connector
 
