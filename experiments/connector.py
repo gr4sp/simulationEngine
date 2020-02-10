@@ -27,19 +27,24 @@ def startJVM():
     ## Startup Jpype and import the messaging java package
     if jpype.isJVMStarted():
         return
+    
+    classpathSeparator = ";"
+    if settings["jvmPath"] == "jvmPathUbuntu":
+        classpathSeparator = ":"
+
     classpath = "-Djava.class.path=" \
-                "{0}/{1};" \
-                "{0}/libraries/bsh-2.0b4.jar;{0}/libraries/itext-1.2.jar;" \
-                "{0}/libraries/j3dcore.jar;{0}/libraries/j3dutils.jar;" \
-                "{0}/libraries/jcommon-1.0.21.jar;" \
-                "{0}/libraries/jfreechart-1.0.17.jar;" \
-                "{0}/libraries/jmf.jar;" \
-                "{0}/libraries/mason.19.jar;" \
-                "{0}/libraries/portfolio.jar;" \
-                "{0}/libraries/vecmath.jar;" \
-                "{0}/libraries/postgresql-42.2.6.jar;" \
-                "{0}/libraries/opencsv-4.6.jar;" \
-                "{0}/libraries/yamlbeans-1.13.jar".format(gr4spPath, settings["gr4spClasses"])
+                "{0}/{2}{1}" \
+                "{0}/libraries/bsh-2.0b4.jar{1}{0}/libraries/itext-1.2.jar{1}" \
+                "{0}/libraries/j3dcore.jar{1}{0}/libraries/j3dutils.jar{1}" \
+                "{0}/libraries/jcommon-1.0.21.jar{1}" \
+                "{0}/libraries/jfreechart-1.0.17.jar{1}" \
+                "{0}/libraries/jmf.jar{1}" \
+                "{0}/libraries/mason.19.jar{1}" \
+                "{0}/libraries/portfolio.jar{1}" \
+                "{0}/libraries/vecmath.jar{1}" \
+                "{0}/libraries/postgresql-42.2.6.jar{1}" \
+                "{0}/libraries/opencsv-4.6.jar{1}" \
+                "{0}/libraries/yamlbeans-1.13.jar".format(gr4spPath, classpathSeparator, settings["gr4spClasses"])
 
     jpype.startJVM(jvmpath, classpath, "-Xmx1536M")  # 1.5GB
 
