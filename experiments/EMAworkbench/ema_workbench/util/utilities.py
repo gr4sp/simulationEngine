@@ -23,7 +23,7 @@ import pandas as pd
 from pandas.io.parsers import read_csv
 
 from . import EMAError, get_module_logger
-import ema_workbench
+import EMAworkbench.ema_workbench
 
 PY3 = sys.version_info[0] == 3
 if PY3:

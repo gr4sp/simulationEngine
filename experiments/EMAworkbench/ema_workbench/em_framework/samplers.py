@@ -15,7 +15,7 @@ import scipy.stats as stats
 from . import util
 from .parameters import (IntegerParameter, Policy, Scenario,
                          BooleanParameter, CategoricalParameter)
-from ema_workbench.util.ema_exceptions import EMAError
+from EMAworkbench.ema_workbench.util.ema_exceptions import EMAError
 
 # Created on 16 aug. 2011
 #
