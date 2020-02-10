@@ -103,6 +103,7 @@ class ForecastSetting implements java.io.Serializable {
 public class Settings implements java.io.Serializable {
     //public int ConstantMaxInt;
     public String folderOutput;
+    public String reportGeneration;
     public Map<String, ArenaSettings> arena;
     public SimulationDatesSettings simulationDates;
     public PopulationSettings population;

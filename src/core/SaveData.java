@@ -798,8 +798,13 @@ public class SaveData implements Steppable, java.io.Serializable {
         //Finish simulation if endDate is reached
         if (data.getCurrentSimDate().after(data.getEndSimDate()) || data.getCurrentSimDate().equals(data.getEndSimDate())) {
             finalizeCharts(simState);
-            saveData(simState);
-            savePlots(simState);
+            if(data.settings.reportGeneration.equals("full")) {
+                saveData(simState);
+                savePlots(simState);
+            }else{
+                saveDataLight(simState);
+            }
+
 
             //Stop Simulation
             data.finish();
@@ -979,9 +984,9 @@ public class SaveData implements Steppable, java.io.Serializable {
 
         //final String dir = System.getProperty("user.dir");
         //System.out.println("current dir = " + dir);
-	String slash = "\\";
-	if( System.getProperty("os.name").contains("Windows") == false )
-	    slash = "/";
+        String slash = "\\";
+        if( System.getProperty("os.name").contains("Windows") == false )
+            slash = "/";
 	
         String folderName = data.settings.folderOutput+""+slash+"csv"+slash+"" + data.yamlFileName;
         File directory = new File(folderName);
@@ -991,15 +996,6 @@ public class SaveData implements Steppable, java.io.Serializable {
         }
 
         try (
-
-
-                Writer writer = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimData" + data.outputID + ".csv"));
-
-                CSVWriter csvWriter = new CSVWriter(writer,
-                        CSVWriter.DEFAULT_SEPARATOR,
-                        CSVWriter.NO_QUOTE_CHARACTER,
-                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                        CSVWriter.DEFAULT_LINE_END);
 
                 Writer writerMonthly = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySummary" + data.outputID + ".csv"));
 
@@ -1017,39 +1013,49 @@ public class SaveData implements Steppable, java.io.Serializable {
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                         CSVWriter.DEFAULT_LINE_END);
 
-                Writer writerGensCapFactorInSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyGensCapFactorInSpot" + data.outputID + ".csv"));
 
-                CSVWriter csvWriterGensCapFactorInSpot = new CSVWriter(writerGensCapFactorInSpot,
-                        CSVWriter.DEFAULT_SEPARATOR,
-                        CSVWriter.NO_QUOTE_CHARACTER,
-                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                        CSVWriter.DEFAULT_LINE_END);
+                    Writer writer = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimData" + data.outputID + ".csv"));
 
-
-                Writer writerGensCapFactorOffSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyGensCapFactorOFFspot" + data.outputID + ".csv"));
-
-                CSVWriter csvWriterGensCapFactorOffSpot = new CSVWriter(writerGensCapFactorOffSpot,
-                        CSVWriter.DEFAULT_SEPARATOR,
-                        CSVWriter.NO_QUOTE_CHARACTER,
-                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                        CSVWriter.DEFAULT_LINE_END);
-
-                Writer writerSystemProductionInSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySystemProductionInSpot" + data.outputID + ".csv"));
-
-                CSVWriter csvWriterSystemProductionInSpot = new CSVWriter(writerSystemProductionInSpot,
-                        CSVWriter.DEFAULT_SEPARATOR,
-                        CSVWriter.NO_QUOTE_CHARACTER,
-                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                        CSVWriter.DEFAULT_LINE_END);
+                    CSVWriter csvWriter = new CSVWriter(writer,
+                            CSVWriter.DEFAULT_SEPARATOR,
+                            CSVWriter.NO_QUOTE_CHARACTER,
+                            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                            CSVWriter.DEFAULT_LINE_END);
 
 
-                Writer writerSystemProductionOffSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySystemProductionOFFspot" + data.outputID + ".csv"));
+                    Writer writerGensCapFactorInSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyGensCapFactorInSpot" + data.outputID + ".csv"));
 
-                CSVWriter csvWriterSystemProductionOffSpot = new CSVWriter(writerSystemProductionOffSpot,
-                        CSVWriter.DEFAULT_SEPARATOR,
-                        CSVWriter.NO_QUOTE_CHARACTER,
-                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                        CSVWriter.DEFAULT_LINE_END);
+                    CSVWriter csvWriterGensCapFactorInSpot = new CSVWriter(writerGensCapFactorInSpot,
+                            CSVWriter.DEFAULT_SEPARATOR,
+                            CSVWriter.NO_QUOTE_CHARACTER,
+                            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                            CSVWriter.DEFAULT_LINE_END);
+
+
+                    Writer writerGensCapFactorOffSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyGensCapFactorOFFspot" + data.outputID + ".csv"));
+
+                    CSVWriter csvWriterGensCapFactorOffSpot = new CSVWriter(writerGensCapFactorOffSpot,
+                            CSVWriter.DEFAULT_SEPARATOR,
+                            CSVWriter.NO_QUOTE_CHARACTER,
+                            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                            CSVWriter.DEFAULT_LINE_END);
+
+                    Writer writerSystemProductionInSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySystemProductionInSpot" + data.outputID + ".csv"));
+
+                    CSVWriter csvWriterSystemProductionInSpot = new CSVWriter(writerSystemProductionInSpot,
+                            CSVWriter.DEFAULT_SEPARATOR,
+                            CSVWriter.NO_QUOTE_CHARACTER,
+                            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                            CSVWriter.DEFAULT_LINE_END);
+
+
+                    Writer writerSystemProductionOffSpot = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySystemProductionOFFspot" + data.outputID + ".csv"));
+
+                    CSVWriter csvWriterSystemProductionOffSpot = new CSVWriter(writerSystemProductionOffSpot,
+                            CSVWriter.DEFAULT_SEPARATOR,
+                            CSVWriter.NO_QUOTE_CHARACTER,
+                            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                            CSVWriter.DEFAULT_LINE_END);
 
 
         ) {
@@ -1406,6 +1412,292 @@ public class SaveData implements Steppable, java.io.Serializable {
             }
 
             //csvWriterYear.close();
+
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+
+
+    }
+
+    public void saveDataLight(SimState simState) {
+        Gr4spSim data = (Gr4spSim) simState;
+
+        //final String dir = System.getProperty("user.dir");
+        //System.out.println("current dir = " + dir);
+        String slash = "\\";
+        if( System.getProperty("os.name").contains("Windows") == false )
+            slash = "/";
+
+        String folderName = data.settings.folderOutput+""+slash+"csv"+slash+"" + data.yamlFileName;
+        File directory = new File(folderName);
+        if (!directory.exists()) {
+            directory.mkdir();
+
+        }
+
+        try (
+
+                Writer writerMonthly = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlySummary" + data.outputID + ".csv"));
+
+                CSVWriter csvWriterMonthly = new CSVWriter(writerMonthly,
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END);
+
+                Writer writerYear = Files.newBufferedWriter(Paths.get(folderName + "/" + data.yamlFileName + "SimDataYearSummary" + data.outputID + ".csv"));
+
+                CSVWriter csvWriterYear = new CSVWriter(writerYear,
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END);
+
+
+
+
+        ) {
+
+
+            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
+
+            csvWriterYear.writeNext(headerRecordYear);
+
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
+
+            csvWriterMonthly.writeNext(headerRecordMonthly);
+
+
+
+            SimpleDateFormat dateToYear = new SimpleDateFormat("yyyy");
+
+
+            HashMap<String, ArrayList<Double>> datasetGHGsummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPriceSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetWholesaleSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetKWhSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetConsumersSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdPrimarySpotSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdSecondarySpotSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdOffSpotSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdRooftopSummary = new HashMap<>();
+
+
+
+            XYSeries cseries = consumptionActorSeries.get(0);
+            XYSeries tseries = tariffUsageConsumptionActorSeries.get(0);
+            XYSeries wseries = wholesaleSeries.get(0);
+            XYSeries gseries = ghgConsumptionActorSeries.get(0);
+            XYSeries dseries = numDomesticConsumersSeries.get(0);
+            XYSeries spprimaggseries = systemProductionSeries.get(0);
+            XYSeries spsecondaggseries = systemProductionSeries.get(-1);
+            XYSeries sposaggseries = systemProductionSeries.get(-2);
+            XYSeries sproofaggseries = systemProductionSeries.get(-3);
+            XYSeries naseries = numActorsSeries;
+
+
+            Calendar c = Calendar.getInstance();
+
+            //First series starts from beginning simulation, the rest follows a consumtionUnit, which has a creationDate
+
+            c.setTime(data.getStartSimDate());
+
+
+            for (int t = 0; t < cseries.getItems().size(); t++) {
+                //for (Object o : series.getItems()) {
+
+                int shifttimeseries = cseries.getItemCount() - spprimaggseries.getItemCount();
+
+
+                XYDataItem citem = (XYDataItem) cseries.getItems().get(t);
+                XYDataItem titem = (XYDataItem) tseries.getItems().get(t);
+                XYDataItem witem = (XYDataItem) wseries.getItems().get(t);
+                XYDataItem gitem = (XYDataItem) gseries.getItems().get(t);
+                XYDataItem ditem = (XYDataItem) dseries.getItems().get(t);
+                XYDataItem spprimaggitem = null;
+                XYDataItem spsecondaggitem = null;
+                XYDataItem sposaggitem = null;
+                XYDataItem sproofaggitem = null;
+
+                XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
+                if (shifttimeseries <= t) {
+                    spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
+                    if(spsecondaggseries != null)
+                        spsecondaggitem = (XYDataItem) spsecondaggseries.getItems().get(t - shifttimeseries);
+                    if(sposaggseries != null)
+                        sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
+                    sproofaggitem = (XYDataItem) sproofaggseries.getItems().get(t - shifttimeseries);
+
+                }
+
+                double kwh = citem.getYValue() * 1000.0;
+                double tariffPrice = titem.getYValue();
+                double wholesale = witem.getYValue();
+                double emissions = gitem.getYValue();
+                double consumers = ditem.getYValue();
+                double MWhPrimarySpotAgg = 0.0;
+                double MWhSecondarySpotAgg = 0.0;
+                double MWhOffSpotAgg = 0.0;
+                double MWhRoofSpotAgg = 0.0;
+                double numActors = naitem.getYValue();
+
+                if (shifttimeseries <= t) {
+                    MWhPrimarySpotAgg = spprimaggitem.getYValue();
+                    if(spsecondaggitem != null)
+                        MWhSecondarySpotAgg = spsecondaggitem.getYValue();
+                    if(sposaggitem != null)
+                        MWhOffSpotAgg = sposaggitem.getYValue();
+                    MWhRoofSpotAgg = sproofaggitem.getYValue();
+
+                }
+
+                SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");
+
+                String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions / consumers),
+                        Double.toString(consumers), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg), Double.toString(numActors)};
+                csvWriterMonthly.writeNext(record);
+
+
+
+                String year = dateToYear.format(c.getTime());
+
+                if (!datasetGHGsummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetGHGsummary.put(year, yearData);
+                }
+
+                datasetGHGsummary.get(year).add(emissions / consumers);
+
+                if (!datasetPriceSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetPriceSummary.put(year, yearData);
+                }
+
+                datasetPriceSummary.get(year).add(tariffPrice);
+
+                if (!datasetWholesaleSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetWholesaleSummary.put(year, yearData);
+                }
+                datasetWholesaleSummary.get(year).add(wholesale);
+
+
+                if (!datasetKWhSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetKWhSummary.put(year, yearData);
+                }
+
+                //Divide Consumption to make it into consumption per household
+                datasetKWhSummary.get(year).add(kwh / consumers);
+
+                if (!datasetConsumersSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetConsumersSummary.put(year, yearData);
+                }
+
+                datasetConsumersSummary.get(year).add(consumers);
+
+
+                if (!datasetSysProdPrimarySpotSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdPrimarySpotSummary.put(year, yearData);
+                }
+                datasetSysProdPrimarySpotSummary.get(year).add(MWhPrimarySpotAgg);
+
+                if (!datasetSysProdSecondarySpotSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdSecondarySpotSummary.put(year, yearData);
+                }
+                datasetSysProdSecondarySpotSummary.get(year).add(MWhSecondarySpotAgg);
+
+                if (!datasetSysProdOffSpotSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdOffSpotSummary.put(year, yearData);
+                }
+                datasetSysProdOffSpotSummary.get(year).add(MWhOffSpotAgg);
+
+                if (!datasetSysProdRooftopSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdRooftopSummary.put(year, yearData);
+                }
+                datasetSysProdRooftopSummary.get(year).add(MWhRoofSpotAgg);
+
+                c.add(Calendar.MONTH, 1);
+            }
+
+
+            //Save Year summary to csv file
+            Object[] years = datasetGHGsummary.keySet().toArray();
+            Arrays.sort(years, Collections.reverseOrder());
+            for (int i = years.length - 1; i >= 0; i--) {
+                String year = (String) years[i];
+                ArrayList<Double> yearDataGHG = datasetGHGsummary.get(year);
+                ArrayList<Double> yearDataPrice = datasetPriceSummary.get(year);
+                ArrayList<Double> yearDataWholesale = datasetWholesaleSummary.get(year);
+                ArrayList<Double> yearDataKWh = datasetKWhSummary.get(year);
+                ArrayList<Double> yearDataConsumers = datasetConsumersSummary.get(year);
+                ArrayList<Double> spPrimarySpotAggConsumers = datasetSysProdPrimarySpotSummary.get(year);
+                ArrayList<Double> spSecondarySpotAggConsumers = datasetSysProdSecondarySpotSummary.get(year);
+                ArrayList<Double> spOffSpotAggConsumers = datasetSysProdOffSpotSummary.get(year);
+                ArrayList<Double> spRooftopAggConsumers = datasetSysProdRooftopSummary.get(year);
+
+
+                Double totalGHG = 0.0;
+                Double avgPrice = 0.0;
+                Double avgWholesale = 0.0;
+                Double totalKWh = 0.0;
+                Double maxDwellings = 0.0;
+                Double spprimspotagg = 0.0;
+                Double spsecondspotagg = 0.0;
+                Double spoffspotagg = 0.0;
+                Double sproofagg = 0.0;
+
+
+                Double sizeData = (double) yearDataGHG.size();
+
+                for (Double ghg : yearDataGHG) {
+                    totalGHG += ghg;
+                }
+
+                for (Double p : yearDataPrice) {
+                    avgPrice += p;
+                }
+                avgPrice /= (double) yearDataPrice.size();
+
+                for (Double w : yearDataWholesale) {
+                    avgWholesale += w;
+                }
+                avgWholesale /= (double) yearDataWholesale.size();
+
+                for (Double k : yearDataKWh) {
+                    totalKWh += k;
+                }
+
+                for (Double con : yearDataConsumers) {
+                    if (con > maxDwellings) maxDwellings = con;
+                }
+
+                for (Double k : spPrimarySpotAggConsumers) {
+                    spprimspotagg += k;
+                }
+
+                for (Double k : spSecondarySpotAggConsumers) {
+                    spsecondspotagg += k;
+                }
+
+                for (Double k : spOffSpotAggConsumers) {
+                    spoffspotagg += k;
+                }
+
+                for (Double k : spRooftopAggConsumers) {
+                    sproofagg += k;
+                }
+
+                String[] record = {year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(avgWholesale), Double.toString(totalGHG),
+                        Double.toString(maxDwellings), Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg)};
+                csvWriterYear.writeNext(record);
+            }
 
         } catch (IOException ex) {
             System.out.println(ex);
