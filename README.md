@@ -16,7 +16,7 @@ mkdir plots
 ## Dependencies
 
 To run the model, you need to install JAVA JRE and JDK.
-## JAVA 
+## JAVA
 ### Ubuntu
 ```
 sudo apt install default-jre
@@ -52,7 +52,7 @@ Make sure the folderOutput points to the folder above `src`. For example, if you
 [src\core\settings\BAUVIC.yaml](src\core\settings\BAUVIC.yaml)
 ```
 
-as 
+as
 
 ```
 folderOutput: "C:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp"
@@ -70,7 +70,7 @@ sudo -u postgres pg_restore -U postgres -d postgres < DB-2019-1-8.sql
 edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`
 
 
-```local   all             postgres                                trust 
+```local   all             postgres                                trust
 
 # "local" is for Unix domain socket connections only
 local   all             all                                     trust                                                                                                                                                                         # IPv4 local connections:
@@ -78,7 +78,7 @@ host    all             all             127.0.0.1/32            trust           
 host    all             all             ::1/128                 trust   
 ```
 
-and then run 
+and then run
 
 ```
 sudo service postgresql restart
