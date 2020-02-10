@@ -30,8 +30,17 @@ See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install
 
 follow [this instructions](https://java.com/en/download/help/windows_manual_download.xml)
 
+## Python
 
-## Build/Compile Gr4sp Simulator
+Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
+
+```pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib```
+
+## compile java files
+
+You can use [InteliJ](https://www.jetbrains.com/idea/). Once installed, open the project clicking on the gr4sp.iml file. You can compile/build and run from InteliJ.
+
+Alternatively, run this command from the root of the repo to make the bash script executable
 
 run this command from the root of the repo
 ```
@@ -100,10 +109,9 @@ sudo service postgresql restart
 ```
 These changes make sure that gr4sp access the postgres database without any issues (e.g. username, passwords).
 
+You can run from InteliJ.
 
-## Run Gr4sp Simulation
-
-Go to `src` folder and run
+Otherwise, make sure you added executable rights to `run_gr4sp.sh` by running
 
 ```
 chmod +x *.sh
