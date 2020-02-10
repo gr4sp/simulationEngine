@@ -92,8 +92,13 @@ To load data into the database
 sudo -u postgres pg_restore -U postgres -d postgres < backupDB/DB-2019-1-8.sql
 ```
 
-Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`
+Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`:
 
+```
+ sudo nano /etc/postgresql/10/main/pg_hba.conf
+```
+
+and make sure that at the end of the file, all the lines below finish with the word `trust`
 
 ```local   all             postgres                                trust 
 
