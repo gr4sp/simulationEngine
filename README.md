@@ -107,12 +107,12 @@ java -classpath ../classes:/mnt/data/gr4sp/experiments/../libraries/bsh-2.0b4.ja
 
 ## Run Experiments with EMA Workbench
 
+install python3 and pip3 following this [instructions](https://raturi.in/blog/installing-python3-and-pip3-ubuntu-mac-and-windows/)
 ### Python dependencies
 Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
 
 ```
-pip update
-pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib
+pip3 install JPype1 pandas ipyparallel SALib numpy scipy matplotlib
 ```
 
 ### Set JVM library
@@ -124,7 +124,7 @@ open [experiments/settingsExperiments.json](experiments/settingsExperiments.json
 go to `experiments` folder, edit the experiment you want to run in [experiments/runExperiments.py:26](experiments/runExperiments.py:26) and execute:
 
 ```
-python runExperiments.py
+python3 runExperiments.py
 ```
 ## Analyze results
 
