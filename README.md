@@ -73,16 +73,26 @@ folderOutput: "C:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp"
 
 ## Install PostGres and load database
 
+Install postgres
+
 ```
 sudo apt install postgresql postgresql-contrib
-cd backupDB
+```
+
+To create `postgres` username and database
+
+```
 sudo -u postgres psql
 createdb postgres
 \q
-sudo -u postgres pg_restore -U postgres -d postgres < DB-2019-1-8.sql
 ```
 
-edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`
+To load data into the database
+```
+sudo -u postgres pg_restore -U postgres -d postgres < backupDB/DB-2019-1-8.sql
+```
+
+Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`
 
 
 ```local   all             postgres                                trust 
