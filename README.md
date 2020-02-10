@@ -13,10 +13,10 @@ mdkir logs
 mkdir csv
 mkdir plots
 ```
-## Dependencies
 
-To run the model, you need to install JAVA JRE and JDK.
 ## JAVA 
+To run the model, you need to install JAVA JRE and JDK.
+
 ### Ubuntu
 ```
 sudo apt install default-jre
@@ -25,7 +25,8 @@ sudo apt install default-jdk
 
 See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04) more details on how to setup JAVA in ubuntu
 ### Windows
-...
+
+follow [this instructions](https://java.com/en/download/help/windows_manual_download.xml)
 
 ### Set JVM library
 
@@ -39,7 +40,9 @@ Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
 
 ## compile java files
 
-run this command from the root of the repo to make the bash script executable
+You can use [InteliJ](https://www.jetbrains.com/idea/). Once installed, open the project clicking on the gr4sp.iml file. You can compile/build and run from InteliJ.
+
+Alternatively, run this command from the root of the repo to make the bash script executable
 
 ```
 chmod +x *.sh
@@ -100,7 +103,9 @@ sudo service postgresql restart
 ```
 ## Run
 
-make sure you added executable rights to `run_gr4sp.sh` by running 
+You can run from InteliJ.
+
+Otherwise, make sure you added executable rights to `run_gr4sp.sh` by running 
 
 ```
 chmod +x *.sh
