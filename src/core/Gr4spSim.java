@@ -206,6 +206,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             throw new RuntimeException("Problems with creating the log files");
         }
 
+	//Setup logging level
+	LOGGER.setLevel(Level.OFF); //WARNING
+	
         saveData = new SaveData(this);
 
     }
@@ -214,8 +217,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private void simulParametres() {
 
         try {
-            //Setup logging level
-            LOGGER.setLevel(Level.OFF); //WARNING
+            
+            
 
             String pathSRC = Paths.get(".").toAbsolutePath().normalize().toString();
             yamlFileName = "BAUVIC";

@@ -871,22 +871,27 @@ public class SaveData implements Steppable, java.io.Serializable {
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
-        File fc = new File(data.settings.folderOutput+"\\plots\\HouseholdConsumption" + data.outputID + ".png");
-        File ft = new File(data.settings.folderOutput+"\\plots\\HouseholdTariff" + data.outputID + ".png");
-        File fw = new File(data.settings.folderOutput+"\\plots\\WholesalePrice" + data.outputID + ".png");
-        File fg = new File(data.settings.folderOutput+"\\plots\\HouseholdGHG" + data.outputID + ".png");
-        File fgenspot = new File(data.settings.folderOutput+"\\plots\\GenCapFactorsSpot" + data.outputID + ".png");
-        File fgenoffspot = new File(data.settings.folderOutput+"\\plots\\GenCapFactorsOffSpot" + data.outputID + ".png");
 
-        File fspis = new File(data.settings.folderOutput+"\\plots\\SystemProductionSpot" + data.outputID + ".png");
-        File fspos = new File(data.settings.folderOutput+"\\plots\\SystemProductionOffSpot" + data.outputID + ".png");
-        File fspagg = new File(data.settings.folderOutput+"\\plots\\SystemProductionAggregated" + data.outputID + ".png");
-        File fna = new File(data.settings.folderOutput+"\\plots\\numActors" + data.outputID + ".png");
-        File fpavg = new File(data.settings.folderOutput+"\\plots\\PriceGenAvg" + data.outputID + ".png");
+	String slash = "\\";
+	if( System.getProperty("os.name").contains("Windows") == false )
+	    slash = "/";
+	
+        File fc = new File(data.settings.folderOutput+""+slash+"plots"+slash+"HouseholdConsumption" + data.outputID + ".png");
+        File ft = new File(data.settings.folderOutput+""+slash+"plots"+slash+"HouseholdTariff" + data.outputID + ".png");
+        File fw = new File(data.settings.folderOutput+""+slash+"plots"+slash+"WholesalePrice" + data.outputID + ".png");
+        File fg = new File(data.settings.folderOutput+""+slash+"plots"+slash+"HouseholdGHG" + data.outputID + ".png");
+        File fgenspot = new File(data.settings.folderOutput+""+slash+"plots"+slash+"GenCapFactorsSpot" + data.outputID + ".png");
+        File fgenoffspot = new File(data.settings.folderOutput+""+slash+"plots"+slash+"GenCapFactorsOffSpot" + data.outputID + ".png");
+
+        File fspis = new File(data.settings.folderOutput+""+slash+"plots"+slash+"SystemProductionSpot" + data.outputID + ".png");
+        File fspos = new File(data.settings.folderOutput+""+slash+"plots"+slash+"SystemProductionOffSpot" + data.outputID + ".png");
+        File fspagg = new File(data.settings.folderOutput+""+slash+"plots"+slash+"SystemProductionAggregated" + data.outputID + ".png");
+        File fna = new File(data.settings.folderOutput+""+slash+"plots"+slash+"numActors" + data.outputID + ".png");
+        File fpavg = new File(data.settings.folderOutput+""+slash+"plots"+slash+"PriceGenAvg" + data.outputID + ".png");
 
 
 
-        File fd = new File(data.settings.folderOutput+"\\plots\\NumberHouseholds" + data.outputID + ".png");
+        File fd = new File(data.settings.folderOutput+""+slash+"plots"+slash+"NumberHouseholds" + data.outputID + ".png");
 
         int width = 1920;
         int height = 1080;
@@ -974,8 +979,11 @@ public class SaveData implements Steppable, java.io.Serializable {
 
         //final String dir = System.getProperty("user.dir");
         //System.out.println("current dir = " + dir);
-
-        String folderName = data.settings.folderOutput+"\\csv\\" + data.yamlFileName;
+	String slash = "\\";
+	if( System.getProperty("os.name").contains("Windows") == false )
+	    slash = "/";
+	
+        String folderName = data.settings.folderOutput+""+slash+"csv"+slash+"" + data.yamlFileName;
         File directory = new File(folderName);
         if (!directory.exists()) {
             directory.mkdir();
