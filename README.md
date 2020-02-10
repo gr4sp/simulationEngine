@@ -13,7 +13,6 @@ mdkir logs
 mkdir csv
 mkdir plots
 ```
-## Dependencies
 
 To run the model, you need to install JAVA JRE and JDK.
 ## JAVA
@@ -25,7 +24,8 @@ sudo apt install default-jdk
 
 See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04) more details on how to setup JAVA in ubuntu
 ### Windows
-...
+
+follow [this instructions](https://java.com/en/download/help/windows_manual_download.xml)
 
 ### Set JVM library
 
