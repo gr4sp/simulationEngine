@@ -5,6 +5,7 @@ import jpype
 import jpype.imports
 
 import pandas as pd
+import numpy as np
 from random import randint
 import os
 import json
@@ -75,21 +76,33 @@ def getResults(outputID):
 
     gr4spPath = os.getcwd() + slash + ".."
 
-    csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
-    results = pd.read_csv(csvFileName)
+    # csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
+    # results = pd.read_csv(csvFileName)
 
-    # Prepare time series
-    timesMonth = results['Time (Month)'].to_numpy()
-    consumptionMonth = results['Consumption (KWh) per household'].to_numpy()
-    tariffsMonth = results[' Avg Tariff (c/KWh) per household'].to_numpy()
-    wholesaleMonth = results['Wholesale ($/MWh)'].to_numpy()
-    ghgMonth = results['GHG Emissions (tCO2-e) per household'].to_numpy()
-    numConsumersMonth = results['Number of Domestic Consumers (households)'].to_numpy()
-    primarySpotMonth = results['System Production Primary Spot'].to_numpy()
-    secondarySpotMonth = results['System Production Secondary Spot'].to_numpy()
-    offSpotMonth = results['System Production Off Spot'].to_numpy()
-    rooftopPVMonth = results['System Production Rooftop PV'].to_numpy()
-    numActorsMonth = results['Number of Active Actors'].to_numpy()
+    # #Prepare time series
+    # timesMonth = results['Time (Month)'].to_numpy()
+    # consumptionMonth = results['Consumption (KWh) per household'].to_numpy()
+    # tariffsMonth = results[' Avg Tariff (c/KWh) per household'].to_numpy()
+    # wholesaleMonth = results['Wholesale ($/MWh)'].to_numpy()
+    # ghgMonth = results['GHG Emissions (tCO2-e) per household'].to_numpy()
+    # numConsumersMonth = results['Number of Domestic Consumers (households)'].to_numpy()
+    # primarySpotMonth = results['System Production Primary Spot'].to_numpy()
+    # secondarySpotMonth = results['System Production Secondary Spot'].to_numpy()
+    # offSpotMonth = results['System Production Off Spot'].to_numpy()
+    # rooftopPVMonth = results['System Production Rooftop PV'].to_numpy()
+    # numActorsMonth = results['Number of Active Actors'].to_numpy()
+    emptyArray = np.array([])
+    timesMonth = emptyArray
+    consumptionMonth = emptyArray
+    tariffsMonth = emptyArray
+    wholesaleMonth = emptyArray
+    ghgMonth = emptyArray
+    numConsumersMonth = emptyArray
+    primarySpotMonth = emptyArray
+    secondarySpotMonth = emptyArray
+    offSpotMonth = emptyArray
+    rooftopPVMonth = emptyArray
+    numActorsMonth = emptyArray
 
     csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataYearSummary{2}.csv'.format(gr4spPath, slash, outputID)
     results = pd.read_csv(csvFileName)
