@@ -21,6 +21,7 @@ To run the model, you need to install JAVA JRE and JDK.
 
 ### Ubuntu
 ```
+sudo apt update
 sudo apt install default-jre
 sudo apt install default-jdk
 ```
@@ -68,18 +69,37 @@ as
 ```
 folderOutput: "C:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp"
 
+```
+
 ## Install PostGres and load database
 
+Install postgres
+
 ```
-cd backupDB
+sudo apt install postgresql postgresql-contrib
+```
+
+To create `postgres` username and database
+
+```
 sudo -u postgres psql
 createdb postgres
 \q
-sudo -u postgres pg_restore -U postgres -d postgres < DB-2019-1-8.sql
 ```
 
-edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`
+To load data into the database
+```
+sudo -u postgres pg_restore -U postgres -d postgres < backupDB/DB-2019-1-8.sql
+```
 
+Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`:
+
+```
+ sudo nano /etc/postgresql/10/main/pg_hba.conf
+```
+
+See [this guide](https://linuxize.com/post/how-to-use-nano-text-editor/#opening-and-creating-files) about how to edit files with nano
+and make sure that at the end of the file, all the lines below finish with the word `trust`
 
 ```local   all             postgres                                trust 
 
@@ -126,10 +146,13 @@ java -classpath classes/production/gr4sp:/mnt/data/gr4sp/libraries/bsh-2.0b4.jar
 
 ## Run Experiments with EMA Workbench
 
+install python3 and pip3 following this [instructions](https://raturi.in/blog/installing-python3-and-pip3-ubuntu-mac-and-windows/)
 ### Python dependencies
 Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
 
-```pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib```
+```
+pip3 install JPype1 pandas ipyparallel SALib numpy scipy matplotlib
+```
 
 ### Set JVM library
 
@@ -140,7 +163,7 @@ open [experiments/settingsExperiments.json](experiments/settingsExperiments.json
 go to `experiments` folder, edit the experiment you want to run in [experiments/runExperiments.py:26](experiments/runExperiments.py:26) and execute:
 
 ```
-python runExperiments.py
+python3 runExperiments.py
 ```
 ## Analyze results
 
