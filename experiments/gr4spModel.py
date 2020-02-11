@@ -39,7 +39,7 @@ def getModel():
         CategoricalParameter('consumption', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.levers += [CategoricalParameter('energyEfficiency', ['Central', 'Slow change', 'Step change'])]
     # model.levers += [
-    #     CategoricalParameter('onsiteGeneration', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
+    # CategoricalParameter('onsiteGeneration', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.levers += [
         CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.levers += [CategoricalParameter('rooftopPV', ['residential', 'business', 'both'])]

@@ -155,11 +155,11 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         super(seed);
 
         //Generate Unique ID to represent all generated data Files (SaveData and Logger)
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
-        Calendar cal = Calendar.getInstance();
-        outputID = sdf.format(cal.getTime())+"_seed"+seed;
+//        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH_mm_ss");
+//        Calendar cal = Calendar.getInstance();
+//        outputID = sdf.format(cal.getTime())+"_seed"+seed;
 
-
+        outputID = "_seed_"+seed;
 
         //Num generator, storage, grid to generate unique id
         numGenerators = 0; //for real example, it is going to be the number of generators supplying the area under study at the scale under study.
@@ -1054,8 +1054,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         SimState state = this;
         try {
-//            Random rand = new Random();
-//            state = new Gr4spSim( rand.nextInt() );
+
             state.start();
             long oldClock = System.currentTimeMillis();
 
@@ -1080,43 +1079,43 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     }
 
-    public static void runPythonEMA() {
-        //Before running the external Command
-        MySecurityManager secManager = new MySecurityManager();
-        System.setSecurityManager(secManager);
-
-        NumberFormat rateFormat = NumberFormat.getInstance();
-        rateFormat.setMaximumFractionDigits(5);
-        rateFormat.setMinimumIntegerDigits(1);
-
-        long oldClock = System.currentTimeMillis();
-
-        SimState state = null;
-        try {
-            Random rand = new Random();
-            state = new Gr4spSim( rand.nextInt() );
-            state.start();
-            Gr4spSim data  = (Gr4spSim) state;
-            while(true){
-                if (!state.schedule.step(state)) break;
-
-                //Print info
-                if (state.schedule.getSteps() % 12 == 0L) {
-                    long clock = System.currentTimeMillis();
-                    SimState.printlnSynchronized("Job " + data.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + data.getCurrentSimDate() +
-                            " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
-                    LOGGER.info("Job " + data.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + data.getCurrentSimDate() +
-                            " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
-                    oldClock = clock;
-                }
-            }
-            state.finish();
-        } catch (SecurityException e) {
-            //Do something if the external code used System.exit()
-            //System.out.println("We avoided the Exit!");
-        }
-
-    }
+//    public static void runAsPythonEMA() {
+//        //Before running the external Command
+//        MySecurityManager secManager = new MySecurityManager();
+//        System.setSecurityManager(secManager);
+//
+//        NumberFormat rateFormat = NumberFormat.getInstance();
+//        rateFormat.setMaximumFractionDigits(5);
+//        rateFormat.setMinimumIntegerDigits(1);
+//
+//        long oldClock = System.currentTimeMillis();
+//
+//        SimState state = null;
+//        try {
+//            Random rand = new Random();
+//            state = new Gr4spSim( rand.nextInt() );
+//            state.start();
+//            Gr4spSim data  = (Gr4spSim) state;
+//            while(true){
+//                if (!state.schedule.step(state)) break;
+//
+//                //Print info
+//                if (state.schedule.getSteps() % 12 == 0L) {
+//                    long clock = System.currentTimeMillis();
+//                    SimState.printlnSynchronized("Job " + data.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + data.getCurrentSimDate() +
+//                            " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
+//                    LOGGER.info("Job " + data.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + data.getCurrentSimDate() +
+//                            " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
+//                    oldClock = clock;
+//                }
+//            }
+//            state.finish();
+//        } catch (SecurityException e) {
+//            //Do something if the external code used System.exit()
+//            //System.out.println("We avoided the Exit!");
+//        }
+//
+//    }
 
     public static void main(String[] args) {
 
