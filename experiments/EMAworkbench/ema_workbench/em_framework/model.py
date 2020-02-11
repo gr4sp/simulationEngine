@@ -388,7 +388,7 @@ class BaseModel(AbstractModel):
         experiment : dict like
 
         """
-        model_output = self.function(**experiment)
+        model_output = self.function(experiment.id,**experiment)
 
         # TODO: might it be possible to somehow abstract this
         # perhaps expose a get_data on modelInterface?

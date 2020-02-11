@@ -11,6 +11,7 @@ import shutil
 import string
 import threading
 import warnings
+import pickle
 
 warnings.simplefilter("once", ImportWarning)
 
@@ -156,7 +157,7 @@ class BaseEvaluator(object):
                             reporting_interval=None, reporting_frequency=10,
                             uncertainty_union=False, lever_union=False,
                             outcome_union=False, uncertainty_sampling=LHS,
-                            levers_sampling=LHS, callback=None):
+                            levers_sampling=LHS, callback=None, generate_policy_file_only=False):
         '''convenience method for performing experiments.
 
         is forwarded to :func:perform_experiments, with evaluator and
@@ -172,7 +173,7 @@ class BaseEvaluator(object):
                                    outcome_union=outcome_union,
                                    uncertainty_sampling=uncertainty_sampling,
                                    levers_sampling=levers_sampling,
-                                   callback=callback)
+                                   callback=callback, generate_policy_file_only=generate_policy_file_only)
 
     def optimize(self, algorithm=EpsNSGAII, nfe=10000, searchover='levers',
                  reference=None, constraints=None, convergence_freq=1000,
@@ -358,7 +359,7 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
                         uncertainty_union=False, lever_union=False,
                         outcome_union=False, uncertainty_sampling=LHS,
                         levers_sampling=LHS, callback=None,
-                        return_callback=False):
+                        return_callback=False, generate_policy_file_only=False):
     '''sample uncertainties and levers, and perform the resulting experiments
     on each of the models
 
@@ -373,7 +374,7 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
     uncertainty_union : boolean, optional
     lever_union : boolean, optional
     uncertainty_sampling : {LHS, MC, FF, PFF, SOBOL, MORRIS, FAST}, optional
-    levers_sampling : {LHS, MC, FF, PFF, SOBOL, MORRIS, FAST}, optional
+    levers_sampling : {LHS, MC, FF, PFF, SOBOL, MORRIS, FAST, FILE}, optional
     callback  : Callback instance, optional
     return_callback : boolean, optional
 
@@ -419,10 +420,25 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
         levers = []
         n_policies = 1
     elif(isinstance(policies, numbers.Integral)):
-        policies = sample_levers(models, policies, union=lever_union,
-                                 sampler=SAMPLERS[levers_sampling]())
+        #If a file was given, then load the policies from the file
+        if ".object" in levers_sampling:
+            with open(levers_sampling, 'rb') as config_dictionary_file:
+                policies = pickle.load(config_dictionary_file)
+        else:
+            #otherwise, use one of the samplers
+            policies = sample_levers(models, policies, union=lever_union,
+                                     sampler=SAMPLERS[levers_sampling]())
+
+            with open('policies.{}.object'.format(levers_sampling), 'wb') as policies_file:
+                pickle.dump(policies, policies_file)
+
+            if generate_policy_file_only is True:
+                print("Polcies saved into file policies.{}.object. EMA is exiting as generate_policy_file_only flag was set to true.".format(levers_sampling))
+                raise SystemExit
+
         levers = policies.parameters
         n_policies = policies.n
+
     else:
         try:
             levers = policies.parameters

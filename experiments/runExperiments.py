@@ -26,10 +26,15 @@ if __name__ == '__main__':
         # results = evaluator.perform_experiments(scenarios=0, policies=15, levers_sampling=MORRIS) #levers + 1 * policies
 
         ## Variance-based SA
-        # results = evaluator.perform_experiments(scenarios=0, policies=1050, levers_sampling=SOBOL)
+        results = evaluator.perform_experiments(scenarios=0, policies=1050, levers_sampling=SOBOL, generate_policy_file_only=True)
+        #results = evaluator.perform_experiments(scenarios=0, policies=1, levers_sampling='policies.sobol.object')
+
+
+
+
 
         #Testing
-        results = evaluator.perform_experiments(scenarios=0, policies=2)
+        #results = evaluator.perform_experiments(scenarios=0, policies=2)
 
     '''
     Print Results
