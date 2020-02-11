@@ -286,4 +286,3 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
         print("Exception: " + ex)
 
     return getResults(outputID, experimentId)
-
