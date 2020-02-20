@@ -241,16 +241,18 @@ public class Arena implements Steppable,  java.io.Serializable  {
             }
 
             double dollarMWh = g.priceMWhLCOE();
-
-            if( g.getInPrimaryMarket() ) {
-                Bid b = new Bid(null, g, dollarMWh, availableCapacity);
-                this.primarySpot.addBidder(b);
-                g.setBidsInSpot(g.getBidsInSpot() + 1);
-            }else{
-                if( g.getInSecondaryMarket() ) {
+            //Don't add bids of 0 capacity
+            if(availableCapacity != 0) {
+                if (g.getInPrimaryMarket()) {
                     Bid b = new Bid(null, g, dollarMWh, availableCapacity);
-                    this.secondarySpot.addBidder(b);
+                    this.primarySpot.addBidder(b);
                     g.setBidsInSpot(g.getBidsInSpot() + 1);
+                } else {
+                    if (g.getInSecondaryMarket()) {
+                        Bid b = new Bid(null, g, dollarMWh, availableCapacity);
+                        this.secondarySpot.addBidder(b);
+                        g.setBidsInSpot(g.getBidsInSpot() + 1);
+                    }
                 }
             }
         }
@@ -504,7 +506,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
 //                //----------DEBUG AND REMOVE--------------
 //                // creating a Calendar object
-//                Date date = new Date(120, 6, 0);
+//                Date date = new Date(124, 8, 0);
 //
 //                if(currentTime.after(date) )
 //                    System.out.println("Foo");

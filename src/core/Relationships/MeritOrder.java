@@ -73,7 +73,7 @@ public class MeritOrder implements java.io.Serializable{
         for (int idx = init_idx; idx < bidders.size(); idx++) {
             Bid b = bidders.get(idx);
 
-            if( b.dollarMWh != initial_price ) break;
+            if( b.dollarMWh != initial_price && b.capacity!= 0) break;
 
             total_capacity += b.capacity;
 
