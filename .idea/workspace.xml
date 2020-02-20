@@ -2,15 +2,198 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90880ae2-9667-4e99-ba18-82531448e185" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_EET.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_SOBOL.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/85733165-0e5b-4b9f-ae7a-923428b289f4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/85733165-0e5b-4b9f-ae7a-923428b289f4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spm_archetypes.db" beforeDir="false" afterPath="$PROJECT_DIR$/Spm_archetypes.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/ConsumptionActor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/ConsumptionActor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Gr4spSim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Gr4spSim.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Gr4spSimUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Gr4spSimUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Household.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Household.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/ema_multiprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/ema_multiprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/evaluators.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/evaluators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/outcomes.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/outcomes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/samplers.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/samplers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/util/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/util/utilities.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/gr4spModel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/EE__mu_star.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/EE__mu_star.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/EE__sigma.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/EE__sigma.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_secondarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_secondarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_secondarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_secondarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_offSpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_offSpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_rooftopPVProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_rooftopPVProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_secondarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_secondarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_offSpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_offSpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_primarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_primarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_rooftopPVProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_rooftopPVProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_secondarySpotProductionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_secondarySpotProductionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_tariffsYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_tariffsYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/runExperiments.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Relationships/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Relationships/Arena.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Relationships/MeritOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Relationships/MeritOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sim/field/network/stats/ConnectivityStatistics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sim/field/network/stats/ConnectivityStatistics.java" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/bin/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,116 +216,6 @@
   <component name="FavoritesManager">
     <favorites_list name="gr4sp" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="881" column="29" selection-start-line="881" selection-start-column="29" selection-end-line="881" selection-end-column="29" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/Gr4spSimUI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="563">
-              <caret line="185" column="30" lean-forward="true" selection-start-line="185" selection-start-column="30" selection-end-line="185" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <marker date="1552218828828" expanded="true" signature="5446:5549" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/util/media/chart/TimeSeriesChartGenerator.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/ConsumptionActor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/heatbugs/HeatBugs.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="225" column="23" selection-start-line="225" selection-end-line="226" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/heatbugs/HeatBug.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/core/Household.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#904#905#0" expanded="true" />
-                <element signature="e#945#946#0" expanded="true" />
-                <element signature="e#1013#1014#0" expanded="true" />
-                <element signature="e#1073#1074#0" expanded="true" />
-                <element signature="e#1392#1393#0" expanded="true" />
-                <element signature="e#1429#1430#0" expanded="true" />
-                <element signature="e#1486#1487#0" expanded="true" />
-                <element signature="e#1538#1539#0" expanded="true" />
-                <element signature="e#1571#1572#0" expanded="true" />
-                <element signature="e#1600#1601#0" expanded="true" />
-                <element signature="e#1645#1646#0" expanded="true" />
-                <element signature="e#1681#1682#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/Spm.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="216" column="2" selection-start-line="216" selection-start-column="2" selection-end-line="216" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/Actor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="19" selection-start-line="3" selection-end-line="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -151,54 +224,8 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>spm_regis</find>
-      <find>location_code</find>
-      <find>rs.getInt(&quot;AssetId&quot;)Generation</find>
-      <find>Timaru</find>
-      <find>numG</find>
-      <find>random</find>
-      <find>Control</find>
-      <find>read</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/core/DemandProfile.java" />
-        <option value="$PROJECT_DIR$/src/DemandProfile.java" />
-        <option value="$PROJECT_DIR$/src/ConsumptionProfile.java" />
-        <option value="$PROJECT_DIR$/src/core/images/Household.java" />
-        <option value="$PROJECT_DIR$/src/core/NewtorkOperator.java" />
-        <option value="$PROJECT_DIR$/src/core/Retailer.java" />
-        <option value="$PROJECT_DIR$/src/core/ElectricityProducer.java" />
-        <option value="$PROJECT_DIR$/src/core/Speculator.java" />
-        <option value="$PROJECT_DIR$/src/core/ConsumptionProfile.java" />
-        <option value="$PROJECT_DIR$/src/core/ActorActorRelationship.java" />
-        <option value="$PROJECT_DIR$/src/core/Actor.java" />
-        <option value="$PROJECT_DIR$/src/core/Asset.java" />
-        <option value="$PROJECT_DIR$/src/core/Spm.java" />
-        <option value="$PROJECT_DIR$/src/core/Generator.java" />
-        <option value="$PROJECT_DIR$/src/core/ConnectionPoint.java" />
-        <option value="$PROJECT_DIR$/src/core/ActorAssetRelationship.java" />
-        <option value="$PROJECT_DIR$/src/core/Storage.java" />
-        <option value="$PROJECT_DIR$/src/core/NetworkAssets.java" />
-        <option value="$PROJECT_DIR$/src/core/ConsumptionActor.java" />
-        <option value="$PROJECT_DIR$/src/core/Gr4spSim.java" />
-        <option value="$PROJECT_DIR$/src/core/Gr4spSimUI.java" />
-        <option value="$PROJECT_DIR$/src/core/Household.java" />
-      </list>
-    </option>
-  </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand />
-      <select />
-    </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="2391" />
@@ -206,74 +233,14 @@
     <option name="width" value="1456" />
     <option name="height" value="936" />
   </component>
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectId" id="1Y4IzCSsMO7VdgI1DvmeNKrfNEo" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-              <item name="libraries" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-              <item name="libraries" type="462c0819:PsiDirectoryNode" />
-              <item name="mason.19.jar" type="ab9368bb:PsiFileNode" />
-            </path>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-              <item name="libraries" type="462c0819:PsiDirectoryNode" />
-              <item name="mason.19.jar" type="ab9368bb:PsiFileNode" />
-              <item name="sim" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-              <item name="libraries" type="462c0819:PsiDirectoryNode" />
-              <item name="mason.19.jar" type="ab9368bb:PsiFileNode" />
-              <item name="sim" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-              <item name="libraries" type="462c0819:PsiDirectoryNode" />
-              <item name="mason.19.jar" type="ab9368bb:PsiFileNode" />
-              <item name="sim" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="heatbugs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="gr4sp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="gr4sp" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="sqlite&#10;sqlite.xerial" />
@@ -288,19 +255,7 @@
     <property name="project.structure.side.proportion" value="0.12643678" />
     <property name="settings.editor.selected.configurable" value="preferences.pathVariables" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Application.Gr4spSimUI">
+  <component name="RunManager" selected="Application.Gr4spSim">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
@@ -356,6 +311,7 @@
       </method>
     </configuration>
     <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <properties />
       <listeners />
@@ -428,11 +384,9 @@
       <workItem from="1551751770369" duration="790000" />
       <workItem from="1551930328388" duration="1864000" />
       <workItem from="1552205060407" duration="13660000" />
+      <workItem from="1582195707261" duration="147000" />
     </task>
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="136370000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -443,44 +397,6 @@
       <is-autoscroll-to-source value="true" />
     </todo-panel>
   </component>
-  <component name="ToolWindowManager">
-    <frame x="2152" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49834985" visible="true" weight="0.12793177" />
-      <window_info id="Structure" order="1" weight="0.23720682" />
-      <window_info id="Learn" order="2" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Designer" order="4" />
-      <window_info id="UI Designer" order="5" />
-      <window_info id="Capture Tool" order="6" />
-      <window_info id="Favorites" order="7" sideWeight="0.50165015" side_tool="true" weight="0.15268818" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.2665222" />
-      <window_info anchor="bottom" id="Cvs" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="4" weight="0.32963988" />
-      <window_info anchor="bottom" id="Version Control" order="5" weight="0.32963988" />
-      <window_info anchor="bottom" id="Terminal" order="6" weight="0.3290735" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Messages" order="8" weight="0.14626218" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Database Console" order="10" weight="0.27146813" />
-      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Database" order="6" weight="0.19829424" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Maven Projects" order="8" weight="0.32995737" />
-      <window_info anchor="right" id="Run" order="9" visible="true" weight="0.28518122" />
-      <window_info anchor="right" id="Debug" order="10" weight="0.2489339" />
-      <window_info anchor="right" id="Maven" order="11" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
@@ -490,7 +406,6 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/core/Gr4spSimUI.java</url>
           <line>191</line>
-          <properties />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
@@ -518,259 +433,6 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/core/Retailer.java" />
-    <entry file="file://$PROJECT_DIR$/src/core/Speculator.java" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/console.sql" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actortype" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm_gen_mapping" />
-    <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/JDBC.class" />
-    <entry file="jar://$PROJECT_DIR$/libraries/sqlite-jdbc-3.21.0.jar!/org/sqlite/jdbc3/JDBC3ResultSet.class" />
-    <entry file="file://$PROJECT_DIR$/src/core/Gr4spUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="80" column="50" selection-start-line="80" selection-start-column="50" selection-end-line="80" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor_actortype_mapping" />
-    <entry file="file://$PROJECT_DIR$/src/core/ConsumptionProfile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Market.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actorasset_relationship" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actoractor90s" />
-    <entry file="file://$PROJECT_DIR$/src/core/ActorActorRelationship.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="3" column="67" selection-start-line="3" selection-start-column="67" selection-end-line="3" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm90vicneigh" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/networkassets" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actor90s" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/generationassets90s" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spmstimarust" />
-    <entry file="file://$PROJECT_DIR$/src/core/Enduse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="108" lean-forward="true" selection-start-line="83" selection-start-column="4" selection-end-line="108" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Asset.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="52" selection-start-line="5" selection-start-column="52" selection-end-line="5" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/actorasset90s" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/generators" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/spm" />
-    <entry file="das://bedbfba7-3e9b-44d6-81b1-c69f21e3f4d4/schema/main/table/generationassets" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/088d66e8-fab1-4c63-a936-0b7676406190/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/85733165-0e5b-4b9f-ae7a-923428b289f4/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="das://85733165-0e5b-4b9f-ae7a-923428b289f4/schema/main/table/ActorActor90s">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/ActorAssetRelationship.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/ConnectionPoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="82" selection-start-line="82" selection-end-line="87" selection-end-column="5" />
-          <folding>
-            <element signature="e#1720#1721#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Generator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="47" column="27" selection-start-line="47" selection-end-line="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/NetworkAssets.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="39" column="52" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Storage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="833">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/tutorial7/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/tutorial4/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/tutorial4/Particle.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/hexabugs/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/hexabugs/HexaBugs.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1785">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/tutorial4/Tutorial4WithUI.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-738">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/tutorial4/Tutorial4.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-306">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/heatbugs/HeatBug.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/app/heatbugs/HeatBugs.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="225" column="23" selection-start-line="225" selection-end-line="226" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Actor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="19" selection-start-line="3" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Spm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="216" column="2" selection-start-line="216" selection-start-column="2" selection-end-line="216" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/ConsumptionActor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="5" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libraries/mason.19.jar!/sim/util/media/chart/TimeSeriesChartGenerator.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.desktop/java/awt/Window.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="817" column="16" selection-start-line="817" selection-start-column="16" selection-end-line="817" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSimUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="185" column="30" lean-forward="true" selection-start-line="185" selection-start-column="30" selection-end-line="185" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1552218828828" expanded="true" signature="5446:5549" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Gr4spSim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="881" column="29" selection-start-line="881" selection-start-column="29" selection-end-line="881" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Household.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#904#905#0" expanded="true" />
-            <element signature="e#945#946#0" expanded="true" />
-            <element signature="e#1013#1014#0" expanded="true" />
-            <element signature="e#1073#1074#0" expanded="true" />
-            <element signature="e#1392#1393#0" expanded="true" />
-            <element signature="e#1429#1430#0" expanded="true" />
-            <element signature="e#1486#1487#0" expanded="true" />
-            <element signature="e#1538#1539#0" expanded="true" />
-            <element signature="e#1571#1572#0" expanded="true" />
-            <element signature="e#1600#1601#0" expanded="true" />
-            <element signature="e#1645#1646#0" expanded="true" />
-            <element signature="e#1681#1682#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
   </component>
   <component name="masterDetails">
     <states>

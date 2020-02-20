@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="SQLite - Spm_archetypes.db">
-  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.14">
+  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.17">
     <root id="1">
       <ServerVersion>3.25.1</ServerVersion>
     </root>
     <schema id="2" parent="1" name="main">
       <Current>1</Current>
-      <Visible>1</Visible>
     </schema>
     <collation id="3" parent="1" name="BINARY"/>
     <collation id="4" parent="1" name="NOCASE"/>
@@ -252,7 +251,6 @@
     <index id="91" parent="16" name="sqlite_autoindex_EnergyType_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="92" parent="16">
@@ -393,13 +391,11 @@
     <index id="123" parent="19" name="sqlite_autoindex_Generators_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>gen_id</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <index id="124" parent="19" name="sqlite_autoindex_Generators_2">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>locationCoord</ColNames>
-      <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
     <key id="125" parent="19">

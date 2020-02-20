@@ -76,7 +76,7 @@ public class ConnectivityStatistics
 
         Integer[] indexes = new Integer[N];
         for( int i = 0 ; i < N ; i++ )
-            indexes[i] = new Integer(i);
+            indexes[i] = i;
 
         DoubleHeap heap = new DoubleHeap( finishingTime, indexes, N );
 
