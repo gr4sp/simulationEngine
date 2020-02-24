@@ -733,11 +733,11 @@ def prepare_data(experiments, outcomes, outcomes_to_show=None,
             else:
                 column_to_group_by = experiments[group_by]
                 if (column_to_group_by.dtype == np.object) or\
-                        (column_to_group_by.dtype == 'category'):
+                        (column_to_group_by.dtype.name == 'category'):
                     grouping_specifiers = set(column_to_group_by)
                 else:
                     grouping_specifiers = make_continuous_grouping_specifiers(
-                        column_to_group_by, grouping_specifiers)
+                        column_to_group_by)
             grouping_labels = grouping_specifiers = sorted(grouping_specifiers)
         else:
             if isinstance(grouping_specifiers, str):

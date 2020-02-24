@@ -436,8 +436,21 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
                 print("Polcies saved into file policies.{}.object. EMA is exiting as generate_policy_file_only flag was set to true.".format(levers_sampling))
                 raise SystemExit
 
+        import numpy as np
+        for l in range(len(policies.parameters)):
+            var = np.zeros(len(policies.designs))
+            for d in range(len(policies.designs)):
+                var[d] = policies.designs[d][l]
+            val = np.unique(var)
+            counts = np.zeros(len(val))
+            for i in range(len(val)):
+                counts[i] = np.count_nonzero(val[i] == var)
+            print("lever: {} - values {} - counts for each value{}".format(policies.parameters[l], val, counts))
+
         levers = policies.parameters
         n_policies = policies.n
+
+
 
     else:
         try:
