@@ -218,7 +218,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         try {
             
-            
 
             String pathSRC = Paths.get(".").toAbsolutePath().normalize().toString();
             pathSRC = pathSRC.split("gr4sp")[0];

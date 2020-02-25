@@ -203,6 +203,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
                     price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
                             avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot ) /
                             (avgMonthlyDemandPrimarySpot  + avgMonthlyDemandOffSpot);
+
             }
         }
 
@@ -425,7 +426,8 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 double totalDemandWholesale = totalDemand - availableCapacityOffMarket - consumptionSuppliedBySolar;
 
                 //If non scheduled covered more than the demand, set the demand of the wholesale to 0
-                if(totalDemandWholesale < 0.0 ) totalDemandWholesale = 0.0;
+                if(totalDemandWholesale < 0.0 )
+                    totalDemandWholesale = 0.0;
 
                 double totalDemandResidential = 0.0;
                 if(data.settings.existsMarket("secondary")) {
@@ -460,25 +462,20 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                if(totalDemandWholesale + totalDemandResidential > 0.0001) {
                    avgMonthlyDemandPrimarySpot = (avgMonthlyDemandPrimarySpot * num_half_hours) + totalDemandWholesale;
-                   avgMonthlyDemandOffSpot = (avgMonthlyDemandOffSpot * num_half_hours ) + availableCapacityOffMarket;
-
                    avgMonthlyPricePrimarySpot = (avgMonthlyPricePrimarySpot * num_half_hours) + this.primarySpot.getMarketPrice() ;
-                   avgMonthlyPriceOffSpot = (avgMonthlyPriceOffSpot * num_half_hours ) + priceOffMarket;
                    if(data.settings.existsMarket("secondary")) {
                        avgMonthlyPriceSecondarySpot = (avgMonthlyPriceSecondarySpot * num_half_hours) + this.secondarySpot.getMarketPrice();
                        avgMonthlyDemandSecondarySpot = (avgMonthlyDemandSecondarySpot * num_half_hours) + totalDemandResidential;
                    }
-//                   if(data.settings.existsMarket("secondary")) {
-//                       monthlyAveragePrice = (monthlyAveragePrice * num_half_hours) + (this.primarySpot.getMarketPrice() * totalDemandWholesale + this.secondarySpot.getMarketPrice() * totalDemandResidential) / (totalDemandWholesale + totalDemandResidential);
-//                       monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + (this.primarySpot.getEmissionsIntensity() * totalDemandWholesale + this.secondarySpot.getEmissionsIntensity() * totalDemandResidential) / (totalDemandWholesale + totalDemandResidential);
-//                   }
-//                   else{
-//                       monthlyAveragePrice = (monthlyAveragePrice * num_half_hours) + (this.primarySpot.getMarketPrice() * totalDemandWholesale) / (totalDemandWholesale);
-//                       monthlyAverageEmissions = (monthlyAverageEmissions * num_half_hours) + (this.primarySpot.getEmissionsIntensity() * totalDemandWholesale ) / (totalDemandWholesale );
-//                       }
-                }else{
+
+               }else{
                     data.LOGGER.warning("demand in Spots was 0!! all covered off market");
-                }
+               }
+
+               if(availableCapacityOffMarket > 0.0001){
+                   avgMonthlyDemandOffSpot = (avgMonthlyDemandOffSpot * num_half_hours ) + availableCapacityOffMarket;
+                   avgMonthlyPriceOffSpot = (avgMonthlyPriceOffSpot * num_half_hours ) + priceOffMarket;
+               }
 
 //                if (Double.isNaN(monthlyAveragePrice)) {
 //                    System.out.println(monthlyAveragePrice);
@@ -491,13 +488,14 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 if(totalDemandWholesale + totalDemandResidential > 0.0001) {
                     avgMonthlyPricePrimarySpot /= num_half_hours;
                     avgMonthlyPriceSecondarySpot /= num_half_hours;
-                    avgMonthlyPriceOffSpot /= num_half_hours;
 
                     avgMonthlyDemandPrimarySpot /= num_half_hours;
                     avgMonthlyDemandSecondarySpot /= num_half_hours;
+                }
+                if(availableCapacityOffMarket > 0.0001) {
+                    avgMonthlyPriceOffSpot /= num_half_hours;
                     avgMonthlyDemandOffSpot /= num_half_hours;
                 }
-
 
 
                 //Add 30 min to get next demand
