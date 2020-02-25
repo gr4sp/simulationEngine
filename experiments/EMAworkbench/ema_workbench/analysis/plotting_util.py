@@ -92,6 +92,7 @@ def plot_envelope(ax, j, time, value, fill=False):
     # plot minima and maxima
     minimum = np.min(value, axis=0)
     maximum = np.max(value, axis=0)
+    mean = np.mean(value, axis=0)
 
     color = get_color(j)
 
@@ -104,9 +105,12 @@ def plot_envelope(ax, j, time, value, fill=False):
                         facecolor=color,
                         alpha=0.3,
                         )
+        ax.plot(time, mean, c=get_color(0))
     else:
         ax.plot(time, minimum, c=color)
         ax.plot(time, maximum, c=color)
+        ax.plot(time, mean, c=get_color(j+1))
+
 
 
 def plot_histogram(ax, values, log):
