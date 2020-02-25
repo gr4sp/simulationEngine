@@ -70,7 +70,11 @@ forecast:
   #improves capacity factors of renewable technologies by a constant factor every year (Wind, added to cap factor [0,0.5], Solar, solarEfficiency losses [0.7,1])
   technologicalImprovement: 0.0
 
+<<<<<<<< HEAD:simulationSettings/BAUVIC26.yaml
   learningCurve: 0.01
+========
+  learningCurve: 0.0
+>>>>>>>> 4771f1a (fixed tariff bug):simulationSettings/BAUVIC.yaml
 
   #size of solar systems capacity. Used to estimate number of units installed from the forecasted MW solar uptake
   solarInstallCapacity: 6.3
