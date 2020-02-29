@@ -2,7 +2,7 @@ import os, sys
 
 sys.path.append(r'{}\EMAworkbench'.format(os.getcwd()))
 
-from gr4spModelSOBOL import getModel
+from gr4spModelLHS import getModel
 from datetime import date
 
 if __name__ == '__main__':
@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    with MultiprocessingEvaluator(model,n_processes=24) as evaluator:
+    with MultiprocessingEvaluator(model,n_processes=1) as evaluator:
         ## Variance-based SA
         #results = evaluator.perform_experiments(scenarios=0, policies=1050, levers_sampling=SOBOL)
 
