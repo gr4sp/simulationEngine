@@ -20,12 +20,12 @@ if __name__ == '__main__':
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    with MultiprocessingEvaluator(model,n_processes=1) as evaluator:
+    with MultiprocessingEvaluator(model,n_processes=24) as evaluator:
         ## Variance-based SA
         #results = evaluator.perform_experiments(scenarios=0, policies=1050, levers_sampling=SOBOL)
 
         ## Generate Variance-based SA Policies, and save them into a file
-        #results = evaluator.perform_experiments(scenarios=0, policies=1050, levers_sampling=SOBOL, generate_policy_file_only=True)
+        #results = evaluator.perform_experiments(scenarios=0, policies=1024, levers_sampling=SOBOL, generate_policy_file_only=True)
 
         results = evaluator.perform_experiments(scenarios=0, policies=1, levers_sampling='policies.sobol.object')
 
