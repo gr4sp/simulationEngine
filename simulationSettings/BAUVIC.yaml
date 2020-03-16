@@ -10,7 +10,7 @@ reportGeneration: "light"
 simulationDates:
 
   # Simulation Date Range
-  startDate:  1998-01-01
+  startDate:  1902-01-01
   endDate: 2036-01-01
 
   # Spot Market Start Date

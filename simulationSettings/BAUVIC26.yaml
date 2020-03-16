@@ -5,7 +5,7 @@ folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
   #report can be "full" or "light"
   #"full": generates all csv data ~8MB, and all the plots 2.5MB per simulation
 #"light": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB
-reportGeneration: "light"
+reportGeneration: "full"
 
 simulationDates:
 
@@ -41,10 +41,10 @@ population:
 forecast:
   #Forecast from ISP annual consumption includes for each category can be: (Slow change), (Fast change), (High DER), (Central), and (Step change)
   scenario:
-    consumption: Slow change # consumptions = OpSentOut + PV + EE + ONSG
-    energyEfficiency: Slow change # consumption = consumption - EE
+    consumption: Central # consumptions = OpSentOut + PV + EE + ONSG
+    energyEfficiency: Central # consumption = consumption - EE
     onsiteGeneration: Central # consumption = consumption - ONSG
-    solarUptake: Fast change #Slow change
+    solarUptake: Central #Slow change
 
   baseYear: 2018
 
@@ -52,25 +52,25 @@ forecast:
 
   #This is applied to the tariffs. If price rises in year baseYear+1 2% and annualCpi=0.02 and inflation=0.01, then it will appear as 0.1 wrt the price as in baseYear.
   #AnnualCPI corrects the value given as inflation below.
-  annualCpi: 0.0366493
+  annualCpi: 0.02
 
   #true means new generation that has been publically announced but not committed is included.
-  includePublicallyAnnouncedGen: true #true
+  includePublicallyAnnouncedGen: false #true
   #Rollout period of announced generation: including "Publically announced", "Emerging", "Committed",
   # and "In Commissioning". This are all the projects that are on their way to be integrated in the generation pool but haven't
   # start operating
-  generationRolloutPeriod: 4
+  generationRolloutPeriod: 2
 
   # Include subcategory of rooftop pv. (residential), (business) or (both)
-  rooftopPV: both
+  rooftopPV: residential
 
   #shift on closure date for Fossil Fuel Generators. Ex: -5 means 5 years earlier than expected
-  generatorRetirement: 3
+  generatorRetirement: 0
 
   #improves capacity factors of renewable technologies by a constant factor every year (Wind, added to cap factor [0,0.5], Solar, solarEfficiency losses [0.7,1])
-  technologicalImprovement: 0.0790497
+  technologicalImprovement: 0.0
 
-  learningCurve: 0.0124631
+  learningCurve: 0.01
 
   #size of solar systems capacity. Used to estimate number of units installed from the forecasted MW solar uptake
   solarInstallCapacity: 6.3
@@ -82,7 +82,7 @@ policy:
   endConsumerTariff: AVG
 
   # Apply inflation to the max and min value used by generators to define the LCOE
-  annualInflation: 0.0417459
+  annualInflation: 0.03
 
 # market settings
 arena:
@@ -93,10 +93,10 @@ arena:
     minCapMarketGen: 30
   semiScheduled:
     spotMarket: none
-    minCapMarketGen: 22.5884 #0.1
+    minCapMarketGen: 0.1 #0.1
   nonScheduled:
     spotMarket: none
-    minCapMarketGen: 10.3826
+    minCapMarketGen: 0.1
 
 
 generators:
@@ -206,11 +206,11 @@ generators:
 
   Brown Coal:
     #LCOE Price Parameters
-    priceMinMWh: 18.45
-    priceMaxMWh: 98.4
+    priceMinMWh: 15
+    priceMaxMWh: 80
     # Capacity Factor
-    minCapacityFactor: 0.4888
-    maxCapacityFactor: 0.936
+    minCapacityFactor: 0.47
+    maxCapacityFactor: 0.9
     maxCapacityFactorSummer: 0.95
     # Emission Factor, by increasing start year
     emissionFactors:
@@ -256,8 +256,8 @@ generators:
   Wind:
     #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
 
-    priceMinMWh: 68
-    priceMaxMWh: 170
+    priceMinMWh: 80
+    priceMaxMWh: 200
     # Capacity Factor
     minCapacityFactor: 0.28
     maxCapacityFactor: 0.38 # in LCOE report this is truncated at 50% assuming improvements in technology and costs
@@ -271,11 +271,11 @@ generators:
 
   Water:
     #LCOE Price Parameters
-    priceMinMWh: 28.38
-    priceMaxMWh: 193.5
+    priceMinMWh: 22
+    priceMaxMWh: 150
     # Capacity Factor
-    minCapacityFactor: 0.0505
-    maxCapacityFactor: 0.909
+    minCapacityFactor: 0.05
+    maxCapacityFactor: 0.90
     maxCapacityFactorSummer: 0.90
     # Emission Factor, by increasing start year
     emissionFactors:
@@ -311,12 +311,12 @@ tariffs:
   distributionCosts:
     fixed: 1
     #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.371
+    usage: 0.35
 
   retailCosts:
     fixed: 1
     #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.2275
+    usage: 0.25
 
   environmentalCosts:
     #percentage contribution of final tariff with respect to wholesale price

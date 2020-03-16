@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="src" default="all">
+  
+  
+  <property file="src.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+    <include name="*.klib"/>
+    <include name="*.swc"/>
+    <include name="*.war"/>
+    <include name="*.zip"/>
+    <include name="*.ane"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.11" value="${jdk.home.11}/bin"/>
+  <path id="jdk.classpath.11">
+    <fileset dir="${jdk.home.11}">
+      <include name="../jdk-11.0.3!/java.base"/>
+      <include name="../jdk-11.0.3!/java.compiler"/>
+      <include name="../jdk-11.0.3!/java.datatransfer"/>
+      <include name="../jdk-11.0.3!/java.desktop"/>
+      <include name="../jdk-11.0.3!/java.instrument"/>
+      <include name="../jdk-11.0.3!/java.logging"/>
+      <include name="../jdk-11.0.3!/java.management"/>
+      <include name="../jdk-11.0.3!/java.management.rmi"/>
+      <include name="../jdk-11.0.3!/java.naming"/>
+      <include name="../jdk-11.0.3!/java.net.http"/>
+      <include name="../jdk-11.0.3!/java.prefs"/>
+      <include name="../jdk-11.0.3!/java.rmi"/>
+      <include name="../jdk-11.0.3!/java.scripting"/>
+      <include name="../jdk-11.0.3!/java.se"/>
+      <include name="../jdk-11.0.3!/java.security.jgss"/>
+      <include name="../jdk-11.0.3!/java.security.sasl"/>
+      <include name="../jdk-11.0.3!/java.smartcardio"/>
+      <include name="../jdk-11.0.3!/java.sql"/>
+      <include name="../jdk-11.0.3!/java.sql.rowset"/>
+      <include name="../jdk-11.0.3!/java.transaction.xa"/>
+      <include name="../jdk-11.0.3!/java.xml"/>
+      <include name="../jdk-11.0.3!/java.xml.crypto"/>
+      <include name="../jdk-11.0.3!/jdk.accessibility"/>
+      <include name="../jdk-11.0.3!/jdk.aot"/>
+      <include name="../jdk-11.0.3!/jdk.attach"/>
+      <include name="../jdk-11.0.3!/jdk.charsets"/>
+      <include name="../jdk-11.0.3!/jdk.compiler"/>
+      <include name="../jdk-11.0.3!/jdk.crypto.cryptoki"/>
+      <include name="../jdk-11.0.3!/jdk.crypto.ec"/>
+      <include name="../jdk-11.0.3!/jdk.crypto.mscapi"/>
+      <include name="../jdk-11.0.3!/jdk.dynalink"/>
+      <include name="../jdk-11.0.3!/jdk.editpad"/>
+      <include name="../jdk-11.0.3!/jdk.hotspot.agent"/>
+      <include name="../jdk-11.0.3!/jdk.httpserver"/>
+      <include name="../jdk-11.0.3!/jdk.internal.ed"/>
+      <include name="../jdk-11.0.3!/jdk.internal.jvmstat"/>
+      <include name="../jdk-11.0.3!/jdk.internal.le"/>
+      <include name="../jdk-11.0.3!/jdk.internal.opt"/>
+      <include name="../jdk-11.0.3!/jdk.internal.vm.ci"/>
+      <include name="../jdk-11.0.3!/jdk.internal.vm.compiler"/>
+      <include name="../jdk-11.0.3!/jdk.internal.vm.compiler.management"/>
+      <include name="../jdk-11.0.3!/jdk.jartool"/>
+      <include name="../jdk-11.0.3!/jdk.javadoc"/>
+      <include name="../jdk-11.0.3!/jdk.jcmd"/>
+      <include name="../jdk-11.0.3!/jdk.jconsole"/>
+      <include name="../jdk-11.0.3!/jdk.jdeps"/>
+      <include name="../jdk-11.0.3!/jdk.jdi"/>
+      <include name="../jdk-11.0.3!/jdk.jdwp.agent"/>
+      <include name="../jdk-11.0.3!/jdk.jfr"/>
+      <include name="../jdk-11.0.3!/jdk.jlink"/>
+      <include name="../jdk-11.0.3!/jdk.jshell"/>
+      <include name="../jdk-11.0.3!/jdk.jsobject"/>
+      <include name="../jdk-11.0.3!/jdk.jstatd"/>
+      <include name="../jdk-11.0.3!/jdk.localedata"/>
+      <include name="../jdk-11.0.3!/jdk.management"/>
+      <include name="../jdk-11.0.3!/jdk.management.agent"/>
+      <include name="../jdk-11.0.3!/jdk.management.jfr"/>
+      <include name="../jdk-11.0.3!/jdk.naming.dns"/>
+      <include name="../jdk-11.0.3!/jdk.naming.rmi"/>
+      <include name="../jdk-11.0.3!/jdk.net"/>
+      <include name="../jdk-11.0.3!/jdk.pack"/>
+      <include name="../jdk-11.0.3!/jdk.rmic"/>
+      <include name="../jdk-11.0.3!/jdk.scripting.nashorn"/>
+      <include name="../jdk-11.0.3!/jdk.scripting.nashorn.shell"/>
+      <include name="../jdk-11.0.3!/jdk.sctp"/>
+      <include name="../jdk-11.0.3!/jdk.security.auth"/>
+      <include name="../jdk-11.0.3!/jdk.security.jgss"/>
+      <include name="../jdk-11.0.3!/jdk.unsupported"/>
+      <include name="../jdk-11.0.3!/jdk.unsupported.desktop"/>
+      <include name="../jdk-11.0.3!/jdk.xml.dom"/>
+      <include name="../jdk-11.0.3!/jdk.zipfs"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.11}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.11}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.11"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.opencsv-4.6.classpath">
+    <pathelement location="${basedir}/../libraries/opencsv-4.6.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <fileset dir="${javac2.home}">
+      <include name="javac2.jar"/>
+      <include name="jdom.jar"/>
+      <include name="asm-all*.jar"/>
+      <include name="forms-*.jar"/>
+    </fileset>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module gr4sp -->
+  
+  <dirname property="module.gr4sp.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.gr4sp" value="${jdk.home.11}"/>
+  <property name="module.jdk.bin.gr4sp" value="${jdk.bin.11}"/>
+  <property name="module.jdk.classpath.gr4sp" value="jdk.classpath.11"/>
+  
+  <property name="compiler.args.gr4sp" value="-encoding UTF-8 -source 9 -target 9 ${compiler.args}"/>
+  
+  <property name="gr4sp.output.dir" value="${module.gr4sp.basedir}/out/production/gr4sp"/>
+  <property name="gr4sp.testoutput.dir" value="${module.gr4sp.basedir}/out/test/gr4sp"/>
+  
+  <path id="gr4sp.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="gr4sp.module.production.classpath">
+    <path refid="${module.jdk.classpath.gr4sp}"/>
+    <pathelement location="${basedir}/../libraries/bsh-2.0b4.jar"/>
+    <pathelement location="${basedir}/../libraries/itext-1.2.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dcore.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dutils.jar"/>
+    <pathelement location="${basedir}/../libraries/jcommon-1.0.21.jar"/>
+    <pathelement location="${basedir}/../libraries/jfreechart-1.0.17.jar"/>
+    <pathelement location="${basedir}/../libraries/jmf.jar"/>
+    <pathelement location="${basedir}/../libraries/mason.19.jar"/>
+    <pathelement location="${basedir}/../libraries/portfolio.jar"/>
+    <pathelement location="${basedir}/../libraries/sqlite-jdbc-3.23.1.jar"/>
+    <pathelement location="${basedir}/../libraries/vecmath.jar"/>
+    <pathelement location="${basedir}/../libraries/postgresql-42.2.6.jar"/>
+    <path refid="library.opencsv-4.6.classpath"/>
+    <pathelement location="${basedir}/../libraries/yamlbeans-1.13.jar"/>
+  </path>
+  
+  <path id="gr4sp.runtime.production.module.classpath">
+    <pathelement location="${gr4sp.output.dir}"/>
+    <pathelement location="${basedir}/../libraries/bsh-2.0b4.jar"/>
+    <pathelement location="${basedir}/../libraries/itext-1.2.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dcore.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dutils.jar"/>
+    <pathelement location="${basedir}/../libraries/jcommon-1.0.21.jar"/>
+    <pathelement location="${basedir}/../libraries/jfreechart-1.0.17.jar"/>
+    <pathelement location="${basedir}/../libraries/jmf.jar"/>
+    <pathelement location="${basedir}/../libraries/mason.19.jar"/>
+    <pathelement location="${basedir}/../libraries/portfolio.jar"/>
+    <pathelement location="${basedir}/../libraries/sqlite-jdbc-3.23.1.jar"/>
+    <pathelement location="${basedir}/../libraries/vecmath.jar"/>
+    <pathelement location="${basedir}/../libraries/postgresql-42.2.6.jar"/>
+    <path refid="library.opencsv-4.6.classpath"/>
+    <pathelement location="${basedir}/../libraries/yamlbeans-1.13.jar"/>
+  </path>
+  
+  <path id="gr4sp.module.classpath">
+    <path refid="${module.jdk.classpath.gr4sp}"/>
+    <pathelement location="${gr4sp.output.dir}"/>
+    <pathelement location="${basedir}/../libraries/bsh-2.0b4.jar"/>
+    <pathelement location="${basedir}/../libraries/itext-1.2.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dcore.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dutils.jar"/>
+    <pathelement location="${basedir}/../libraries/jcommon-1.0.21.jar"/>
+    <pathelement location="${basedir}/../libraries/jfreechart-1.0.17.jar"/>
+    <pathelement location="${basedir}/../libraries/jmf.jar"/>
+    <pathelement location="${basedir}/../libraries/mason.19.jar"/>
+    <pathelement location="${basedir}/../libraries/portfolio.jar"/>
+    <pathelement location="${basedir}/../libraries/sqlite-jdbc-3.23.1.jar"/>
+    <pathelement location="${basedir}/../libraries/vecmath.jar"/>
+    <pathelement location="${basedir}/../libraries/postgresql-42.2.6.jar"/>
+    <path refid="library.opencsv-4.6.classpath"/>
+    <pathelement location="${basedir}/../libraries/yamlbeans-1.13.jar"/>
+  </path>
+  
+  <path id="gr4sp.runtime.module.classpath">
+    <pathelement location="${gr4sp.testoutput.dir}"/>
+    <pathelement location="${gr4sp.output.dir}"/>
+    <pathelement location="${basedir}/../libraries/bsh-2.0b4.jar"/>
+    <pathelement location="${basedir}/../libraries/itext-1.2.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dcore.jar"/>
+    <pathelement location="${basedir}/../libraries/j3dutils.jar"/>
+    <pathelement location="${basedir}/../libraries/jcommon-1.0.21.jar"/>
+    <pathelement location="${basedir}/../libraries/jfreechart-1.0.17.jar"/>
+    <pathelement location="${basedir}/../libraries/jmf.jar"/>
+    <pathelement location="${basedir}/../libraries/mason.19.jar"/>
+    <pathelement location="${basedir}/../libraries/portfolio.jar"/>
+    <pathelement location="${basedir}/../libraries/sqlite-jdbc-3.23.1.jar"/>
+    <pathelement location="${basedir}/../libraries/vecmath.jar"/>
+    <pathelement location="${basedir}/../libraries/postgresql-42.2.6.jar"/>
+    <path refid="library.opencsv-4.6.classpath"/>
+    <pathelement location="${basedir}/../libraries/yamlbeans-1.13.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.gr4sp">
+    <patternset refid="ignored.files"/>
+    <exclude name="out/**"/>
+    <exclude name="out/production/**"/>
+    <exclude name="out/production/gr4sp/**"/>
+    <exclude name="out/production/gr4sp/sim/**"/>
+    <exclude name="out/production/gr4sp/sim/util/**"/>
+    <exclude name="out/production/gr4sp/sim/util/mantissa/**"/>
+    <exclude name="out/production/gr4sp/sim/util/mantissa/linalg/**"/>
+    <exclude name="out/production/gr4sp/sim/field/**"/>
+    <exclude name="out/production/gr4sp/sim/field/network/**"/>
+    <exclude name="out/production/gr4sp/sim/field/network/stats/**"/>
+    <exclude name="out/production/gr4sp/sim/field/network/stats/actorcentrality/**"/>
+    <exclude name="out/production/gr4sp/sim/portrayal/**"/>
+    <exclude name="out/production/gr4sp/sim/portrayal/network/**"/>
+    <exclude name="out/production/gr4sp/sim/portrayal/network/stats/**"/>
+    <exclude name="out/production/gr4sp/core/**"/>
+    <exclude name="out/production/gr4sp/core/images/**"/>
+    <exclude name="out/production/gr4sp/core/Social/**"/>
+    <exclude name="out/production/gr4sp/core/Policies/**"/>
+    <exclude name="out/production/gr4sp/core/settings/**"/>
+    <exclude name="out/production/gr4sp/core/Technical/**"/>
+    <exclude name="out/production/gr4sp/core/Relationships/**"/>
+    <exclude name="out/production/gr4sp/.idea/**"/>
+    <exclude name="out/production/gr4sp/.idea/libraries/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/**"/>
+    <exclude name="out/production/gr4sp/.idea/dataSources/d6a29e55-48cc-46aa-9c7e-a9c42f2a51ca/storage_v2/_src_/database/postgres.edMnLQ/schema/**"/>
+    <exclude name="out/production/gr4sp/META-INF/**"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.gr4sp">
+    <patternset refid="excluded.from.module.gr4sp"/>
+  </patternset>
+  
+  <path id="gr4sp.module.sourcepath">
+    <dirset dir="${module.gr4sp.basedir}/../../gr4sp">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.gr4sp" depends="compile.module.gr4sp.production,compile.module.gr4sp.tests" description="Compile module gr4sp"/>
+  
+  <target name="compile.module.gr4sp.production" depends="register.custom.compilers" description="Compile module gr4sp; production classes">
+    <mkdir dir="${gr4sp.output.dir}"/>
+    <javac2 destdir="${gr4sp.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.gr4sp}/javac">
+      <compilerarg line="${compiler.args.gr4sp}"/>
+      <bootclasspath refid="gr4sp.module.bootclasspath"/>
+      <classpath refid="gr4sp.module.production.classpath"/>
+      <src refid="gr4sp.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.gr4sp"/>
+    </javac2>
+    
+    <copy todir="${gr4sp.output.dir}">
+      <fileset dir="${module.gr4sp.basedir}">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.gr4sp.tests" depends="register.custom.compilers,compile.module.gr4sp.production" description="compile module gr4sp; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.gr4sp" description="cleanup module">
+    <delete dir="${gr4sp.output.dir}"/>
+    <delete dir="${gr4sp.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.gr4sp" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.gr4sp" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
