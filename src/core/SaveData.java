@@ -1359,7 +1359,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                 Double avgPrice = 0.0;
                 Double avgWholesale = 0.0;
                 Double totalKWh = 0.0;
-                Double maxDwellings = 0.0;
+                Double dwellingsLastMonth = 0.0;
                 Double spprimspotagg = 0.0;
                 Double spsecondspotagg = 0.0;
                 Double spoffspotagg = 0.0;
@@ -1386,9 +1386,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                     totalKWh += k;
                 }
 
-                for (Double con : yearDataConsumers) {
-                    if (con > maxDwellings) maxDwellings = con;
-                }
+                // We report number of consumers in a given year based on last monthly data
+                dwellingsLastMonth = yearDataConsumers.get( yearDataConsumers.size() - 1 );
 
                 for (Double k : spPrimarySpotAggConsumers) {
                     spprimspotagg += k;
@@ -1407,7 +1406,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                 }
 
                 String[] record = {year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(avgWholesale), Double.toString(totalGHG),
-                        Double.toString(maxDwellings), Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg)};
+                        Double.toString(dwellingsLastMonth), Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg)};
                 csvWriterYear.writeNext(record);
             }
 

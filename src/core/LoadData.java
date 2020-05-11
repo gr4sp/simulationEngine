@@ -948,7 +948,7 @@ public class LoadData implements java.io.Serializable {
                 Date d = rs.getDate("date");
                 int consumers = rs.getInt("domesticconsumers");
 
-                //If arena doesn't exist, create it
+                //If data doesn't exist, create it
                 if (!data.getMonthly_domestic_consumers_register().containsKey(d)) {
                     data.getMonthly_domestic_consumers_register().put(d, consumers);
                 }
