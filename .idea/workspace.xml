@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90880ae2-9667-4e99-ba18-82531448e185" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/analysis/b_and_w_plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/analysis/b_and_w_plotting.py" afterDir="false" />
@@ -15,340 +13,12 @@
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/outcomes.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/outcomes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/samplers.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/samplers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/util/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/util/utilities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/EE__mu_star.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/EE__mu_star.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/EE__sigma.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/EE__sigma.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_EET.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_EET.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_Envelopes.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_Envelopes.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/connectorSOBOL.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/connectorSOBOL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_PRIM-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_PRIM-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_PRIM.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_PRIM.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_SOBOL.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_SOBOL.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_GHGYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_GHGYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_GHGYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_GHGYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_GHGYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_tariffsYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_tariffsYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_tariffsYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_tariffsYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_tariffsYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_envelope_kdes_GHGYear_dir_unc_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1998_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_1999_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2000_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2001_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2002_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2003_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2004_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2005_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2006_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2007_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2008_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2009_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2010_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2011_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2012_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2013_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2014_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2015_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2016_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2017_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2018_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2019_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2020_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2021_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2022_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2023_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2024_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2025_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2026_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2027_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2028_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2029_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2030_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2031_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2032_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2033_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2034_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_year_2035_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_mu_star_years_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/fig_sigma_years_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_GHGYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_offSpotProductionYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_primarySpotProductionYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_rooftopPVProductionYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_secondarySpotProductionYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_tariffsYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_wholesalePriceYear_filtered.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookMatisse/ema_import_from_matisse.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookMatisse/ema_import_from_matisse.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulationSettings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/simulationSettings/BAUVIC.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulationSettings/BAUVIC26.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/simulationSettings/BAUVIC26.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -433,6 +103,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DatabaseDriversLRU" value="sqlite&#10;sqlite.xerial&#10;postgresql" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -584,7 +255,16 @@
       <workItem from="1583403741686" duration="35000" />
       <workItem from="1583451998704" duration="5144000" />
       <workItem from="1583909912738" duration="6303000" />
-      <workItem from="1584346166478" duration="1179000" />
+      <workItem from="1584346166478" duration="1482000" />
+      <workItem from="1584406097734" duration="4035000" />
+      <workItem from="1589093837397" duration="96000" />
+      <workItem from="1589093958325" duration="1350000" />
+      <workItem from="1589113956336" duration="662000" />
+      <workItem from="1589185464481" duration="2537000" />
+      <workItem from="1589262599843" duration="7394000" />
+      <workItem from="1589766451784" duration="40000" />
+      <workItem from="1589768263602" duration="2592000" />
+      <workItem from="1590822847549" duration="26000" />
     </task>
     <servers />
   </component>
@@ -605,29 +285,35 @@
       <screen x="-1920" y="-429" width="1920" height="1040" />
     </state>
     <state x="-1368" y="-248" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582607114961" />
-    <state x="-1180" y="-177" key="FileChooserDialogImpl" timestamp="1583911276085">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
+    <state x="592" y="200" key="FileChooserDialogImpl" timestamp="1590822866195">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="-1180" y="-177" key="FileChooserDialogImpl/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1583911276085" />
-    <state width="419" height="694" key="GridCell.Tab.0.bottom" timestamp="1584348084687">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="2660" y="260" key="FileChooserDialogImpl/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589185598297" />
+    <state x="592" y="200" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1590822866195" />
+    <state width="527" height="910" key="GridCell.Tab.0.bottom" timestamp="1589359953670">
+      <screen x="1920" y="8" width="1920" height="1040" />
     </state>
     <state width="534" height="912" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582719944369" />
+    <state width="527" height="910" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589359953670" />
     <state width="419" height="694" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1584348084687" />
-    <state width="419" height="694" key="GridCell.Tab.0.center" timestamp="1584348084687">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="527" height="910" key="GridCell.Tab.0.center" timestamp="1589359953670">
+      <screen x="1920" y="8" width="1920" height="1040" />
     </state>
     <state width="534" height="912" key="GridCell.Tab.0.center/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582719944369" />
+    <state width="527" height="910" key="GridCell.Tab.0.center/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589359953670" />
     <state width="419" height="694" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1584348084687" />
-    <state width="419" height="694" key="GridCell.Tab.0.left" timestamp="1584348084687">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="527" height="910" key="GridCell.Tab.0.left" timestamp="1589359953670">
+      <screen x="1920" y="8" width="1920" height="1040" />
     </state>
     <state width="534" height="912" key="GridCell.Tab.0.left/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582719944368" />
+    <state width="527" height="910" key="GridCell.Tab.0.left/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589359953670" />
     <state width="419" height="694" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1584348084687" />
-    <state width="419" height="694" key="GridCell.Tab.0.right" timestamp="1584348084687">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="527" height="910" key="GridCell.Tab.0.right" timestamp="1589359953670">
+      <screen x="1920" y="8" width="1920" height="1040" />
     </state>
     <state width="534" height="912" key="GridCell.Tab.0.right/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582719944369" />
+    <state width="527" height="910" key="GridCell.Tab.0.right/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589359953670" />
     <state width="419" height="694" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1584348084687" />
     <state width="466" height="662" key="GridCell.Tab.1.bottom" timestamp="1582637620674">
       <screen x="-1920" y="-429" width="1920" height="1040" />
