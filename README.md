@@ -51,6 +51,9 @@ javac -d classes -cp src/:/mnt/data/gr4sp/experiments/../libraries/bsh-2.0b4.jar
 
 The settings for the simulation are specified in YAML format. Which is a human readable file that can be edited to change the simulation settings.
 
+To run the simulation settings stored in the YAML file, the folderOutput variable in the YAML file should point to the main folder containing gr4sp (root folder where the code was cloned).
+
+Run the following command:
 ```
 [src\core\settings\BAUVIC.yaml](src\core\settings\BAUVIC.yaml)
 ```
