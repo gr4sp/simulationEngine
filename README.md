@@ -11,7 +11,7 @@ Clone repo:
 go to the root folder `gr4sp` and run
 
 ```
-mdkir logs
+mkdir logs
 mkdir csv
 mkdir plots
 ```
@@ -40,7 +40,7 @@ javac -d classes -cp src/:/mnt/data/gr4sp/experiments/../libraries/bsh-2.0b4.jar
 
 ## Set simulation YAML file
 
-Make sure the folderOutput points to the folder above `src`. For example, if you clone the repo in windows in this folder `c:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp`, then set the first variable in the yaml file
+The settings for the simulation are specified in YAML format. Which is a human readable file that can be edited to change the simulation settings.
 
 ```
 [src\core\settings\BAUVIC.yaml](src\core\settings\BAUVIC.yaml)
@@ -80,8 +80,7 @@ Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_
  sudo nano /etc/postgresql/10/main/pg_hba.conf
 ```
 
-See [this guide](https://linuxize.com/post/how-to-use-nano-text-editor/#opening-and-creating-files) about how to edit files with nano
-and make sure that at the end of the file, all the lines below finish with the word `trust`
+See [this guide](https://linuxize.com/post/how-to-use-nano-text-editor/#opening-and-creating-files) about how to edit files with nano. Scroll down to the end of the file and make sure that all the lines below finish with the word `trust`. The file should be edited so it looks as shown below:
 
 ```local   all             postgres                                trust
 
@@ -96,6 +95,9 @@ and then run
 ```
 sudo service postgresql restart
 ```
+These changes make sure that gr4sp access the postgres database without any issues (e.g. username, passwords).
+
+
 ## Run Gr4sp Simulation
 
 Go to `src` folder and run
