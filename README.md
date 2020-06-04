@@ -50,7 +50,6 @@ as
 
 ```
 folderOutput: "C:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp"
-
 ```
 
 ## Install PostGres and load database
