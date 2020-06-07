@@ -1457,19 +1457,47 @@ public class SaveData implements Steppable, java.io.Serializable {
 
 
         ) {
+            SimpleDateFormat dateToYear = new SimpleDateFormat("yyyy");
+
+            //Store header Gen Productions
+            ArrayList<String> headerYear = new ArrayList<String>( Arrays.asList("Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
+                    "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
+                    "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
+                    "System Production Solar", "System Production Battery", "Number of Active Actors"));
+            TreeMap<Integer, Vector<Generator>> treeMap = new TreeMap<>(data.gen_register);
+
+            for (Integer integer : treeMap.keySet()) {
+
+                Vector<Generator> gens = data.gen_register.get(integer);
+                for (int i = 0; i < gens.size(); i++) {
+                    String name = gens.elementAt(i).getId() + " - " + gens.elementAt(i).getfuelSourceDescriptor() + " - "
+                            + gens.elementAt(i).getName() + " - " + gens.elementAt(i).getMaxCapacity() + " - " + gens.elementAt(i).getDispatchTypeDescriptor() + " - " + dateToYear.format(gens.elementAt(i).getStart()) + " - " + dateToYear.format(gens.elementAt(i).getEnd());
+                    name = name.replace(",", "-");
+
+                    if(gens.elementAt(i).getInPrimaryMarket())
+                        name += " - Primary";
+                    else if(gens.elementAt(i).getInPrimaryMarket())
+                        name += " - Secondary";
+                    else
+                        name += " - OffSpot";
+
+                    headerYear.add(name);
+
+                }
+            }
+            String[] hy = headerYear.toArray(new String[0]);
 
 
-            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
+            csvWriterYear.writeNext(hy);
 
-            csvWriterYear.writeNext(headerRecordYear);
-
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
+                    "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
+                    "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
+                    "System Production Solar", "System Production Battery", "Number of Active Actors"};
 
             csvWriterMonthly.writeNext(headerRecordMonthly);
 
 
-
-            SimpleDateFormat dateToYear = new SimpleDateFormat("yyyy");
 
 
             HashMap<String, ArrayList<Double>> datasetGHGsummary = new HashMap<>();
@@ -1477,10 +1505,23 @@ public class SaveData implements Steppable, java.io.Serializable {
             HashMap<String, ArrayList<Double>> datasetWholesaleSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetKWhSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetConsumersSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetNumActorsSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdPrimarySpotSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdSecondarySpotSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdOffSpotSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdRooftopSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdCoalSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdWaterSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdWindSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdGasSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdSolSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdBatSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdRenewableSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSysProdFossilSummary = new HashMap<>();
+            HashMap<String, ArrayList<ArrayList<Double>>> datasetSysGenProdSummary = new HashMap<>();
+
+
+
 
 
 
@@ -1489,11 +1530,32 @@ public class SaveData implements Steppable, java.io.Serializable {
             XYSeries wseries = wholesaleSeries.get(0);
             XYSeries gseries = ghgConsumptionActorSeries.get(0);
             XYSeries dseries = numDomesticConsumersSeries.get(0);
+            XYSeries naseries = numActorsSeries;
+            /**
+             * Add series to hashmap of series of aggregated
+             *  1 CombinedTariff (only in PriceGenAvgSeries)
+             *  0 PrimarySpot
+             * -1 SecondarySpot
+             * -2 Offspot
+             * -3 RooftopPV
+             * -4 Coal
+             * -5 Water
+             * -6 Wind
+             * -7 Gas
+             * -8 Solar
+             * -9 Battery
+             */
             XYSeries spprimaggseries = systemProductionSeries.get(0);
             XYSeries spsecondaggseries = systemProductionSeries.get(-1);
             XYSeries sposaggseries = systemProductionSeries.get(-2);
             XYSeries sproofaggseries = systemProductionSeries.get(-3);
-            XYSeries naseries = numActorsSeries;
+            XYSeries spcoalaggseries = systemProductionSeries.get(-4);
+            XYSeries spwateraggseries = systemProductionSeries.get(-5);
+            XYSeries spwindaggseries = systemProductionSeries.get(-6);
+            XYSeries spgasaggseries = systemProductionSeries.get(-7);
+            XYSeries spsolaggseries = systemProductionSeries.get(-8);
+            XYSeries spbataggseries = systemProductionSeries.get(-9);
+
 
 
             Calendar c = Calendar.getInstance();
@@ -1514,10 +1576,17 @@ public class SaveData implements Steppable, java.io.Serializable {
                 XYDataItem witem = (XYDataItem) wseries.getItems().get(t);
                 XYDataItem gitem = (XYDataItem) gseries.getItems().get(t);
                 XYDataItem ditem = (XYDataItem) dseries.getItems().get(t);
+
                 XYDataItem spprimaggitem = null;
                 XYDataItem spsecondaggitem = null;
                 XYDataItem sposaggitem = null;
                 XYDataItem sproofaggitem = null;
+                XYDataItem spcoalaggitem = null;
+                XYDataItem spwateraggitem = null;
+                XYDataItem spwindaggitem = null;
+                XYDataItem spgasaggitem = null;
+                XYDataItem spsolaggitem = null;
+                XYDataItem spbataggitem = null;
 
                 XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
                 if (shifttimeseries <= t) {
@@ -1526,7 +1595,14 @@ public class SaveData implements Steppable, java.io.Serializable {
                         spsecondaggitem = (XYDataItem) spsecondaggseries.getItems().get(t - shifttimeseries);
                     if(sposaggseries != null)
                         sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
+
                     sproofaggitem = (XYDataItem) sproofaggseries.getItems().get(t - shifttimeseries);
+                    spcoalaggitem = (XYDataItem) spcoalaggseries.getItems().get(t - shifttimeseries);
+                    spwateraggitem = (XYDataItem) spwateraggseries.getItems().get(t - shifttimeseries);
+                    spwindaggitem = (XYDataItem) spwindaggseries.getItems().get(t - shifttimeseries);
+                    spgasaggitem = (XYDataItem) spgasaggseries.getItems().get(t - shifttimeseries);
+                    spsolaggitem = (XYDataItem) spsolaggseries.getItems().get(t - shifttimeseries);
+                    spbataggitem = (XYDataItem) spbataggseries.getItems().get(t - shifttimeseries);
 
                 }
 
@@ -1539,6 +1615,16 @@ public class SaveData implements Steppable, java.io.Serializable {
                 double MWhSecondarySpotAgg = 0.0;
                 double MWhOffSpotAgg = 0.0;
                 double MWhRoofSpotAgg = 0.0;
+                double MWhCoalSpotAgg = 0.0;
+                double MWhWaterSpotAgg = 0.0;
+                double MWhWindSpotAgg = 0.0;
+                double MWhGasSpotAgg = 0.0;
+                double MWhSolSpotAgg = 0.0;
+                double MWhBatSpotAgg = 0.0;
+                double MWhRenewable = 0.0;
+                double MWhFossil = 0.0;
+                double percentageRenwewable = 0.0;
+
                 double numActors = naitem.getYValue();
 
                 if (shifttimeseries <= t) {
@@ -1548,15 +1634,55 @@ public class SaveData implements Steppable, java.io.Serializable {
                     if(sposaggitem != null)
                         MWhOffSpotAgg = sposaggitem.getYValue();
                     MWhRoofSpotAgg = sproofaggitem.getYValue();
+                    MWhCoalSpotAgg = spcoalaggitem.getYValue();
+                    MWhWaterSpotAgg = spwateraggitem.getYValue();
+                    MWhWindSpotAgg = spwindaggitem.getYValue();
+                    MWhGasSpotAgg = spgasaggitem.getYValue();
+                    MWhSolSpotAgg = spsolaggitem.getYValue();
+                    MWhBatSpotAgg = spbataggitem.getYValue();
 
+                    MWhRenewable = MWhRoofSpotAgg + MWhWaterSpotAgg + MWhWaterSpotAgg + MWhWindSpotAgg + MWhSolSpotAgg + MWhBatSpotAgg;
+                    MWhFossil = MWhCoalSpotAgg + MWhGasSpotAgg;
+                    percentageRenwewable = MWhRenewable / (MWhRenewable + MWhFossil);
                 }
 
                 SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");
 
                 String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions / consumers),
-                        Double.toString(consumers), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg), Double.toString(numActors)};
+                        Double.toString(consumers), Double.toString(percentageRenwewable), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg),
+                        Double.toString(MWhCoalSpotAgg), Double.toString(MWhWaterSpotAgg), Double.toString(MWhWindSpotAgg), Double.toString(MWhGasSpotAgg),
+                        Double.toString(MWhSolSpotAgg), Double.toString(MWhBatSpotAgg), Double.toString(numActors)};
                 csvWriterMonthly.writeNext(record);
 
+                /***
+                 * Generators Production Data
+                 */
+
+                //Store data about Gen prod
+                ArrayList<Double> sysGenProd = new ArrayList<Double>();
+
+                //Writes data to CSV files about in/off spot generation and system production
+                for (Integer integer : treeMap.keySet()) {
+                    XYSeries sysprodseries = systemProductionSeries.get(integer);
+
+                    int shift = cseries.getItemCount() - sysprodseries.getItemCount();
+
+                    //If Generator hasn't started yet, print "-"
+                    if (shift > t) {
+                        sysGenProd.add(0.0);
+                        //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
+
+                    } else {
+                        //If Generator has started, print its historic cap factor
+                        XYDataItem spitem = (XYDataItem) sysprodseries.getItems().get(t - shift);
+                        sysGenProd.add(spitem.getYValue())  ;
+                    }
+                }
+
+
+                /**
+                 * save data to compute yearly indicators
+                 */
 
 
                 String year = dateToYear.format(c.getTime());
@@ -1597,6 +1723,13 @@ public class SaveData implements Steppable, java.io.Serializable {
 
                 datasetConsumersSummary.get(year).add(consumers);
 
+                if (!datasetNumActorsSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetNumActorsSummary.put(year, yearData);
+                }
+
+                datasetNumActorsSummary.get(year).add(consumers);
+
 
                 if (!datasetSysProdPrimarySpotSummary.containsKey(year)) {
                     ArrayList<Double> yearData = new ArrayList<>();
@@ -1622,6 +1755,60 @@ public class SaveData implements Steppable, java.io.Serializable {
                 }
                 datasetSysProdRooftopSummary.get(year).add(MWhRoofSpotAgg);
 
+                if (!datasetSysProdCoalSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdCoalSummary.put(year, yearData);
+                }
+                datasetSysProdCoalSummary.get(year).add(MWhCoalSpotAgg);
+
+                if (!datasetSysProdWaterSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdWaterSummary.put(year, yearData);
+                }
+                datasetSysProdWaterSummary.get(year).add(MWhWaterSpotAgg);
+
+                if (!datasetSysProdWindSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdWindSummary.put(year, yearData);
+                }
+                datasetSysProdWindSummary.get(year).add(MWhWindSpotAgg);
+
+                if (!datasetSysProdGasSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdGasSummary.put(year, yearData);
+                }
+                datasetSysProdGasSummary.get(year).add(MWhGasSpotAgg);
+
+                if (!datasetSysProdSolSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdSolSummary.put(year, yearData);
+                }
+                datasetSysProdSolSummary.get(year).add(MWhSolSpotAgg);
+
+                if (!datasetSysProdBatSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdBatSummary.put(year, yearData);
+                }
+                datasetSysProdBatSummary.get(year).add(MWhBatSpotAgg);
+
+                if (!datasetSysProdRenewableSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdRenewableSummary.put(year, yearData);
+                }
+                datasetSysProdRenewableSummary.get(year).add(MWhRenewable);
+
+                if (!datasetSysProdFossilSummary.containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSysProdFossilSummary.put(year, yearData);
+                }
+                datasetSysProdFossilSummary.get(year).add(MWhFossil);
+
+                if (!datasetSysGenProdSummary.containsKey(year)) {
+                    ArrayList<ArrayList<Double>> yearData = new ArrayList<>();
+                    datasetSysGenProdSummary.put(year, yearData);
+                }
+                datasetSysGenProdSummary.get(year).add(sysGenProd);
+
                 c.add(Calendar.MONTH, 1);
             }
 
@@ -1636,10 +1823,21 @@ public class SaveData implements Steppable, java.io.Serializable {
                 ArrayList<Double> yearDataWholesale = datasetWholesaleSummary.get(year);
                 ArrayList<Double> yearDataKWh = datasetKWhSummary.get(year);
                 ArrayList<Double> yearDataConsumers = datasetConsumersSummary.get(year);
-                ArrayList<Double> spPrimarySpotAggConsumers = datasetSysProdPrimarySpotSummary.get(year);
-                ArrayList<Double> spSecondarySpotAggConsumers = datasetSysProdSecondarySpotSummary.get(year);
-                ArrayList<Double> spOffSpotAggConsumers = datasetSysProdOffSpotSummary.get(year);
-                ArrayList<Double> spRooftopAggConsumers = datasetSysProdRooftopSummary.get(year);
+                ArrayList<Double> yearDataNumActors = datasetNumActorsSummary.get(year);
+
+                ArrayList<Double> spPrimarySpotAgg = datasetSysProdPrimarySpotSummary.get(year);
+                ArrayList<Double> spSecondarySpotAgg = datasetSysProdSecondarySpotSummary.get(year);
+                ArrayList<Double> spOffSpotAgg = datasetSysProdOffSpotSummary.get(year);
+                ArrayList<Double> spRooftopAgg = datasetSysProdRooftopSummary.get(year);
+                ArrayList<Double> spCoalAgg = datasetSysProdCoalSummary.get(year);
+                ArrayList<Double> spWaterAgg = datasetSysProdWaterSummary.get(year);
+                ArrayList<Double> spWindAgg = datasetSysProdWindSummary.get(year);
+                ArrayList<Double> spGasAgg = datasetSysProdGasSummary.get(year);
+                ArrayList<Double> spSolAgg = datasetSysProdSolSummary.get(year);
+                ArrayList<Double> spBatAgg = datasetSysProdBatSummary.get(year);
+                ArrayList<Double> spRenewableAgg = datasetSysProdRenewableSummary.get(year);
+                ArrayList<Double> spFossilAgg = datasetSysProdFossilSummary.get(year);
+                ArrayList<ArrayList<Double>> spGenProdAgg = datasetSysGenProdSummary.get(year);
 
 
                 Double totalGHG = 0.0;
@@ -1647,11 +1845,20 @@ public class SaveData implements Steppable, java.io.Serializable {
                 Double avgWholesale = 0.0;
                 Double totalKWh = 0.0;
                 Double maxDwellings = 0.0;
+                Double maxNumActors = 0.0;
                 Double spprimspotagg = 0.0;
                 Double spsecondspotagg = 0.0;
                 Double spoffspotagg = 0.0;
                 Double sproofagg = 0.0;
-
+                Double spcoalagg = 0.0;
+                Double spwateragg = 0.0;
+                Double spwindagg = 0.0;
+                Double spgasagg = 0.0;
+                Double spsolagg = 0.0;
+                Double spbatagg = 0.0;
+                Double sprenewableagg = 0.0;
+                Double spfossilagg = 0.0;
+                ArrayList<Double> spgenprodagg = null;
 
                 Double sizeData = (double) yearDataGHG.size();
 
@@ -1677,25 +1884,84 @@ public class SaveData implements Steppable, java.io.Serializable {
                     if (con > maxDwellings) maxDwellings = con;
                 }
 
-                for (Double k : spPrimarySpotAggConsumers) {
+                for (Double con : yearDataNumActors) {
+                    if (con > maxNumActors) maxNumActors = con;
+                }
+
+                for (Double k : spPrimarySpotAgg) {
                     spprimspotagg += k;
                 }
 
-                for (Double k : spSecondarySpotAggConsumers) {
+                for (Double k : spSecondarySpotAgg) {
                     spsecondspotagg += k;
                 }
 
-                for (Double k : spOffSpotAggConsumers) {
+                for (Double k : spOffSpotAgg) {
                     spoffspotagg += k;
                 }
 
-                for (Double k : spRooftopAggConsumers) {
+                for (Double k : spRooftopAgg) {
                     sproofagg += k;
                 }
 
-                String[] record = {year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(avgWholesale), Double.toString(totalGHG),
-                        Double.toString(maxDwellings), Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg)};
-                csvWriterYear.writeNext(record);
+                for (Double k : spCoalAgg) {
+                    spcoalagg += k;
+                }
+
+                for (Double k : spWaterAgg) {
+                    spwateragg += k;
+                }
+
+                for (Double k : spWindAgg) {
+                    spwindagg += k;
+                }
+
+                for (Double k : spGasAgg) {
+                    spgasagg += k;
+                }
+
+                for (Double k : spSolAgg) {
+                    spsolagg += k;
+                }
+
+                for (Double k : spBatAgg) {
+                    spbatagg += k;
+                }
+
+                for (Double k : spRenewableAgg) {
+                    sprenewableagg += k;
+                }
+
+                for (Double k : spFossilAgg) {
+                    spfossilagg += k;
+                }
+
+                Double percentageRenewable = sprenewableagg / (sprenewableagg + spfossilagg);
+                if(sprenewableagg + spfossilagg <= 0.00000001)
+                    percentageRenewable = 0.0;
+
+                for( ArrayList<Double> spg : spGenProdAgg) {
+                    if( spgenprodagg == null)
+                        spgenprodagg = (ArrayList<Double>) spg.clone();
+                    else{
+                        for( int j = 0; j < spgenprodagg.size(); j++){
+                            spgenprodagg.set(j,  spgenprodagg.get(j) + spg.get(j));
+                        }
+                    }
+                }
+
+                ArrayList<String> record = new ArrayList<String>(Arrays.asList( year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(avgWholesale), Double.toString(totalGHG),
+                        Double.toString(maxDwellings), Double.toString(percentageRenewable) ,Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg),
+                        Double.toString(spcoalagg), Double.toString(spwateragg), Double.toString(spwindagg), Double.toString(spgasagg), Double.toString(spsolagg),
+                        Double.toString(spbatagg), Double.toString(maxNumActors) ));
+
+                for( Double spg : spgenprodagg){
+                    record.add(Double.toString(spg));
+                }
+
+                String[] rec = record.toArray(new String[0]);
+
+                csvWriterYear.writeNext(rec);
             }
 
         } catch (IOException ex) {
