@@ -474,6 +474,32 @@ public class LoadData implements java.io.Serializable {
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
         }
+
+        //Load Tariff percentage contribution wholesale
+
+        sql = "SELECT year, wholesale" +
+                " FROM historic_tariff_contribution;";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                data.LOGGER.info("\t" + rs.getInt("year") + "\t" +
+                        rs.getFloat("wholesale"));
+
+
+                int year = rs.getInt("year");
+                Float wholesale = rs.getFloat("wholesale");
+
+                data.getTariff_contribution_wholesale_register().put(year, wholesale);
+
+
+            }
+        } catch (SQLException e) {
+            data.LOGGER.warning(e.getMessage());
+        }
     }
 
 
