@@ -8,10 +8,7 @@ import core.Technical.Spm;
 import org.jfree.data.xy.XYDataItem;
 import sim.engine.SimState;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializable  {
     private int numberOfPerson;
@@ -134,39 +131,51 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
         else {
             Calendar c = Calendar.getInstance();
             c.setTime(data.getStartSpotMarketDate());
-            c.add(Calendar.MONTH, 5);
-            Date spotStartSixMonthAfter = c.getTime();
+            c.add(Calendar.MONTH, 11);
+            Date spotStartTwelveMonthAfter = c.getTime();
 
-            //Lets run the first 6 months of the spot market to be able to get an average of wholesale price
+
+            //Lets run the first 12 months of the spot market to be able to get an average of wholesale price
             //Get tariff from historic for the first 6 months of starting the spot
-            if(spotStartSixMonthAfter.after(today)){
+            if(spotStartTwelveMonthAfter.after(today)){
                 //Historic tariff is given in c/KWh
                 this.currentTariff = retail.getEndConsumerTariff(simState);
             }
-            //Update tariff every 6 months
-            else if( (currentMonth + 1) % 6 == 0 ){
+            //Update tariff every 12 months
+            else if( (currentMonth + 1) % 12 == 0 ){
+            //else if( currentMonth == 0 ){
 
-                //Find out wholesale price contribution percentage to the tariff (other values given in yaml file)
-                float wholesalePriceComponent = (float)1.0 - (float)(data.settings.getUsageTariff("transmissionCosts")
-                        + data.settings.getUsageTariff("distributionCosts")
-                        + data.settings.getUsageTariff("retailCosts")
-                        + data.settings.getUsageTariff("environmentalCosts"));
+                float wholesalePriceComponent = 0;
 
+                c.setTime(today);
+                c.set(Calendar.MONTH, 0);
+                int year = c.get(Calendar.YEAR);
+
+                //If wholesale contribution is given by historic data (DB table historic_tariff_contribution)
+                if( data.getTariff_contribution_wholesale_register().containsKey(year) ) {
+                    wholesalePriceComponent = data.getTariff_contribution_wholesale_register().get(year);
+                }
+                else {
+                    //Find out wholesale price contribution percentage to the tariff (other values given in yaml file)
+                    wholesalePriceComponent = (float) 1.0 - (float) (data.settings.getUsageTariff("transmissionCosts")
+                            + data.settings.getUsageTariff("distributionCosts")
+                            + data.settings.getUsageTariff("retailCosts")
+                            + data.settings.getUsageTariff("environmentalCosts"));
+                }
                 //Wholesale component cannot fall below 0.01
                 if(wholesalePriceComponent < 0.01) wholesalePriceComponent = (float)0.01;
 
                 //Get CPI conversion
-                c.setTime(today);
-                c.set(Calendar.MONTH, 0);
                 Date cpiDate = c.getTime();
                 float conversion_rate = data.getCpi_conversion().get(cpiDate);
 
-                //Compute Average Wholesale Price using the last 6 months values saved in SaveData.java
+                //Compute Average Wholesale Price using the last 12 months values saved in SaveData.java
                 //Current month price hasn't been stored yet, so we initialize it with the price for the current month
                 // Convert $/MWh -> c/KWh
                 double avgWholesalePrice = (float) (spotArena.getTariff(simState) * conversion_rate) / (float) 10.0;
                 int nmonths = 1;
-                for (nmonths = 1 ; nmonths < 6 ; nmonths++) {
+
+                for (nmonths = 1 ; nmonths < 12 ; nmonths++) {
 
                     //Get Wholesale price from the past nmonth(s)
                     int idx = data.saveData.PriceGenAvgSeries.get(1).getItems().size() - nmonths;
@@ -175,11 +184,14 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
 
                     // Convert $/MWh -> c/KWh
                     float wholesalePrice = (float) (wholesale * conversion_rate) / (float) 10.0;
-                    avgWholesalePrice += wholesalePrice / wholesalePriceComponent;
+
+                    avgWholesalePrice += wholesalePrice ;
                 }
                 avgWholesalePrice /= nmonths;
 
-                this.currentTariff = (float) avgWholesalePrice;
+                this.currentTariff = (float) avgWholesalePrice / wholesalePriceComponent;
+
+
             }
             else{
                 //Use the tariff from this semester

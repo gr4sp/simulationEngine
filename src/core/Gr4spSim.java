@@ -83,6 +83,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //CPI conversion
     HashMap<Date, Float> cpi_conversion;
 
+    //Tariff contribution of the wholesale
+    HashMap<Integer, Float> tariff_contribution_wholesale_register;
+
     //Solar Exposure in KWh/m^2 (MJ/m^2 in DB) monthly mean
     HashMap<Date, Float> monthly_solar_exposure;
 
@@ -183,6 +186,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         monthly_generation_register = new HashMap<>();
         monthly_domestic_consumers_register = new HashMap<>();
         cpi_conversion = new HashMap<>();
+        tariff_contribution_wholesale_register = new HashMap<>();
         monthly_solar_exposure = new HashMap<>();
         halfhour_solar_exposure = new HashMap<>();
         solar_aggregated_kw = new HashMap<>();
@@ -334,10 +338,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         return arena_register;
     }
 
-    public HashMap<Date, Float> getCpi_conversion() {
-        return cpi_conversion;
-    }
+    public HashMap<Date, Float> getCpi_conversion() { return cpi_conversion; }
 
+    public HashMap<Integer, Float> getTariff_contribution_wholesale_register() { return tariff_contribution_wholesale_register; }
 
     public HashMap<Date, Double> getHalfhour_demand_register() {
         return halfhour_demand_register;
@@ -352,9 +355,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         return total_monthly_consumption_register;
     }
 
-    public HashMap<Date, Integer> getMonthly_domestic_consumers_register() {
-        return monthly_domestic_consumers_register;
-    }
+    public HashMap<Date, Integer> getMonthly_domestic_consumers_register() { return monthly_domestic_consumers_register; }
 
     public double getDomesticConsumptionPercentage() {
         return domesticConsumptionPercentage;
@@ -464,37 +465,25 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         return consumptionActors;
     }
 
-    public HashMap<Integer, Float> getAnnual_forecast_consumption_register() {
-        return annual_forecast_consumption_register;
-    }
+    public HashMap<Integer, Float> getAnnual_forecast_consumption_register() { return annual_forecast_consumption_register; }
 
-    public void setAnnual_forecast_consumption_register(HashMap<Integer, Float> annual_forecast_consumption_register) {
-        this.annual_forecast_consumption_register = annual_forecast_consumption_register;
-    }
+    public void setAnnual_forecast_consumption_register(HashMap<Integer, Float> annual_forecast_consumption_register) { this.annual_forecast_consumption_register = annual_forecast_consumption_register; }
 
-    public HashMap<Integer, Float> getAnnual_forecast_rooftopPv_register() {
-        return annual_forecast_rooftopPv_register;
-    }
+    public HashMap<Integer, Float> getAnnual_forecast_rooftopPv_register() { return annual_forecast_rooftopPv_register; }
 
-    public void setAnnual_forecast_rooftopPv_register(HashMap<Integer, Float> annual_forecast_rooftopPv_register) {
-        this.annual_forecast_rooftopPv_register = annual_forecast_rooftopPv_register;
-    }
+    public void setAnnual_forecast_rooftopPv_register(HashMap<Integer, Float> annual_forecast_rooftopPv_register) { this.annual_forecast_rooftopPv_register = annual_forecast_rooftopPv_register; }
 
     public HashMap<Integer, Float> getMaximum_demand_forecast_register() {
         return maximum_demand_forecast_register;
     }
 
-    public void setMaximum_demand_forecast_register(HashMap<Integer, Float> maximum_demand_forecast_register) {
-        this.maximum_demand_forecast_register = maximum_demand_forecast_register;
-    }
+    public void setMaximum_demand_forecast_register(HashMap<Integer, Float> maximum_demand_forecast_register) { this.maximum_demand_forecast_register = maximum_demand_forecast_register; }
 
     public HashMap<Integer, Float> getMinimum_demand_forecast_register() {
         return minimum_demand_forecast_register;
     }
 
-    public void setMinimum_demand_forecast_register(HashMap<Integer, Float> minimum_demand_forecast_register) {
-        this.minimum_demand_forecast_register = minimum_demand_forecast_register;
-    }
+    public void setMinimum_demand_forecast_register(HashMap<Integer, Float> minimum_demand_forecast_register) { this.minimum_demand_forecast_register = minimum_demand_forecast_register; }
 
     public Arena getArenaByName(String arenaName) {
         for (Map.Entry<Integer, Arena> entry : this.getArena_register().entrySet()) {

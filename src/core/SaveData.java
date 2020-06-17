@@ -517,10 +517,15 @@ public class SaveData implements Steppable, java.io.Serializable {
         double x = simState.schedule.getSteps();
         Date currentDate = data.getSimCalendar().getTime();
         float floatDate = data.getSimCalendar().get(Calendar.YEAR);
+
         //normalize month btw [0.0,1.0]
         float month = data.getSimCalendar().get(Calendar.MONTH) / (float) 12.0;
         //sum normalized month
         floatDate += month;
+        //Tariff of current year = average wholesale price of the 12 months
+        //Tariff changes in december (see EndUser classs),
+        // but refers to the tariff that was used all through the last 12 months, hence -1 year
+        float floatDateTariff = floatDate - ((float) 11.0 / (float) 12.0);
 
         // now add the data to the time series
         if (x >= Schedule.EPOCH && x < Schedule.AFTER_SIMULATION) {
@@ -726,7 +731,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                 //Save data for CSV
                 EndUserUnit c = (EndUserUnit) data.consumptionActors.get(i);
                 consumptionActorSeries.get(id).add(floatDate, data.consumptionActors.get(i).getCurrentConsumption(), false);
-                tariffUsageConsumptionActorSeries.get(id).add(floatDate, data.consumptionActors.get(i).getCurrentTariff(), false);
+                tariffUsageConsumptionActorSeries.get(id).add(floatDateTariff, data.consumptionActors.get(i).getCurrentTariff(), false);
                 ghgConsumptionActorSeries.get(id).add(floatDate, data.consumptionActors.get(i).getCurrentEmissions(), false);
                 numDomesticConsumersSeries.get(id).add(floatDate, c.getNumberOfHouseholds(), false);
 
@@ -739,7 +744,7 @@ public class SaveData implements Steppable, java.io.Serializable {
             averageTariff = averageTariff / data.consumptionActors.size();
 
             consumptionActorSeries.get(0).add(floatDate, sumConsumption, false);
-            tariffUsageConsumptionActorSeries.get(0).add(floatDate, averageTariff, false);
+            tariffUsageConsumptionActorSeries.get(0).add(floatDateTariff, averageTariff, false);
             ghgConsumptionActorSeries.get(0).add(floatDate, sumEmissions, false);
             numDomesticConsumersSeries.get(0).add(floatDate, sumDwellings, false);
 
@@ -1728,7 +1733,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                     datasetNumActorsSummary.put(year, yearData);
                 }
 
-                datasetNumActorsSummary.get(year).add(consumers);
+                datasetNumActorsSummary.get(year).add(numActors);
 
 
                 if (!datasetSysProdPrimarySpotSummary.containsKey(year)) {
