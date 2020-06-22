@@ -155,6 +155,12 @@ java -classpath classes/production/gr4sp:libraries/bsh-2.0b4.jar:libraries/itext
 
 install python3 and pip3 following this [instructions](https://raturi.in/blog/installing-python3-and-pip3-ubuntu-mac-and-windows/)
 ### Python dependencies
+install PIP python package manager:
+
+```
+sudo apt update
+sudo apt install python3-pip
+```
 Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
 
 ```
