@@ -68,7 +68,7 @@ pwd
 This command should have printed the full location path.
 Make sure the folderOutput variable at the beginning of the YAML file is set to the correct full path printed by pwd.
 
-For example, if you clone the repo in windows in this folder `c:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp`, then set the first variable in the yaml file [simulationSettings/BAUVIC.yaml](simulationSettings/BAUVIC.yaml) as
+For example, if you clone the repo in windows in this folder `c:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp`, then set the first variable in the yaml file [simulationSettings/BAUVIC.yaml](simulationSettings/VIC.yaml) as
 
 ```
 folderOutput: "C:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp"
@@ -134,7 +134,7 @@ and then simply run:
 ```
 ./runGr4sp.sh
 ```
-It will run the simulation using the default simulationSettings [simulationSettings/BAUVIC.yaml](simulationSettings/BAUVIC.yaml). Once the simulation is over, the results should appear in the `csv` and `plots` folders.
+It will run the simulation using the default simulationSettings [simulationSettings/BAUVIC.yaml](simulationSettings/VIC.yaml). Once the simulation is over, the results should appear in the `csv` and `plots` folders.
 
 if you want to run it with the Graphical interface to see the progress of the simulation with the live plots, then run
 

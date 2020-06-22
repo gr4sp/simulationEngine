@@ -6,7 +6,7 @@ sys.path.append(r'{}\EMAworkbench'.format(os.getcwd()))
 import connectorSOBOL
 
 from EMAworkbench.ema_workbench import (IntegerParameter, RealParameter, CategoricalParameter, BooleanParameter,
-                                        ScalarOutcome, TimeSeriesOutcome, Constant, Model)
+                                        ScalarOutcome, ArrayOutcome, TimeSeriesOutcome, Constant, Model)
 
 
 def getModel():
@@ -26,10 +26,6 @@ def getModel():
     model.constants += [Constant('capacityFactorChangeOcgt', 0)]
     model.constants += [Constant('capacityFactorChangeCcgt', 0)]
     model.constants += [Constant('capacityFactorChangeWind', 0)]
-    model.constants += [Constant('transmissionUsageChange', 0)]
-    # model.constants += [Constant('distributionUsageChange', 0)]
-    # model.constants += [Constant('retailUsageChange', 0)]
-    model.constants += [Constant('environmentalCostsChange', 0)]
     model.constants += [Constant('scheduleMinCapMarketGen', 30)]
 
 
@@ -87,10 +83,7 @@ def getModel():
     model.levers += [IntegerParameter('capacityFactorChangeWater', -10, 11)]
 
 # variation of contribution of networks, retail and other charges in the tariff
-    # model.levers += [IntegerParameter('transmissionUsageChange', -10, 10)]
-    model.levers += [IntegerParameter('distributionUsageChange', -10, 11)]
-    model.levers += [IntegerParameter('retailUsageChange', -10, 11)]
-    # model.levers += [IntegerParameter('environmentalCostsChange', -10, 10)]
+    model.levers += [IntegerParameter('wholesaleTariffContribution', 11, 45)]
 
 # arenas
     # model.levers += [IntegerParameter('scheduleMinCapMarketGen', 10, 30)]
@@ -100,28 +93,26 @@ def getModel():
     model.levers += [RealParameter('nonScheduleMinCapMarketGen', 0.1, 15)]
 
 # specify outcomes
-    model.outcomes = [TimeSeriesOutcome('TIMEMonth'),
-                      TimeSeriesOutcome('consumptionMonth'),
-                      TimeSeriesOutcome('tariffsMonth'),
-                      TimeSeriesOutcome('wholesalePriceMonth'),
-                      TimeSeriesOutcome('GHGMonth'),
-                      TimeSeriesOutcome('numConsumersMonth'),
-                      TimeSeriesOutcome('primarySpotProductionMonth'),
-                      TimeSeriesOutcome('secondarySpotProductionMonth'),
-                      TimeSeriesOutcome('offSpotProductionMonth'),
-                      TimeSeriesOutcome('rooftopPVProductionMonth'),
-                      TimeSeriesOutcome('numActorsMonth'),
-                      TimeSeriesOutcome('TIMEYear'),
-                      TimeSeriesOutcome('consumptionYear'),
-                      TimeSeriesOutcome('tariffsYear'),
-                      TimeSeriesOutcome('wholesalePriceYear'),
-                      TimeSeriesOutcome('GHGYear'),
-                      TimeSeriesOutcome('numConsumersYear'),
-                      TimeSeriesOutcome('primarySpotProductionYear'),
-                      TimeSeriesOutcome('secondarySpotProductionYear'),
-                      TimeSeriesOutcome('offSpotProductionYear'),
-                      TimeSeriesOutcome('rooftopPVProductionYear'),
-                      TimeSeriesOutcome('numActorsYear')
+    model.outcomes = [
+                        TimeSeriesOutcome('TIMEYear'),
+                        TimeSeriesOutcome('consumptionYear'),
+                        TimeSeriesOutcome('tariffsYear'),
+                        TimeSeriesOutcome('wholesalePriceYear'),
+                        TimeSeriesOutcome('GHGYear'),
+                        TimeSeriesOutcome('numConsumersYear'),
+                        TimeSeriesOutcome('primarySpotProductionYear'),
+                        TimeSeriesOutcome('secondarySpotProductionYear'),
+                        TimeSeriesOutcome('offSpotProductionYear'),
+                        TimeSeriesOutcome('renewableContributionYear'),
+                        TimeSeriesOutcome('rooftopPVProductionYear'),
+                        TimeSeriesOutcome('coalProductionYear'),
+                        TimeSeriesOutcome('waterProductionYear'),
+                        TimeSeriesOutcome('windProductionYear'),
+                        TimeSeriesOutcome('gasProductionYear'),
+                        TimeSeriesOutcome('solarProductionYear'),
+                        TimeSeriesOutcome('BatteryProductionYear'),
+                        TimeSeriesOutcome('numActorsYear'),
+                        ScalarOutcome('seedExperimentCsv')
                       ]
 
     return model

@@ -304,24 +304,11 @@ generators:
 
 tariffs:
 
-  transmissionCosts:
+  wholesaleContribution:
     fixed: 1
     #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.15
+    usage: 0.23
 
-  distributionCosts:
-    fixed: 1
-    #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.35
-
-  retailCosts:
-    fixed: 1
-    #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.25
-
-  environmentalCosts:
-    #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.02
 
 # solar exposure in data base is in MJ/m2 but converted to KWh/m2 when loaded.
 # the energy yield is given in energy output per area, or energy generated in KWh//m2 per month
