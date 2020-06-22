@@ -153,7 +153,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
 
 
-    public Gr4spSim(long seed) {
+    public Gr4spSim(long seed ) {
 
         super(seed);
 
@@ -225,7 +225,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
             String pathSRC = Paths.get(".").toAbsolutePath().normalize().toString();
             pathSRC = pathSRC.split("gr4sp")[0];
-            yamlFileName = "BAUVIC";
+            yamlFileName = "VIC";
             String sysName = System.getProperty("os.name");
 
             String folderYaml = pathSRC;
@@ -1052,10 +1052,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                 //Print info
                 if (state.schedule.getSteps() % 12 == 0L) {
                     long clock = System.currentTimeMillis();
-                    SimState.printlnSynchronized("Job " + this.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + getCurrentSimDate() +
-                                " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
-                    LOGGER.info("Job " + this.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + getCurrentSimDate() +
-                            " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
+                    SimState.printlnSynchronized("Job" + this.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + getCurrentSimDate() + " Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
+                    LOGGER.info("Job" + this.outputID + ": " + "Steps: " + state.schedule.getSteps() + " Time: " + getCurrentSimDate() +" Rate: " + rateFormat.format(1000.0D * (double)(12) / (double)(clock - oldClock)));
                     oldClock = clock;
                 }
             }

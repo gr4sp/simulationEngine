@@ -46,7 +46,10 @@ The settings for the simulation are specified in YAML format. Which is a human r
 [src\core\settings\BAUVIC.yaml](src\core\settings\BAUVIC.yaml)
 ```
 
-as
+This command should have printed the full location path.
+Make sure the folderOutput variable at the beginning of the YAML file is set to the correct full path printed by pwd.
+
+For example, if you clone the repo in windows in this folder `c:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp`, then set the first variable in the yaml file [simulationSettings/BAUVIC.yaml](simulationSettings/VIC.yaml) as
 
 ```
 folderOutput: "C:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp"
@@ -102,7 +105,28 @@ These changes make sure that gr4sp access the postgres database without any issu
 Go to `src` folder and run
 
 ```
-java -classpath ../classes:/mnt/data/gr4sp/experiments/../libraries/bsh-2.0b4.jar:/mnt/data/gr4sp/experiments/../libraries/itext-1.2.jar:/mnt/data/gr4sp/experiments/../libraries/j3dcore.jar:/mnt/data/gr4sp/experiments/../libraries/j3dutils.jar:/mnt/data/gr4sp/experiments/../libraries/jcommon-1.0.21.jar:/mnt/data/gr4sp/experiments/../libraries/jfreechart-1.0.17.jar:/mnt/data/gr4sp/experiments/../libraries/jmf.jar:/mnt/data/gr4sp/experiments/../libraries/mason.19.jar:/mnt/data/gr4sp/experiments/../libraries/portfolio.jar:/mnt/data/gr4sp/experiments/../libraries/vecmath.jar:/mnt/data/gr4sp/experiments/../libraries/postgresql-42.2.6.jar:/mnt/data/gr4sp/experiments/../libraries/opencsv-4.6.jar:/mnt/data/gr4sp/experiments/../libraries/yamlbeans-1.13.jar core.Gr4spSim
+chmod +x *.sh
+```
+
+and then simply run:
+
+```
+./runGr4sp.sh
+```
+It will run the simulation using the default simulationSettings [simulationSettings/BAUVIC.yaml](simulationSettings/VIC.yaml). Once the simulation is over, the results should appear in the `csv` and `plots` folders.
+
+if you want to run it with the Graphical interface to see the progress of the simulation with the live plots, then run
+
+```
+./runGr4spUI.sh
+
+```
+
+alternatively, the command being used is as follows:
+
+```
+
+java -classpath classes/production/gr4sp:libraries/bsh-2.0b4.jar:libraries/itext-1.2.jar:libraries/j3dcore.jar:libraries/j3dutils.jar:libraries/jcommon-1.0.21.jar:libraries/jfreechart-1.0.17.jar:libraries/jmf.jar:libraries/mason.19.jar:libraries/portfolio.jar:libraries/vecmath.jar:libraries/postgresql-42.2.6.jar:libraries/opencsv-4.6.jar:libraries/yamlbeans-1.13.jar core.Gr4spSim
 
 ```
 
