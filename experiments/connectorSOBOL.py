@@ -286,7 +286,7 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.setMaxCapacityFactor('Water', '', water_max_cf)
 
             # tariff components
-            gr4spObj.settings.setUsageTariff('wholesaleContribution', wholesaleTariffContribution)
+            gr4spObj.settings.setUsageTariff('wholesaleContribution', (float) (wholesaleTariffContribution / 100.0))
 
             # arenas
             gr4spObj.settings.setMinCapMarketGen('scheduled', scheduleMinCapMarketGen)

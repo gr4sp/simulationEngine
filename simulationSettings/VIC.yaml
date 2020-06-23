@@ -11,7 +11,7 @@ simulationDates:
 
   # Simulation Date Range
   startDate:  1998-01-01
-  endDate: 2036-01-01
+  endDate: 2035-01-01
 
   # Spot Market Start Date
   startDateSpotMarket: 1999-01-01
@@ -306,8 +306,9 @@ tariffs:
 
   wholesaleContribution:
     fixed: 1
-    #percentage contribution of final tariff with respect to wholesale price
-    usage: 0.23
+    #percentage contribution of final tariff with respect to wholesale price. It is set by default
+    # to the median value between min (11.37%) and max (45.37%) values from historic data.
+    usage: 0.2837
 
 
 # solar exposure in data base is in MJ/m2 but converted to KWh/m2 when loaded.
