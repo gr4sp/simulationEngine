@@ -491,7 +491,7 @@ public class LoadData implements java.io.Serializable {
 
 
                 int year = rs.getInt("year");
-                Float wholesale = rs.getFloat("wholesale");
+                float wholesale = rs.getFloat("wholesale");
 
                 data.getTariff_contribution_wholesale_register().put(year, wholesale);
 
