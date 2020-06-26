@@ -1,6 +1,6 @@
 #Folder that has the following folders: logs, csv, and plots
-folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
-#folderOutput: "/mnt/data/gr4sp"
+#folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
+folderOutput: "/home/ubuntu/gr4sp"
 
 #report can be "full" or "light"
   #"full": generates all csv data ~8MB, and all the plots 2.5MB per simulation
