@@ -157,7 +157,7 @@ class BaseEvaluator(object):
                             reporting_interval=None, reporting_frequency=10,
                             uncertainty_union=False, lever_union=False,
                             outcome_union=False, uncertainty_sampling=LHS,
-                            levers_sampling=LHS, callback=None, generate_policy_file_only=False):
+                            levers_sampling=LHS, callback=None, generate_experiments_file_only=False):
         '''convenience method for performing experiments.
 
         is forwarded to :func:perform_experiments, with evaluator and
@@ -173,7 +173,7 @@ class BaseEvaluator(object):
                                    outcome_union=outcome_union,
                                    uncertainty_sampling=uncertainty_sampling,
                                    levers_sampling=levers_sampling,
-                                   callback=callback, generate_policy_file_only=generate_policy_file_only)
+                                   callback=callback, generate_experiments_file_only=generate_experiments_file_only)
 
     def optimize(self, algorithm=EpsNSGAII, nfe=10000, searchover='levers',
                  reference=None, constraints=None, convergence_freq=1000,
@@ -359,7 +359,7 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
                         uncertainty_union=False, lever_union=False,
                         outcome_union=False, uncertainty_sampling=LHS,
                         levers_sampling=LHS, callback=None,
-                        return_callback=False, generate_policy_file_only=False):
+                        return_callback=False, generate_experiments_file_only=False):
     '''sample uncertainties and levers, and perform the resulting experiments
     on each of the models
 
@@ -396,9 +396,19 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
         uncertainties = []
         n_scenarios = 1
     elif(isinstance(scenarios, numbers.Integral)):
-        sampler = SAMPLERS[uncertainty_sampling]()
-        scenarios = sample_uncertainties(models, scenarios, sampler=sampler,
-                                         union=uncertainty_union)
+        # If a file was given, then load the uncertainties from the file
+        if ".object" in uncertainty_sampling:
+            with open(uncertainty_sampling, 'rb') as config_dictionary_file:
+                scenarios = pickle.load(config_dictionary_file)
+        else:
+            # otherwise, use one of the samplers
+            sampler = SAMPLERS[uncertainty_sampling]()
+            scenarios = sample_uncertainties(models, scenarios, sampler=sampler,
+                                             union=uncertainty_union)
+
+            with open('uncertainties.{}.object'.format(uncertainty_sampling), 'wb') as uncertainty_file:
+                pickle.dump(scenarios, uncertainty_file)
+
         uncertainties = scenarios.parameters
         n_scenarios = scenarios.n
     else:
@@ -432,10 +442,6 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
             with open('policies.{}.object'.format(levers_sampling), 'wb') as policies_file:
                 pickle.dump(policies, policies_file)
 
-            if generate_policy_file_only is True:
-                print("Polcies saved into file policies.{}.object. EMA is exiting as generate_policy_file_only flag was set to true.".format(levers_sampling))
-                raise SystemExit
-
         import numpy as np
         for l in range(len(policies.parameters)):
             var = np.zeros(len(policies.designs))
@@ -450,7 +456,11 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
         levers = policies.parameters
         n_policies = policies.n
 
-
+    if generate_experiments_file_only is True:
+        print(
+            "Polcies and Uncertainties saved into file policies.{}.object and uncertainties.{}.object. EMA is exiting as generate_experiments_file_only flag was set to true.".format(
+                levers_sampling, uncertainty_sampling))
+        raise SystemExit
 
     else:
         try:
@@ -477,6 +487,7 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
     _logger.info(('performing {} scenarios * {} policies * {} model(s) = '
                   '{} experiments').format(n_scenarios, n_policies,
                                            n_models, nr_of_exp))
+    raise SystemExit
 
     if not callback:
         callback = DefaultCallback(
