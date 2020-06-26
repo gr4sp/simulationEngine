@@ -487,7 +487,6 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
     _logger.info(('performing {} scenarios * {} policies * {} model(s) = '
                   '{} experiments').format(n_scenarios, n_policies,
                                            n_models, nr_of_exp))
-    raise SystemExit
 
     if not callback:
         callback = DefaultCallback(
