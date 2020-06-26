@@ -20,17 +20,20 @@ if __name__ == '__main__':
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    with MultiprocessingEvaluator(model,n_processes=24) as evaluator:
+    #######################################################with MultiprocessingEvaluator(model,n_processes=24) as evaluator:
+    with MultiprocessingEvaluator(model, n_processes=31) as evaluator:
         ## Variance-based SA
         #results = evaluator.perform_experiments(scenarios=0, policies=1050, levers_sampling=SOBOL)
 
         ## Generate Variance-based SA Policies, and save them into a file
-        #results = evaluator.perform_experiments(scenarios=0, policies=1024, levers_sampling=SOBOL, generate_policy_file_only=True)
+        #results = evaluator.perform_experiments(scenarios=1024, policies=0, uncertainty_sampling=SOBOL, generate_experiments_file_only=True)
+        #results = evaluator.perform_experiments(scenarios=0, policies=4, levers_sampling=SOBOL, generate_policy_file_only=True)
 
-        results = evaluator.perform_experiments(scenarios=0, policies=1, levers_sampling='policies.sobol.object')
+        #results = evaluator.perform_experiments(scenarios=0, policies=4, levers_sampling=LHS,generate_policy_file_only=False)
+        results = evaluator.perform_experiments(scenarios=1, policies=0, uncertainty_sampling='uncertainties.sobol.object')
 
         #Testing
-        #results = evaluator.perform_experiments(scenarios=0, policies=2)
+        #results = evaluator.perform_experiments(scenarios=0, policies=20)
 
     '''
     Print Results
@@ -49,4 +52,4 @@ if __name__ == '__main__':
     datekey = today.strftime("%Y-%b-%d")
     from EMAworkbench.ema_workbench import save_results
 
-    save_results(results, r'./data/gr4sp_' + datekey + '.tar.gz')
+    save_results(results, r'./simulationData/gr4sp_' + datekey + '.tar.gz')
