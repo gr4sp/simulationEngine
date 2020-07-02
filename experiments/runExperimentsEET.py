@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     with MultiprocessingEvaluator(model,n_processes=31) as evaluator:
         ## EET
-        results = evaluator.perform_experiments(scenarios=30, policies=0, uncertainty_sampling=MORRIS) #levers + 1 * policies
+        results = evaluator.perform_experiments(scenarios=100, policies=0, uncertainty_sampling=MORRIS) #levers + 1 * policies
 
 
 
