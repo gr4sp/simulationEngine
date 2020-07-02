@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Contract implements java.io.Serializable{
 
-    //This is how we can access Actors
+    //This is how to access Actors
     //simstate.actor_register.get(sellerId)
     private String tariffName;
     private int sellerId;

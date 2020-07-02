@@ -34,7 +34,6 @@ public class Generator implements java.io.Serializable, Asset {
     private int numUnits; // in NEM description
     private String fuelBucketSummary; // type of fuel
 
-    private double efficiency; //0-1 efficiency of conversion
     private int lifecycle; //life cycle in years
     //private double constructionPeriod;//construction period
     //private double capex; //capital costs in AUD/capacity unit (kW)
@@ -167,26 +166,8 @@ public class Generator implements java.io.Serializable, Asset {
         else
             inSecondaryMarket = false;
 
-            //Solar Efficiency
-        //de-rating factor for manufacturing tolerance, dimensionless
-        double fman = 1 - 0.03;
-        //de-rating factor for dirt, dimensionless
-        double fdirt = 1 - 0.05;
-        //temperature de-rating factor, dimensionless, ƒtemp = 1 + (γ × (avg temp) y=-.005 * 20
-        //y is the temperature coefficient, using example from CEC guidelines as -0.5%/C and average daily temperature of 20C
-        //the de-rating factor increases with increasing average daily temperatures.
-        double ftemp = 1 + (-0.005 * 20);
-        //efficiency of the subsystem (cables) between the PV array
-        //and the inverter (DC cable loss)
-        double npv_inv = 1 - 0.03;
-        //efficiency of the inverter. Typically 0.9
-        double ninv = 1 - 0.1;
-        //efficiency of the subsystem (cables) between the inverter and the switchboard (AC cable loss)
-        // recommended voltage drop between inverter and main switch shouldn't be greater than 1%
-        double ninv_sb = 1 - 0.01;
-        //solar exposure in data base is in MJ/m2 but converted to KWh/m2 when loaded. Capacity is assumed to be in m^2
 
-        solarEfficiency = fman * fdirt * ftemp  * npv_inv * ninv * ninv_sb;
+        solarEfficiency = settings.getSolarEfficiency(this.fuelSourceDescriptor, this.techTypeDescriptor);
 
         //Price if a generator sells always at full capacity
         //double targetPrice =  priceMinMWh();
@@ -440,7 +421,7 @@ public class Generator implements java.io.Serializable, Asset {
     public String toString() {
         return "Generator [id=" + id + ", name=" + name + ", fuelSourceDescriptor="
                 + fuelSourceDescriptor + ", ownership=" + ownership + ", techTypeDescriptor=" + techTypeDescriptor
-                + ", maxCapacity=" + maxCapacity + ", efficiency=" + efficiency
+                + ", maxCapacity=" + maxCapacity
                 + ", lifecycle=" + lifecycle + ", " +
                 ", location=" + location
                 + "]";
@@ -538,16 +519,6 @@ public class Generator implements java.io.Serializable, Asset {
 
     public void setMaxCapacity(double maxCapacity) {
         this.maxCapacity = maxCapacity;
-    }
-
-
-    public double getEfficiency() {
-        return efficiency;
-    }
-
-
-    public void setEfficiency(double efficiency) {
-        this.efficiency = efficiency;
     }
 
 

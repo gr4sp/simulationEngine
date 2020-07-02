@@ -84,26 +84,49 @@ public class SimPolicies implements java.io.Serializable, Steppable {
         //Improve price LCOE according to learning curve.
         //&& currentYear > data.settings.getBaseYearConsumptionForecast()
         if(currentMonth==1 ) {
-            for (Vector<Generator> gens : data.getGen_register().values()) {
-                for (Generator g : gens) {
-                    if (g.getfuelSourceDescriptor().equals("Wind")) {
-                        double factor = data.settings.getForecastTechnologicalImprovement();
-                        if (g.maxCapacityFactor + factor < 0.5) g.maxCapacityFactor += factor;
-                        if (g.maxCapacityFactorSummer + factor < 0.5) g.maxCapacityFactorSummer += factor;
+            double factor = data.settings.getForecastTechnologicalImprovement();
+            double learningCurve = data.settings.getLearningCurve();
 
-                        double leaerningCurve = data.settings.getLearningCurve();
-                        g.priceMinMWh = g.priceMinMWh * (1-leaerningCurve);
-                        g.priceMaxMWh = g.priceMaxMWh * (1-leaerningCurve);
-                    }else if (g.getfuelSourceDescriptor().equals("Solar")) {
-                        double factor = data.settings.getForecastTechnologicalImprovement();
-                        if (g.solarEfficiency + factor < 1.0) g.solarEfficiency += factor;
+            // WIND
+            double WindPriceMinMWh = data.settings.getPriceMinMWh("Wind","") * (1-learningCurve);;
+            double WindPriceMaxMWh = data.settings.getPriceMaxMWh("Wind","") * (1-learningCurve);;
+            double WindMaxCapacityFactor = data.settings.getMaxCapacityFactor("Wind","");
+            double WindMaxCapacityFactorSummer = data.settings.getMaxCapacityFactorSummer("Wind","");
 
-                        double leaerningCurve = data.settings.getLearningCurve();
-                        g.priceMinMWh = g.priceMinMWh * (1-leaerningCurve);
-                        g.priceMaxMWh = g.priceMaxMWh * (1-leaerningCurve);
-                    }
-                }
-            }
+            // Assuming a limit of 50% maximum for Wind technology (https://reneweconomy.com.au/new-australian-wind-farms-reach-nearly-50-capacity-factor-99179/)
+            if (WindMaxCapacityFactor + factor < 0.5) data.settings.setMaxCapacityFactor("Wind","", WindMaxCapacityFactor + factor);
+            if (WindMaxCapacityFactorSummer + factor < 0.5) data.settings.setMaxCapacityFactorSummer("Wind","", WindMaxCapacityFactorSummer + factor);
+            data.settings.setPriceMinMWh("Wind","",WindPriceMinMWh);
+            data.settings.setPriceMaxMWh("Wind","",WindPriceMaxMWh);
+
+            //SOLAR
+            double SolarPriceMinMWh = data.settings.getPriceMinMWh("Solar","") * (1-learningCurve);;
+            double SolarPriceMaxMWh = data.settings.getPriceMaxMWh("Solar","") * (1-learningCurve);;
+            double solarEfficiency = data.settings.getSolarEfficiency("Solar","");
+
+            data.settings.setPriceMinMWh("Solar","",SolarPriceMinMWh);
+            data.settings.setPriceMaxMWh("Solar","",SolarPriceMaxMWh);
+            if (solarEfficiency + factor < 1.0) data.settings.improveSolarEfficiency( factor );
+
+
+//
+//            for (Vector<Generator> gens : data.getGen_register().values()) {
+//                for (Generator g : gens) {
+//                    if (g.getfuelSourceDescriptor().equals("Wind")) {
+//
+//                        if (g.maxCapacityFactor + factor < 0.5) g.maxCapacityFactor += factor;
+//                        if (g.maxCapacityFactorSummer + factor < 0.5) g.maxCapacityFactorSummer += factor;
+//
+//                        g.priceMinMWh = g.priceMinMWh * (1-learningCurve);
+//                        g.priceMaxMWh = g.priceMaxMWh * (1-learningCurve);
+//                    }else if (g.getfuelSourceDescriptor().equals("Solar")) {
+//                        if (g.solarEfficiency + factor < 1.0) g.solarEfficiency += factor;
+//
+//                        g.priceMinMWh = g.priceMinMWh * (1-learningCurve);
+//                        g.priceMaxMWh = g.priceMaxMWh * (1-learningCurve);
+//                    }
+//                }
+//            }
         }
 
         Date date = data.getCurrentSimDate();

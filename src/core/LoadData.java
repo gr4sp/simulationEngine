@@ -565,7 +565,6 @@ public class LoadData implements java.io.Serializable {
 
         c.setTime(baseDate);
 
-
         while (baseYear < 2050) {
             float baseConsumption = data.getAnnual_forecast_consumption_register().get(baseYear);
             float nextConsumption = data.getAnnual_forecast_consumption_register().get(baseYear + 1);
@@ -673,14 +672,14 @@ public class LoadData implements java.io.Serializable {
         //This is applied to the tariffs. If price rises in year baseYear+1 2% and annualCpi=0.02 and inflation=0.01, then it will appear as 0.1 wrt the price as in baseYear.
         //AnnualCPI corrects the value given as inflation below.
         while (baseYear < 2050) {
-            float baseConsumption = data.getCpi_conversion().get(baseDate);
-            float forecastedConsumption = baseConsumption - (float) data.settings.getAnnualCpiForecast();
+            float baseCPI = data.getCpi_conversion().get(baseDate);
+            float forecastedCPI = baseCPI * (1 - (float) data.settings.getAnnualCpiForecast());
 
             //Add 1 year to the base reference date
             c.add(Calendar.YEAR, 1);
             Date forecastedDate = c.getTime();
 
-            data.getCpi_conversion().put(forecastedDate, forecastedConsumption);
+            data.getCpi_conversion().put(forecastedDate, forecastedCPI);
 
             baseDate = c.getTime();
             baseYear++;
@@ -917,7 +916,7 @@ public class LoadData implements java.io.Serializable {
          * Load Total Consumption per month
          * */
         String sql = "SELECT date, total_consumption_gwh" +
-                " FROM  generation_demand_historic WHERE " +
+                " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "';";
 
@@ -1071,7 +1070,7 @@ public class LoadData implements java.io.Serializable {
                 "hydro_gwh, battery_disch_dollargwh, battery_disch_gwh, gas_ocgt_dollargwh, gas_ocgt_gwh," +
                 "gas_steam_dollargwh, gas_steam_gwh, browncoal_dollargwh, browncoal_gwh, imports_dollargwh," +
                 "imports_gwh, exports_dollargwh, exports_gwh, total_gen_gwh" +
-                " FROM  generation_demand_historic WHERE " +
+                " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "';";
 

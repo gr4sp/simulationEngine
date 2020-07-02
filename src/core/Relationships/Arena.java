@@ -21,7 +21,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
     //    private float transactionFee; //percentage fee
 
-    private MeritOrder primarySpot;
+    private SpotMarket primarySpot;
     private double avgMonthlyPricePrimarySpot;
     private double avgMonthlyPriceSecondarySpot;
     private double avgMonthlyPriceOffSpot;
@@ -30,12 +30,12 @@ public class Arena implements Steppable,  java.io.Serializable  {
     private double avgMonthlyDemandSecondarySpot;
     private double avgMonthlyDemandOffSpot;
 
-    private MeritOrder secondarySpot; //Merit order type of market at the distribution level.
+    private SpotMarket secondarySpot; //Merit order type of market at the distribution level.
     private ArrayList<Contract> bilateral; //can be billing with retailers, PPAs and other types of OTCs with two known parties involved.
     private ArrayList<Contract> fiTs;
 
     //Each Arena has ONLY one of the following:
-    //Merit order rules for wholesale market
+    //Merit order rules for spot market
     //PPA - Contracts Act-Act duration over the counter
     //FeedInTariff - Contracts Act-Act over the counterarenas
 
@@ -56,11 +56,11 @@ public class Arena implements Steppable,  java.io.Serializable  {
             fiTs = new ArrayList<Contract>();
         if (type.equalsIgnoreCase("Spot")) {
             if(data.settings.existsMarket("primary"))
-                primarySpot = new MeritOrder("Primary");
+                primarySpot = new SpotMarket("Primary");
             else
                 primarySpot = null;
             if(data.settings.existsMarket("secondary"))
-                secondarySpot = new MeritOrder("secondary");
+                secondarySpot = new SpotMarket("secondary");
             else
                 secondarySpot = null;
         }
@@ -101,11 +101,11 @@ public class Arena implements Steppable,  java.io.Serializable  {
         return type;
     }
 
-    public MeritOrder getPrimarySpot() {
+    public SpotMarket getPrimarySpot() {
         return primarySpot;
     }
 
-    public MeritOrder getSecondarySpot() {
+    public SpotMarket getSecondarySpot() {
         return secondarySpot;
     }
 
@@ -469,7 +469,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
                    }
 
                }else{
-                    data.LOGGER.warning("demand in Spots was 0!! all covered off market");
+                    data.LOGGER.warning(currentTime + " - " +"demand in Spots was 0!! all covered off market");
                }
 
                if(availableCapacityOffMarket > 0.0001){
