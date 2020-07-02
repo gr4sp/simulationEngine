@@ -156,7 +156,7 @@ class MorrisSampler(SALibSampler):
         Stating this variable to be true causes the function to ignore gurobi.
     '''
 
-    def __init__(self, num_levels=5, optimal_trajectories=None,
+    def __init__(self, num_levels=6, optimal_trajectories=None,
                  local_optimization=True):
         super(MorrisSampler, self).__init__()
         self.num_levels = num_levels
