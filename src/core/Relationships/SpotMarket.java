@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-public class MeritOrder implements java.io.Serializable{
+//This market uses ABM to simulate the price of electricity in the Spot market using a Merit Order approach.
+
+public class SpotMarket implements java.io.Serializable{
     private double marketPrice;
     private double emissionsIntensity;
     private double demand;
@@ -17,7 +19,7 @@ public class MeritOrder implements java.io.Serializable{
     private ArrayList<Bid> bidders;
     private ArrayList<Bid> successfulBids;
 
-    public MeritOrder(String name) {
+    public SpotMarket(String name) {
         this.marketPrice = 0;
         this.unmetDemand = 0;
         this.demand = 0;

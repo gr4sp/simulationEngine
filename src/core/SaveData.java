@@ -388,7 +388,7 @@ public class SaveData implements Steppable, java.io.Serializable {
          * */
 
         XYSeries seriesPriceAvgTariff = new org.jfree.data.xy.XYSeries(
-                "TariffSpot",
+                "Tariff_WA_AllMarkets",
                 false);
         PriceGenAvgSeries.put(1, seriesPriceAvgTariff);
         PriceGenAvgChart.addSeries(seriesPriceAvgTariff, null);
