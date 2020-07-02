@@ -14,7 +14,6 @@ import json
 Create Java Virtual Machine (jpype.getDefaultJVMPath())
 '''
 
-
 def startJVM():
     with open('settingsExperiments.json') as f:
         settings = json.load(f)
@@ -54,17 +53,17 @@ def shutdownJVM():
     jpype.shutdownJVM()
 
 
-def getResults(outputID):
+def getResults(outputID, experimentId):
     # LOAD CSV
     # Consumption (KWh) per household
-    # Avg Tariff (c/KWh) per household	
-    # Wholesale ($/MWh)	
-    # GHG Emissions (tCO2-e) per household	
-    # Number of Domestic Consumers (households)	
-    # System Production Primary Spot	
-    # System Production Secondary Spot	
-    # System Production Off Spot	
-    # System Production Rooftop PV	
+    # Avg Tariff (c/KWh) per household
+    # Wholesale ($/MWh)
+    # GHG Emissions (tCO2-e) per household
+    # Number of Domestic Consumers (households)
+    # System Production Primary Spot
+    # System Production Secondary Spot
+    # System Production Off Spot
+    # System Production Rooftop PV
     # Number of Active Actors
 
     with open('settingsExperiments.json') as f:
@@ -80,34 +79,15 @@ def getResults(outputID):
     # results = pd.read_csv(csvFileName)
 
     # #Prepare time series
-    # timesMonth = results['Time (Month)'].to_numpy()
-    # consumptionMonth = results['Consumption (KWh) per household'].to_numpy()
-    # tariffsMonth = results[' Avg Tariff (c/KWh) per household'].to_numpy()
-    # wholesaleMonth = results['Wholesale ($/MWh)'].to_numpy()
-    # ghgMonth = results['GHG Emissions (tCO2-e) per household'].to_numpy()
-    # numConsumersMonth = results['Number of Domestic Consumers (households)'].to_numpy()
-    # primarySpotMonth = results['System Production Primary Spot'].to_numpy()
-    # secondarySpotMonth = results['System Production Secondary Spot'].to_numpy()
-    # offSpotMonth = results['System Production Off Spot'].to_numpy()
-    # rooftopPVMonth = results['System Production Rooftop PV'].to_numpy()
-    # numActorsMonth = results['Number of Active Actors'].to_numpy()
-    emptyArray = np.array([])
-    timesMonth = emptyArray
-    consumptionMonth = emptyArray
-    tariffsMonth = emptyArray
-    wholesaleMonth = emptyArray
-    ghgMonth = emptyArray
-    numConsumersMonth = emptyArray
-    primarySpotMonth = emptyArray
-    secondarySpotMonth = emptyArray
-    offSpotMonth = emptyArray
-    rooftopPVMonth = emptyArray
-    numActorsMonth = emptyArray
+    # emptyArray = np.array([])
+    # timesMonth = emptyArray
 
-    csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataYearSummary{2}.csv'.format(gr4spPath, slash, outputID)
+
+    csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataYearSummary{2}.csv'.format(gr4spPath, slash, outputID)
     results = pd.read_csv(csvFileName)
 
-    # Prepare time series
+    #
+    # # Prepare time series
     timesYear = results['Time (Year)'].to_numpy()
     consumptionYear = results['Consumption (KWh) per household'].to_numpy()
     tariffsYear = results[' Avg Tariff (c/KWh) per household'].to_numpy()
@@ -117,13 +97,22 @@ def getResults(outputID):
     primarySpotYear = results['System Production Primary Spot'].to_numpy()
     secondarySpotYear = results['System Production Secondary Spot'].to_numpy()
     offSpotYear = results['System Production Off Spot'].to_numpy()
-    rooftopPVYear = results['System Production Rooftop PV'].to_numpy()
+    renewableContributionYear = results['Percentage Renewable Production'].to_numpy()
+    rooftopPVProductionYear = results['System Production Rooftop PV'].to_numpy()
+    coalProductionYear = results['System Production Coal'].to_numpy()
+    waterProductionYear = results['System Production Water'].to_numpy()
+    windProductionYear = results['System Production Wind'].to_numpy()
+    gasProductionYear = results['System Production Gas'].to_numpy()
+    solarProductionYear = results['System Production Solar'].to_numpy()
+    BatteryProductionYear = results['System Production Battery'].to_numpy()
     numActorsYear = results['Number of Active Actors'].to_numpy()
+    seedExperimentCsv = float(experimentId)
 
-    return timesMonth, consumptionMonth, tariffsMonth, wholesaleMonth, ghgMonth, numConsumersMonth, primarySpotMonth, \
-           secondarySpotMonth, offSpotMonth, rooftopPVMonth, numActorsMonth, \
-           timesYear, consumptionYear, tariffsYear, wholesaleYear, ghgYear, numConsumersYear, primarySpotYear, \
-           secondarySpotYear, offSpotYear, rooftopPVYear, numActorsYear
+    return timesYear, consumptionYear, tariffsYear, wholesaleYear, ghgYear, numConsumersYear, primarySpotYear, \
+           secondarySpotYear, offSpotYear, renewableContributionYear, rooftopPVProductionYear, coalProductionYear, \
+           waterProductionYear, windProductionYear, gasProductionYear, solarProductionYear, BatteryProductionYear, \
+           numActorsYear, seedExperimentCsv
+
 
 
 def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV,
@@ -131,8 +120,7 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
              learningCurve, priceChangePercentageBattery, priceChangePercentageBrownCoal, priceChangePercentageOcgt,
              priceChangePercentageCcgt, priceChangePercentageWind, priceChangePercentageWater,
              capacityFactorChangeBattery, capacityFactorChangeBrownCoal, capacityFactorChangeOcgt,
-             capacityFactorChangeCcgt, capacityFactorChangeWind, capacityFactorChangeWater, transmissionUsageChange,
-             distributionUsageChange, retailUsageChange, environmentalCostsChange, scheduleMinCapMarketGen,
+             capacityFactorChangeCcgt, capacityFactorChangeWind, capacityFactorChangeWater, wholesaleTariffContribution, scheduleMinCapMarketGen,
              semiScheduleGenSpotMarket, semiScheduleMinCapMarketGen, nonScheduleGenSpotMarket,
              nonScheduleMinCapMarketGen):
     startJVM()
@@ -151,7 +139,7 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
         if settings["jvmPath"] == "jvmPathUbuntu":
             slash = "/"
         gr4spPath = os.getcwd() + slash + ".."
-        csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
+        csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
 
         #If CSV doesn't exist, then run the simulation. This is usefule to resume failed EMA runs
         if os.path.isfile(csvFileName) is False:
@@ -165,8 +153,6 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             # Set Uncertainties
             gr4spObj.settings.forecast.annualCpi = annualCpi
             gr4spObj.settings.policy.annualInflation = annualInflation
-
-            # Set Levers
 
             gr4spObj.settings.forecast.scenario.consumption = consumption
             gr4spObj.settings.forecast.scenario.energyEfficiency = energyEfficiency
@@ -282,21 +268,7 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.setMaxCapacityFactor('Water', '', water_max_cf)
 
             # tariff components
-            transmission_costs_change = gr4spObj.settings.getUsageTariff('transmissionCosts') * (
-                    100.0 + transmissionUsageChange) / 100.0;
-            gr4spObj.settings.setUsageTariff('transmissionCosts', transmission_costs_change)
-
-            distribution_costs_change = gr4spObj.settings.getUsageTariff('distributionCosts') * (
-                    100.0 + distributionUsageChange) / 100.0;
-            gr4spObj.settings.setUsageTariff('distributionCosts', distribution_costs_change)
-
-            retail_costs_change = gr4spObj.settings.getUsageTariff('retailCosts') * (
-                    100.0 + retailUsageChange) / 100.0;
-            gr4spObj.settings.setUsageTariff('retailCosts', retail_costs_change)
-
-            environmental_costs_change = gr4spObj.settings.getUsageTariff('environmentalCosts') * (
-                    100.0 + environmentalCostsChange) / 100.0;
-            gr4spObj.settings.setUsageTariff('environmentalCosts', environmental_costs_change)
+            gr4spObj.settings.setUsageTariff('wholesaleContribution', (float) (wholesaleTariffContribution / 100.0))
 
             # arenas
             gr4spObj.settings.setMinCapMarketGen('scheduled', scheduleMinCapMarketGen)
@@ -313,4 +285,5 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
     except java.lang.Exception as ex:
         print("Exception: " + ex)
 
-    return getResults(outputID)
+    return getResults(outputID, experimentId)
+
