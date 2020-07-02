@@ -210,9 +210,12 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             throw new RuntimeException("Problems with creating the log files");
         }
 
-	//Setup logging level
-	LOGGER.setLevel(Level.OFF); //WARNING
-	
+	    //Setup logging level
+        if(settings.logLevel == "OFF")
+	        LOGGER.setLevel(Level.OFF);
+        if(settings.logLevel == "WARNING")
+            LOGGER.setLevel(Level.WARNING);
+
         saveData = new SaveData(this);
 
     }
@@ -237,6 +240,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             YamlReader reader = new YamlReader(new FileReader(folderYaml));
 
             settings = reader.read(Settings.class);
+            settings.computeSolarEfficiency();
 
 
             /**

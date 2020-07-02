@@ -41,6 +41,36 @@ class ArenaSettings implements java.io.Serializable {
 
 }
 
+class SolarEfficiency implements java.io.Serializable {
+    //de-rating factor for manufacturing tolerance, dimensionless
+    public double fman ;
+    //de-rating factor for dirt, dimensionless
+    public double fdirt;
+    //temperature de-rating factor, dimensionless, ƒtemp = 1 + (γ × (avg temp) y=-.005 * 20
+    //y is the temperature coefficient, using example from CEC guidelines as -0.5%/C and average daily temperature of 20C
+    //the de-rating factor increases with increasing average daily temperatures.
+    public double ftemp;
+    //efficiency of the subsystem (cables) between the PV array
+    //and the inverter (DC cable loss)
+    public double npv_inv;
+    //efficiency of the inverter. Typically 0.9
+    public double ninv;
+    //efficiency of the subsystem (cables) between the inverter and the switchboard (AC cable loss)
+    // recommended voltage drop between inverter and main switch shouldn't be greater than 1%
+    public double ninv_sb;
+    //solar exposure in data base is in MJ/m2 but converted to KWh/m2 when loaded. Capacity is assumed to be in m^2
+
+    public double solarEfficiency;
+
+    public void computeSolarEfficiency(){
+        solarEfficiency = fman * fdirt * ftemp  * npv_inv * ninv * ninv_sb;
+    }
+
+    public void improveSolarEfficiency( double factor ){
+        solarEfficiency += factor;
+    }
+}
+
 class GeneratorSettings implements java.io.Serializable {
     public double priceMinMWh;
     public double priceMaxMWh;
@@ -50,7 +80,7 @@ class GeneratorSettings implements java.io.Serializable {
     public double maxCapacityFactorSummer;
 
     public List<EmissionFactor> emissionFactors;
-
+    public SolarEfficiency solarEfficiency;
 
     public EmissionFactor selectEmissionFactor(int startYear) {
         int selectedEFidx = 0;
@@ -104,6 +134,7 @@ public class Settings implements java.io.Serializable {
     //public int ConstantMaxInt;
     public String folderOutput;
     public String reportGeneration;
+    public String logLevel;
     public Map<String, ArenaSettings> arena;
     public SimulationDatesSettings simulationDates;
     public PopulationSettings population;
@@ -141,6 +172,13 @@ public class Settings implements java.io.Serializable {
      * Generator
      * */
 
+    public void computeSolarEfficiency(){
+        for (Map.Entry<String, GeneratorSettings> e : generators.entrySet()) {
+            if( e.getValue().solarEfficiency != null )
+                e.getValue().solarEfficiency.computeSolarEfficiency();
+        }
+    }
+
     //Get the Generator Settings with a composite Key
     private GeneratorSettings getGenSettings(String fuelType, String techType) {
         if (generators.containsKey(fuelType)) {
@@ -154,6 +192,19 @@ public class Settings implements java.io.Serializable {
         }
 
         return generators.get("Default");
+    }
+
+    public void improveSolarEfficiency( double factor ) {
+        for (Map.Entry<String, GeneratorSettings> e : generators.entrySet()) {
+            if( e.getValue().solarEfficiency != null )
+                e.getValue().solarEfficiency.improveSolarEfficiency( factor );
+        }
+    }
+
+    public double getSolarEfficiency(String fuelType, String techType) {
+        if(getGenSettings(fuelType, techType).solarEfficiency != null)
+            return getGenSettings(fuelType, techType).solarEfficiency.solarEfficiency;
+        return 0.0;
     }
 
     public double getPriceMinMWh(String fuelType, String techType) {
@@ -193,6 +244,9 @@ public class Settings implements java.io.Serializable {
         return getGenSettings(fuelType, techType).maxCapacityFactorSummer;
     }
 
+    public void setMaxCapacityFactorSummer(String fuelType, String techType,  double maxCapacityFactorSummer) {
+        getGenSettings(fuelType, techType).maxCapacityFactorSummer = maxCapacityFactorSummer;
+    }
     public double getMinEF(String fuelType, String techType, int startYear) {
 
         return getGenSettings(fuelType, techType).selectEmissionFactor(startYear).minEF;

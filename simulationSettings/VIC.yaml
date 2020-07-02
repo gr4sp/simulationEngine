@@ -7,11 +7,18 @@ folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
   #"light": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB
 reportGeneration: "light"
 
+#OFF: no logging at all
+#WARNING: logs when off market covers all demand, or when there is unmet demand
+
+logLevel: "OFF"
+
 simulationDates:
 
   # Simulation Date Range
   startDate:  1998-01-01
-  endDate: 2035-01-01
+
+  # There's only forecast data up to 2050/12.
+  endDate: 2051-01-01
 
   # Spot Market Start Date
   startDateSpotMarket: 1999-01-01
@@ -68,9 +75,12 @@ forecast:
   generatorRetirement: 0
 
   #improves capacity factors of renewable technologies by a constant factor every year (Wind, added to cap factor [0,0.5], Solar, solarEfficiency losses [0.7,1])
-  technologicalImprovement: 0.0
+  technologicalImprovement: 0.01
 
-  learningCurve: 0.0
+  # Learning curve for solar and wind technologies. Improve capacity factors of Wind renewable generators as a proxy of Technology Improvement (YAML)
+  # Improve price LCOE according to learning curve.
+
+  learningCurve: 0.05
 
   #size of solar systems capacity. Used to estimate number of units installed from the forecasted MW solar uptake
   solarInstallCapacity: 6.3
@@ -92,8 +102,8 @@ arena:
     spotMarket: primary
     minCapMarketGen: 30
   semiScheduled:
-    spotMarket: none
-    minCapMarketGen: 0.1 #0.1
+    spotMarket: primary
+    minCapMarketGen: 30 #0.1
   nonScheduled:
     spotMarket: none
     minCapMarketGen: 0.1
@@ -300,6 +310,24 @@ generators:
         minEF: 0.031 #0 or average scope 1 emissions from Clean Energy Regulator data (0.031)
         linRateEF: 0.0
         expRateEF: 0.0
+    solarEfficiency: # solarEfficiency = fman * fdirt * ftemp  * npv_inv * ninv * ninv_sb;
+      # de-rating factor for manufacturing tolerance, dimensionless
+      fman: 0.97
+      # de-rating factor for dirt, dimensionless
+      fdirt: 0.95
+      # temperature de-rating factor, dimensionless, ƒtemp = 1 + (γ × (avg temp) y=-.005 * 20
+      # y is the temperature coefficient, using example from CEC guidelines as -0.5%/C and average daily temperature of 20C
+      # the de-rating factor increases with increasing average daily temperatures.
+      ftemp: 0.9
+      # efficiency of the subsystem (cables) between the PV array
+      # and the inverter (DC cable loss)
+      npv_inv: 0.97
+      # efficiency of the inverter. Typically 0.9
+      ninv: 0.9
+      # efficiency of the subsystem (cables) between the inverter and the switchboard (AC cable loss)
+      # recommended voltage drop between inverter and main switch shouldn't be greater than 1%
+      ninv_sb: 0.99
+
 
 
 tariffs:
