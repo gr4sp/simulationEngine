@@ -74,11 +74,13 @@ forecast:
   #shift on closure date for Fossil Fuel Generators. Ex: -5 means 5 years earlier than expected
   generatorRetirement: 0
 
-  #improves capacity factors of renewable technologies by a constant factor every year (Wind, added to cap factor [0,0.5], Solar, solarEfficiency losses [0.7,1])
+  #improves capacity factors of renewable technologies by adding a constant factor every year (not compounded)
+  # Works only for Wind, added to cap factor [0,0.5], and Solar by increasing the solarEfficiency  [0.7,1])
+
   technologicalImprovement: 0.01
 
-  # Learning curve for solar and wind technologies. Improve capacity factors of Wind renewable generators as a proxy of Technology Improvement (YAML)
-  # Improve price LCOE according to learning curve.
+  # Learning curve for solar and wind technologies. Improve capacity factors of Wind  and solar generators
+  # Improve price LCOE (compounded) according to learning curve.
 
   learningCurve: 0.05
 

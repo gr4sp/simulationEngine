@@ -88,20 +88,22 @@ public class SimPolicies implements java.io.Serializable, Steppable {
             double learningCurve = data.settings.getLearningCurve();
 
             // WIND
-            double WindPriceMinMWh = data.settings.getPriceMinMWh("Wind","") * (1-learningCurve);;
-            double WindPriceMaxMWh = data.settings.getPriceMaxMWh("Wind","") * (1-learningCurve);;
+            double WindPriceMinMWh = data.settings.getPriceMinMWh("Wind","") * (1-learningCurve);
+            double WindPriceMaxMWh = data.settings.getPriceMaxMWh("Wind","") * (1-learningCurve);
             double WindMaxCapacityFactor = data.settings.getMaxCapacityFactor("Wind","");
             double WindMaxCapacityFactorSummer = data.settings.getMaxCapacityFactorSummer("Wind","");
 
             // Assuming a limit of 50% maximum for Wind technology (https://reneweconomy.com.au/new-australian-wind-farms-reach-nearly-50-capacity-factor-99179/)
-            if (WindMaxCapacityFactor + factor < 0.5) data.settings.setMaxCapacityFactor("Wind","", WindMaxCapacityFactor + factor);
-            if (WindMaxCapacityFactorSummer + factor < 0.5) data.settings.setMaxCapacityFactorSummer("Wind","", WindMaxCapacityFactorSummer + factor);
+            if (WindMaxCapacityFactor + factor <= 0.5)
+                data.settings.setMaxCapacityFactor("Wind","", WindMaxCapacityFactor + factor);
+            if (WindMaxCapacityFactorSummer + factor <= 0.5)
+                data.settings.setMaxCapacityFactorSummer("Wind","", WindMaxCapacityFactorSummer + factor);
             data.settings.setPriceMinMWh("Wind","",WindPriceMinMWh);
             data.settings.setPriceMaxMWh("Wind","",WindPriceMaxMWh);
 
             //SOLAR
-            double SolarPriceMinMWh = data.settings.getPriceMinMWh("Solar","") * (1-learningCurve);;
-            double SolarPriceMaxMWh = data.settings.getPriceMaxMWh("Solar","") * (1-learningCurve);;
+            double SolarPriceMinMWh = data.settings.getPriceMinMWh("Solar","") * (1-learningCurve);
+            double SolarPriceMaxMWh = data.settings.getPriceMaxMWh("Solar","") * (1-learningCurve);
             double solarEfficiency = data.settings.getSolarEfficiency("Solar","");
 
             data.settings.setPriceMinMWh("Solar","",SolarPriceMinMWh);
