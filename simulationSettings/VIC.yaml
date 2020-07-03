@@ -79,7 +79,7 @@ forecast:
 
   technologicalImprovement: 0.01
 
-  # Learning curve for solar and wind technologies. Improve capacity factors of Wind  and solar generators
+  # Learning curve for solar and wind technologies.
   # Improve price LCOE (compounded) according to learning curve.
 
   learningCurve: 0.05
