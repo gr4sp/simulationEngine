@@ -20,7 +20,7 @@ def getModel():
     model.constants = [Constant('onsiteGeneration', 'Central')]
     # model.constants += [Constant('rooftopPV', 'residential')]
     model.constants += [Constant('priceChangePercentageBattery', 0)]
-    model.constants += [Constant('priceChangePercentageOcgt', 0)]
+    #model.constants += [Constant('priceChangePercentageOcgt', 0)]
     model.constants += [Constant('priceChangePercentageCcgt', 0)]
     model.constants += [Constant('capacityFactorChangeBattery', 0)]
     model.constants += [Constant('capacityFactorChangeOcgt', 0)]
@@ -51,7 +51,7 @@ def getModel():
     model.uncertainties = [RealParameter('annualCpi', 0.01, 0.05)]
     model.uncertainties += [RealParameter('annualInflation', 0.01, 0.05)]
     model.uncertainties += [CategoricalParameter('consumption', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
-    model.uncertainties += [RealParameter('learningCurve', 0.0, 0.05)]
+    model.uncertainties += [RealParameter('learningCurve', 0.0, 0.1)]
     # variation of contribution of networks, retail and other charges in the tariff
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 11, 45)]
 
@@ -68,7 +68,7 @@ def getModel():
     # This could represent a subsidy
     # model.levers += [IntegerParameter('priceChangePercentageBattery', -30, 30)]
     model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -30, 31)]
-    # model.levers += [IntegerParameter('priceChangePercentageOcgt', -30, 30)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -30, 31)]
     # model.levers += [IntegerParameter('priceChangePercentageCcgt', -30, 30)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWind', -30, 31)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWater', -30, 31)]
