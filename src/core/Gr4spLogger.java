@@ -81,7 +81,7 @@ public class Gr4spLogger implements java.io.Serializable {
     static private FileHandler fileHTML;
     static private Formatter formatterHTML;
 
-    static public void setup(String outputID, String folderLogs) throws IOException {
+    static public void setup(String outputID, String folderLogs, Level level) throws IOException {
 
         // get the global logger to configure it
         Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -93,24 +93,26 @@ public class Gr4spLogger implements java.io.Serializable {
             rootLogger.removeHandler(handlers[0]);
         }
 
-        logger.setLevel(Level.INFO);
+        logger.setLevel(level);
 
-        if( System.getProperty("os.name").contains("Windows") )
-            folderLogs += "\\logs\\";
-        else
-            folderLogs += "/logs/";
+        if(level != Level.OFF) {
+            if (System.getProperty("os.name").contains("Windows"))
+                folderLogs += "\\logs\\";
+            else
+                folderLogs += "/logs/";
 
-        fileTxt = new FileHandler(folderLogs+"Logging" + outputID + ".txt");
-        fileHTML = new FileHandler(folderLogs+"Logging" + outputID + ".html");
+            fileTxt = new FileHandler(folderLogs + "Logging" + outputID + ".txt");
+            fileHTML = new FileHandler(folderLogs + "Logging" + outputID + ".html");
 
-        // create a TXT formatter
-        formatterTxt = new SimpleFormatter();
-        fileTxt.setFormatter(formatterTxt);
-        logger.addHandler(fileTxt);
+            // create a TXT formatter
+            formatterTxt = new SimpleFormatter();
+            fileTxt.setFormatter(formatterTxt);
+            logger.addHandler(fileTxt);
 
-        // create an HTML formatter
-        formatterHTML = new MyHtmlFormatter();
-        fileHTML.setFormatter(formatterHTML);
-        logger.addHandler(fileHTML);
+            // create an HTML formatter
+            formatterHTML = new MyHtmlFormatter();
+            fileHTML.setFormatter(formatterHTML);
+            logger.addHandler(fileHTML);
+        }
     }
 }
