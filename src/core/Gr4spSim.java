@@ -204,17 +204,21 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         //Setup Logger
         try {
-            Gr4spLogger.setup(outputID, settings.folderOutput);
+            //Setup logging level
+            Level level = Level.INFO;
+            if(settings.logLevel.equalsIgnoreCase("OFF") )
+                level = Level.OFF;
+            if(settings.logLevel.equalsIgnoreCase("WARNING"))
+                level = Level.WARNING;
+
+            Gr4spLogger.setup(outputID, settings.folderOutput, level);
+
         }catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Problems with creating the log files");
         }
 
-	    //Setup logging level
-        if(settings.logLevel == "OFF")
-	        LOGGER.setLevel(Level.OFF);
-        if(settings.logLevel == "WARNING")
-            LOGGER.setLevel(Level.WARNING);
+
 
         saveData = new SaveData(this);
 
