@@ -458,8 +458,8 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
 
     if generate_experiments_file_only is True:
         print(
-            "Polcies and Uncertainties saved into file policies.{}.object and uncertainties.{}.object. EMA is exiting as generate_experiments_file_only flag was set to true.".format(
-                levers_sampling, uncertainty_sampling))
+            "{} Polcies and {} Uncertainties/scenarios saved into file policies.{}.object and uncertainties.{}.object."
+            " EMA is exiting as generate_experiments_file_only flag was set to true.".format(n_policies, n_scenarios, levers_sampling, uncertainty_sampling))
         raise SystemExit
 
     else:
