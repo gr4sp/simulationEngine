@@ -411,6 +411,18 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
 
         uncertainties = scenarios.parameters
         n_scenarios = scenarios.n
+
+        import numpy as np
+        for l in range(len(scenarios.parameters)):
+            var = np.zeros(len(scenarios.designs))
+            for d in range(len(scenarios.designs)):
+                var[d] = scenarios.designs[d][l]
+            val = np.unique(var)
+            counts = np.zeros(len(val))
+            for i in range(len(val)):
+                counts[i] = np.count_nonzero(val[i] == var)
+            print("Uncertainty: {} - values {} - counts for each value{}".format(scenarios.parameters[l], val, counts))
+
     else:
         try:
             uncertainties = scenarios.parameters
