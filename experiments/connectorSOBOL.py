@@ -115,21 +115,21 @@ def getResults(outputID, experimentId):
            numActorsYear, seedExperimentCsv
 
 
-# def category(i):
-#     switcher={
-#         0: 'Central',
-#         1: 'Slow change',
-#         2: 'Step change',
-#         3: 'Fast change',
-#         4: 'High DER',
-#         5: 'residential',
-#         6: 'business',
-#         7: 'both',
-#         8: 'primary',
-#         9: 'secondary',
-#         10: 'none'
-#     }
-#     return switcher.get(i,"invalid category")
+def category(i):
+    switcher={
+        0: 'Central',
+        1: 'Slow change',
+        2: 'Step change',
+        3: 'Fast change',
+        4: 'High DER',
+        5: 'residential',
+        6: 'business',
+        7: 'both',
+        8: 'primary',
+        9: 'secondary',
+        10: 'none'
+    }
+    return switcher.get(i,"invalid category")
 
 def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV,
              includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
@@ -170,11 +170,11 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.forecast.annualCpi = annualCpi
             gr4spObj.settings.policy.annualInflation = annualInflation
 
-            gr4spObj.settings.forecast.scenario.consumption = consumption
-            gr4spObj.settings.forecast.scenario.energyEfficiency = energyEfficiency
+            gr4spObj.settings.forecast.scenario.consumption = category(consumption)
+            gr4spObj.settings.forecast.scenario.energyEfficiency = category(energyEfficiency)
             gr4spObj.settings.forecast.scenario.onsiteGeneration = onsiteGeneration
-            gr4spObj.settings.forecast.scenario.solarUptake = solarUptake
-            gr4spObj.settings.forecast.rooftopPV = rooftopPV
+            gr4spObj.settings.forecast.scenario.solarUptake = category(solarUptake)
+            gr4spObj.settings.forecast.rooftopPV = category(rooftopPV)
 
             gr4spObj.settings.forecast.includePublicallyAnnouncedGen = jpype.java.lang.Boolean(
                 includePublicallyAnnouncedGen)
@@ -291,8 +291,8 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.setMinCapMarketGen('semiScheduled', semiScheduleMinCapMarketGen)
             gr4spObj.settings.setMinCapMarketGen('nonScheduled', nonScheduleMinCapMarketGen)
 
-            gr4spObj.settings.setSpotMarket('semiScheduled', semiScheduleGenSpotMarket)
-            gr4spObj.settings.setSpotMarket('nonScheduled', nonScheduleGenSpotMarket)
+            gr4spObj.settings.setSpotMarket('semiScheduled', category(semiScheduleGenSpotMarket))
+            gr4spObj.settings.setSpotMarket('nonScheduled', category(nonScheduleGenSpotMarket))
 
             # Run JAVA Simulation
             gr4spObj.runFromPythonEMA()
