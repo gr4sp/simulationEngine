@@ -93,20 +93,6 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
 
     }
 
-    //Get onsite generation
-    public double getOnsiteGeneration(Gr4spSim data, Date today, HashMap<Date, Integer> newHouseholdsPerDate) {
-        double generationKWh = 0.0;
-
-        for (Generator g : generators) {
-            generationKWh += g.getGeneration(data, today, newHouseholdsPerDate);
-        }
-
-        for (Storage s : storages) {
-            generationKWh += s.getGeneration(data, today, newHouseholdsPerDate);
-        }
-
-        return generationKWh;
-    }
 
 //    //Get currently active generators into 2 arrays, the ones in the spot market, and non spot market
 //    public void getActiveGensThisSPM(Date today, ArrayList<Generator> inSpotMarket, ArrayList<Generator> outSpotMarket) {

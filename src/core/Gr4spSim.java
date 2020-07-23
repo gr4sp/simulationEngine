@@ -86,9 +86,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //Tariff contribution of the wholesale
     HashMap<Integer, Float> tariff_contribution_wholesale_register;
 
-    //Solar Exposure in KWh/m^2 (MJ/m^2 in DB) monthly mean
-    HashMap<Date, Float> monthly_solar_exposure;
-
     //Solar Exposure in KWh/m^2 30min mean
     HashMap<Date, Float> halfhour_solar_exposure;
 
@@ -187,7 +184,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         monthly_domestic_consumers_register = new HashMap<>();
         cpi_conversion = new HashMap<>();
         tariff_contribution_wholesale_register = new HashMap<>();
-        monthly_solar_exposure = new HashMap<>();
         halfhour_solar_exposure = new HashMap<>();
         solar_aggregated_kw = new HashMap<>();
         solar_number_installs = new HashMap<>();
@@ -371,10 +367,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public HashMap<Date, Generation> getMonthly_generation_register() {
         return monthly_generation_register;
-    }
-
-    public HashMap<Date, Float> getMonthly_solar_exposure() {
-        return monthly_solar_exposure;
     }
 
     public HashMap<Date, Float> getHalfhour_solar_exposure() {
@@ -874,9 +866,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         LoadData.selectForecastSolarUptake(this);
         LoadData.selectForecastEnergyEfficency(this);
         LoadData.selectForecastOnsiteGeneration(this);
-        LoadData.selectConsumption(this, startDate, endDate);
+        LoadData.selectConsumption(this, startDate, this.settings.getStartDateSpotMarket(), endDate);
         LoadData.selectGenerationHistoricData(this, startDate, endDate);
-        LoadData.selectMonthlySolarExposure(this);
         LoadData.selectHalfHourSolarExposure(this);
         LoadData.createHalfHourSolarExposureForecast(this);
         LoadData.selectSolarInstallation(this);
@@ -928,7 +919,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         dataToSerialize.put("monthly_generation_register", monthly_generation_register);
         dataToSerialize.put("monthly_domestic_consumers_register", monthly_domestic_consumers_register);
         dataToSerialize.put("cpi_conversion", cpi_conversion);
-        dataToSerialize.put("monthly_solar_exposure", monthly_solar_exposure);
         dataToSerialize.put("halfhour_solar_exposure", halfhour_solar_exposure);
 
         dataToSerialize.put("solar_number_installs", solar_number_installs);
@@ -991,7 +981,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             monthly_generation_register = (HashMap<Date, Generation>) retreived.get("monthly_generation_register");
             monthly_domestic_consumers_register = (HashMap<Date, Integer>) retreived.get("monthly_domestic_consumers_register");
             cpi_conversion = (HashMap<Date, Float>) retreived.get("cpi_conversion");
-            monthly_solar_exposure = (HashMap<Date, Float>) retreived.get("monthly_solar_exposure");
             halfhour_solar_exposure = (HashMap<Date, Float>) retreived.get("halfhour_solar_exposure");
 
             solar_number_installs = (HashMap<Date, Integer>) retreived.get("solar_number_installs");
