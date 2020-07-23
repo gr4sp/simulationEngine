@@ -14,6 +14,9 @@ import scipy.stats.kde as kde
 import seaborn as sns
 from scipy.stats import gaussian_kde, scoreatpercentile
 
+import plotly.express as px
+
+
 from ..util import EMAError, get_module_logger
 
 # .. codeauthor:: jhkwakkel <j.h.kwakkel (at) tudelft (dot) nl>
@@ -137,6 +140,26 @@ def plot_histogram(ax, values, log):
                 density=True,
                 color=color,
                 log=log)
+
+    # df = px.data.tips()
+    # a = px.histogram(df, x="total_bill",
+    #                    title='Histogram of bills',
+    #                    labels={'total_bill': 'total bill'},  # can specify one label per df column
+    #                    opacity=0.8,
+    #                    log_y=True,  # represent bars with log scale
+    #                    color_discrete_sequence=['indianred']  # color of histogram bars
+    #                    )
+
+
+    density_info = {f'{bin:.1f} to {nextBin:.1f}': f'{density:.3f}' for bin, density, nextBin in zip(a[1][:-1], a[0], a[1][1:]) if density > 0.0009}
+    print( f"Densities (PDF): {density_info}" )
+    density_info = {f'{bin:.1f} to {nextBin:.1f}': f'{(100*density*(nextBin-bin)):.1f}%' for bin, density, nextBin in zip(a[1][:-1], a[0], a[1][1:])}# if density > 0.0009}
+    print(f"% in Bin: {density_info}\n")
+
+    #print( f'density: {a[0]}' )
+    #print( np.sum(a[0]*np.diff(a[1])) )
+    #print( f'bins: {a[1]}')
+
     if not log:
         ax.set_xticks([0, ax.get_xbound()[1]])
     return a
@@ -159,6 +182,7 @@ def plot_kde(ax, values, log):
     for j, value in enumerate(values):
         color = get_color(j)
         kde_x, kde_y = determine_kde(value)
+
         ax.plot(kde_x, kde_y, c=color, ms=1, markevery=20)
 
         if log:
