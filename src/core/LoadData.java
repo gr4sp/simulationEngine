@@ -924,7 +924,6 @@ public class LoadData implements java.io.Serializable {
                 //save demand data. From MW 30min -> GWh
                 double TotalGWh = TotalMw / 2000;
                 data.getMonthly_consumption_register().put(dateConsumption, TotalGWh);
-                System.out.println(dateConsumption +" - "+ TotalGWh);
                 //reset counter and update current month
                 TotalMw = 0.0;
                 currentMonth = c.get(Calendar.MONTH);
