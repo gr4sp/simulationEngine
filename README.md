@@ -90,13 +90,14 @@ To load data into the database
 ```
 sudo -u postgres pg_restore -U postgres -d postgres < backupDB/DB-2020-7-23.sql
 ```
-If you already loaded the database and you need to recreate it again using a new different backup file run:
+
+:warning: If you already loaded the database and you need to recreate it again using a new different backup file run:
 ```
 sudo -u postgres dropdb postgres
 sudo -u postgres createdb postgres
 sudo -u postgres pg_restore -U postgres -d postgres < backupDB/DB-2020-7-23.sql
 ```
-{: .alert .alert-warning}
+
 
 Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`:
 
