@@ -72,7 +72,7 @@ public class Generation implements java.io.Serializable {
                       Float solarUtilitydollarGWh, Float solarUtilityGWh, Float windDollarGWh, Float windGWh, Float hydroDollarGWh,
                       Float hydroGWh, Float batteryDollarGWh, Float batteryGWh, Float gasOcgtDollarGWh, Float gasOcgtGWh, Float gasSteamDollarGWh,
                       Float gasSteamGWh, Float brownCoalDollarGWh, Float brownCoalGWh, Float importsDollarGWh, Float importsGWh, Float exportsDollarGWh,
-                      Float exportsGWh, Float totalGWh) {
+                      Float exportsGWh) {
         this.date = date;
         this.volumeDollarMWh = volumeDollarMWh;
         this.temperature = temperature;
@@ -96,7 +96,8 @@ public class Generation implements java.io.Serializable {
         this.importsGWh = importsGWh;
         this.exportsDollarGWh = exportsDollarGWh;
         this.exportsGWh = exportsGWh;
-        this.totalGWh = totalGWh - this.exportsGWh;
+        this.totalGWh = this.exportsGWh + this.brownCoalGWh + this.gasSteamGWh + this.gasOcgtGWh + this.batteryGWh
+                + this.hydroGWh + this.windGWh + this.solarUtilityGWh + this.solarRooftopPVGWh;
     }
 
     public ArrayList<Generator> filterGens(ArrayList<Generator> gens, String fuelType) {

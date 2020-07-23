@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.Date;
 
 import static java.lang.System.exit;
-import static java.lang.System.setOut;
 
 //Class to load all the data to start the simulation
 public class LoadData implements java.io.Serializable {
@@ -545,7 +544,7 @@ public class LoadData implements java.io.Serializable {
     }
 
     //Select Consumption
-    public static void createConsumptionAndDemandForecast(Gr4spSim data) {
+    public static void createDemandForecast(Gr4spSim data) {
 
         //Set Base Date
         Date baseDate = null;
@@ -563,35 +562,15 @@ public class LoadData implements java.io.Serializable {
         Calendar c = Calendar.getInstance();
         Calendar fc = Calendar.getInstance();
 
+        c.setTime(data.getEndSimDate());
+        int endYear  = c.get(Calendar.YEAR) - 1;
+
         c.setTime(baseDate);
 
-        while (baseYear < 2050) {
+        while (baseYear < endYear) {
             float baseConsumption = data.getAnnual_forecast_consumption_register().get(baseYear);
             float nextConsumption = data.getAnnual_forecast_consumption_register().get(baseYear + 1);
             float percentageChange = (nextConsumption-baseConsumption) / baseConsumption;
-
-
-            for (int month = 0; month < 12; month++) {
-
-                //Set the month for the forecast
-                c.set(Calendar.MONTH, month);
-                baseDate = c.getTime();
-
-                //ForecastConsumption
-                double gwh = data.getMonthly_consumption_register().get(baseDate);
-                double forecastedGWh = gwh + (gwh * percentageChange);
-
-
-                //Set the 1 year forecast date
-                c.add(Calendar.YEAR, 1);
-                Date forecastedDate = c.getTime();
-                c.add(Calendar.YEAR, -1);
-
-                data.getMonthly_consumption_register().put(forecastedDate, forecastedGWh);
-
-
-
-            }
 
             //Leap year day
             Date leapYearFeb = null;
@@ -667,11 +646,15 @@ public class LoadData implements java.io.Serializable {
             data.LOGGER.warning(e.toString());
         }
         Calendar c = Calendar.getInstance();
+
+        c.setTime(data.getEndSimDate());
+        int endYear  = c.get(Calendar.YEAR) - 1;
+
         c.setTime(baseDate);
 
         //This is applied to the tariffs. If price rises in year baseYear+1 2% and annualCpi=0.02 and inflation=0.01, then it will appear as 0.1 wrt the price as in baseYear.
         //AnnualCPI corrects the value given as inflation below.
-        while (baseYear < 2050) {
+        while (baseYear < endYear) {
             float baseCPI = data.getCpi_conversion().get(baseDate);
             float forecastedCPI = baseCPI * (1 - (float) data.settings.getAnnualCpiForecast());
 
@@ -842,10 +825,13 @@ public class LoadData implements java.io.Serializable {
         Calendar c = Calendar.getInstance();
         Calendar fc = Calendar.getInstance();
 
+        c.setTime(data.getEndSimDate());
+        int endYear  = c.get(Calendar.YEAR) - 1;
+
         c.setTime(baseDate);
 
 
-        while (baseYear < 2050) {
+        while (baseYear < endYear) {
 
             //Leap year day
             Date leapYearFeb = null;
@@ -905,16 +891,78 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
+    //Select Consumption
+    private static void createConsumptionFromDemand(Gr4spSim data) {
+
+        //Set current Date
+        Date currentDate = null;
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            currentDate = stringToDate.parse(data.settings.getStartDateSpotMarket());
+        } catch (ParseException e) {
+            data.LOGGER.warning(e.toString());
+        }
+        Calendar c = Calendar.getInstance();
+
+        c.setTime(data.getEndSimDate());
+        int endYear  = c.get(Calendar.YEAR);
+
+        c.setTime(currentDate);
+
+        //Set the month to January to start consumption computation
+        //c.set(Calendar.MONTH, 0);
+
+        double TotalMw = 0.0;
+        double currentMonth = c.get(Calendar.MONTH);
+        Date dateConsumption = c.getTime();
+
+        while( c.get(Calendar.YEAR) < endYear ){
+
+            // If month finished, save the demand data
+            if(currentMonth != c.get(Calendar.MONTH)){
+
+                //save demand data. From MW 30min -> GWh
+                double TotalGWh = TotalMw / 2000;
+                data.getMonthly_consumption_register().put(dateConsumption, TotalGWh);
+                System.out.println(dateConsumption +" - "+ TotalGWh);
+                //reset counter and update current month
+                TotalMw = 0.0;
+                currentMonth = c.get(Calendar.MONTH);
+                c.set(Calendar.MINUTE,0);
+                c.set(Calendar.HOUR_OF_DAY,0);
+                dateConsumption = c.getTime();
+
+            }
+            currentDate = c.getTime();
+
+
+            //ForecastDemand Half Hour
+            if(data.getHalfhour_demand_register().containsKey(currentDate)) {
+                TotalMw += data.getHalfhour_demand_register().get(currentDate);
+            }
+
+            //Set the month for the forecast
+            c.add(Calendar.MINUTE, 30);
+
+        }
+
+        //save last month demand data. From MW 30min -> GWh
+        double TotalGWh = TotalMw / 2000;
+        data.getMonthly_consumption_register().put(dateConsumption, TotalGWh);
+
+    }
+
 
     public static void
-    selectConsumption(Gr4spSim data, String startDate, String endDate) {
+    selectConsumption(Gr4spSim data, String startDate, String startSpotDate, String endDate) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
         /**
-         * Load Total Consumption per month
+         * Load historic Total Consumption per month up to start of Spot market
          * */
+
         String sql = "SELECT date, total_consumption_gwh" +
                 " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
@@ -945,11 +993,19 @@ public class LoadData implements java.io.Serializable {
         }
 
 
+
+
         /**
          * Create Consumption Forecast
          * */
 
-        createConsumptionAndDemandForecast(data);
+        createDemandForecast(data);
+
+        /**
+         * Create Consumption from 30min Spot Demand
+         * */
+
+        createConsumptionFromDemand(data);
 
         /**
          * Load domestic consumers
@@ -1056,6 +1112,9 @@ public class LoadData implements java.io.Serializable {
 
     }
 
+    /**
+     * Data used prior the start of the spot Market specified in the YAML configuration file
+     * */
     public static void
     selectGenerationHistoricData(Gr4spSim data, String startDate, String endDate) {
         String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
@@ -1069,13 +1128,12 @@ public class LoadData implements java.io.Serializable {
                 "solar_utility_dollargwh, solar_utility_gwh, wind_dollargwh, wind_gwh, hydro_dollargwh," +
                 "hydro_gwh, battery_disch_dollargwh, battery_disch_gwh, gas_ocgt_dollargwh, gas_ocgt_gwh," +
                 "gas_steam_dollargwh, gas_steam_gwh, browncoal_dollargwh, browncoal_gwh, imports_dollargwh," +
-                "imports_gwh, exports_dollargwh, exports_gwh, total_gen_gwh" +
+                "imports_gwh, exports_dollargwh, exports_gwh" +
                 " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "';";
 
 
-        //volumeweightedprice_dollarMWh, temperaturec, solar_roofpv_dollargwh, solar_roofpv_gwh, solar_utility_dollargwh, solar_utility_gwh, wind_dollargwh, wind_gwh, hydro_dollargwh, hydro_gwh, battery_disch_dollargwh, battery_disch_gwh, gas_ocgt_dollargwh, gas_ocgt_gwh,gas_steam_dollargwh, gas_steam_gwh, browncoal_dollargwh, browncoal_gwh, imports_dollargwh, imports_gwh, exports_dollargwh, exports_gwh, total_gen_gwh
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -1083,11 +1141,6 @@ public class LoadData implements java.io.Serializable {
             // loop through the result set
             while (rs.next()) {
 
-
- /*               data.LOGGER.info("\t" + rs.getString("date") + "\t" +
-                        rs.getString("temperaturec") + "\t" +
-                        rs.getString("total_gen_gwh"));
-*/
 
                 Date d = rs.getDate("date");
 
@@ -1098,57 +1151,13 @@ public class LoadData implements java.io.Serializable {
                         rs.getFloat("hydro_gwh"), rs.getFloat("battery_disch_dollargwh"), rs.getFloat("battery_disch_gwh"), rs.getFloat("gas_ocgt_dollargwh"),
                         rs.getFloat("gas_ocgt_gwh"), rs.getFloat("gas_steam_dollargwh"), rs.getFloat("gas_steam_gwh"), rs.getFloat("browncoal_dollargwh"),
                         rs.getFloat("browncoal_gwh"), rs.getFloat("imports_dollargwh"), rs.getFloat("imports_gwh"), rs.getFloat("exports_dollargwh"),
-                        rs.getFloat("exports_gwh"), rs.getFloat("total_gen_gwh")
+                        rs.getFloat("exports_gwh")
                 );
 
                 //If monthly gen datapoint doesn't exist, create it
                 if (!data.getMonthly_generation_register().containsKey(d)) {
                     data.getMonthly_generation_register().put(d, genData);
                 }
-            }
-        } catch (SQLException e) {
-            data.LOGGER.warning(e.getMessage());
-        }
-    }
-
-    public static void selectMonthlySolarExposure(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
-
-        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
-
-        String sql = "SELECT year, month, solar_exposure" +
-                " FROM solar_exposure_monthly;";
-
-        //Loading Solar Exposure data
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            // loop through the result set
-            while (rs.next()) {
-                int year = rs.getInt("year");
-                int month = rs.getInt("month");
-                String sdate = year + "-" + month + "-1";
-                Date date = null;
-                float toKwh = (float) 3.6;
-
-
-                float solarExposure = rs.getFloat("solar_exposure") / toKwh;
-
-                data.LOGGER.info("\t" + year + "\t" +
-                        month + "\t" +
-                        solarExposure
-                );
-
-
-                try {
-                    date = stringToDate.parse(sdate);
-                } catch (ParseException e) {
-                }
-
-                data.getMonthly_solar_exposure().put(date, solarExposure);
-
-
             }
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
