@@ -234,14 +234,6 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
 
                 double consumption = this.currentConsumption;
 
-                //Reduce from consumption the onsite generation in order to compute Emissions
-                double onSiteGenerationTotalHouseholds = spm.getOnsiteGeneration(data, today, this.newHousholdsPerDate);
-
-                //Save the surplus energy
-                this.surplusMWh = onSiteGenerationTotalHouseholds - consumption;
-
-                //remove from consumption the MWh generated onsite
-                consumption -= onSiteGenerationTotalHouseholds;
 
                 //If onsite Generation is greater than consumption, set consumption to 0
                 //Because we have not created a market to sell the surplus to other SPMs
@@ -251,14 +243,6 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
 
                  spm.computeIndicators(simState,consumption);
                 this.currentEmissions = spm.currentEmissions;
-
-//                //Compute emissions multiplying Emission factor t-CO2/MWh * consumption in MWh
-//                Generation genData = data.getMonthly_generation_register().get(today);
-//                this.currentEmissions = genData.computeGenEmissionIntensity(spm) * consumption;
-//
-//                //Apply network losses to the computation of GHG emissions
-//                double networkLosses = spm.computeRecursiveNetworksLosses(spm);
-//                this.currentEmissions *= (1+networkLosses);
 
                 //System.out.println("Population for " + today + " of "+numberOfHouseholds+ " with consumption "+ this.currentConsumption+" create total of "+ this.currentEmissions +"GHG (t/co2)");
             }

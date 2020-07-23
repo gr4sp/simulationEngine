@@ -193,86 +193,7 @@ public class Generator implements java.io.Serializable, Asset {
         return generation;
     }
 
-    //returns MWh
-    public double getGeneration(Gr4spSim data, Date d, HashMap<Date, Integer> newHouseholdsPerDate) {
-        double generation = 0.0;
 
-
-        if (fuelSourceDescriptor.equalsIgnoreCase("solar")) {
-
-            if (data.getHalfhour_solar_exposure().containsKey(d)) {
-
-                //get Generation in MWh
-                float solarExposure = (data.getMonthly_solar_exposure().get(d));//half hour solar exposure (ghi) given in W/m^2 but converted to KWh in LoadData
-
-                //Compute generation taking into account the date when households installed solar (and number), and the avg size.
-                for (HashMap.Entry pair : newHouseholdsPerDate.entrySet()) {
-
-                    //date of new household installation solar pv
-                    Date newHouseholdDate = (Date) pair.getKey();
-
-                    //num households installed solar pv
-                    int numNewHouseholds = (int) pair.getValue();
-
-                    //ave solar installation on that date
-                    float solar_installation_capacity = 0;
-
-                    if (data.getSolar_aggregated_kw().containsKey(newHouseholdDate)) {
-                        solar_installation_capacity = data.getSolar_aggregated_kw().get(newHouseholdDate);
-                    }
-
-                    //half hour generation in MWh given sun
-                    double halfHourGeneration = getSolarGeneration(solarExposure, solar_installation_capacity,this.solarEfficiency) / 1000.0;
-
-                    //Generation per half hour over all households that installed solarpv on that month in MWh
-                    generation += (halfHourGeneration / 2.0) * numNewHouseholds;
-
-                }
-            } else if (data.getMonthly_solar_exposure().containsKey(d)) {
-
-                //Get number of days in month
-                Calendar c = Calendar.getInstance();
-                c.setTime(d);
-                int month = c.get(Calendar.MONTH) + 1;
-                int year = c.get(Calendar.YEAR);
-                YearMonth yearMonthObject = YearMonth.of(year, month);
-                int daysInMonth = yearMonthObject.lengthOfMonth(); //28
-
-                //get Generation in MWh
-                float solarExposure = (data.getMonthly_solar_exposure().get(d));//mean monthly solar exposure given in MJ/m^2 but converted in LoadData to KWh
-
-                //Compute generation taking into account the date when households installed solar (and number), and the avg size.
-                for (HashMap.Entry pair : newHouseholdsPerDate.entrySet()) {
-
-                    //date of new household installation solar pv
-                    Date newHouseholdDate = (Date) pair.getKey();
-
-                    //num households installed solar pv
-                    int numNewHouseholds = (int) pair.getValue();
-
-                    //ave solar installation on that date
-                    float solar_installation_capacity = 0;
-
-                    if (data.getSolar_aggregated_kw().containsKey(newHouseholdDate)) {
-                        solar_installation_capacity = data.getSolar_aggregated_kw().get(newHouseholdDate);
-                    }
-
-                    //daily generation in MWh given sun
-                    double dailyGeneration = getSolarGeneration(solarExposure, solar_installation_capacity,this.solarEfficiency) / 1000.0;
-
-                    //Generation per month over all households that installed solarpv on that month
-                    generation += (dailyGeneration * (double) daysInMonth) * numNewHouseholds;
-
-                }
-
-            } else {
-                throw new java.lang.UnsupportedOperationException("Not supported yet. Only support on-site Solar generation"); //TODO: solar utility?
-            }
-        }
-
-        return generation;
-
-    }
 
     //Once the generator has been running for longer than its lifecycle (30 years by default), the Emission Factor will stop growing,
     //It will remain at the 30 year level
@@ -401,7 +322,7 @@ public class Generator implements java.io.Serializable, Asset {
             //Solar capacity is the same as half hour generation in this case. MWh each half hour will be capacity in MW
             availableCapacity = halfHourGeneration / (float) 1000.0;
 
-            //Solar suplus as a function of generation and number of units consuming
+            //Solar suplus as a function of generation and number of units consuming - (30days * 48 halfhour/day = 1440 approx equals half hours in month)
             solarSurplusCapacity = availableCapacity - (numUnits * consumption / 1440 );
             if(solarSurplusCapacity < 0 ) solarSurplusCapacity = 0;
 

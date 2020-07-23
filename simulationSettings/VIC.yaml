@@ -21,7 +21,7 @@ simulationDates:
   endDate: 2051-01-01
 
   # Spot Market Start Date
-  startDateSpotMarket: 1999-01-01
+  startDateSpotMarket: 1999-07-01
 
 population:
   # Population and scale
@@ -53,7 +53,7 @@ forecast:
     onsiteGeneration: Central # consumption = consumption - ONSG
     solarUptake: Central #Slow change
 
-  baseYear: 2018
+  baseYear: 2019
 
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
 
@@ -71,7 +71,8 @@ forecast:
   # Include subcategory of rooftop pv. (residential), (business) or (both)
   rooftopPV: both
 
-  #shift on closure date for Fossil Fuel Generators. Ex: -5 means 5 years earlier than expected
+  # Shift on closure date for Brown Coal Generators. Ex: -5 means 5 years earlier than expected
+  # Only affects generators for which there's no closure date, but only an expected closure date
   generatorRetirement: 0
 
   #improves capacity factors of renewable technologies by adding a constant factor every year (not compounded)

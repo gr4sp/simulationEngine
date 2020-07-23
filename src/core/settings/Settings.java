@@ -158,15 +158,15 @@ public class Settings implements java.io.Serializable {
     }
 
 
-    public double getFixedTariff(String actorType) {
-        return getTariffSettings(actorType).fixed;
+    public double getFixedTariff(String tariffComponent) {
+        return getTariffSettings(tariffComponent).fixed;
     }
 
-    public double getUsageTariff(String actorType) {
-        return getTariffSettings(actorType).usage;
+    public double getUsageTariff(String tariffComponent) {
+        return getTariffSettings(tariffComponent).usage;
     }
 
-    public void setUsageTariff(String actorType, double tariff) {  getTariffSettings(actorType).usage = tariff;}
+    public void setUsageTariff(String tariffComponent, double tariff) {  getTariffSettings(tariffComponent).usage = tariff;}
 
     /*
      * Generator
