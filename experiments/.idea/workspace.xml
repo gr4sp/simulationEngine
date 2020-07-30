@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d475c5da-1907-4d8f-9003-cc7c3d3fc882" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/dataSources/85733165-0e5b-4b9f-ae7a-923428b289f4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/dataSources/85733165-0e5b-4b9f-ae7a-923428b289f4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/analysis/b_and_w_plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/analysis/b_and_w_plotting.py" afterDir="false" />
@@ -13,349 +13,69 @@
       <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/outcomes.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/outcomes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/salib_samplers.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/salib_samplers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/samplers.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/samplers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EMAworkbench/ema_workbench/util/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMAworkbench/ema_workbench/util/utilities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/EE__mu_star.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/EE__mu_star.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/EE__sigma.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/EE__sigma.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assesmentData/dwellingType_Vic1996_2016.csv" beforeDir="false" afterPath="$PROJECT_DIR$/assesmentData/dwellingType_Vic1996_2016.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assesmentData/postgres_public_cpi_conversion.csv" beforeDir="false" afterPath="$PROJECT_DIR$/assesmentData/postgres_public_cpi_conversion.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assesmentData/postgres_public_household_forecast_victoria.csv" beforeDir="false" afterPath="$PROJECT_DIR$/assesmentData/postgres_public_household_forecast_victoria.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_EET-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_EET-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_Envelopes-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_Envelopes-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_PRIM-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_PRIM-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_SOBOL-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_SOBOL-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/gr4sp_energy_vulnerability_IMAP-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/.ipynb_checkpoints/gr4sp_energy_vulnerability_IMAP-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_EET.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_EET.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_Envelopes.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_Envelopes.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_PRIM.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_PRIM.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_SOBOL.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_SOBOL.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_GHGYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_GHGYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_GHGYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_GHGYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_GHGYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_offSpotProductionYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_primarySpotProductionYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_rooftopPVProductionYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_secondarySpotProductionYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_tariffsYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_tariffsYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_tariffsYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_tariffsYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_tariffsYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_consumption.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_energyEfficiency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_onsiteGeneration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_rooftopPV.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_boxplots_wholesalePriceYear_solarUptake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_envelope_kdes_GHGYear_dir_unc_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1998_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1998_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1998_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1998_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1998_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1998_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1998_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1999_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1999_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1999_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1999_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1999_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1999_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_1999_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2000_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2000_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2000_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2000_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2000_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2000_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2000_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2001_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2001_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2001_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2001_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2001_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2001_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2001_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2002_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2002_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2002_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2002_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2002_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2002_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2002_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2003_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2003_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2003_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2003_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2003_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2003_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2003_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2004_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2004_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2004_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2004_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2004_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2004_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2004_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2005_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2005_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2005_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2005_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2005_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2005_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2005_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2006_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2006_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2006_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2006_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2006_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2006_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2006_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2007_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2007_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2007_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2007_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2007_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2007_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2007_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2008_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2008_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2008_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2008_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2008_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2008_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2008_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2009_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2009_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2009_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2009_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2009_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2009_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2009_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2010_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2010_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2010_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2010_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2010_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2010_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2010_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2011_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2011_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2011_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2011_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2011_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2011_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2011_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2012_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2012_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2012_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2012_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2012_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2012_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2012_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2013_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2013_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2013_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2013_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2013_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2013_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2013_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2014_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2014_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2014_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2014_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2014_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2014_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2014_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2015_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2015_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2015_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2015_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2015_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2015_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2015_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2016_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2016_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2016_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2016_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2016_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2016_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2016_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2017_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2017_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2017_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2017_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2017_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2017_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2017_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2018_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2018_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2018_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2018_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2018_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2018_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2018_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2019_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2019_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2019_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2019_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2019_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2019_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2019_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2020_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2020_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2020_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2020_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2020_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2020_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2020_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2021_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2021_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2021_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2021_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2021_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2021_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2021_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2022_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2022_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2022_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2022_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2022_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2022_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2022_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2023_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2023_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2023_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2023_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2023_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2023_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2023_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2024_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2024_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2024_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2024_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2024_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2024_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2024_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2025_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2025_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2025_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2025_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2025_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2025_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2025_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2026_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2026_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2026_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2026_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2026_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2026_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2026_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2027_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2027_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2027_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2027_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2027_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2027_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2027_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2028_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2028_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2028_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2028_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2028_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2028_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2028_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2029_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2029_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2029_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2029_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2029_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2029_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2029_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2030_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2030_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2030_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2030_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2030_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2030_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2030_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2031_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2031_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2031_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2031_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2031_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2031_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2031_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2032_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2032_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2032_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2032_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2032_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2032_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2033_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2033_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2033_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2033_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2033_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2033_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2034_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2034_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2034_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2034_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2034_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2034_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2035_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2035_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2035_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2035_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2035_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_year_2035_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_years_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_years_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_years_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_years_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_years_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_years_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_mu_star_years_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_sigma_years_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_sigma_years_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_sigma_years_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_sigma_years_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_sigma_years_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_sigma_years_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/fig_sigma_years_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_GHGYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_GHGYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_offSpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_offSpotProductionYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_primarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_primarySpotProductionYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_rooftopPVProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_rooftopPVProductionYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_secondarySpotProductionYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_secondarySpotProductionYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_tariffsYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_tariffsYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_wholesalePriceYear.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebookGr4sp/figs/figscatter_mu_star_sigmna_max_wholesalePriceYear_filtered.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../simulationSettings/BAUVIC26.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../simulationSettings/BAUVIC26.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/gr4sp_energy_vulnerability_IMAP.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/gr4sp_energy_vulnerability_IMAP.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/data/EE__mu_star.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/outputs/data/EE__mu_star.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/data/EE__sigma.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/outputs/data/EE__sigma.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/data/EE__significant_max.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/outputs/data/EE__significant_max.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/data/EE__significant_median.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/outputs/data/EE__significant_median.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_BatteryProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_GHGYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_coalProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_consumptionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_consumptionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_gasProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_numActorsYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_numConsumersYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_offSpotProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_primarySpotProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_renewableContributionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_rooftopPVProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_secondarySpotProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_solarProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_tariffsYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_waterProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_wholesalePriceYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_density_windProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_BatteryProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_GHGYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_coalProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_consumptionYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_consumptionYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_gasProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_numActorsYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_numConsumersYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_offSpotProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_primarySpotProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_renewableContributionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_rooftopPVProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_secondarySpotProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_solarProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_tariffsYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_waterProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_wholesalePriceYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebookGr4sp/outputs/figs/fig_envelope_line_density_windProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/policies.lhs.object" beforeDir="false" afterPath="$PROJECT_DIR$/policies.lhs.object" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/policies.sobol.object" beforeDir="false" afterPath="$PROJECT_DIR$/policies.sobol.object" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settingsExperiments.json" beforeDir="false" afterPath="$PROJECT_DIR$/settingsExperiments.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../simulationSettings/VIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../simulationSettings/VIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/core/LoadData.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/LoadData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/core/Relationships/Arena.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/core/Relationships/Arena.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="emaWorkbench" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -365,32 +85,40 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/EMAworkbench" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="JupyterTrust" id="65719883-4c47-4024-b29d-d82b40acc990" />
   <component name="ProjectId" id="1WjLEdeKwEBHRLuij3oBRTD59AO" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/runExperimentsEET.py" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="emaWorkbench" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="emaWorkbench" />
+      </console-settings>
+    </option>
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\angel\Documents\GitHub\gr4sp\emaWorkbench" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\angel\Documents\GitHub\gr4sp\experiments" />
       <recent name="C:\Users\angel\Documents\GitHub\gr4sp\experiments\notebookGr4sp" />
+      <recent name="C:\Users\angel\Documents\GitHub\gr4sp\experiments" />
     </key>
   </component>
   <component name="RunManager" selected="Python.runExperimentSOBOLs">
@@ -504,24 +232,35 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="runExperimentsEET" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="emaWorkbench" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\angel\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/runExperimentsEET.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.analyzeExperiments" />
       <item itemvalue="Python.connector" />
       <item itemvalue="Python.runExperimentSOBOLs" />
+      <item itemvalue="Python.runExperimentsEET" />
       <item itemvalue="Python.runExperimentLHS" />
     </list>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -580,98 +319,141 @@
       <workItem from="1582721842746" duration="5213000" />
       <workItem from="1582839883913" duration="9295000" />
       <workItem from="1583403832505" duration="188000" />
+      <workItem from="1585113037359" duration="110000" />
+      <workItem from="1585198746381" duration="220000" />
+      <workItem from="1588301932322" duration="178000" />
+      <workItem from="1588302203536" duration="171000" />
+      <workItem from="1588302434470" duration="848000" />
+      <workItem from="1589094021270" duration="912000" />
+      <workItem from="1589095008472" duration="5306000" />
+      <workItem from="1589114442659" duration="4890000" />
+      <workItem from="1589119360028" duration="1970000" />
+      <workItem from="1589121359465" duration="469000" />
+      <workItem from="1589121848198" duration="18900000" />
+      <workItem from="1589284435177" duration="649000" />
+      <workItem from="1589287426861" duration="238000" />
+      <workItem from="1591526929098" duration="721000" />
+      <workItem from="1592476003140" duration="19914000" />
+      <workItem from="1592832230402" duration="1964000" />
+      <workItem from="1592910893552" duration="3264000" />
+      <workItem from="1592963594831" duration="763000" />
+      <workItem from="1593142648837" duration="6239000" />
+      <workItem from="1593695904680" duration="5172000" />
+      <workItem from="1593701204841" duration="128000" />
+      <workItem from="1593766522141" duration="497000" />
+      <workItem from="1593769115982" duration="11142000" />
+      <workItem from="1595235855297" duration="1096000" />
+      <workItem from="1595237421068" duration="3547000" />
+      <workItem from="1595301245304" duration="624000" />
+      <workItem from="1595303843071" duration="205000" />
+      <workItem from="1595320904656" duration="3612000" />
+      <workItem from="1595324548892" duration="410000" />
+      <workItem from="1595325085351" duration="1659000" />
+      <workItem from="1595326863924" duration="577000" />
+      <workItem from="1595327758773" duration="587000" />
+      <workItem from="1595328536561" duration="15000" />
+      <workItem from="1595332547240" duration="306000" />
+      <workItem from="1595343636443" duration="1581000" />
+      <workItem from="1595927182177" duration="1638000" />
+      <workItem from="1596026679371" duration="4569000" />
+      <workItem from="1596122135737" duration="151000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="360" y="70" key="#Inspections" timestamp="1580348452811">
+    <state x="361" y="74" key="#Notifications" timestamp="1588301942794">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="360" y="70" key="#Inspections/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580348452811" />
-    <state x="-1507" y="-255" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582548970996">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
-    </state>
-    <state x="-1507" y="-255" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582548970996" />
-    <state x="-1767" y="-156" key="#xdebugger.XInspectDialog" timestamp="1582113515421">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
-    </state>
-    <state x="-1767" y="-156" key="#xdebugger.XInspectDialog/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582113515421" />
-    <state width="1168" height="370" key="DebuggerActiveHint" timestamp="1582848398182">
+    <state x="361" y="74" key="#Notifications/0.0.1536.824/1920.8.1920.1040@0.0.1536.824" timestamp="1588301942794" />
+    <state x="361" y="53" key="#Plugins" timestamp="1589095078098">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1459" height="466" key="DebuggerActiveHint/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1581412578028" />
-    <state width="1168" height="370" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1582848398182" />
-    <state width="1493" height="395" key="GridCell.Tab.0.bottom" timestamp="1582949754454">
+    <state x="361" y="53" key="#Plugins/0.0.1536.824/1920.8.1920.1040@0.0.1536.824" timestamp="1589095078098" />
+    <state x="413" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1594120895970">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2333" y="182" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592486986903" />
+    <state x="413" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1594120895970" />
+    <state x="449" y="152" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1589094912439">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1875" height="165" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.-192.1920.1160@-1920.-192.1920.1160" timestamp="1582078339947" />
-    <state width="1877" height="255" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582727060934" />
-    <state width="1491" height="303" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176363731" />
-    <state width="1493" height="395" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1582949754454" />
-    <state width="1493" height="395" key="GridCell.Tab.0.center" timestamp="1582949754453">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="449" y="152" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.824/1920.8.1920.1040@0.0.1536.824" timestamp="1589094912439" />
+    <state width="456" height="466" key="DebuggerActiveHint" timestamp="1595326304616">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1875" height="165" key="GridCell.Tab.0.center/0.0.1536.824/-1920.-192.1920.1160@-1920.-192.1920.1160" timestamp="1582078339946" />
-    <state width="1877" height="255" key="GridCell.Tab.0.center/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582727060934" />
-    <state width="1491" height="303" key="GridCell.Tab.0.center/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176363731" />
-    <state width="1493" height="395" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1582949754453" />
-    <state width="1493" height="395" key="GridCell.Tab.0.left" timestamp="1582949754453">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="456" height="466" key="DebuggerActiveHint/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595326304616" />
+    <state x="739" y="274" key="FileChooserDialogImpl" timestamp="1593701271212">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1875" height="165" key="GridCell.Tab.0.left/0.0.1536.824/-1920.-192.1920.1160@-1920.-192.1920.1160" timestamp="1582078339946" />
-    <state width="1877" height="255" key="GridCell.Tab.0.left/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582727060933" />
-    <state width="1491" height="303" key="GridCell.Tab.0.left/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176363731" />
-    <state width="1493" height="395" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1582949754453" />
-    <state width="1493" height="395" key="GridCell.Tab.0.right" timestamp="1582949754453">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="739" y="274" key="FileChooserDialogImpl/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1593701271212" />
+    <state width="1877" height="365" key="GridCell.Tab.0.bottom" timestamp="1595345219621">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1875" height="165" key="GridCell.Tab.0.right/0.0.1536.824/-1920.-192.1920.1160@-1920.-192.1920.1160" timestamp="1582078339946" />
-    <state width="1877" height="255" key="GridCell.Tab.0.right/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582727060934" />
-    <state width="1491" height="303" key="GridCell.Tab.0.right/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176363731" />
-    <state width="1493" height="395" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1582949754453" />
-    <state width="1493" height="178" key="GridCell.Tab.1.bottom" timestamp="1582949736626">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="338" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488862611" />
+    <state width="1493" height="235" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1593851264615" />
+    <state width="1877" height="365" key="GridCell.Tab.0.bottom/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595345219621" />
+    <state width="1877" height="365" key="GridCell.Tab.0.center" timestamp="1595345219621">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="255" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582727060934" />
-    <state width="1491" height="303" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176401655" />
-    <state width="1493" height="178" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1582949736626" />
-    <state width="1493" height="178" key="GridCell.Tab.1.center" timestamp="1582949736625">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="338" key="GridCell.Tab.0.center/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488862611" />
+    <state width="1493" height="235" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1593851264615" />
+    <state width="1877" height="365" key="GridCell.Tab.0.center/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595345219621" />
+    <state width="1877" height="365" key="GridCell.Tab.0.left" timestamp="1595345219621">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="255" key="GridCell.Tab.1.center/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582727060934" />
-    <state width="1491" height="303" key="GridCell.Tab.1.center/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176401654" />
-    <state width="1493" height="178" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1582949736625" />
-    <state width="1493" height="178" key="GridCell.Tab.1.left" timestamp="1582949736625">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="338" key="GridCell.Tab.0.left/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488862611" />
+    <state width="1493" height="235" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1593851264615" />
+    <state width="1877" height="365" key="GridCell.Tab.0.left/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595345219621" />
+    <state width="1877" height="365" key="GridCell.Tab.0.right" timestamp="1595345219621">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="255" key="GridCell.Tab.1.left/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582727060934" />
-    <state width="1491" height="303" key="GridCell.Tab.1.left/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176401654" />
-    <state width="1493" height="178" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1582949736625" />
-    <state width="1493" height="178" key="GridCell.Tab.1.right" timestamp="1582949736625">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="338" key="GridCell.Tab.0.right/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488862611" />
+    <state width="1493" height="235" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1593851264615" />
+    <state width="1877" height="365" key="GridCell.Tab.0.right/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595345219621" />
+    <state width="1877" height="365" key="GridCell.Tab.1.bottom" timestamp="1595345219621">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="255" key="GridCell.Tab.1.right/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582727060934" />
-    <state width="1491" height="303" key="GridCell.Tab.1.right/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580176401654" />
-    <state width="1493" height="178" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1582949736625" />
-    <state x="420" y="105" key="SettingsEditor" timestamp="1582083204385">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="338" key="GridCell.Tab.1.bottom/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488893818" />
+    <state width="1493" height="235" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1593851264616" />
+    <state width="1877" height="365" key="GridCell.Tab.1.bottom/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595345219621" />
+    <state width="1877" height="365" key="GridCell.Tab.1.center" timestamp="1595345219621">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1395" y="-296" key="SettingsEditor/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1580121803981" />
-    <state x="420" y="105" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1582083204385" />
-    <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1582547313076">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
+    <state width="1877" height="338" key="GridCell.Tab.1.center/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488893818" />
+    <state width="1493" height="235" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1593851264616" />
+    <state width="1877" height="365" key="GridCell.Tab.1.center/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595345219621" />
+    <state width="1877" height="365" key="GridCell.Tab.1.left" timestamp="1595345219621">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="968" height="589" key="XDebugger.FullValuePopup/0.0.1536.824/-1920.-192.1920.1160@-1920.-192.1920.1160" timestamp="1582268905811" />
-    <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582547313076" />
-    <state width="775" height="419" key="XDebugger.FullValuePopup/0.0.1536.824/-1920.-429.1920.1040@0.0.1536.824" timestamp="1580173281798" />
-    <state width="775" height="419" key="XDebugger.FullValuePopup/0.0.1536.824@0.0.1536.824" timestamp="1582083984546" />
-    <state x="-1297" y="-204" width="672" height="678" key="search.everywhere.popup" timestamp="1582550320143">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
+    <state width="1877" height="338" key="GridCell.Tab.1.left/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488893818" />
+    <state width="1493" height="235" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1593851264615" />
+    <state width="1877" height="365" key="GridCell.Tab.1.left/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595345219621" />
+    <state width="1877" height="365" key="GridCell.Tab.1.right" timestamp="1595345219621">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1297" y="-204" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582550320143" />
+    <state width="1877" height="338" key="GridCell.Tab.1.right/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488893818" />
+    <state width="1493" height="235" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1593851264616" />
+    <state width="1877" height="365" key="GridCell.Tab.1.right/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595345219621" />
+    <state x="461" y="164" key="SettingsEditor" timestamp="1592832326551">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="164" key="SettingsEditor/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1592832326551" />
+    <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1595299806366">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589174926310" />
+    <state width="968" height="528" key="XDebugger.FullValuePopup/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595299806366" />
+    <state x="2487" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1589174864351">
+      <screen x="1920" y="8" width="1920" height="1040" />
+    </state>
+    <state x="2487" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589174864351" />
+    <state x="2543" y="233" width="672" height="678" key="search.everywhere.popup" timestamp="1589115917318">
+      <screen x="1920" y="8" width="1920" height="1040" />
+    </state>
+    <state x="2543" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589115917318" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -697,23 +479,13 @@
           <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/callbacks.py</url>
-          <line>223</line>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/connector.py</url>
-          <line>306</line>
-          <option name="timeStamp" value="48" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/salib_samplers.py</url>
           <line>137</line>
           <option name="timeStamp" value="50" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py</url>
-          <line>450</line>
+          <line>462</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -733,7 +505,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py</url>
-          <line>496</line>
+          <line>518</line>
           <option name="timeStamp" value="69" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -747,24 +519,14 @@
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/analysis/plotting.py</url>
-          <line>833</line>
-          <option name="timeStamp" value="100" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py</url>
-          <line>425</line>
+          <line>437</line>
           <option name="timeStamp" value="110" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/runExperimentSOBOLs.py</url>
-          <line>29</line>
+          <line>28</line>
           <option name="timeStamp" value="111" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/samplers.py</url>
-          <line>180</line>
-          <option name="timeStamp" value="112" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/runExperimentsLHS.py</url>
@@ -773,23 +535,93 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/analysis/plotting_util.py</url>
-          <line>111</line>
+          <line>114</line>
           <option name="timeStamp" value="121" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/analysis/plotting.py</url>
-          <line>813</line>
-          <option name="timeStamp" value="122" />
+          <url>file://$PROJECT_DIR$/connectorSOBOL.py</url>
+          <line>148</line>
+          <option name="timeStamp" value="126" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/callbacks.py</url>
+          <line>243</line>
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/connectorSOBOL.py</url>
+          <line>111</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/connectorSOBOL.py</url>
+          <line>297</line>
+          <option name="timeStamp" value="132" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/connectorSOBOL.py</url>
+          <line>160</line>
+          <option name="timeStamp" value="133" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/connectorSOBOL.py</url>
+          <line>233</line>
+          <option name="timeStamp" value="134" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/runExperimentSOBOLs.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="135" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py</url>
+          <line>389</line>
+          <option name="timeStamp" value="139" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py</url>
+          <line>494</line>
+          <option name="timeStamp" value="140" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py</url>
+          <line>408</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/runExperimentsEET.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/salib_samplers.py</url>
+          <line>166</line>
+          <option name="timeStamp" value="145" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/runExperimentSOBOLs.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/em_framework/evaluators.py</url>
+          <line>471</line>
+          <option name="timeStamp" value="149" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/analysis/plotting.py</url>
-          <line>828</line>
-          <option name="timeStamp" value="123" />
+          <line>835</line>
+          <option name="timeStamp" value="154" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/gr4spModelSOBOL.py</url>
-          <line>54</line>
-          <option name="timeStamp" value="125" />
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/analysis/plotting_util.py</url>
+          <line>153</line>
+          <option name="timeStamp" value="156" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EMAworkbench/ema_workbench/analysis/plotting_util.py</url>
+          <line>185</line>
+          <option name="timeStamp" value="157" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/../notebooks/ema_import_from_matisse.ipynb</url>
@@ -798,68 +630,78 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_SOBOL.ipynb</url>
-          <line>327</line>
+          <line>417</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_SOBOL.ipynb</url>
-          <line>320</line>
+          <line>362</line>
           <option name="timeStamp" value="86" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_SOBOL.ipynb</url>
-          <line>307</line>
+          <line>328</line>
           <option name="timeStamp" value="90" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_SOBOL.ipynb</url>
-          <line>524</line>
+          <line>652</line>
           <option name="timeStamp" value="91" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp.ipynb</url>
-          <line>418</line>
+          <line>2719</line>
           <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp.ipynb</url>
-          <line>423</line>
+          <line>2724</line>
           <option name="timeStamp" value="102" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookMatisse/ema_import_from_matisse.ipynb</url>
-          <line>743</line>
+          <line>2298</line>
           <option name="timeStamp" value="107" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookMatisse/ema_import_from_matisse.ipynb</url>
-          <line>723</line>
+          <line>2276</line>
           <option name="timeStamp" value="108" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_PRIM.ipynb</url>
-          <line>105</line>
+          <line>78</line>
           <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_PRIM.ipynb</url>
-          <line>137</line>
+          <line>154</line>
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_PRIM.ipynb</url>
-          <line>208</line>
+          <line>332</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_PRIM.ipynb</url>
-          <line>124</line>
+          <line>141</line>
           <option name="timeStamp" value="119" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
           <url>file://$PROJECT_DIR$/notebookGr4sp/ema_gr4sp_PRIM.ipynb</url>
-          <line>114</line>
+          <line>131</line>
           <option name="timeStamp" value="120" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/angel/Documents/GitHub/gr4sp/experiments/notebookGr4sp/ema_gr4sp_EET.ipynb</url>
+          <line>155</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook://C:/Users/angel/Documents/GitHub/gr4sp/experiments/notebookGr4sp/ema_gr4sp_PRIM.ipynb</url>
+          <line>247</line>
+          <option name="timeStamp" value="150" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -871,9 +713,17 @@
       </default-breakpoints>
     </breakpoint-manager>
     <watches-manager>
+      <configuration name="ema_gr4sp_PRIM">
+        <watch expression="np.diff(a[1])" language="Python" />
+        <watch expression="np.sum(a[0]*np.diff(a[1]))" language="Python" />
+        <watch expression="zip(a[1],a[0])" language="Python" />
+        <watch expression="sum(a[0])" language="Python" />
+        <watch expression="{f'{bin:.1f }': f'{density:.3f}' for bin, density, nextBin in zip(a[1][:-1], a[0], a[1][1:])}" language="Python" />
+      </configuration>
       <configuration name="PythonConfigurationType">
         <watch expression="self.categories[index]" language="Python" />
         <watch expression="self.policy" />
+        <watch expression="self.results[outcome][case_id, ] = 1" language="Python" />
       </configuration>
       <configuration name="ema_gr4sp">
         <watch expression="column_to_group_by.dtype == 'category'" language="Python" />
@@ -887,10 +737,11 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/experiments$runExperiments.coverage" NAME="runExperimentSOBOLs Coverage Results" MODIFIED="1582551196533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/emaWorkbench$analyzeExperiments.coverage" NAME="analyzeExperiments Coverage Results" MODIFIED="1576635416654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/experiments$runExperimentSOBOLs.coverage" NAME="runExperimentSOBOLs Coverage Results" MODIFIED="1582949730879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/experiments$runExperimentsEET.coverage" NAME="runExperimentsEET Coverage Results" MODIFIED="1593851231404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/experiments$runExperimentLHS.coverage" NAME="runExperimentLHS Coverage Results" MODIFIED="1582551129453" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/experiments$runExperimentSOBOLs.coverage" NAME="runExperimentSOBOLs Coverage Results" MODIFIED="1594120687635" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/emaWorkbench$analyzeExperiments.coverage" NAME="analyzeExperiments Coverage Results" MODIFIED="1576635416654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/emaWorkbench$runExperiments.coverage" NAME="runExperiments Coverage Results" MODIFIED="1579076110610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/experiments$runExperiments.coverage" NAME="runExperimentSOBOLs Coverage Results" MODIFIED="1582551196533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

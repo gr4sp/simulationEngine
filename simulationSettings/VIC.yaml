@@ -5,7 +5,7 @@ folderOutput: "/home/ubuntu/gr4sp"
 #report can be "full" or "light"
   #"full": generates all csv data ~8MB, and all the plots 2.5MB per simulation
   #"light": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB
-reportGeneration: "light"
+reportGeneration: "full"
 
 #OFF: no logging at all
 #WARNING: logs when off market covers all demand, or when there is unmet demand
@@ -49,15 +49,15 @@ forecast:
   #Forecast from ISP annual consumption includes for each category can be: (Slow change), (Fast change), (High DER), (Central), and (Step change)
   scenario:
     consumption: Central # consumptions = OpSentOut + PV + EE + ONSG
-    energyEfficiency: Central # consumption = consumption - EE
-    onsiteGeneration: Central # consumption = consumption - ONSG
+    energyEfficiency: Central # consumption = consumption - EE  # consumption avoided given energy efficiency measures
+    onsiteGeneration: Central # consumption = consumption - ONSG # corresponds to the subcategory of SmallNonScheduledGeneration
     solarUptake: Central #Slow change
 
   baseYear: 2019
 
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
 
-  #This is applied to the tariffs. If price rises in year baseYear+1 2% and annualCpi=0.02 and inflation=0.01, then it will appear as 0.1 wrt the price as in baseYear.
+  #This is applied to the tariffs (see EndUser class). If price rises in year baseYear+1 is 2%, then annualCpi should be 0.02.
   #AnnualCPI corrects the value given as inflation below.
   annualCpi: 0.03
 
@@ -71,7 +71,7 @@ forecast:
   # Include subcategory of rooftop pv. (residential), (business) or (both)
   rooftopPV: both
 
-  # Shift on closure date for Brown Coal Generators. Ex: -5 means 5 years earlier than expected
+  # Shift on closure date for Brown Coal Generators. E.g. -5 means 5 years earlier than expected
   # Only affects generators for which there's no closure date, but only an expected closure date
   generatorRetirement: 0
 
@@ -85,7 +85,7 @@ forecast:
 
   learningCurve: 0.05
 
-  #size of solar systems capacity. Used to estimate number of units installed from the forecasted MW solar uptake
+  #size of solar systems capacity. Used to estimate number of units installed from the forecast MW solar uptake
   solarInstallCapacity: 6.3
 
 
@@ -117,6 +117,7 @@ generators:
   # Gas other, Other
   #Fuel types: Coal Seam Methane, Brown Coal, Natural Gas Pipeline, Waste Coal Mine Gas, Confidential, Diesel, Dry Wood,
   # Fuel Oil, Gaseous fossil fuels - other, Green and air dried wood, Kerosene, Landfill Gas, Landfill Methane / Landfill Gas,
+  # Emission factors are given in tonnes CO2-e/MWh
   # Default parametres are used for generators with minimum participation (less than 2 generators of this type).
   # E.g. Municipal Solid Waste, Bagasse, other. Default will be similar to other Biomass numbers e.g. Dry Wood
 
@@ -294,7 +295,7 @@ generators:
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1800
-        minEF: 0.0003 #0 or average scope 1 emissions from Clean Energy Regulator data (0.0003)
+        minEF: 0.0003 # 0 or average scope 1 emissions from Clean Energy Regulator data (0.0003)
         linRateEF: 0.0
         expRateEF: 0.0
 

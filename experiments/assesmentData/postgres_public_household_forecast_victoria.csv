@@ -1,4 +1,4 @@
-year,region,lga_code,lga_name,vifsa_district,couple_with_children,couple_without_children,one_parent_family,other_family,group_household,lone_person,all_household_types
+TIMEYear,region,lga_code,lga_name,vifsa_district,Couple family with children,Couple family without children,One parent family,Other family,Group household,Lone person,households
 2016,48 Regional LGAs,20570,Ballarat (C),VIFSA Ballarat Rural,171,215,66,3,12,205,672
 2016,31 Metropolitan LGAS,27450,Yarra Ranges (S),VIFSA Upper Yarra Valley District,34,27,8,0,1,19,90
 2016,48 Regional LGAs,29399,Unincorporated Vic,VIFSA Unincorporated Vic,88,137,30,2,11,127,395
