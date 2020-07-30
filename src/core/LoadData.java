@@ -652,7 +652,7 @@ public class LoadData implements java.io.Serializable {
 
         c.setTime(baseDate);
 
-        //This is applied to the tariffs. If price rises in year baseYear+1 2% and annualCpi=0.02 and inflation=0.01, then it will appear as 0.1 wrt the price as in baseYear.
+        //This is applied to the tariffs (see EndUser class). If price rises in year baseYear+1 is 2%, then annualCpi should be 0.02.
         //AnnualCPI corrects the value given as inflation below.
         while (baseYear < endYear) {
             float baseCPI = data.getCpi_conversion().get(baseDate);
@@ -696,8 +696,8 @@ public class LoadData implements java.io.Serializable {
             float baseGwh = data.getAnnual_forecast_rooftopPv_register().get(baseYear);
             float nextGwh = data.getAnnual_forecast_rooftopPv_register().get(baseYear + 1);
             float percentageChange = (nextGwh-baseGwh) / baseGwh;
-            float increasedGhw = nextGwh-baseGwh;
-            float inceasedKW = (increasedGhw / 8760) * 1000000; //divided #hours in a year, and transform to KW from GW
+            float increasedGwh = nextGwh-baseGwh;
+            float inceasedKW = (increasedGwh / 8760) * 1000000; //divided #hours in a year, and transform to KW from GW
             inceasedKW /= 0.20; //divided the avd generation factor of RooftopPV
 
 
@@ -918,7 +918,7 @@ public class LoadData implements java.io.Serializable {
 
         while( c.get(Calendar.YEAR) < endYear ){
 
-            // If month finished, save the demand data
+            //If month finished, save the demand data
             if(currentMonth != c.get(Calendar.MONTH)){
 
                 //save demand data. From MW 30min -> GWh
@@ -1476,7 +1476,8 @@ public class LoadData implements java.io.Serializable {
                     expectedEndDate = cEndDate.getTime();
                 }
 
-                //Publically announced Generators are rolled out incrementally (each with capacity/rolloutYears) across a period specified in YAML settings.
+                //Publically announced Generators are rolled out incrementally (each with capacity/rolloutYears)
+                //across a period specified in YAML settings.
                 String unit_status = rs.getString("unit_status");
                 if ( unit_status.equals("Publically Announced") || unit_status.equals("Committed") || unit_status.equals("Committed*")
                         || unit_status.equals("Emerging") || unit_status.equals("In Commissioning")) {
