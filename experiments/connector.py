@@ -116,7 +116,7 @@ def getResults(outputID, experimentId):
 
 
 def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV,
-             includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
+             domesticConsumptionPercentage, includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
              learningCurve, priceChangePercentageBattery, priceChangePercentageBrownCoal, priceChangePercentageOcgt,
              priceChangePercentageCcgt, priceChangePercentageWind, priceChangePercentageWater,
              capacityFactorChangeBattery, capacityFactorChangeBrownCoal, capacityFactorChangeOcgt,
@@ -159,6 +159,8 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.forecast.scenario.onsiteGeneration = onsiteGeneration
             gr4spObj.settings.forecast.scenario.solarUptake = solarUptake
             gr4spObj.settings.forecast.rooftopPV = rooftopPV
+
+            gr4spObj.settings.population.domesticConsumptionPercentage = domesticConsumptionPercentage
 
             gr4spObj.settings.forecast.includePublicallyAnnouncedGen = jpype.java.lang.Boolean(
                 includePublicallyAnnouncedGen)

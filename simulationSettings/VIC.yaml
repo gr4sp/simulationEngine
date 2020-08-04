@@ -5,7 +5,7 @@ folderOutput: "/home/ubuntu/gr4sp"
 #report can be "full" or "light"
   #"full": generates all csv data ~8MB, and all the plots 2.5MB per simulation
   #"light": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB
-reportGeneration: "full"
+reportGeneration: "light"
 
 #OFF: no logging at all
 #WARNING: logs when off market covers all demand, or when there is unmet demand
