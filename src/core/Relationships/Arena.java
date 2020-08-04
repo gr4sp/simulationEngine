@@ -454,10 +454,8 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 //        + "Gen Id: " +lastGenBid.getId()  +" Historic Capacity Factor: "+ lastGenBid.getHistoricCapacityFactor() );
 
                 /**
-                 * Compute spot Emissions Intensity using successful bidders
+                 * Update spot Average Monthly Price and Demand
                  */
-
-                primarySpot.computeGenEmissionIntensity(currentYear);
 
 
                if(totalDemandWholesale + totalDemandResidential > 0.0001) {
@@ -513,7 +511,6 @@ public class Arena implements Steppable,  java.io.Serializable  {
             }
 
 
-            //Currently not in use for reporting emissions, but it just captures the emissions of the succesful biders.
             primarySpot.setMarketPrice(avgMonthlyPricePrimarySpot);
             primarySpot.setDemand(avgMonthlyDemandPrimarySpot);
             if(data.settings.existsMarket("secondary")) {

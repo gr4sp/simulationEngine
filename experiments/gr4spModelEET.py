@@ -13,12 +13,13 @@ def getModel():
     model = Model('Gr4sp', function=connector.runGr4sp)
 
 # set levers/uncertainties
-
     model.uncertainties = [CategoricalParameter('consumption', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.uncertainties += [CategoricalParameter('energyEfficiency', ['Central', 'Slow change', 'Step change'])]
     model.uncertainties += [CategoricalParameter('onsiteGeneration', ['Central', 'Slow change', 'Step change'])]
     model.uncertainties += [CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.uncertainties += [CategoricalParameter('rooftopPV', ['residential', 'business', 'both'])]
+
+    model.uncertainties += [RealParameter('domesticConsumptionPercentage', 0.20,0.35)]
 
     model.uncertainties += [RealParameter('annualCpi', 0.01, 0.05)]
     model.uncertainties += [RealParameter('annualInflation', 0.01, 0.05)]
