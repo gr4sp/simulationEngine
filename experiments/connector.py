@@ -46,7 +46,7 @@ def startJVM():
                 "{0}/libraries/opencsv-4.6.jar{1}" \
                 "{0}/libraries/yamlbeans-1.13.jar".format(gr4spPath, classpathSeparator, settings["gr4spClasses"])
 
-    jpype.startJVM(jvmpath, classpath, "-Xmx1536M")  # 1.5GB
+    jpype.startJVM(jvmpath, classpath, "-Xmx8192M")  # 8GB
 
 
 def shutdownJVM():
