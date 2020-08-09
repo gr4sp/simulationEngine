@@ -30,6 +30,20 @@ public class Arena implements Steppable,  java.io.Serializable  {
     private double avgMonthlyDemandSecondarySpot;
     private double avgMonthlyDemandOffSpot;
 
+    // Statistics of reliability, Data per month.
+    // When demand is unmet, is assumed to be imported at a high price: marketPrice *= 1.2; -> SpotMarket.java:157
+    private double unmetDemandMwh;
+    private double unmetDemandHours;
+    private double unmetDemandDays;
+    private double maxUnmetDemandMwhPerDay;
+
+    // Statistics of reliability for secondary market
+    private double unmetDemandMwhSecondary;
+    private double unmetDemandHoursSecondary;
+    private double unmetDemandDaysSecondary;
+    private double maxUnmetDemandMwhPerDaySecondary;
+
+
     private SpotMarket secondarySpot; //Merit order type of market at the distribution level.
     private ArrayList<Contract> bilateral; //can be billing with retailers, PPAs and other types of OTCs with two known parties involved.
     private ArrayList<Contract> fiTs;
@@ -311,6 +325,15 @@ public class Arena implements Steppable,  java.io.Serializable  {
             avgMonthlyDemandPrimarySpot = 0;
             avgMonthlyDemandSecondarySpot = 0;
 
+            unmetDemandMwh = 0;
+            unmetDemandMwhSecondary = 0;
+            unmetDemandHours = 0;
+            unmetDemandHoursSecondary = 0;
+            unmetDemandDays = 0;
+            unmetDemandDaysSecondary = 0;
+            maxUnmetDemandMwhPerDay = 0;
+            maxUnmetDemandMwhPerDaySecondary = 0;
+
             int num_half_hours = 1;
             this.rounds = num_half_hours;
             double totalDemand  = 0;
@@ -341,7 +364,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
             }
 
             /**
-             * Compute Available Capcities for this month. Solar available capacity is recomputed every 30 min below
+             * Compute Available Capacities for this month. Solar available capacity is recomputed every 30 min below
              * */
 
 
@@ -458,7 +481,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
                  */
 
 
-               if(totalDemandWholesale + totalDemandResidential > 0.0001) {
+                if(totalDemandWholesale + totalDemandResidential > 0.0001) {
                    avgMonthlyDemandPrimarySpot = (avgMonthlyDemandPrimarySpot * num_half_hours) + totalDemandWholesale;
                    avgMonthlyPricePrimarySpot = (avgMonthlyPricePrimarySpot * num_half_hours) + this.primarySpot.getMarketPrice() ;
                    if(data.settings.existsMarket("secondary")) {
@@ -466,18 +489,14 @@ public class Arena implements Steppable,  java.io.Serializable  {
                        avgMonthlyDemandSecondarySpot = (avgMonthlyDemandSecondarySpot * num_half_hours) + totalDemandResidential;
                    }
 
-               }else{
+                }else{
                     data.LOGGER.warning(currentTime + " - " +"demand in Spots was 0!! all covered off market");
-               }
+                }
 
-               if(availableCapacityOffMarket > 0.0001){
+                if(availableCapacityOffMarket > 0.0001){
                    avgMonthlyDemandOffSpot = (avgMonthlyDemandOffSpot * num_half_hours ) + availableCapacityOffMarket;
                    avgMonthlyPriceOffSpot = (avgMonthlyPriceOffSpot * num_half_hours ) + priceOffMarket;
-               }
-
-//                if (Double.isNaN(monthlyAveragePrice)) {
-//                    System.out.println(monthlyAveragePrice);
-//                }
+                }
 
                 //Update the counter on how many steps the spot has been running
                 rounds++;
@@ -495,6 +514,17 @@ public class Arena implements Steppable,  java.io.Serializable  {
                     avgMonthlyDemandOffSpot /= num_half_hours;
                 }
 
+                // Statistics about unmet demand
+                double unmetArena = this.primarySpot.getUnmetDemand() / 2.0; //30min;
+                double unmetSecondary = this.secondarySpot.getUnmetDemand() / 2.0; //30min;
+
+                unmetDemandMwh += unmetArena;
+                unmetDemandMwhSecondary += unmetSecondary;
+
+                //New day
+                if(c.get(Calendar.HOUR_OF_DAY) == 0 && c.get(Calendar.MINUTE) == 0){
+                    unmmetDemandDay = 0;
+                }
 
                 //Add 30 min to get next demand
                 c.add(Calendar.MINUTE, 30);
