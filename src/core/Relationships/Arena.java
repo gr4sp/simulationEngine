@@ -35,13 +35,13 @@ public class Arena implements Steppable,  java.io.Serializable  {
     private double unmetDemandMwh;
     private double unmetDemandHours;
     private double unmetDemandDays;
-    private double maxUnmetDemandMwhPerDay;
+    private double maxUnmetDemandMwhPerHour;
 
     // Statistics of reliability for secondary market
     private double unmetDemandMwhSecondary;
     private double unmetDemandHoursSecondary;
     private double unmetDemandDaysSecondary;
-    private double maxUnmetDemandMwhPerDaySecondary;
+    private double maxUnmetDemandMwhPerHourSecondary;
 
 
     private SpotMarket secondarySpot; //Merit order type of market at the distribution level.
@@ -136,6 +136,23 @@ public class Arena implements Steppable,  java.io.Serializable  {
     public double getAvgMonthlyPriceSecondarySpot() { return avgMonthlyPriceSecondarySpot; }
 
     public double getAvgMonthlyPriceOffSpot() { return avgMonthlyPriceOffSpot; }
+
+    public double getUnmetDemandMwh() { return unmetDemandMwh; }
+
+    public double getUnmetDemandHours() {  return unmetDemandHours;  }
+
+    public double getUnmetDemandDays() {  return unmetDemandDays;  }
+
+    public double getMaxUnmetDemandMwhPerHour() {  return maxUnmetDemandMwhPerHour;  }
+
+    public double getUnmetDemandMwhSecondary() { return unmetDemandMwhSecondary;  }
+
+    public double getUnmetDemandHoursSecondary() { return unmetDemandHoursSecondary; }
+
+    public double getUnmetDemandDaysSecondary() {  return unmetDemandDaysSecondary; }
+
+    public double getMaxUnmetDemandMwhPerHourSecondary() { return maxUnmetDemandMwhPerHourSecondary; }
+
     /**
      * This tariff represents price for $/MWh
      */
@@ -331,8 +348,15 @@ public class Arena implements Steppable,  java.io.Serializable  {
             unmetDemandHoursSecondary = 0;
             unmetDemandDays = 0;
             unmetDemandDaysSecondary = 0;
-            maxUnmetDemandMwhPerDay = 0;
-            maxUnmetDemandMwhPerDaySecondary = 0;
+            maxUnmetDemandMwhPerHour = 0;
+            maxUnmetDemandMwhPerHourSecondary = 0;
+
+            double unmetDemandMwhDay = 0;
+            double unmetDemandMwhSecondaryDay = 0;
+
+            double unmetDemandMwhHour = 0;
+            double unmetDemandMwhSecondaryHour = 0;
+
 
             int num_half_hours = 1;
             this.rounds = num_half_hours;
@@ -516,14 +540,50 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                 // Statistics about unmet demand
                 double unmetArena = this.primarySpot.getUnmetDemand() / 2.0; //30min;
-                double unmetSecondary = this.secondarySpot.getUnmetDemand() / 2.0; //30min;
 
-                unmetDemandMwh += unmetArena;
+                double unmetSecondary = 0.0;
+                if(data.settings.existsMarket("secondary"))
+                    unmetSecondary = this.secondarySpot.getUnmetDemand() / 2.0; //30min;
+
+
+                //Update Unmet demand month
+                unmetDemandMwh += unmetArena;                
                 unmetDemandMwhSecondary += unmetSecondary;
+                
+                //Unmet demand last 24h
+                unmetDemandMwhDay += unmetArena;
+                unmetDemandMwhSecondaryDay += unmetSecondary;
+
+                //Unmet demand last 1h
+                unmetDemandMwhHour += unmetArena;
+                unmetDemandMwhSecondaryHour += unmetSecondary;
 
                 //New day
                 if(c.get(Calendar.HOUR_OF_DAY) == 0 && c.get(Calendar.MINUTE) == 0){
-                    unmmetDemandDay = 0;
+                    
+                    //Update numdays with unmet demand
+                    if( unmetDemandMwhDay > 0.0001 ) unmetDemandDays++;
+                    if( unmetDemandMwhSecondaryDay > 0.0001 ) unmetDemandDaysSecondary++;
+
+                    unmetDemandMwhDay = 0;
+                    unmetDemandMwhSecondaryDay = 0;
+                    
+                }
+
+                //New Hour
+                if(c.get(Calendar.MINUTE) == 0){
+
+                    //Update numhours unmet demand
+                    if( unmetDemandMwhHour > 0.0001 )
+                        unmetDemandHours++;
+                    if( unmetDemandMwhSecondaryHour > 0.0001 ) unmetDemandHoursSecondary++;
+
+                    //Update max unmet demand per hour
+                    if( maxUnmetDemandMwhPerHour < unmetDemandMwhHour ) maxUnmetDemandMwhPerHour = unmetDemandMwhHour;
+                    if( maxUnmetDemandMwhPerHourSecondary < unmetDemandMwhSecondaryHour ) maxUnmetDemandMwhPerHourSecondary = unmetDemandMwhSecondaryHour;
+
+                    unmetDemandMwhHour = 0;
+                    unmetDemandMwhSecondaryHour = 0;
                 }
 
                 //Add 30 min to get next demand
