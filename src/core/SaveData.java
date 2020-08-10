@@ -39,6 +39,10 @@ public class SaveData implements Steppable, java.io.Serializable {
     public TimeSeriesChartGenerator PriceGenMaxChart;
     public TimeSeriesChartGenerator PriceGenMinChart;
     public TimeSeriesChartGenerator numActorsChart;
+    public TimeSeriesChartGenerator unmetDemandMwhChart;
+    public TimeSeriesChartGenerator unmetDemandHoursChart;
+    public TimeSeriesChartGenerator unmetDemandDaysChart;
+    public TimeSeriesChartGenerator maxUnmetDemandMwhPerDayChart;
 
 
     public ArrayList<XYSeries> consumptionActorSeries;  // the data series that will be added to
@@ -48,6 +52,12 @@ public class SaveData implements Steppable, java.io.Serializable {
     public ArrayList<XYSeries> ghgConsumptionSpmSeries; // the data series that will be added to
     public ArrayList<XYSeries> numDomesticConsumersSeries;
     public XYSeries numActorsSeries;
+
+    HashMap<Integer, XYSeries> unmetDemandMwhSeries; // Total UnmetDemand MWh per month
+    HashMap<Integer, XYSeries> unmetDemandHoursSeries; // Num Hours with UnmetDemand per month
+    HashMap<Integer, XYSeries>  unmetDemandDaysSeries; // Num Days with UnmetDemand per month
+    HashMap<Integer, XYSeries>  maxUnmetDemandMwhPerDaySeries; // Day with Max UnmetDemand MWh per month
+
 
     HashMap<Integer, XYSeries> genCapacityFactorSeries;  // the data series that will be added to
     HashMap<Integer, XYSeries> systemProductionSeries;  // the data series that will be added to
@@ -63,6 +73,11 @@ public class SaveData implements Steppable, java.io.Serializable {
         ghgConsumptionActorSeries = new ArrayList<XYSeries>(); // the data series that will be added to
         ghgConsumptionSpmSeries = new ArrayList<XYSeries>(); // the data series that will be added to
         numDomesticConsumersSeries = new ArrayList<XYSeries>();
+
+        unmetDemandMwhSeries = new HashMap<>();
+        unmetDemandHoursSeries = new HashMap<>();
+        unmetDemandDaysSeries = new HashMap<>();
+        maxUnmetDemandMwhPerDaySeries = new HashMap<>();
 
         genCapacityFactorSeries = new HashMap<>();
         systemProductionSeries = new HashMap<>();
@@ -165,7 +180,29 @@ public class SaveData implements Steppable, java.io.Serializable {
         PriceGenMinChart.setYAxisLabel("$/MWh");
         PriceGenMinChart.getChart().getLegend().setItemFont(bigf);
 
+        unmetDemandMwhChart = new sim.util.media.chart.TimeSeriesChartGenerator();
+        unmetDemandMwhChart.setTitle("Total Unmet Demand per Month (MWh): " + data.getAreaCode());
+        unmetDemandMwhChart.setXAxisLabel("Year");
+        unmetDemandMwhChart.setYAxisLabel("MWh");
+        unmetDemandMwhChart.getChart().getLegend().setItemFont(bigf);
 
+        unmetDemandHoursChart = new sim.util.media.chart.TimeSeriesChartGenerator();
+        unmetDemandHoursChart.setTitle("Number of hours with Unmet Demand per Month: " + data.getAreaCode());
+        unmetDemandHoursChart.setXAxisLabel("Year");
+        unmetDemandHoursChart.setYAxisLabel("Num. Hours");
+        unmetDemandHoursChart.getChart().getLegend().setItemFont(bigf);
+
+        unmetDemandDaysChart = new sim.util.media.chart.TimeSeriesChartGenerator();
+        unmetDemandDaysChart.setTitle("Number of Days with Unmet Demand per Month: " + data.getAreaCode());
+        unmetDemandDaysChart.setXAxisLabel("Year");
+        unmetDemandDaysChart.setYAxisLabel("Num. Days");
+        unmetDemandDaysChart.getChart().getLegend().setItemFont(bigf);
+
+        maxUnmetDemandMwhPerDayChart = new sim.util.media.chart.TimeSeriesChartGenerator();
+        maxUnmetDemandMwhPerDayChart.setTitle("For every month, maximum Unmet Demand within a single hour (MWh): " + data.getAreaCode());
+        maxUnmetDemandMwhPerDayChart.setXAxisLabel("Year");
+        maxUnmetDemandMwhPerDayChart.setYAxisLabel("MWh");
+        maxUnmetDemandMwhPerDayChart.getChart().getLegend().setItemFont(bigf);
 
     }
 
@@ -222,6 +259,10 @@ public class SaveData implements Steppable, java.io.Serializable {
         PriceGenAvgChart.removeAllSeries();
         PriceGenMinChart.removeAllSeries();
         PriceGenMaxChart.removeAllSeries();
+        unmetDemandMwhChart.removeAllSeries();
+        unmetDemandHoursChart.removeAllSeries();
+        unmetDemandDaysChart.removeAllSeries();
+        maxUnmetDemandMwhPerDayChart.removeAllSeries();
 
         Gr4spSim data = (Gr4spSim) simState;
 
@@ -323,6 +364,31 @@ public class SaveData implements Steppable, java.io.Serializable {
                     false);
             systemProductionSeries.put(0, seriesSystemProductionIn);
             systemProductionAggChart.addSeries(seriesSystemProductionIn, null);
+
+            XYSeries unmetDemandMwh = new org.jfree.data.xy.XYSeries(
+                    "PrimarySpot",
+                    false);
+            unmetDemandMwhSeries.put(0, unmetDemandMwh);
+            unmetDemandMwhChart.addSeries(unmetDemandMwh, null);
+
+            XYSeries unmetDemandHours = new org.jfree.data.xy.XYSeries(
+                    "PrimarySpot",
+                    false);
+            unmetDemandHoursSeries.put(0, unmetDemandHours);
+            unmetDemandHoursChart.addSeries(unmetDemandHours, null);
+
+            XYSeries unmetDemandDays = new org.jfree.data.xy.XYSeries(
+                    "PrimarySpot",
+                    false);
+            unmetDemandDaysSeries.put(0, unmetDemandDays);
+            unmetDemandDaysChart.addSeries(unmetDemandDays, null);
+
+            XYSeries maxUnmetDemandMwhPerDay = new org.jfree.data.xy.XYSeries(
+                    "PrimarySpot",
+                    false);
+            maxUnmetDemandMwhPerDaySeries.put(0, maxUnmetDemandMwhPerDay);
+            maxUnmetDemandMwhPerDayChart.addSeries(maxUnmetDemandMwhPerDay, null);
+
         }
 
         if (data.settings.existsMarket("secondary")) {
@@ -331,6 +397,30 @@ public class SaveData implements Steppable, java.io.Serializable {
                     false);
             systemProductionSeries.put(-1, seriesSystemProductionSec);
             systemProductionAggChart.addSeries(seriesSystemProductionSec, null);
+
+            XYSeries unmetDemandMwh = new org.jfree.data.xy.XYSeries(
+                    "SecondarySpot",
+                    false);
+            unmetDemandMwhSeries.put(-1, unmetDemandMwh);
+            unmetDemandMwhChart.addSeries(unmetDemandMwh, null);
+
+            XYSeries unmetDemandHours = new org.jfree.data.xy.XYSeries(
+                    "SecondarySpot",
+                    false);
+            unmetDemandHoursSeries.put(-1, unmetDemandHours);
+            unmetDemandHoursChart.addSeries(unmetDemandHours, null);
+
+            XYSeries unmetDemandDays = new org.jfree.data.xy.XYSeries(
+                    "SecondarySpot",
+                    false);
+            unmetDemandDaysSeries.put(-1, unmetDemandDays);
+            unmetDemandDaysChart.addSeries(unmetDemandDays, null);
+
+            XYSeries maxUnmetDemandMwhPerDay = new org.jfree.data.xy.XYSeries(
+                    "SecondarySpot",
+                    false);
+            maxUnmetDemandMwhPerDaySeries.put(-1, maxUnmetDemandMwhPerDay);
+            maxUnmetDemandMwhPerDayChart.addSeries(maxUnmetDemandMwhPerDay, null);
         }
         if (data.settings.existsOffMarket()) {
 
@@ -760,8 +850,20 @@ public class SaveData implements Steppable, java.io.Serializable {
                         PriceGenAvgSeries.get(1).add(floatDate, (float) a.getTariff(data), false);
 
                         PriceGenAvgSeries.get(0).add(floatDate, a.getAvgMonthlyPricePrimarySpot(), false);
-                        if (data.settings.existsMarket("secondary"))
+
+                        unmetDemandDaysSeries.get(0).add(floatDate, a.getUnmetDemandDays(), false);;
+                        unmetDemandHoursSeries.get(0).add(floatDate, a.getUnmetDemandHours(), false);;
+                        unmetDemandMwhSeries.get(0).add(floatDate, a.getUnmetDemandMwh(), false);;
+                        maxUnmetDemandMwhPerDaySeries.get(0).add(floatDate, a.getMaxUnmetDemandMwhPerHour(), false);;
+
+                        if (data.settings.existsMarket("secondary")) {
                             PriceGenAvgSeries.get(-1).add(floatDate, a.getAvgMonthlyPriceSecondarySpot(), false);
+
+                            unmetDemandDaysSeries.get(-1).add(floatDate, a.getUnmetDemandDaysSecondary(), false);;
+                            unmetDemandHoursSeries.get(-1).add(floatDate, a.getUnmetDemandHoursSecondary(), false);;
+                            unmetDemandMwhSeries.get(-1).add(floatDate, a.getUnmetDemandMwhSecondary(), false);;
+                            maxUnmetDemandMwhPerDaySeries.get(-1).add(floatDate, a.getMaxUnmetDemandMwhPerHourSecondary(), false);;
+                        }
                         if(data.settings.existsOffMarket())
                             PriceGenAvgSeries.get(-2).add(floatDate, a.getAvgMonthlyPriceOffSpot(), false);
 
@@ -789,7 +891,10 @@ public class SaveData implements Steppable, java.io.Serializable {
             PriceGenAvgChart.updateChartWithin(simState.schedule.getSteps(), 1000);
             PriceGenMinChart.updateChartWithin(simState.schedule.getSteps(), 1000);
             PriceGenMaxChart.updateChartWithin(simState.schedule.getSteps(), 1000);
-
+            unmetDemandMwhChart.updateChartWithin(simState.schedule.getSteps(), 1000);
+            unmetDemandHoursChart.updateChartWithin(simState.schedule.getSteps(), 1000);
+            unmetDemandDaysChart.updateChartWithin(simState.schedule.getSteps(), 1000);
+            maxUnmetDemandMwhPerDayChart.updateChartWithin(simState.schedule.getSteps(), 1000);
             numActorsChart.updateChartWithin(simState.schedule.getSteps(), 1000);
 
         }
@@ -874,6 +979,22 @@ public class SaveData implements Steppable, java.io.Serializable {
         PriceGenMinChart.repaint();
         PriceGenMinChart.stopMovie();
 
+        unmetDemandMwhChart.update(simState.schedule.getSteps(), true);
+        unmetDemandMwhChart.repaint();
+        unmetDemandMwhChart.stopMovie();
+
+        unmetDemandHoursChart.update(simState.schedule.getSteps(), true);
+        unmetDemandHoursChart.repaint();
+        unmetDemandHoursChart.stopMovie();
+
+        unmetDemandDaysChart.update(simState.schedule.getSteps(), true);
+        unmetDemandDaysChart.repaint();
+        unmetDemandDaysChart.stopMovie();
+
+        maxUnmetDemandMwhPerDayChart.update(simState.schedule.getSteps(), true);
+        maxUnmetDemandMwhPerDayChart.repaint();
+        maxUnmetDemandMwhPerDayChart.stopMovie();
+
     }
 
     public void savePlots(SimState simState) {
@@ -903,10 +1024,16 @@ public class SaveData implements Steppable, java.io.Serializable {
 
         File fd = new File(data.settings.folderOutput+""+slash+"plots"+slash+"NumberHouseholds" + data.outputID + ".png");
 
+        File fum = new File(data.settings.folderOutput+""+slash+"plots"+slash+"unmetDemandMwh" + data.outputID + ".png");
+        File fuh = new File(data.settings.folderOutput+""+slash+"plots"+slash+"unmetDemandHours" + data.outputID + ".png");
+        File fud = new File(data.settings.folderOutput+""+slash+"plots"+slash+"unmetDemandDays" + data.outputID + ".png");
+        File fmu = new File(data.settings.folderOutput+""+slash+"plots"+slash+"maxUnmetDemandMwhPerDay" + data.outputID + ".png");
+
         int width = 1920;
         int height = 1080;
 
         try {
+
             fc.createNewFile();
             ChartUtilities.saveChartAsPNG(fc,
                     consumptionChart.getChart(),
@@ -976,6 +1103,30 @@ public class SaveData implements Steppable, java.io.Serializable {
             fpavg.createNewFile();
             ChartUtilities.saveChartAsPNG(fpavg,
                     PriceGenAvgChart.getChart(),
+                    width,
+                    height);
+
+            fum.createNewFile();
+            ChartUtilities.saveChartAsPNG(fum,
+                    unmetDemandMwhChart.getChart(),
+                    width,
+                    height);
+            fuh.createNewFile();
+
+            ChartUtilities.saveChartAsPNG(fuh,
+                    unmetDemandHoursChart.getChart(),
+                    width,
+                    height);
+            fud.createNewFile();
+
+            ChartUtilities.saveChartAsPNG(fud,
+                    unmetDemandDaysChart.getChart(),
+                    width,
+                    height);
+
+            fmu.createNewFile();
+            ChartUtilities.saveChartAsPNG(fmu,
+                    maxUnmetDemandMwhPerDayChart.getChart(),
                     width,
                     height);
 
@@ -1069,11 +1220,15 @@ public class SaveData implements Steppable, java.io.Serializable {
             String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (MWh)", "Tariff (c/KWh)", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
             csvWriter.writeNext(headerRecord);
 
-            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
+            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
+                                        "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
+                                        "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
 
             csvWriterYear.writeNext(headerRecordYear);
 
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors"};
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
+                                            "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
+                                            "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
 
             csvWriterMonthly.writeNext(headerRecordMonthly);
 
@@ -1119,6 +1274,16 @@ public class SaveData implements Steppable, java.io.Serializable {
             HashMap<String, ArrayList<Double>> datasetSysProdSecondarySpotSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdOffSpotSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdRooftopSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPrimaryunmetDemandMwhSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPrimaryunmetDemandHoursSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPrimaryunmetDemandDaysSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPrimarymaxUnmetDemandMwhPerDaySummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSecondaryunmetDemandMwhSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSecondaryunmetDemandHoursSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSecondaryunmetDemandDaysSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSecondarymaxUnmetDemandMwhPerDaySummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetNumActorsSummary = new HashMap<>();
+
 
 
             for (int i = 0; i <= data.consumptionActors.size(); i++) {
@@ -1133,6 +1298,15 @@ public class SaveData implements Steppable, java.io.Serializable {
                 XYSeries sposaggseries = systemProductionSeries.get(-2);
                 XYSeries sproofaggseries = systemProductionSeries.get(-3);
                 XYSeries naseries = numActorsSeries;
+
+                XYSeries primaryunmetDemandMwhSeries = unmetDemandMwhSeries.get(0);
+                XYSeries secondaryunmetDemandMwhSeries = unmetDemandMwhSeries.get(-1);
+                XYSeries primaryunmetDemandHoursSeries = unmetDemandHoursSeries.get(0);
+                XYSeries secondaryunmetDemandHoursSeries = unmetDemandHoursSeries.get(-1);
+                XYSeries primaryunmetDemandDaysSeries = unmetDemandDaysSeries.get(0);
+                XYSeries secondaryunmetDemandDaysSeries = unmetDemandDaysSeries.get(-1);
+                XYSeries primarymaxUnmetDemandMwhPerDaySeries = maxUnmetDemandMwhPerDaySeries.get(0);
+                XYSeries secondarymaxUnmetDemandMwhPerDaySeries= maxUnmetDemandMwhPerDaySeries.get(-1);
 
 
                 Calendar c = Calendar.getInstance();
@@ -1160,6 +1334,14 @@ public class SaveData implements Steppable, java.io.Serializable {
                     XYDataItem spsecondaggitem = null;
                     XYDataItem sposaggitem = null;
                     XYDataItem sproofaggitem = null;
+                    XYDataItem primaryunmetDemandMwhitem = null;
+                    XYDataItem primaryunmetDemandHoursitem = null;
+                    XYDataItem primaryunmetDemandDaysitem = null;
+                    XYDataItem primarymaxUnmetDemandMwhPerDayitem = null;
+                    XYDataItem secondaryunmetDemandMwhitem = null;
+                    XYDataItem secondaryunmetDemandHoursitem = null;
+                    XYDataItem secondaryunmetDemandDaysitem = null;
+                    XYDataItem secondarymaxUnmetDemandMwhPerDayitem = null;
 
                     XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
                     if (shifttimeseries <= t) {
@@ -1169,6 +1351,17 @@ public class SaveData implements Steppable, java.io.Serializable {
                         if(sposaggseries != null)
                             sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
                         sproofaggitem = (XYDataItem) sproofaggseries.getItems().get(t - shifttimeseries);
+
+                        primaryunmetDemandMwhitem = (XYDataItem) primaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
+                        primaryunmetDemandHoursitem = (XYDataItem) primaryunmetDemandHoursSeries.getItems().get(t - shifttimeseries);
+                        primaryunmetDemandDaysitem = (XYDataItem) primaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
+                        primarymaxUnmetDemandMwhPerDayitem = (XYDataItem) primarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
+                        if( secondaryunmetDemandMwhSeries != null){
+                            secondaryunmetDemandMwhitem = (XYDataItem) secondaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
+                            secondaryunmetDemandHoursitem = (XYDataItem) secondaryunmetDemandHoursSeries.getItems().get(t - shifttimeseries);
+                            secondaryunmetDemandDaysitem = (XYDataItem) secondaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
+                            secondarymaxUnmetDemandMwhPerDayitem = (XYDataItem) secondarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
+                        }
 
                     }
 
@@ -1182,6 +1375,14 @@ public class SaveData implements Steppable, java.io.Serializable {
                     double MWhOffSpotAgg = 0.0;
                     double MWhRoofSpotAgg = 0.0;
                     double numActors = naitem.getYValue();
+                    double primaryunmetDemandMwh = 0.0;
+                    double primaryunmetDemandHours = 0.0;
+                    double primaryunmetDemandDays = 0.0;
+                    double primarymaxUnmetDemandMwhPerDay = 0.0;
+                    double secondaryunmetDemandMwh = 0.0;
+                    double secondaryunmetDemandHours = 0.0;
+                    double secondaryunmetDemandDays = 0.0;
+                    double secondarymaxUnmetDemandMwhPerDay = 0.0;
 
                     if (shifttimeseries <= t) {
                         MWhPrimarySpotAgg = spprimaggitem.getYValue();
@@ -1190,6 +1391,16 @@ public class SaveData implements Steppable, java.io.Serializable {
                         if(sposaggitem != null)
                             MWhOffSpotAgg = sposaggitem.getYValue();
                         MWhRoofSpotAgg = sproofaggitem.getYValue();
+                        primaryunmetDemandMwh = primaryunmetDemandMwhitem.getYValue();
+                        primaryunmetDemandHours = primaryunmetDemandHoursitem.getYValue();
+                        primaryunmetDemandDays = primaryunmetDemandDaysitem.getYValue();
+                        primarymaxUnmetDemandMwhPerDay = primarymaxUnmetDemandMwhPerDayitem.getYValue();
+                        if(secondaryunmetDemandMwhitem != null) {
+                            secondaryunmetDemandMwh = secondaryunmetDemandMwhitem.getYValue();
+                            secondaryunmetDemandHours = secondaryunmetDemandHoursitem.getYValue();
+                            secondaryunmetDemandDays = secondaryunmetDemandDaysitem.getYValue();
+                            secondarymaxUnmetDemandMwhPerDay = secondarymaxUnmetDemandMwhPerDayitem.getYValue();
+                        }
 
                     }
 
@@ -1198,7 +1409,9 @@ public class SaveData implements Steppable, java.io.Serializable {
                     //First series starts from beginning simulation, the rest follows a consumtionUnit, which has a creationDate
                     if (i == 0) {
                         String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions / consumers),
-                                Double.toString(consumers), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg), Double.toString(numActors)};
+                                Double.toString(consumers), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg), Double.toString(numActors),
+                                Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
+                                Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay)};
                         csvWriterMonthly.writeNext(record);
 
                         //Store data about Gen cap factors
@@ -1269,6 +1482,13 @@ public class SaveData implements Steppable, java.io.Serializable {
                     if (i == 0) {
                         String year = dateToYear.format(c.getTime());
 
+                        if (!datasetNumActorsSummary.containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetNumActorsSummary.put(year, yearData);
+                        }
+
+                        datasetNumActorsSummary.get(year).add(numActors);
+
                         if (!datasetGHGsummary.containsKey(year)) {
                             ArrayList<Double> yearData = new ArrayList<>();
                             datasetGHGsummary.put(year, yearData);
@@ -1305,7 +1525,6 @@ public class SaveData implements Steppable, java.io.Serializable {
 
                         datasetConsumersSummary.get(year).add(consumers);
 
-
                         if (!datasetSysProdPrimarySpotSummary.containsKey(year)) {
                             ArrayList<Double> yearData = new ArrayList<>();
                             datasetSysProdPrimarySpotSummary.put(year, yearData);
@@ -1330,6 +1549,53 @@ public class SaveData implements Steppable, java.io.Serializable {
                         }
                         datasetSysProdRooftopSummary.get(year).add(MWhRoofSpotAgg);
 
+                        if (!datasetPrimaryunmetDemandMwhSummary .containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetPrimaryunmetDemandMwhSummary .put(year, yearData);
+                        }
+                        datasetPrimaryunmetDemandMwhSummary .get(year).add(primaryunmetDemandMwh);
+
+                        if (!datasetPrimaryunmetDemandHoursSummary .containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetPrimaryunmetDemandHoursSummary .put(year, yearData);
+                        }
+                        datasetPrimaryunmetDemandHoursSummary .get(year).add(primaryunmetDemandHours);
+
+                        if (!datasetPrimaryunmetDemandDaysSummary .containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetPrimaryunmetDemandDaysSummary .put(year, yearData);
+                        }
+                        datasetPrimaryunmetDemandDaysSummary .get(year).add(primaryunmetDemandDays);
+
+                        if (!datasetPrimarymaxUnmetDemandMwhPerDaySummary .containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetPrimarymaxUnmetDemandMwhPerDaySummary .put(year, yearData);
+                        }
+                        datasetPrimarymaxUnmetDemandMwhPerDaySummary .get(year).add(primarymaxUnmetDemandMwhPerDay);
+
+                        if (!datasetSecondaryunmetDemandMwhSummary .containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetSecondaryunmetDemandMwhSummary .put(year, yearData);
+                        }
+                        datasetSecondaryunmetDemandMwhSummary .get(year).add(secondaryunmetDemandMwh);
+
+                        if (!datasetSecondaryunmetDemandHoursSummary .containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetSecondaryunmetDemandHoursSummary .put(year, yearData);
+                        }
+                        datasetSecondaryunmetDemandHoursSummary .get(year).add(secondaryunmetDemandHours);
+
+                        if (!datasetSecondaryunmetDemandDaysSummary .containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetSecondaryunmetDemandDaysSummary .put(year, yearData);
+                        }
+                        datasetSecondaryunmetDemandDaysSummary .get(year).add(secondaryunmetDemandDays);
+
+                        if (!datasetSecondarymaxUnmetDemandMwhPerDaySummary .containsKey(year)) {
+                            ArrayList<Double> yearData = new ArrayList<>();
+                            datasetSecondarymaxUnmetDemandMwhPerDaySummary .put(year, yearData);
+                        }
+                        datasetSecondarymaxUnmetDemandMwhPerDaySummary .get(year).add(secondarymaxUnmetDemandMwhPerDay);
 
                     }
 
@@ -1358,6 +1624,15 @@ public class SaveData implements Steppable, java.io.Serializable {
                 ArrayList<Double> spSecondarySpotAggConsumers = datasetSysProdSecondarySpotSummary.get(year);
                 ArrayList<Double> spOffSpotAggConsumers = datasetSysProdOffSpotSummary.get(year);
                 ArrayList<Double> spRooftopAggConsumers = datasetSysProdRooftopSummary.get(year);
+                ArrayList<Double> yearPrimaryunmetDemandMwh = datasetPrimaryunmetDemandMwhSummary .get(year);
+                ArrayList<Double> yearPrimaryunmetDemandHours = datasetPrimaryunmetDemandHoursSummary .get(year);
+                ArrayList<Double> yearPrimaryunmetDemandDays = datasetPrimaryunmetDemandDaysSummary .get(year);
+                ArrayList<Double> yearPrimarymaxUnmetDemandMwhPerDay = datasetPrimarymaxUnmetDemandMwhPerDaySummary .get(year);
+                ArrayList<Double> yearSecondaryunmetDemandMwh = datasetSecondaryunmetDemandMwhSummary .get(year);
+                ArrayList<Double> yearSecondaryunmetDemandHours = datasetSecondaryunmetDemandHoursSummary .get(year);
+                ArrayList<Double> yearSecondaryunmetDemandDays = datasetSecondaryunmetDemandDaysSummary .get(year);
+                ArrayList<Double> yearSecondarymaxUnmetDemandMwhPerDay = datasetSecondarymaxUnmetDemandMwhPerDaySummary .get(year);
+                ArrayList<Double> yearDataNumActors = datasetNumActorsSummary.get(year);
 
 
                 Double totalGHG = 0.0;
@@ -1369,12 +1644,46 @@ public class SaveData implements Steppable, java.io.Serializable {
                 Double spsecondspotagg = 0.0;
                 Double spoffspotagg = 0.0;
                 Double sproofagg = 0.0;
+                Double maxNumActors = 0.0;
 
+                Double primaryunmetDemandMwh = 0.0;
+                Double primaryunmetDemandHours = 0.0;
+                Double primaryunmetDemandDays = 0.0;
+                Double primarymaxUnmetDemandMwhPerDay = 0.0;
+                Double secondaryunmetDemandMwh = 0.0;
+                Double secondaryunmetDemandHours = 0.0;
+                Double secondaryunmetDemandDays = 0.0;
+                Double secondarymaxUnmetDemandMwhPerDay = 0.0;
 
                 Double sizeData = (double) yearDataGHG.size();
 
+                for (Double d : yearPrimaryunmetDemandMwh) {
+                    primaryunmetDemandMwh += d;
+                }
+                for (Double d : yearPrimaryunmetDemandHours) {
+                    primaryunmetDemandHours += d;
+                }
+                for (Double d : yearPrimaryunmetDemandDays) {
+                    primaryunmetDemandDays += d;
+                }
+                primarymaxUnmetDemandMwhPerDay =  Collections.max(yearPrimarymaxUnmetDemandMwhPerDay);
+                for (Double d : yearSecondaryunmetDemandMwh) {
+                    secondaryunmetDemandMwh += d;
+                }
+                for (Double d : yearSecondaryunmetDemandHours) {
+                    secondaryunmetDemandHours += d;
+                }
+                for (Double d : yearSecondaryunmetDemandDays) {
+                    secondaryunmetDemandDays += d;
+                }
+                secondarymaxUnmetDemandMwhPerDay =  Collections.max(yearSecondarymaxUnmetDemandMwhPerDay);
+
                 for (Double ghg : yearDataGHG) {
                     totalGHG += ghg;
+                }
+
+                for (Double con : yearDataNumActors) {
+                    if (con > maxNumActors) maxNumActors = con;
                 }
 
                 for (Double p : yearDataPrice) {
@@ -1411,7 +1720,9 @@ public class SaveData implements Steppable, java.io.Serializable {
                 }
 
                 String[] record = {year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(avgWholesale), Double.toString(totalGHG),
-                        Double.toString(dwellingsLastMonth), Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg)};
+                        Double.toString(dwellingsLastMonth), Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg), Double.toString(maxNumActors),
+                        Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
+                        Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay)};
                 csvWriterYear.writeNext(record);
             }
 
@@ -1468,7 +1779,8 @@ public class SaveData implements Steppable, java.io.Serializable {
             ArrayList<String> headerYear = new ArrayList<String>( Arrays.asList("Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
-                    "System Production Solar", "System Production Battery", "Number of Active Actors"));
+                    "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
+                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"));
             TreeMap<Integer, Vector<Generator>> treeMap = new TreeMap<>(data.gen_register);
 
             for (Integer integer : treeMap.keySet()) {
@@ -1498,7 +1810,8 @@ public class SaveData implements Steppable, java.io.Serializable {
             String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
-                    "System Production Solar", "System Production Battery", "Number of Active Actors"};
+                    "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
+                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
 
             csvWriterMonthly.writeNext(headerRecordMonthly);
 
@@ -1524,6 +1837,14 @@ public class SaveData implements Steppable, java.io.Serializable {
             HashMap<String, ArrayList<Double>> datasetSysProdRenewableSummary = new HashMap<>();
             HashMap<String, ArrayList<Double>> datasetSysProdFossilSummary = new HashMap<>();
             HashMap<String, ArrayList<ArrayList<Double>>> datasetSysGenProdSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPrimaryunmetDemandMwhSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPrimaryunmetDemandHoursSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPrimaryunmetDemandDaysSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetPrimarymaxUnmetDemandMwhPerDaySummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSecondaryunmetDemandMwhSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSecondaryunmetDemandHoursSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSecondaryunmetDemandDaysSummary = new HashMap<>();
+            HashMap<String, ArrayList<Double>> datasetSecondarymaxUnmetDemandMwhPerDaySummary = new HashMap<>();
 
 
 
@@ -1561,6 +1882,14 @@ public class SaveData implements Steppable, java.io.Serializable {
             XYSeries spsolaggseries = systemProductionSeries.get(-8);
             XYSeries spbataggseries = systemProductionSeries.get(-9);
 
+            XYSeries primaryunmetDemandMwhSeries = unmetDemandMwhSeries.get(0);
+            XYSeries secondaryunmetDemandMwhSeries = unmetDemandMwhSeries.get(-1);
+            XYSeries primaryunmetDemandHoursSeries = unmetDemandHoursSeries.get(0);
+            XYSeries secondaryunmetDemandHoursSeries = unmetDemandHoursSeries.get(-1);
+            XYSeries primaryunmetDemandDaysSeries = unmetDemandDaysSeries.get(0);
+            XYSeries secondaryunmetDemandDaysSeries = unmetDemandDaysSeries.get(-1);
+            XYSeries primarymaxUnmetDemandMwhPerDaySeries = maxUnmetDemandMwhPerDaySeries.get(0);
+            XYSeries secondarymaxUnmetDemandMwhPerDaySeries= maxUnmetDemandMwhPerDaySeries.get(-1);
 
 
             Calendar c = Calendar.getInstance();
@@ -1593,6 +1922,15 @@ public class SaveData implements Steppable, java.io.Serializable {
                 XYDataItem spsolaggitem = null;
                 XYDataItem spbataggitem = null;
 
+                XYDataItem primaryunmetDemandMwhitem = null;
+                XYDataItem primaryunmetDemandHoursitem = null;
+                XYDataItem primaryunmetDemandDaysitem = null;
+                XYDataItem primarymaxUnmetDemandMwhPerDayitem = null;
+                XYDataItem secondaryunmetDemandMwhitem = null;
+                XYDataItem secondaryunmetDemandHoursitem = null;
+                XYDataItem secondaryunmetDemandDaysitem = null;
+                XYDataItem secondarymaxUnmetDemandMwhPerDayitem = null;
+
                 XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
                 if (shifttimeseries <= t) {
                     spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
@@ -1609,6 +1947,16 @@ public class SaveData implements Steppable, java.io.Serializable {
                     spsolaggitem = (XYDataItem) spsolaggseries.getItems().get(t - shifttimeseries);
                     spbataggitem = (XYDataItem) spbataggseries.getItems().get(t - shifttimeseries);
 
+                    primaryunmetDemandMwhitem = (XYDataItem) primaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
+                    primaryunmetDemandHoursitem = (XYDataItem) primaryunmetDemandHoursSeries.getItems().get(t - shifttimeseries);
+                    primaryunmetDemandDaysitem = (XYDataItem) primaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
+                    primarymaxUnmetDemandMwhPerDayitem = (XYDataItem) primarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
+                    if( secondaryunmetDemandMwhSeries != null){
+                        secondaryunmetDemandMwhitem = (XYDataItem) secondaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
+                        secondaryunmetDemandHoursitem = (XYDataItem) secondaryunmetDemandHoursSeries.getItems().get(t - shifttimeseries);
+                        secondaryunmetDemandDaysitem = (XYDataItem) secondaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
+                        secondarymaxUnmetDemandMwhPerDayitem = (XYDataItem) secondarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
+                    }
                 }
 
                 double kwh = citem.getYValue() * 1000.0;
@@ -1630,6 +1978,15 @@ public class SaveData implements Steppable, java.io.Serializable {
                 double MWhFossil = 0.0;
                 double percentageRenwewable = 0.0;
 
+                double primaryunmetDemandMwh = 0.0;
+                double primaryunmetDemandHours = 0.0;
+                double primaryunmetDemandDays = 0.0;
+                double primarymaxUnmetDemandMwhPerDay = 0.0;
+                double secondaryunmetDemandMwh = 0.0;
+                double secondaryunmetDemandHours = 0.0;
+                double secondaryunmetDemandDays = 0.0;
+                double secondarymaxUnmetDemandMwhPerDay = 0.0;
+
                 double numActors = naitem.getYValue();
 
                 if (shifttimeseries <= t) {
@@ -1649,6 +2006,17 @@ public class SaveData implements Steppable, java.io.Serializable {
                     MWhRenewable = MWhRoofSpotAgg + MWhWaterSpotAgg + MWhWaterSpotAgg + MWhWindSpotAgg + MWhSolSpotAgg + MWhBatSpotAgg;
                     MWhFossil = MWhCoalSpotAgg + MWhGasSpotAgg;
                     percentageRenwewable = MWhRenewable / (MWhRenewable + MWhFossil);
+
+                    primaryunmetDemandMwh = primaryunmetDemandMwhitem.getYValue();
+                    primaryunmetDemandHours = primaryunmetDemandHoursitem.getYValue();
+                    primaryunmetDemandDays = primaryunmetDemandDaysitem.getYValue();
+                    primarymaxUnmetDemandMwhPerDay = primarymaxUnmetDemandMwhPerDayitem.getYValue();
+                    if(secondaryunmetDemandMwhitem != null) {
+                        secondaryunmetDemandMwh = secondaryunmetDemandMwhitem.getYValue();
+                        secondaryunmetDemandHours = secondaryunmetDemandHoursitem.getYValue();
+                        secondaryunmetDemandDays = secondaryunmetDemandDaysitem.getYValue();
+                        secondarymaxUnmetDemandMwhPerDay = secondarymaxUnmetDemandMwhPerDayitem.getYValue();
+                    }
                 }
 
                 SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");
@@ -1656,7 +2024,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                 String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions / consumers),
                         Double.toString(consumers), Double.toString(percentageRenwewable), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg),
                         Double.toString(MWhCoalSpotAgg), Double.toString(MWhWaterSpotAgg), Double.toString(MWhWindSpotAgg), Double.toString(MWhGasSpotAgg),
-                        Double.toString(MWhSolSpotAgg), Double.toString(MWhBatSpotAgg), Double.toString(numActors)};
+                        Double.toString(MWhSolSpotAgg), Double.toString(MWhBatSpotAgg), Double.toString(numActors), Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
+                        Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay)};
                 csvWriterMonthly.writeNext(record);
 
                 /***
@@ -1814,6 +2183,54 @@ public class SaveData implements Steppable, java.io.Serializable {
                 }
                 datasetSysGenProdSummary.get(year).add(sysGenProd);
 
+                if (!datasetPrimaryunmetDemandMwhSummary .containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetPrimaryunmetDemandMwhSummary .put(year, yearData);
+                }
+                datasetPrimaryunmetDemandMwhSummary .get(year).add(primaryunmetDemandMwh);
+
+                if (!datasetPrimaryunmetDemandHoursSummary .containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetPrimaryunmetDemandHoursSummary .put(year, yearData);
+                }
+                datasetPrimaryunmetDemandHoursSummary .get(year).add(primaryunmetDemandHours);
+
+                if (!datasetPrimaryunmetDemandDaysSummary .containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetPrimaryunmetDemandDaysSummary .put(year, yearData);
+                }
+                datasetPrimaryunmetDemandDaysSummary .get(year).add(primaryunmetDemandDays);
+
+                if (!datasetPrimarymaxUnmetDemandMwhPerDaySummary .containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetPrimarymaxUnmetDemandMwhPerDaySummary .put(year, yearData);
+                }
+                datasetPrimarymaxUnmetDemandMwhPerDaySummary .get(year).add(primarymaxUnmetDemandMwhPerDay);
+
+                if (!datasetSecondaryunmetDemandMwhSummary .containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSecondaryunmetDemandMwhSummary .put(year, yearData);
+                }
+                datasetSecondaryunmetDemandMwhSummary .get(year).add(secondaryunmetDemandMwh);
+
+                if (!datasetSecondaryunmetDemandHoursSummary .containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSecondaryunmetDemandHoursSummary .put(year, yearData);
+                }
+                datasetSecondaryunmetDemandHoursSummary .get(year).add(secondaryunmetDemandHours);
+
+                if (!datasetSecondaryunmetDemandDaysSummary .containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSecondaryunmetDemandDaysSummary .put(year, yearData);
+                }
+                datasetSecondaryunmetDemandDaysSummary .get(year).add(secondaryunmetDemandDays);
+
+                if (!datasetSecondarymaxUnmetDemandMwhPerDaySummary .containsKey(year)) {
+                    ArrayList<Double> yearData = new ArrayList<>();
+                    datasetSecondarymaxUnmetDemandMwhPerDaySummary .put(year, yearData);
+                }
+                datasetSecondarymaxUnmetDemandMwhPerDaySummary .get(year).add(secondarymaxUnmetDemandMwhPerDay);
+
                 c.add(Calendar.MONTH, 1);
             }
 
@@ -1844,6 +2261,15 @@ public class SaveData implements Steppable, java.io.Serializable {
                 ArrayList<Double> spFossilAgg = datasetSysProdFossilSummary.get(year);
                 ArrayList<ArrayList<Double>> spGenProdAgg = datasetSysGenProdSummary.get(year);
 
+                ArrayList<Double> yearPrimaryunmetDemandMwh = datasetPrimaryunmetDemandMwhSummary .get(year);
+                ArrayList<Double> yearPrimaryunmetDemandHours = datasetPrimaryunmetDemandHoursSummary .get(year);
+                ArrayList<Double> yearPrimaryunmetDemandDays = datasetPrimaryunmetDemandDaysSummary .get(year);
+                ArrayList<Double> yearPrimarymaxUnmetDemandMwhPerDay = datasetPrimarymaxUnmetDemandMwhPerDaySummary .get(year);
+                ArrayList<Double> yearSecondaryunmetDemandMwh = datasetSecondaryunmetDemandMwhSummary .get(year);
+                ArrayList<Double> yearSecondaryunmetDemandHours = datasetSecondaryunmetDemandHoursSummary .get(year);
+                ArrayList<Double> yearSecondaryunmetDemandDays = datasetSecondaryunmetDemandDaysSummary .get(year);
+                ArrayList<Double> yearSecondarymaxUnmetDemandMwhPerDay = datasetSecondarymaxUnmetDemandMwhPerDaySummary .get(year);
+
 
                 Double totalGHG = 0.0;
                 Double avgPrice = 0.0;
@@ -1865,7 +2291,37 @@ public class SaveData implements Steppable, java.io.Serializable {
                 Double spfossilagg = 0.0;
                 ArrayList<Double> spgenprodagg = null;
 
+                Double primaryunmetDemandMwh = 0.0;
+                Double primaryunmetDemandHours = 0.0;
+                Double primaryunmetDemandDays = 0.0;
+                Double primarymaxUnmetDemandMwhPerDay = 0.0;
+                Double secondaryunmetDemandMwh = 0.0;
+                Double secondaryunmetDemandHours = 0.0;
+                Double secondaryunmetDemandDays = 0.0;
+                Double secondarymaxUnmetDemandMwhPerDay = 0.0;
+
                 Double sizeData = (double) yearDataGHG.size();
+
+                for (Double d : yearPrimaryunmetDemandMwh) {
+                    primaryunmetDemandMwh += d;
+                }
+                for (Double d : yearPrimaryunmetDemandHours) {
+                    primaryunmetDemandHours += d;
+                }
+                for (Double d : yearPrimaryunmetDemandDays) {
+                    primaryunmetDemandDays += d;
+                }
+                primarymaxUnmetDemandMwhPerDay =  Collections.max(yearPrimarymaxUnmetDemandMwhPerDay);
+                for (Double d : yearSecondaryunmetDemandMwh) {
+                    secondaryunmetDemandMwh += d;
+                }
+                for (Double d : yearSecondaryunmetDemandHours) {
+                    secondaryunmetDemandHours += d;
+                }
+                for (Double d : yearSecondaryunmetDemandDays) {
+                    secondaryunmetDemandDays += d;
+                }
+                secondarymaxUnmetDemandMwhPerDay =  Collections.max(yearSecondarymaxUnmetDemandMwhPerDay);
 
                 for (Double ghg : yearDataGHG) {
                     totalGHG += ghg;
@@ -1958,7 +2414,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                 ArrayList<String> record = new ArrayList<String>(Arrays.asList( year, Double.toString(totalKWh), Double.toString(avgPrice), Double.toString(avgWholesale), Double.toString(totalGHG),
                         Double.toString(maxDwellings), Double.toString(percentageRenewable) ,Double.toString(spprimspotagg), Double.toString(spsecondspotagg), Double.toString(spoffspotagg), Double.toString(sproofagg),
                         Double.toString(spcoalagg), Double.toString(spwateragg), Double.toString(spwindagg), Double.toString(spgasagg), Double.toString(spsolagg),
-                        Double.toString(spbatagg), Double.toString(maxNumActors) ));
+                        Double.toString(spbatagg), Double.toString(maxNumActors), Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
+                        Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay) ));
 
                 for( Double spg : spgenprodagg){
                     record.add(Double.toString(spg));
