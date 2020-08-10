@@ -34,7 +34,10 @@ public class Gr4spSimUI extends GUIState implements java.io.Serializable {
     JFrame numDomesticConsumersChartFrame;
     JFrame numActiveActorsChartFrame;
     JFrame PriceGenAvgChartFrame;
-
+    JFrame unmetDemandMwhChartFrame;
+    JFrame unmetDemandHoursChartFrame;
+    JFrame unmetDemandDaysChartFrame;
+    JFrame maxUnmetDemandMwhPerDayChartFrame;
 
 
 
@@ -174,6 +177,30 @@ public class Gr4spSimUI extends GUIState implements java.io.Serializable {
         c.registerFrame(PriceGenAvgChartFrame);
         PriceGenAvgChartFrame.add(new ChartPanel(data.saveData.PriceGenAvgChart.getChart()), BorderLayout.CENTER);
 
+        unmetDemandMwhChartFrame = new JFrame("Total Unmet Demand per Month (MWh): " + data.getAreaCode());
+        unmetDemandMwhChartFrame.setVisible(true);
+        unmetDemandMwhChartFrame.setSize(800, 800);
+        c.registerFrame(unmetDemandMwhChartFrame);
+        unmetDemandMwhChartFrame.add(new ChartPanel(data.saveData.unmetDemandMwhChart.getChart()), BorderLayout.CENTER);
+
+        unmetDemandHoursChartFrame = new JFrame("Number of hours with Unmet Demand per Month: " + data.getAreaCode());
+        unmetDemandHoursChartFrame.setVisible(true);
+        unmetDemandHoursChartFrame.setSize(800, 800);
+        c.registerFrame(unmetDemandHoursChartFrame);
+        unmetDemandHoursChartFrame.add(new ChartPanel(data.saveData.unmetDemandHoursChart.getChart()), BorderLayout.CENTER);
+
+        unmetDemandDaysChartFrame = new JFrame("Number of Days with Unmet Demand per Month: " + data.getAreaCode());
+        unmetDemandDaysChartFrame.setVisible(true);
+        unmetDemandDaysChartFrame.setSize(800, 800);
+        c.registerFrame(unmetDemandDaysChartFrame);
+        unmetDemandDaysChartFrame.add(new ChartPanel(data.saveData.unmetDemandDaysChart.getChart()), BorderLayout.CENTER);
+
+        maxUnmetDemandMwhPerDayChartFrame = new JFrame("For every month, maximum Unmet Demand within a single hour (MWh): " + data.getAreaCode());
+        maxUnmetDemandMwhPerDayChartFrame.setVisible(true);
+        maxUnmetDemandMwhPerDayChartFrame.setSize(800, 800);
+        c.registerFrame(maxUnmetDemandMwhPerDayChartFrame);
+        maxUnmetDemandMwhPerDayChartFrame.add(new ChartPanel(data.saveData.maxUnmetDemandMwhPerDayChart.getChart()), BorderLayout.CENTER);
+
 
     }
 
@@ -228,6 +255,18 @@ public class Gr4spSimUI extends GUIState implements java.io.Serializable {
 
         if (PriceGenAvgChartFrame != null) PriceGenAvgChartFrame.dispose();
         PriceGenAvgChartFrame = null;
+
+        if (unmetDemandMwhChartFrame != null) unmetDemandMwhChartFrame.dispose();
+        unmetDemandMwhChartFrame = null;
+
+        if (unmetDemandHoursChartFrame != null) unmetDemandHoursChartFrame.dispose();
+        unmetDemandHoursChartFrame = null;
+
+        if (unmetDemandDaysChartFrame != null) unmetDemandDaysChartFrame.dispose();
+        unmetDemandDaysChartFrame = null;
+
+        if (maxUnmetDemandMwhPerDayChartFrame != null) maxUnmetDemandMwhPerDayChartFrame.dispose();
+        maxUnmetDemandMwhPerDayChartFrame = null;
     }
 }
 
