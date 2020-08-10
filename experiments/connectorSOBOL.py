@@ -107,12 +107,21 @@ def getResults(outputID, experimentId):
     solarProductionYear = results['System Production Solar'].to_numpy()
     BatteryProductionYear = results['System Production Battery'].to_numpy()
     numActorsYear = results['Number of Active Actors'].to_numpy()
+    primaryUnmetDemandMwh = results['Primary Total Unmet Demand (MWh)'].to_numpy()
+    primaryUnmetDemandHours = results['Primary Total Unmet Demand (Hours)'].to_numpy()
+    primaryUnmetDemandDays = results['Primary Total Unmet Demand (Days)'].to_numpy()
+    primaryMaxUnmetDemandMwhPerHour = results['Primary Max Unmet Demand Per Hour (MWh)'].to_numpy()
+    secondaryUnmetDemandMwh = results['Secondary Total Unmet Demand (MWh)'].to_numpy()
+    secondaryUnmetDemandHours = results['Secondary Total Unmet Demand (Hours)'].to_numpy()
+    secondaryUnmetDemandDays = results['Secondary Total Unmet Demand (Days)'].to_numpy()
+    secondaryMaxUnmetDemandMwhPerHour = results['Secondary Max Unmet Demand Per Hour (MWh)'].to_numpy()
     seedExperimentCsv = float(experimentId)
 
     return timesYear, consumptionYear, tariffsYear, wholesaleYear, ghgYear, numConsumersYear, primarySpotYear, \
            secondarySpotYear, offSpotYear, renewableContributionYear, rooftopPVProductionYear, coalProductionYear, \
            waterProductionYear, windProductionYear, gasProductionYear, solarProductionYear, BatteryProductionYear, \
-           numActorsYear, seedExperimentCsv
+           numActorsYear, primaryUnmetDemandMwh, primaryUnmetDemandHours, primaryUnmetDemandDays, primaryMaxUnmetDemandMwhPerHour,\
+           secondaryUnmetDemandMwh, secondaryUnmetDemandHours, secondaryUnmetDemandDays, secondaryMaxUnmetDemandMwhPerHour, seedExperimentCsv
 
 
 def category(i):
@@ -132,7 +141,7 @@ def category(i):
     return switcher.get(i,"invalid category")
 
 def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV,
-             includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
+             domesticConsumptionPercentage, includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
              learningCurve, priceChangePercentageBattery, priceChangePercentageBrownCoal, priceChangePercentageOcgt,
              priceChangePercentageCcgt, priceChangePercentageWind, priceChangePercentageWater,
              capacityFactorChangeBattery, capacityFactorChangeBrownCoal, capacityFactorChangeOcgt,
@@ -167,8 +176,8 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             print(outputID)
 
             # Set Uncertainties
-            gr4spObj.settings.forecast.annualCpi = annualCpi
-            gr4spObj.settings.policy.annualInflation = annualInflation
+            gr4spObj.settings.forecast.annualCpi = annualCpi  / 100.0;
+            gr4spObj.settings.policy.annualInflation = annualInflation  / 100.0;
 
             gr4spObj.settings.forecast.scenario.consumption = category(consumption)
             gr4spObj.settings.forecast.scenario.energyEfficiency = category(energyEfficiency)
@@ -176,12 +185,14 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.forecast.scenario.solarUptake = category(solarUptake)
             gr4spObj.settings.forecast.rooftopPV = category(rooftopPV)
 
+            gr4spObj.settings.population.domesticConsumptionPercentage = domesticConsumptionPercentage  / 100.0;
+
             gr4spObj.settings.forecast.includePublicallyAnnouncedGen = jpype.java.lang.Boolean(
                 includePublicallyAnnouncedGen)
             gr4spObj.settings.forecast.generationRolloutPeriod = generationRolloutPeriod
             gr4spObj.settings.forecast.generatorRetirement = generatorRetirement
-            gr4spObj.settings.forecast.technologicalImprovement = technologicalImprovement
-            gr4spObj.settings.forecast.learningCurve = learningCurve
+            gr4spObj.settings.forecast.technologicalImprovement = technologicalImprovement  / 100.0;
+            gr4spObj.settings.forecast.learningCurve = learningCurve  / 100.0;
 
             # LCOEs and CFs variations
 
