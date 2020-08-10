@@ -19,16 +19,17 @@ def getModel():
     model.uncertainties += [CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.uncertainties += [CategoricalParameter('rooftopPV', ['residential', 'business', 'both'])]
 
-    model.uncertainties += [RealParameter('domesticConsumptionPercentage', 0.20,0.35)]
+    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20,35)] # percentage
 
-    model.uncertainties += [RealParameter('annualCpi', 0.01, 0.05)]
-    model.uncertainties += [RealParameter('annualInflation', 0.01, 0.05)]
+    model.uncertainties += [IntegerParameter('annualCpi', 1, 5)] #percentage
+    model.uncertainties += [IntegerParameter('annualInflation', 1, 5)] #percentage
+
 
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 0, 10)]
     model.uncertainties += [IntegerParameter('generatorRetirement', -5, 5)]
-    model.uncertainties += [RealParameter('technologicalImprovement', 0.0, 0.1)]
-    model.uncertainties += [RealParameter('learningCurve', 0.0, 0.1)]
+    model.uncertainties += [IntegerParameter('technologicalImprovement', 0, 10)] #percentage
+    model.uncertainties += [IntegerParameter('learningCurve', 0, 10)] #percentage
 
 # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
 # This could represent a subsidy

@@ -48,10 +48,11 @@ def getModel():
 #         return switcher.get(i,"invalid category")
 
     # Uncertainties (4July2020 23 significant factors after EET using the union normalised mu* and sigma max and median values)
-    model.uncertainties = [RealParameter('annualCpi', 0.01, 0.05)]
-    model.uncertainties += [RealParameter('annualInflation', 0.01, 0.05)]
+    model.uncertainties = [IntegerParameter('annualCpi', 1, 6)] #percentage
+    model.uncertainties += [IntegerParameter('annualInflation', 1, 6)] #percentage
     model.uncertainties += [IntegerParameter('consumption', 0, 5)]
-    model.uncertainties += [RealParameter('learningCurve', 0.0, 0.1)]
+    model.uncertainties += [IntegerParameter('learningCurve', 0, 11)] #percentage
+
     # variation of contribution of networks, retail and other charges in the tariff
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 11, 46)]
 
@@ -59,10 +60,12 @@ def getModel():
     model.uncertainties += [IntegerParameter('solarUptake', 0, 5)]
     model.uncertainties += [IntegerParameter('rooftopPV', 5, 8)]
 
+    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20,36)] # percentage
+
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 2)]
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 0, 11)]
     model.uncertainties += [IntegerParameter('generatorRetirement', -5, 6)]
-    model.uncertainties += [RealParameter('technologicalImprovement', 0.0, 0.1)]
+    model.uncertainties += [IntegerParameter('technologicalImprovement', 0, 11)] #percentage
 
     # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
     # This could represent a subsidy
@@ -111,6 +114,14 @@ def getModel():
                         TimeSeriesOutcome('solarProductionYear'),
                         TimeSeriesOutcome('BatteryProductionYear'),
                         TimeSeriesOutcome('numActorsYear'),
+                        TimeSeriesOutcome('primaryUnmetDemandMwh'),
+                        TimeSeriesOutcome('primaryUnmetDemandHours'),
+                        TimeSeriesOutcome('primaryUnmetDemandDays'),
+                        TimeSeriesOutcome('primaryMaxUnmetDemandMwhPerHour'),
+                        TimeSeriesOutcome('secondaryUnmetDemandMwh'),
+                        TimeSeriesOutcome('secondaryUnmetDemandHours'),
+                        TimeSeriesOutcome('secondaryUnmetDemandDays'),
+                        TimeSeriesOutcome('secondaryMaxUnmetDemandMwhPerHour'),
                         ScalarOutcome('seedExperimentCsv')
                       ]
 
