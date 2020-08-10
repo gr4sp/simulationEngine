@@ -106,12 +106,21 @@ def getResults(outputID, experimentId):
     solarProductionYear = results['System Production Solar'].to_numpy()
     BatteryProductionYear = results['System Production Battery'].to_numpy()
     numActorsYear = results['Number of Active Actors'].to_numpy()
+    primaryUnmetDemandMwh = results['Primary Total Unmet Demand (MWh)'].to_numpy()
+    primaryUnmetDemandHours = results['Primary Total Unmet Demand (Hours)'].to_numpy()
+    primaryUnmetDemandDays = results['Primary Total Unmet Demand (Days)'].to_numpy()
+    primaryMaxUnmetDemandMwhPerHour = results['Primary Max Unmet Demand Per Hour (MWh)'].to_numpy()
+    secondaryUnmetDemandMwh = results['Secondary Total Unmet Demand (MWh)'].to_numpy()
+    secondaryUnmetDemandHours = results['Secondary Total Unmet Demand (Hours)'].to_numpy()
+    secondaryUnmetDemandDays = results['Secondary Total Unmet Demand (Days)'].to_numpy()
+    secondaryMaxUnmetDemandMwhPerHour = results['Secondary Max Unmet Demand Per Hour (MWh)'].to_numpy()
     seedExperimentCsv = float(experimentId)
 
     return timesYear, consumptionYear, tariffsYear, wholesaleYear, ghgYear, numConsumersYear, primarySpotYear, \
            secondarySpotYear, offSpotYear, renewableContributionYear, rooftopPVProductionYear, coalProductionYear, \
            waterProductionYear, windProductionYear, gasProductionYear, solarProductionYear, BatteryProductionYear, \
-           numActorsYear, seedExperimentCsv
+           numActorsYear, primaryUnmetDemandMwh, primaryUnmetDemandHours, primaryUnmetDemandDays, primaryMaxUnmetDemandMwhPerHour,\
+           secondaryUnmetDemandMwh, secondaryUnmetDemandHours, secondaryUnmetDemandDays, secondaryMaxUnmetDemandMwhPerHour, seedExperimentCsv
 
 
 
