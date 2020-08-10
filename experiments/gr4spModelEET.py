@@ -77,6 +77,14 @@ def getModel():
         TimeSeriesOutcome('solarProductionYear'),
         TimeSeriesOutcome('BatteryProductionYear'),
         TimeSeriesOutcome('numActorsYear'),
+        TimeSeriesOutcome('primaryUnmetDemandMwh'),
+        TimeSeriesOutcome('primaryUnmetDemandHours'),
+        TimeSeriesOutcome('primaryUnmetDemandDays'),
+        TimeSeriesOutcome('primaryMaxUnmetDemandMwhPerHour'),
+        TimeSeriesOutcome('secondaryUnmetDemandMwh'),
+        TimeSeriesOutcome('secondaryUnmetDemandHours'),
+        TimeSeriesOutcome('secondaryUnmetDemandDays'),
+        TimeSeriesOutcome('secondaryMaxUnmetDemandMwhPerHour'),
         ScalarOutcome('seedExperimentCsv')
                       ]
 
