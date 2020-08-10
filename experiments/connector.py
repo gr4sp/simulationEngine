@@ -160,8 +160,8 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             print(outputID)
 
             # Set Uncertainties
-            gr4spObj.settings.forecast.annualCpi = annualCpi
-            gr4spObj.settings.policy.annualInflation = annualInflation
+            gr4spObj.settings.forecast.annualCpi = annualCpi / 100.0
+            gr4spObj.settings.policy.annualInflation = annualInflation / 100.0
 
             gr4spObj.settings.forecast.scenario.consumption = consumption
             gr4spObj.settings.forecast.scenario.energyEfficiency = energyEfficiency
@@ -169,14 +169,14 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.forecast.scenario.solarUptake = solarUptake
             gr4spObj.settings.forecast.rooftopPV = rooftopPV
 
-            gr4spObj.settings.population.domesticConsumptionPercentage = domesticConsumptionPercentage
+            gr4spObj.settings.population.domesticConsumptionPercentage = domesticConsumptionPercentage / 100.0
 
             gr4spObj.settings.forecast.includePublicallyAnnouncedGen = jpype.java.lang.Boolean(
                 includePublicallyAnnouncedGen)
             gr4spObj.settings.forecast.generationRolloutPeriod = generationRolloutPeriod
             gr4spObj.settings.forecast.generatorRetirement = generatorRetirement
-            gr4spObj.settings.forecast.technologicalImprovement = technologicalImprovement
-            gr4spObj.settings.forecast.learningCurve = learningCurve
+            gr4spObj.settings.forecast.technologicalImprovement = technologicalImprovement / 100.0
+            gr4spObj.settings.forecast.learningCurve = learningCurve / 100.0
 
             # LCOEs and CFs variations
 
