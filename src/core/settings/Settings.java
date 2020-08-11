@@ -119,6 +119,7 @@ class ScenarioSetting implements java.io.Serializable {
 class ForecastSetting implements java.io.Serializable {
     public ScenarioSetting scenario;
     public int baseYear;
+    public String startDemandForecast;
     public double annualCpi;
     public Boolean includePublicallyAnnouncedGen;
     public String rooftopPV;
@@ -390,6 +391,10 @@ public class Settings implements java.io.Serializable {
     public String getForecastScenarioSolarUptake() { return forecast.scenario.solarUptake; }
 
     public int getBaseYearConsumptionForecast() { return forecast.baseYear;  }
+
+    public String getStartDemandForcast() {
+        return forecast.startDemandForecast;
+    }
 
     public double getAnnualCpiForecast() { return forecast.annualCpi; }
 
