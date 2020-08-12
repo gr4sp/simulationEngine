@@ -996,18 +996,24 @@ public class LoadData implements java.io.Serializable {
                 c.set(Calendar.MONTH, currentMonth);
                 c.set(Calendar.MINUTE,0);
                 c.set(Calendar.HOUR_OF_DAY,0);
+
+                //Date printDate = c.getTime();
+                //double TotalDemandGwhCorrected = 0.0;
+
                 while( currentMonth == c.get(Calendar.MONTH) ){
                     currentDate = c.getTime();
                     //Calibrate Demand Half Hour
                     if(data.getHalfhour_demand_register().containsKey(currentDate)) {
-                        double demand = data.getHalfhour_demand_register().get(currentDate);
-                        data.getHalfhour_demand_register().put(currentDate, demand * calibrationDemand);
+                        double demand = data.getHalfhour_demand_register().get(currentDate) * calibrationDemand;
+                        //TotalDemandGwhCorrected+=demand;
+                        data.getHalfhour_demand_register().put(currentDate, demand );
                     }
 
                     //Set the month for the forecast
                     c.add(Calendar.MINUTE, 30);
                 }
-
+                //TotalDemandGwhCorrected = TotalDemandGwhCorrected / 2000.0;
+                //System.out.println(printDate+", "+TotalDemandGWh+", "+TotalDemandGwhCorrected+", "+TotalConsumptionGWh+", "+(calibrationDemand-1.0)*100.0 + "%");
 
                 //reset counter and update current month
                 TotalMw = 0.0;
