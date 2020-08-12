@@ -400,6 +400,9 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
             double consumption = data.getMonthly_consumption_register().get(today);
 
+            double monthDemand = 0.0;
+            double monthDemandRemoved = 0.0;
+
             while(c.getTime().before(nextMonth)) {
 
                 Date currentTime = c.getTime();
@@ -409,6 +412,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
                     //Check if it is above 0. If it's 0, just take the previous one as it is likely to be due to misleading data
                     if( newDemand > 0.001 )
                         totalDemand = newDemand;
+                    monthDemand += totalDemand;
                 }
 //                else{
 //                    System.out.println("\t\t\t" + currentTime + " For some reason this key is lost, use last available value ");
@@ -442,7 +446,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                     if( g.getInPrimaryMarket() == false && g.getInSecondaryMarket()  == false ){
 
-                        g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + capacity );
+                        g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + (capacity / 2.0) ); //30min production
 
                         //If going through Off spot (OTC), then account only for surplus
                         if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
@@ -471,6 +475,8 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                 //remove consumption met by off Market generation (see assumptions in Word Document)
                 double totalDemandWholesale = totalDemand - availableCapacityOffMarket - consumptionSuppliedBySolar;
+
+                monthDemandRemoved += (totalDemand - totalDemandWholesale);
 
                 //If non scheduled covered more than the demand, set the demand of the wholesale to 0
                 if(totalDemandWholesale < 0.0 )
@@ -599,10 +605,26 @@ public class Arena implements Steppable,  java.io.Serializable  {
 //                //-------------------------------------------------
 
             }
-
+//            //CODE TO DEBUG and CHECK that GENERATORS PRODUCTION EQUALS THE TOTAL DEMAND after all 30min BIDDING
+//            monthDemand = monthDemand / 2000.0;
+//            monthDemandRemoved = monthDemandRemoved / 2000.0;
+//
+//            double totalMonthGenerators = 0.0;
+//            double totalMonthGeneratorsOFF = 0.0;
+//            for (Integer integer : data.getGen_register().keySet()) {
+//                Vector<Generator> gens = data.getGen_register().get(integer);
+//                for (int i = 0; i < gens.size(); i++) {
+//                    if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) )
+//                        totalMonthGenerators += gens.get(i).getMonthlyGeneratedMWh();
+//                    else
+//                        totalMonthGeneratorsOFF += gens.get(i).getMonthlyGeneratedMWh();
+//                }
+//            }
+//            totalMonthGenerators = totalMonthGenerators / 1000.0;
+//            totalMonthGeneratorsOFF = totalMonthGeneratorsOFF / 1000.0;
 
             primarySpot.setMarketPrice(avgMonthlyPricePrimarySpot);
-            primarySpot.setDemand(avgMonthlyDemandPrimarySpot);
+            primarySpot.setDemand(avgMonthlyDemandPrimarySpot); // MWh
             if(data.settings.existsMarket("secondary")) {
 
                 secondarySpot.setMarketPrice(avgMonthlyPriceSecondarySpot);
