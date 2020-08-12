@@ -54,7 +54,7 @@ forecast:
     solarUptake: Central #Slow change
 
   baseYear: 2019
-  startDemandForecast: 2019-03-01
+  startDemandForecast: 2020-06-01
 
 
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
