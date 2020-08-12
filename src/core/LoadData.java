@@ -892,13 +892,13 @@ public class LoadData implements java.io.Serializable {
     }
 
     //Select Consumption
-    private static void createConsumptionFromDemand(Gr4spSim data) {
+    private static void createForecastConsumptionFromDemand(Gr4spSim data) {
 
         //Set current Date
         Date currentDate = null;
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            currentDate = stringToDate.parse(data.settings.getStartDateSpotMarket());
+            currentDate = stringToDate.parse(data.settings.getStartDemandForcast());
         } catch (ParseException e) {
             data.LOGGER.warning(e.toString());
         }
@@ -948,6 +948,94 @@ public class LoadData implements java.io.Serializable {
         //save last month demand data. From MW 30min -> GWh
         double TotalGWh = TotalMw / 2000;
         data.getMonthly_consumption_register().put(dateConsumption, TotalGWh);
+
+    }
+
+    //Select Consumption
+    private static void calibrate30minHistoricDemandFromConsumption(Gr4spSim data) {
+
+        //Set current Date
+        Date currentDate = null;
+        Date endCalibrationDate = null;
+        Calendar c = Calendar.getInstance();
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            currentDate = stringToDate.parse(data.settings.getStartDemandForcast());
+            c.setTime(currentDate);
+            endCalibrationDate = c.getTime();
+            currentDate = stringToDate.parse(data.settings.getStartDateSpotMarket());
+            c.setTime(currentDate);
+        } catch (ParseException e) {
+            data.LOGGER.warning(e.toString());
+        }
+
+
+        //Set the month to January to start consumption computation
+        //c.set(Calendar.MONTH, 0);
+
+        double TotalMw = 0.0;
+        int currentMonth = c.get(Calendar.MONTH);
+        Date dateConsumption = c.getTime();
+
+        while( !c.getTime().after(endCalibrationDate) ){
+
+            //If month finished, save the demand data
+            if(currentMonth != c.get(Calendar.MONTH)){
+
+                //save demand data. From MW 30min -> GWh
+                double TotalDemandGWh = TotalMw / 2000;
+                double TotalConsumptionGWh = data.getMonthly_consumption_register().get(dateConsumption);
+                double calibrationDemand = TotalConsumptionGWh / TotalDemandGWh;
+
+                //Calibrate Demand of for the past month
+                if( currentMonth == 11) {
+                    // If it's end of december, we need to substract the 1 year to update the correct demand
+                    c.set(Calendar.YEAR, c.get(Calendar.YEAR) -1);
+                }
+                c.set(Calendar.MONTH, currentMonth);
+                c.set(Calendar.MINUTE,0);
+                c.set(Calendar.HOUR_OF_DAY,0);
+
+                //Date printDate = c.getTime();
+                //double TotalDemandGwhCorrected = 0.0;
+
+                while( currentMonth == c.get(Calendar.MONTH) ){
+                    currentDate = c.getTime();
+                    //Calibrate Demand Half Hour
+                    if(data.getHalfhour_demand_register().containsKey(currentDate)) {
+                        double demand = data.getHalfhour_demand_register().get(currentDate) * calibrationDemand;
+                        //TotalDemandGwhCorrected+=demand;
+                        data.getHalfhour_demand_register().put(currentDate, demand );
+                    }
+
+                    //Set the month for the forecast
+                    c.add(Calendar.MINUTE, 30);
+                }
+                //TotalDemandGwhCorrected = TotalDemandGwhCorrected / 2000.0;
+                //System.out.println(printDate+", "+TotalDemandGWh+", "+TotalDemandGwhCorrected+", "+TotalConsumptionGWh+", "+(calibrationDemand-1.0)*100.0 + "%");
+
+                //reset counter and update current month
+                TotalMw = 0.0;
+                currentMonth = c.get(Calendar.MONTH);
+
+                c.set(Calendar.MINUTE,0);
+                c.set(Calendar.HOUR_OF_DAY,0);
+                dateConsumption = c.getTime();
+
+            }
+            currentDate = c.getTime();
+
+
+            //ForecastDemand Half Hour
+            if(data.getHalfhour_demand_register().containsKey(currentDate)) {
+                TotalMw += data.getHalfhour_demand_register().get(currentDate);
+            }
+
+            //Set the month for the forecast
+            c.add(Calendar.MINUTE, 30);
+
+        }
 
     }
 
@@ -1001,10 +1089,17 @@ public class LoadData implements java.io.Serializable {
         createDemandForecast(data);
 
         /**
-         * Create Consumption from 30min Spot Demand
+         * Calibrate historic 30min Spot Demand to match consumption
          * */
 
-        createConsumptionFromDemand(data);
+        calibrate30minHistoricDemandFromConsumption(data);
+
+        /**
+         * Create Consumption Forecast from 30min Spot Demand Forecast
+         * */
+
+        createForecastConsumptionFromDemand(data);
+
 
         /**
          * Load domestic consumers
@@ -1108,6 +1203,7 @@ public class LoadData implements java.io.Serializable {
 
             data.getMonthly_consumption_register().put(month, newMwh);
         }
+
 
     }
 

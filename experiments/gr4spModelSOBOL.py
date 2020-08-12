@@ -23,7 +23,7 @@ def getModel():
     #model.constants += [Constant('priceChangePercentageOcgt', 0)]
     model.constants += [Constant('priceChangePercentageCcgt', 0)]
     model.constants += [Constant('capacityFactorChangeBattery', 0)]
-    model.constants += [Constant('capacityFactorChangeOcgt', 0)]
+    #model.constants += [Constant('capacityFactorChangeOcgt', 0)]
     model.constants += [Constant('capacityFactorChangeCcgt', 0)]
     model.constants += [Constant('capacityFactorChangeWind', 0)]
     #model.constants += [Constant('scheduleMinCapMarketGen', 30)]
@@ -79,7 +79,7 @@ def getModel():
     # variation of min and max capacity factors as a percentage of current values
     # model.levers += [IntegerParameter('capacityFactorChangeBattery', -10, 10)]
     model.uncertainties += [IntegerParameter('capacityFactorChangeBrownCoal', -10, 11)]
-    # model.levers += [IntegerParameter('capacityFactorChangeOcgt', -10, 10)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeOcgt', -10, 11)]
     # model.levers += [IntegerParameter('capacityFactorChangeCcgt', -10, 10)]
     # model.levers += [IntegerParameter('capacityFactorChangeWind', -10, 10)]
     model.uncertainties += [IntegerParameter('capacityFactorChangeWater', -10, 11)]
