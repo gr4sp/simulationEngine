@@ -60,9 +60,10 @@ forecast:
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
 
   #This is applied to the tariffs (see EndUser class). If price rises in year baseYear+1 is 2%, then annualCpi should be 0.02.
-  #AnnualCPI corrects the value given as inflation below.
-  annualCpi: 0.03
+  #https://www.rateinflation.com/consumer-price-index/australia-historical-cpi.php?start-year=1948&end-year=2019
+  # median change of CPI between 1948 to 2019
 
+  annualCpi: 0.033
   #true means new generation that has been publically announced but not committed is included.
   includePublicallyAnnouncedGen: false #true
   #Rollout period of announced generation: including "Publically announced", "Emerging", "Committed",
@@ -97,11 +98,11 @@ policy:
   endConsumerTariff: AVG
 
   # Apply inflation to the max and min value used by generators to define the LCOE
-  annualInflation: 0.03
+  annualInflation: 0.033
 
 # market settings
 arena:
-
+  #Regulation https://www.aemc.gov.au/sites/default/files/2020-06/NER%20-%20v142%20-%20Chapter%202.pdf
   scheduled:
     # primary/secondary/none
     spotMarket: primary
@@ -123,7 +124,7 @@ generators:
   # Default parametres are used for generators with minimum participation (less than 2 generators of this type).
   # E.g. Municipal Solid Waste, Bagasse, other. Default will be similar to other Biomass numbers e.g. Dry Wood
 
-  #TODO: battery storage LCOE? only discharge
+  #TODO: battery storage LCOE. Only discharge
 
   Default:
     #LCOE Price Parameters
@@ -156,7 +157,8 @@ generators:
         linRateEF: 0.0
         expRateEF: 0.0
 
-  # Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National greenhouse and energy data
+  # Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data
+  #greenhouse and energy data
   # or data for the usual CO2EII for landfill biogas methane: 0.062
   Biogas:
     #LCOE Price Parameters
@@ -165,7 +167,7 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
-    maxCapacityFactorSummer: 0
+    maxCapacityFactorSummer: 0.9
     # Emission Factor List, by increasing start year
     emissionFactors:
       - startYear: 1800
@@ -182,7 +184,7 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
-    maxCapacityFactorSummer: 0
+    maxCapacityFactorSummer: 0.9
     # Emission Factor List, by increasing start year
     emissionFactors:
       - startYear: 1800
@@ -197,7 +199,7 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
-    maxCapacityFactorSummer: 0
+    maxCapacityFactorSummer: 0.9
     # Emission Factor List, by increasing start year
     emissionFactors:
       - startYear: 1800
@@ -213,11 +215,11 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
-    maxCapacityFactorSummer: 0
+    maxCapacityFactorSummer: 0.9
     # Emission Factor List, by increasing start year
     emissionFactors:
       - startYear: 1950
-        minEF: 0.06
+        minEF: 0.062
         linRateEF: 0.0 # 0.01
         expRateEF: 0.0 # 0.151
 
@@ -289,11 +291,11 @@ generators:
   Water:
     #LCOE Price Parameters
     priceMinMWh: 22
-    priceMaxMWh: 150
+    priceMaxMWh: 100
     # Capacity Factor
     minCapacityFactor: 0.05
-    maxCapacityFactor: 0.90
-    maxCapacityFactorSummer: 0.90
+    maxCapacityFactor: 0.4
+    maxCapacityFactorSummer: 0.3
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1800
