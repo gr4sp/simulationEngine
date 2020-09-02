@@ -107,7 +107,7 @@ public class SpotMarket implements java.io.Serializable{
 
 
     public void computeMarketPrice(double demand, Gr4spSim state, Date currentTime) {
-        Gr4spSim data = (Gr4spSim) state;
+        Gr4spSim data = state;
 
         this.demand = demand;
         this.unmetDemand = 0;
