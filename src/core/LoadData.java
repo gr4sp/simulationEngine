@@ -955,7 +955,7 @@ public class LoadData implements java.io.Serializable {
     private static void calibrate30minHistoricDemandFromConsumption(Gr4spSim data) {
 
         //Set current Date
-        Date currentDate = null;
+        Date currentDate;
         Date endCalibrationDate = null;
         Calendar c = Calendar.getInstance();
 
