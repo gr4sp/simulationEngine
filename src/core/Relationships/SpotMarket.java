@@ -160,14 +160,16 @@ public class SpotMarket implements java.io.Serializable{
             * However this pattern blurs with the years, therefore it is decided to assign the median of 29% for the BAU */
             marketPrice *= 1.0 + data.settings.getImportPriceFactor();
             unmetDemand = demand - offered;
-            Generator lastgen = (Generator) successfulBids.get(successfulBids.size()-1).asset;
-            Bid lastBid = successfulBids.get(successfulBids.size()-1);
-            data.LOGGER.warning(currentTime + " - " + this.name+" - Unmet Demand (imported) " + unmetDemand +
-                    "- at the import price of " + marketPrice + " $/MWh." +
-                    "The highest bidder: " + lastgen.getFuelSourceDescriptor() + "-"
-                    + lastgen.getTechTypeDescriptor() + " - " + lastgen.getName()+
-                    " - " + lastgen.getOwnerName() +" at " + lastBid.dollarMWh +" $/MWh."
-            );
+            if( successfulBids.size() > 0 ) {
+                Generator lastgen = (Generator) successfulBids.get(successfulBids.size() - 1).asset;
+                Bid lastBid = successfulBids.get(successfulBids.size() - 1);
+                data.LOGGER.warning(currentTime + " - " + this.name + " - Unmet Demand (imported) " + unmetDemand +
+                        "- at the import price of " + marketPrice + " $/MWh." +
+                        "The highest bidder: " + lastgen.getFuelSourceDescriptor() + "-"
+                        + lastgen.getTechTypeDescriptor() + " - " + lastgen.getName() +
+                        " - " + lastgen.getOwnerName() + " at " + lastBid.dollarMWh + " $/MWh."
+                );
+            }
         }
 
         /**
