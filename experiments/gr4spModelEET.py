@@ -53,8 +53,8 @@ def getModel():
     model.uncertainties += [IntegerParameter('capacityFactorChangeOcgt', -20, 20)]
     model.uncertainties += [IntegerParameter('capacityFactorChangeCcgt', -5, 25)]
     model.uncertainties += [IntegerParameter('capacityFactorChangeWind', -10, 30)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeWater', -15, 15)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeSolar', -5, 15)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeWater', -15, 50)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeSolar', -5, 20)]
 
 # variation of contribution of networks, retail and other charges in the tariff
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 11, 45)]
