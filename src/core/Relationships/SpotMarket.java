@@ -154,9 +154,20 @@ public class SpotMarket implements java.io.Serializable{
         }
 
         if(Math.ceil(offered) < Math.floor(demand) ) {
-            marketPrice *= 1.2;
+            /* The median contribution from imports in the historic wholesale has been 29%
+            * The import price varies significantly over the historic period analysed in OpenNem.
+            * In the first years of analysis a pattern of more expensive import price in summer is evident.
+            * However this pattern blurs with the years, therefore it is decided to assign the median of 29% for the BAU */
+            marketPrice *= 1.0 + data.settings.getImportPriceFactor();
             unmetDemand = demand - offered;
-            data.LOGGER.warning(currentTime + " - " + this.name+" - Unmet Demand (imported) " + unmetDemand );
+            Generator lastgen = (Generator) successfulBids.get(successfulBids.size()-1).asset;
+            Bid lastBid = successfulBids.get(successfulBids.size()-1);
+            data.LOGGER.warning(currentTime + " - " + this.name+" - Unmet Demand (imported) " + unmetDemand +
+                    "- at the import price of " + marketPrice + " $/MWh." +
+                    "The highest bidder: " + lastgen.getFuelSourceDescriptor() + "-"
+                    + lastgen.getTechTypeDescriptor() + " - " + lastgen.getName()+
+                    " - " + lastgen.getOwnerName() +" at " + lastBid.dollarMWh +" $/MWh."
+            );
         }
 
         /**

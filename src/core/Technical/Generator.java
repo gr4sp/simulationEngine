@@ -478,9 +478,9 @@ public class Generator implements java.io.Serializable, Asset {
     }
 
 
-    public void setFuelSourceDescriptor(String fuelSourceDescriptor) {
-        this.fuelSourceDescriptor = fuelSourceDescriptor;
-    }
+    public void setFuelSourceDescriptor(String fuelSourceDescriptor) { this.fuelSourceDescriptor = fuelSourceDescriptor; }
+
+    public String getOwnerName(){ return ownerName; }
 
 
     public String getTechTypeDescriptor() {

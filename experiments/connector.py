@@ -126,11 +126,11 @@ def getResults(outputID, experimentId):
 
 def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV,
              domesticConsumptionPercentage, includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
-             learningCurve, priceChangePercentageBattery, priceChangePercentageBrownCoal, priceChangePercentageOcgt,
-             priceChangePercentageCcgt, priceChangePercentageWind, priceChangePercentageWater,
+             learningCurve, importPriceFactor, priceChangePercentageBattery, priceChangePercentageBrownCoal, priceChangePercentageOcgt,
+             priceChangePercentageCcgt, priceChangePercentageWind, priceChangePercentageWater, priceChangePercentageSolar,
              capacityFactorChangeBattery, capacityFactorChangeBrownCoal, capacityFactorChangeOcgt,
-             capacityFactorChangeCcgt, capacityFactorChangeWind, capacityFactorChangeWater, wholesaleTariffContribution, scheduleMinCapMarketGen,
-             semiScheduleGenSpotMarket, semiScheduleMinCapMarketGen, nonScheduleGenSpotMarket,
+             capacityFactorChangeCcgt, capacityFactorChangeWind, capacityFactorChangeWater, capacityFactorChangeSolar, wholesaleTariffContribution,
+             scheduleMinCapMarketGen, semiScheduleGenSpotMarket, semiScheduleMinCapMarketGen, nonScheduleGenSpotMarket,
              nonScheduleMinCapMarketGen):
     startJVM()
 
@@ -177,6 +177,7 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.forecast.generatorRetirement = generatorRetirement
             gr4spObj.settings.forecast.technologicalImprovement = technologicalImprovement / 100.0
             gr4spObj.settings.forecast.learningCurve = learningCurve / 100.0
+            gr4spObj.settings.forecast.importPriceFactor = importPriceFactor / 100.0
 
             # LCOEs and CFs variations
 
@@ -228,6 +229,14 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
                     100.0 + priceChangePercentageWater) / 100.0;
             gr4spObj.settings.setPriceMaxMWh('Water', '', water_max_price)
 
+            solar_min_price = gr4spObj.settings.getPriceMinMWh('Solar', '') * (
+                    100.0 + priceChangePercentageSolar) / 100.0;
+            gr4spObj.settings.setPriceMinMWh('Solar', '', solar_min_price)
+
+            solar_max_price = gr4spObj.settings.getPriceMaxMWh('Solar', '') * (
+                    100.0 + priceChangePercentageSolar) / 100.0;
+            gr4spObj.settings.setPriceMaxMWh('Solar', '', solar_max_price)
+
             # Capacity factors
 
             brown_coal_min_cf = gr4spObj.settings.getMinCapacityFactor('Brown Coal', '') * (
@@ -277,6 +286,15 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             water_max_cf = gr4spObj.settings.getMaxCapacityFactor('Water', '') * (
                     100.0 + capacityFactorChangeWater) / 100.0;
             gr4spObj.settings.setMaxCapacityFactor('Water', '', water_max_cf)
+
+            solar_min_cf = gr4spObj.settings.getMinCapacityFactor('Solar', '') * (
+                    100.0 + capacityFactorChangeSolar) / 100.0;
+            gr4spObj.settings.setMinCapacityFactor('Solar', '', solar_min_cf)
+
+            solar_max_cf = gr4spObj.settings.getMaxCapacityFactor('Solar', '') * (
+                    100.0 + capacityFactorChangeSolar) / 100.0;
+            gr4spObj.settings.setMaxCapacityFactor('Solar', '', solar_max_cf)
+
 
             # tariff components
             gr4spObj.settings.setUsageTariff('wholesaleContribution', (float) (wholesaleTariffContribution / 100.0))

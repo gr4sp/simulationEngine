@@ -128,6 +128,8 @@ class ForecastSetting implements java.io.Serializable {
     public double learningCurve;
     public int generationRolloutPeriod;
     public double solarInstallCapacity;
+    public double importPriceFactor;
+
 
 }
 
@@ -378,6 +380,7 @@ public class Settings implements java.io.Serializable {
     }
 
 
+
     /**
      *  Forecast
      */
@@ -392,7 +395,7 @@ public class Settings implements java.io.Serializable {
 
     public int getBaseYearConsumptionForecast() { return forecast.baseYear;  }
 
-    public String getStartDemandForcast() {
+    public String getStartDemandForecast() {
         return forecast.startDemandForecast;
     }
 
@@ -410,7 +413,8 @@ public class Settings implements java.io.Serializable {
 
     public int getForecastGenerationRolloutPeriod() { return forecast.generationRolloutPeriod; }
 
-
     public double getForecastSolarInstallCapacity() { return forecast.solarInstallCapacity; }
+
+    public double getImportPriceFactor() { return forecast.importPriceFactor; }
 
 }
