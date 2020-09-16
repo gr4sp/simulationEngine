@@ -30,23 +30,31 @@ def getModel():
     model.uncertainties += [IntegerParameter('generatorRetirement', -5, 5)]
     model.uncertainties += [IntegerParameter('technologicalImprovement', 0, 10)] #percentage
     model.uncertainties += [IntegerParameter('learningCurve', 0, 10)] #percentage
+    model.uncertainties += [IntegerParameter('importPriceFactor', -60, 15)] #percentage from historic variations observed in OpenNem
 
 # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
-# This could represent a subsidy
+# This could represent a subsidy. A constant variability was assumed before for all the price changes of -30 to 30; and
+# for CF of -10 to 10 percent.
+# Last update (16/09/2020) A more specific set bounds is defined depending on the technology type.
+# Max and min values, both for LCOEs and CFs were found in different sources
+# (e.g. https://aemo.com.au/-/media/files/electricity/nem/planning_and_forecasting/inputs-assumptions-methodologies/2019/csiro-gencost2019-20_draftforreview.pdf?la=en).
+
     model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -30, 30)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -10, 60)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -10, 10)]
     model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageWind', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageWater', -30, 30)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageWind', -30, 20)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageWater', -20, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageSolar', -30,30)]
 
 # variation of min and max capacity factors as a percentage of current values
     model.uncertainties += [IntegerParameter('capacityFactorChangeBattery', -10, 10)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeBrownCoal', -10, 10)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeOcgt', -10, 10)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeCcgt', -10, 10)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeWind', -10, 10)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeWater', -10, 10)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeBrownCoal', -30, 5)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeOcgt', -20, 20)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeCcgt', -5, 25)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeWind', -10, 30)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeWater', -15, 15)]
+    model.uncertainties += [IntegerParameter('capacityFactorChangeSolar', -5, 15)]
 
 # variation of contribution of networks, retail and other charges in the tariff
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 11, 45)]

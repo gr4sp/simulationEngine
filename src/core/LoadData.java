@@ -898,7 +898,7 @@ public class LoadData implements java.io.Serializable {
         Date currentDate = null;
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            currentDate = stringToDate.parse(data.settings.getStartDemandForcast());
+            currentDate = stringToDate.parse(data.settings.getStartDemandForecast());
         } catch (ParseException e) {
             data.LOGGER.warning(e.toString());
         }
@@ -952,7 +952,7 @@ public class LoadData implements java.io.Serializable {
     }
 
     //Select Consumption
-    private static void calibrate30minHistoricDemandFromConsumption(Gr4spSim data) {
+    private static void     calibrate30minHistoricDemandFromConsumption(Gr4spSim data) {
 
         //Set current Date
         Date currentDate;
@@ -961,7 +961,7 @@ public class LoadData implements java.io.Serializable {
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            currentDate = stringToDate.parse(data.settings.getStartDemandForcast());
+            currentDate = stringToDate.parse(data.settings.getStartDemandForecast());
             c.setTime(currentDate);
             endCalibrationDate = c.getTime();
             currentDate = stringToDate.parse(data.settings.getStartDateSpotMarket());
