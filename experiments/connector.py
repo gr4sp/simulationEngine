@@ -90,7 +90,7 @@ def getResults(outputID, experimentId):
     # # Prepare time series
     timesYear = results['Time (Year)'].to_numpy()
     consumptionYear = results['Consumption (KWh) per household'].to_numpy()
-    tariffsYear = results[' Avg Tariff (c/KWh) per household'].to_numpy()
+    tariffsYear = results['Avg Tariff (c/KWh) per household'].to_numpy()
     wholesaleYear = results['Wholesale ($/MWh)'].to_numpy()
     ghgYear = results['GHG Emissions (tCO2-e) per household'].to_numpy()
     numConsumersYear = results['Number of Domestic Consumers (households)'].to_numpy()
