@@ -1220,13 +1220,13 @@ public class SaveData implements Steppable, java.io.Serializable {
             String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (MWh)", "Tariff (c/KWh)", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
             csvWriter.writeNext(headerRecord);
 
-            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
+            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
                                         "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
                                         "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
 
             csvWriterYear.writeNext(headerRecordYear);
 
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
                                             "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
                                             "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
 
@@ -1776,7 +1776,7 @@ public class SaveData implements Steppable, java.io.Serializable {
             SimpleDateFormat dateToYear = new SimpleDateFormat("yyyy");
 
             //Store header Gen Productions
-            ArrayList<String> headerYear = new ArrayList<String>( Arrays.asList("Time (Year)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
+            ArrayList<String> headerYear = new ArrayList<String>( Arrays.asList("Time (Year)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
                     "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
@@ -1807,7 +1807,7 @@ public class SaveData implements Steppable, java.io.Serializable {
 
             csvWriterYear.writeNext(hy);
 
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", " Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
                     "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",

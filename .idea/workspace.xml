@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90880ae2-9667-4e99-ba18-82531448e185" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/85733165-0e5b-4b9f-ae7a-923428b289f4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/85733165-0e5b-4b9f-ae7a-923428b289f4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/analysis/b_and_w_plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/analysis/b_and_w_plotting.py" afterDir="false" />
@@ -11,76 +13,49 @@
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/evaluators.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/evaluators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/outcomes.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/outcomes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/salib_samplers.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/salib_samplers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/samplers.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/em_framework/samplers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/util/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/EMAworkbench/ema_workbench/util/utilities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/connectorSOBOL.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/connectorSOBOL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/connector.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/connector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/gr4spModelEET.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/gr4spModelEET.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_EET-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_EET-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_PRIM-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_PRIM-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_SOBOL-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_SOBOL-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_Spiders-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/ema_gr4sp_Spiders-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/gr4sp_energy_vulnerability_IMAP-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/.ipynb_checkpoints/gr4sp_energy_vulnerability_IMAP-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_PRIM.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_PRIM.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_SOBOL.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_SOBOL.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/notebookMatisse/ema_import_from_matisse.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookMatisse/ema_import_from_matisse.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulationSettings/BAUVIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/simulationSettings/BAUVIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_Spiders.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/ema_gr4sp_Spiders.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/gr4sp_energy_vulnerability_IMAP.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/gr4sp_energy_vulnerability_IMAP.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/data/EE__mu_star.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/data/EE__mu_star.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/data/EE__sigma.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/data/EE__sigma.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/data/EE__significant_max.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/data/EE__significant_max.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/data/EE__significant_median.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/data/EE__significant_median.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_density_GHGYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_density_GHGYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_density_secondarySpotProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_density_tariffsYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_density_wholesalePriceYear.png" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_density_wholesalePriceYear.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_line_density_GHGYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_line_density_secondarySpotProductionYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_line_density_tariffsYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/notebookGr4sp/outputs/figs/fig_envelope_line_density_wholesalePriceYear.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/policies.lhs.object" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/policies.lhs.object" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/policies.sobol.object" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/policies.sobol.object" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/runExperimentsEET.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/runExperimentsEET.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/settingsExperiments.json" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/settingsExperiments.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/simulationData/1948_2019_Inflation_historic_Australia.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/simulationData/1948_2019_Inflation_historic_Australia.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/uncertainties.morris.object" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/uncertainties.morris.object" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/uncertainties.sobol.object" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/uncertainties.sobol.object" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulationSettings/VIC.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/simulationSettings/VIC.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/LoadData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/LoadData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Relationships/SpotMarket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Relationships/SpotMarket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/SaveData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/SaveData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/Technical/Generator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Technical/Generator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/settings/Settings.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_DATA_SOURCES" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <option name="HIDDEN_KINDS">
-      <set />
-    </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="postgres: database" type="162271b6:PgImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-    </expand>
-    <select />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="gr4sp" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -93,31 +68,38 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="65719883-4c47-4024-b29d-d82b40acc990" />
   <component name="ProjectId" id="1Y4IzCSsMO7VdgI1DvmeNKrfNEo" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DBE.Init.BalloonShown" value="true" />
     <property name="DatabaseDriversLRU" value="sqlite&#10;sqlite.xerial&#10;postgresql" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="true" />
+    <property name="JavaPackageFindUsagesOptions.isSearchForTextOccurrences" value="false" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552259475054" />
     <property name="database.console.LAST_STATE" value="false" />
+    <property name="database.data.extractors.current.export.id" value="Comma-separated (CSV)_id" />
+    <property name="database.data.extractors.current.id" value="Comma-separated (CSV)_id" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.12643678" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="sql.rename.search.for.storage.occurrences" value="true" />
   </component>
-  <component name="RunManager" selected="Application.Gr4spSimUI">
+  <component name="RunManager" selected="Application.Gr4spSim">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
@@ -197,11 +179,12 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Gr4spSimUI" />
         <item itemvalue="Application.Gr4spSim" />
+        <item itemvalue="Application.Gr4spSimUI" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -265,6 +248,47 @@
       <workItem from="1589766451784" duration="40000" />
       <workItem from="1589768263602" duration="2592000" />
       <workItem from="1590822847549" duration="26000" />
+      <workItem from="1590988179888" duration="11569000" />
+      <workItem from="1591174229342" duration="17493000" />
+      <workItem from="1591932751912" duration="6314000" />
+      <workItem from="1592383880808" duration="53172000" />
+      <workItem from="1592910256469" duration="4095000" />
+      <workItem from="1593142592663" duration="2490000" />
+      <workItem from="1593434098143" duration="6095000" />
+      <workItem from="1593477801571" duration="18608000" />
+      <workItem from="1593696277430" duration="203000" />
+      <workItem from="1593696507071" duration="1133000" />
+      <workItem from="1593736092109" duration="7213000" />
+      <workItem from="1594546053425" duration="1154000" />
+      <workItem from="1594888757400" duration="2029000" />
+      <workItem from="1594967152097" duration="2067000" />
+      <workItem from="1595252075600" duration="3278000" />
+      <workItem from="1595388222834" duration="559000" />
+      <workItem from="1595388800583" duration="33000" />
+      <workItem from="1595389697801" duration="2168000" />
+      <workItem from="1595392269962" duration="30715000" />
+      <workItem from="1595509900900" duration="1341000" />
+      <workItem from="1595513347881" duration="1502000" />
+      <workItem from="1595568236641" duration="660000" />
+      <workItem from="1595576481241" duration="619000" />
+      <workItem from="1595909145803" duration="30560000" />
+      <workItem from="1596443014941" duration="13100000" />
+      <workItem from="1596874788298" duration="18674000" />
+      <workItem from="1597109546442" duration="20548000" />
+      <workItem from="1597880317787" duration="734000" />
+      <workItem from="1597923770104" duration="473000" />
+      <workItem from="1598338119702" duration="423000" />
+      <workItem from="1598338682502" duration="3251000" />
+      <workItem from="1598507916831" duration="18023000" />
+      <workItem from="1598929013804" duration="1342000" />
+      <workItem from="1599058528474" duration="3123000" />
+      <workItem from="1599189096391" duration="1299000" />
+      <workItem from="1599529636043" duration="7840000" />
+      <workItem from="1599644471221" duration="10200000" />
+      <workItem from="1599704540524" duration="36134000" />
+      <workItem from="1599886014501" duration="37829000" />
+      <workItem from="1600048964078" duration="33609000" />
+      <workItem from="1600247500864" duration="1329000" />
     </task>
     <servers />
   </component>
@@ -278,113 +302,200 @@
     </todo-panel>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1368" y="-248" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582607114961">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
-    </state>
-    <state x="-1368" y="-248" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582607114961" />
-    <state x="592" y="200" key="FileChooserDialogImpl" timestamp="1590822866195">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="-1180" y="-177" key="FileChooserDialogImpl/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1583911276085" />
-    <state x="2660" y="260" key="FileChooserDialogImpl/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589185598297" />
-    <state x="592" y="200" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1590822866195" />
-    <state width="527" height="910" key="GridCell.Tab.0.bottom" timestamp="1589359953670">
+    <state x="2333" y="181" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592478863594">
       <screen x="1920" y="8" width="1920" height="1040" />
     </state>
-    <state width="534" height="912" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582719944369" />
-    <state width="527" height="910" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589359953670" />
-    <state width="419" height="694" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1584348084687" />
-    <state width="527" height="910" key="GridCell.Tab.0.center" timestamp="1589359953670">
-      <screen x="1920" y="8" width="1920" height="1040" />
+    <state x="2333" y="181" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592478863594" />
+    <state x="764" y="219" key="#com.intellij.ide.util.MemberChooser" timestamp="1600225942745">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="534" height="912" key="GridCell.Tab.0.center/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582719944369" />
-    <state width="527" height="910" key="GridCell.Tab.0.center/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589359953670" />
-    <state width="419" height="694" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1584348084687" />
-    <state width="527" height="910" key="GridCell.Tab.0.left" timestamp="1589359953670">
-      <screen x="1920" y="8" width="1920" height="1040" />
+    <state x="2684" y="227" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592387351382" />
+    <state x="764" y="219" key="#com.intellij.ide.util.MemberChooser/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600225942745" />
+    <state x="560" y="186" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1600243392210">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="534" height="912" key="GridCell.Tab.0.left/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582719944368" />
-    <state width="527" height="910" key="GridCell.Tab.0.left/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589359953670" />
-    <state width="419" height="694" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1584348084687" />
-    <state width="527" height="910" key="GridCell.Tab.0.right" timestamp="1589359953670">
-      <screen x="1920" y="8" width="1920" height="1040" />
+    <state x="560" y="186" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600243392210" />
+    <state x="689" y="265" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1595472163268">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="534" height="912" key="GridCell.Tab.0.right/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582719944369" />
-    <state width="527" height="910" key="GridCell.Tab.0.right/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1589359953670" />
-    <state width="419" height="694" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1584348084687" />
-    <state width="466" height="662" key="GridCell.Tab.1.bottom" timestamp="1582637620674">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
+    <state x="689" y="265" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595472163268" />
+    <state x="706" y="373" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1600240279593">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="466" height="662" key="GridCell.Tab.1.bottom/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582637620674" />
-    <state width="466" height="662" key="GridCell.Tab.1.center" timestamp="1582637620674">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
+    <state x="706" y="373" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600240279593" />
+    <state x="639" y="273" key="DUMP_DIALOG_DIMENSION_KEY" timestamp="1598865521155">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="466" height="662" key="GridCell.Tab.1.center/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582637620674" />
-    <state width="466" height="662" key="GridCell.Tab.1.left" timestamp="1582637620674">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
+    <state x="639" y="273" key="DUMP_DIALOG_DIMENSION_KEY/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1598865521155" />
+    <state width="889" height="466" key="DebuggerActiveHint" timestamp="1595469264194">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="466" height="662" key="GridCell.Tab.1.left/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582637620674" />
-    <state width="466" height="662" key="GridCell.Tab.1.right" timestamp="1582637620674">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
+    <state width="889" height="466" key="DebuggerActiveHint/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595469264194" />
+    <state x="740" y="252" key="FileChooserDialogImpl" timestamp="1598865553161">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="466" height="662" key="GridCell.Tab.1.right/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1582637620674" />
-    <state x="249" y="0" key="SettingsEditor" timestamp="1582757579071">
+    <state x="740" y="252" key="FileChooserDialogImpl/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1598865553161" />
+    <state x="2512" y="202" key="FileChooserDialogImpl/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1592884153856" />
+    <state width="389" height="910" key="GridCell.Tab.0.bottom" timestamp="1600247985716">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="374" height="700" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488428011" />
+    <state width="1491" height="129" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599962405296" />
+    <state width="389" height="910" key="GridCell.Tab.0.bottom/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600247985716" />
+    <state width="1491" height="86" key="GridCell.Tab.0.bottom/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1595467394162" />
+    <state width="389" height="910" key="GridCell.Tab.0.center" timestamp="1600247985715">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="374" height="700" key="GridCell.Tab.0.center/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488428011" />
+    <state width="1491" height="129" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1599962405295" />
+    <state width="389" height="910" key="GridCell.Tab.0.center/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600247985715" />
+    <state width="1491" height="86" key="GridCell.Tab.0.center/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1595467394162" />
+    <state width="389" height="910" key="GridCell.Tab.0.left" timestamp="1600247985715">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="374" height="700" key="GridCell.Tab.0.left/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488428011" />
+    <state width="1491" height="129" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1599962405295" />
+    <state width="389" height="910" key="GridCell.Tab.0.left/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600247985715" />
+    <state width="1491" height="86" key="GridCell.Tab.0.left/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1595467394162" />
+    <state width="389" height="910" key="GridCell.Tab.0.right" timestamp="1600247985716">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="374" height="700" key="GridCell.Tab.0.right/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592488428011" />
+    <state width="1491" height="129" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1599962405296" />
+    <state width="389" height="910" key="GridCell.Tab.0.right/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600247985716" />
+    <state width="1491" height="86" key="GridCell.Tab.0.right/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1595467394162" />
+    <state width="389" height="910" key="GridCell.Tab.1.bottom" timestamp="1600248014844">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="500" height="703" key="GridCell.Tab.1.bottom/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592398007933" />
+    <state width="326" height="543" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1593840981426" />
+    <state width="389" height="910" key="GridCell.Tab.1.bottom/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600248014844" />
+    <state width="396" height="491" key="GridCell.Tab.1.bottom/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1592904542337" />
+    <state width="389" height="910" key="GridCell.Tab.1.center" timestamp="1600248014844">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="500" height="703" key="GridCell.Tab.1.center/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592398007932" />
+    <state width="326" height="543" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1593840981426" />
+    <state width="389" height="910" key="GridCell.Tab.1.center/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600248014844" />
+    <state width="396" height="491" key="GridCell.Tab.1.center/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1592904542337" />
+    <state width="389" height="910" key="GridCell.Tab.1.left" timestamp="1600248014844">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="500" height="703" key="GridCell.Tab.1.left/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592398007932" />
+    <state width="326" height="543" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1593840981426" />
+    <state width="389" height="910" key="GridCell.Tab.1.left/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600248014844" />
+    <state width="396" height="491" key="GridCell.Tab.1.left/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1592904542337" />
+    <state width="389" height="910" key="GridCell.Tab.1.right" timestamp="1600248014844">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="500" height="703" key="GridCell.Tab.1.right/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592398007933" />
+    <state width="326" height="543" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1593840981426" />
+    <state width="389" height="910" key="GridCell.Tab.1.right/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1600248014844" />
+    <state width="396" height="491" key="GridCell.Tab.1.right/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1592904542337" />
+    <state x="539" y="261" key="IDE.errors.dialog" timestamp="1598505952790">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="539" y="261" key="IDE.errors.dialog/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1598505952790" />
+    <state x="2196" y="0" key="SettingsEditor" timestamp="1592830235306">
+      <screen x="1920" y="0" width="1536" height="832" />
+    </state>
+    <state x="2196" y="0" key="SettingsEditor/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1592830235306" />
+    <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1599811255664">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="968" height="528" key="XDebugger.FullValuePopup/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592388947347" />
+    <state width="968" height="528" key="XDebugger.FullValuePopup/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1599811255664" />
+    <state x="806" y="408" width="328" height="237" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1595472227913">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="806" y="408" width="328" height="237" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595472227913" />
+    <state x="435" y="83" key="com.intellij.database.dbimport.ImportDialog" timestamp="1597156661519">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2355" y="91" key="com.intellij.database.dbimport.ImportDialog/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592472673685" />
+    <state x="435" y="83" key="com.intellij.database.dbimport.ImportDialog/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1597156661519" />
+    <state x="2268" y="66" key="com.intellij.database.dbimport.ImportDialog/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1592900171338" />
+    <state x="689" y="323" key="com.intellij.database.dbimport.ImportUtil.MyDialog" timestamp="1595514239693">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2609" y="331" key="com.intellij.database.dbimport.ImportUtil.MyDialog/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592221661261" />
+    <state x="689" y="323" key="com.intellij.database.dbimport.ImportUtil.MyDialog/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595514239693" />
+    <state x="755" y="343" width="410" height="349" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog" timestamp="1593678381726">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="755" y="343" width="410" height="349" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1593678381726" />
+    <state x="0" y="181" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1599531911378">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="249" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1582757579071" />
-    <state x="348" y="66" key="com.intellij.database.dbimport.ImportDialog" timestamp="1584347577669">
+    <state x="2555" y="237" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592386883279" />
+    <state x="0" y="181" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1599531911378" />
+    <state x="0" y="229" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1598606025287" />
+    <state x="2538" y="166" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1592387316334">
+      <screen x="1920" y="8" width="1920" height="1040" />
+    </state>
+    <state x="2538" y="166" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592387316334" />
+    <state x="296" y="121" key="new project wizard" timestamp="1595509219033">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="296" y="121" key="new project wizard/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1595509219033" />
+    <state x="493" y="190" key="run.anything.popup" timestamp="1599960015802">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="348" y="66" key="com.intellij.database.dbimport.ImportDialog/0.0.1536.824@0.0.1536.824" timestamp="1584347577669" />
-    <state x="305" y="52" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1584346257782">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="493" y="190" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1599960015802" />
+    <state x="616" y="240" key="run.anything.popup/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1597149648238" />
+    <state x="623" y="225" width="840" height="679" key="search.everywhere.popup" timestamp="1596549754984">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="305" y="52" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1584346257782" />
-    <state x="-1304" y="26" key="run.anything.popup" timestamp="1583916831993">
-      <screen x="-1920" y="-429" width="1920" height="1040" />
-    </state>
-    <state x="-1304" y="26" key="run.anything.popup/0.0.1536.824/-1920.-429.1920.1040@-1920.-429.1920.1040" timestamp="1583916831993" />
+    <state x="2543" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1920.8.1920.1040@1920.8.1920.1040" timestamp="1592479241616" />
+    <state x="623" y="225" width="840" height="679" key="search.everywhere.popup/1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596549754984" />
+    <state x="2418" y="180" width="672" height="543" key="search.everywhere.popup/1920.0.1536.832/0.0.1920.1040@1920.0.1536.832" timestamp="1592830286810" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/core/Gr4spSimUI.java</url>
-          <line>191</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$PROJECT_DIR$/src/core/Policies/SimPolicies.java</url>
+          <line>124</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/core/Relationships/Arena.java</url>
-          <line>429</line>
-          <option name="timeStamp" value="19" />
+          <line>625</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/core/Relationships/SpotMarket.java</url>
+          <line>155</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/core/Relationships/SpotMarket.java</url>
+          <line>164</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="f.getAbsolutePath()" language="JAVA" />
+        <watch expression="data.settings" language="JAVA" />
+        <watch expression="spprimaggseries.getItemCount()" language="JAVA" />
+        <watch expression="cseries.getItemCount()" language="JAVA" />
+        <watch expression="spotArena.getTariff(simState) " language="JAVA" />
+        <watch expression="avgWholesalePrice / wholesalePriceComponent" language="JAVA" />
+        <watch expression="c.get(Calendar.MONTH)" language="JAVA" />
+        <watch expression="c.getTime()" language="JAVA" />
+        <watch expression="avgMonthlyDemandPrimarySpot * num_half_hours / 2000.0" language="JAVA" />
+        <watch expression="marketPrice" language="JAVA" />
+        <watch expression="data.settings.getImportPriceFactor()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="watch">
-      <expression>
-        <expression-string>f.getAbsolutePath()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>spm_register.containsKey(idSpmActor)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
   </component>
 </project>
