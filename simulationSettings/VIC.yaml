@@ -10,7 +10,7 @@ reportGeneration: "light"
 #OFF: no logging at all
 #WARNING: logs when off market covers all demand, or when there is unmet demand
 
-logLevel: "ON"
+logLevel: "OFF"
 
 simulationDates:
 

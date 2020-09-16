@@ -49,4 +49,4 @@ if __name__ == '__main__':
     datekey = today.strftime("%Y-%b-%d")
     from EMAworkbench.ema_workbench import save_results
 
-    save_results(results, r'./simulationData/gr4sp_' + datekey + '.tar.gz')
+    save_results(results, r'./simulationData/gr4sp_SOBOL' + datekey + '.tar.gz')
