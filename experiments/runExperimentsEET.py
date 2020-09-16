@@ -20,20 +20,16 @@ if __name__ == '__main__':
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    with MultiprocessingEvaluator(model,n_processes=1) as evaluator:
+    with MultiprocessingEvaluator(model,n_processes=79) as evaluator:
         ## EET
         ## Generate EET Policies, and save them into a file
-        results = evaluator.perform_experiments(scenarios=100, policies=0, uncertainty_sampling=MORRIS, generate_experiments_file_only=True)
+        #results = evaluator.perform_experiments(scenarios=100, policies=0, uncertainty_sampling=MORRIS, generate_experiments_file_only=True)
 
         # Run from file
-        # results = evaluator.perform_experiments(scenarios=1, policies=0, uncertainty_sampling='uncertainties.morris.object')
+        results = evaluator.perform_experiments(scenarios=1, policies=0, uncertainty_sampling='uncertainties.morris.object')
 
         # Sample using Morris
         #results = evaluator.perform_experiments(scenarios=100, policies=0, uncertainty_sampling=MORRIS) #levers + 1 * policies
-
-
-
-
 
 
         #Testing
@@ -56,4 +52,4 @@ if __name__ == '__main__':
     datekey = today.strftime("%Y-%b-%d")
     from EMAworkbench.ema_workbench import save_results
 
-    save_results(results, r'./simulationData/gr4sp_' + datekey + '.tar.gz')
+    save_results(results, r'./simulationData/gr4sp_EET' + datekey + '.tar.gz')
