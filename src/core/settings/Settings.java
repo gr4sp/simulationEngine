@@ -82,6 +82,8 @@ class GeneratorSettings implements java.io.Serializable {
     public List<EmissionFactor> emissionFactors;
     public SolarEfficiency solarEfficiency;
 
+    public double nameplateCapacityChange;
+
     public EmissionFactor selectEmissionFactor(int startYear) {
         int selectedEFidx = 0;
 
@@ -227,6 +229,13 @@ public class Settings implements java.io.Serializable {
         getGenSettings(fuelType, techType).marketPriceCap = price;
     }
 
+    public double getNameplateCapacityChange(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).nameplateCapacityChange;
+    }
+
+    public void setNameplateCapacityChange(String fuelType, String techType, double factor) {
+        getGenSettings(fuelType, techType).nameplateCapacityChange = factor;
+    }
 
     public double getMinCapacityFactor(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).minCapacityFactor;

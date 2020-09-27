@@ -1599,6 +1599,8 @@ public class LoadData implements java.io.Serializable {
                     expectedEndDate = cEndDate.getTime();
                 }
 
+                double nameplateCapacity = rs.getDouble("nameplate_capacity_mw") * data.settings.getNameplateCapacityChange(rs.getString("fuel_type"),rs.getString("technology_type"));
+
                 //Publically announced Generators are rolled out incrementally (each with capacity/rolloutYears)
                 //across a period specified in YAML settings.
                 String unit_status = rs.getString("unit_status");
@@ -1616,6 +1618,7 @@ public class LoadData implements java.io.Serializable {
                         }
                         cStartDate.add(Calendar.YEAR, year);
 
+
                         int idGen = (rs.getInt("asset_id") *1000) +year;
 
                         Generator gen = new Generator(
@@ -1626,7 +1629,7 @@ public class LoadData implements java.io.Serializable {
                                 rs.getString("owner_name"),
                                 rs.getString("technology_type"),
                                 rs.getString("fuel_type"),
-                                rs.getDouble("nameplate_capacity_mw") / rolloutPeriod,
+                                nameplateCapacity / rolloutPeriod,
                                 rs.getString("dispatch_type"),
                                 cStartDate.getTime(),
                                 expectedEndDate,
@@ -1660,7 +1663,7 @@ public class LoadData implements java.io.Serializable {
                             rs.getString("owner_name"),
                             rs.getString("technology_type"),
                             rs.getString("fuel_type"),
-                            rs.getDouble("nameplate_capacity_mw"),
+                            nameplateCapacity,
                             rs.getString("dispatch_type"),
                             rs.getDate("full_commercial_use_date"),
                             expectedEndDate,
