@@ -23,7 +23,7 @@ if __name__ == '__main__':
     with MultiprocessingEvaluator(model,n_processes=79) as evaluator:
         ## EET
         ## Generate EET Policies, and save them into a file
-        #results = evaluator.perform_experiments(scenarios=100, policies=0, uncertainty_sampling=MORRIS, generate_experiments_file_only=True)
+        #results = evaluator.perform_experiments(scenarios=200, policies=0, uncertainty_sampling=MORRIS, generate_experiments_file_only=True)
 
         # Run from file
         results = evaluator.perform_experiments(scenarios=1, policies=0, uncertainty_sampling='uncertainties.morris.object')
