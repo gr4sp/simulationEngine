@@ -80,8 +80,13 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     //Number of costumers
     HashMap<Date, Integer> monthly_domestic_consumers_register;
+
     //CPI conversion
     HashMap<Date, Float> cpi_conversion;
+
+    //Annual Inflation
+    HashMap<Integer, Float> annual_inflation;
+
 
     //Tariff contribution of the wholesale
     HashMap<Integer, Float> tariff_contribution_wholesale_register;
@@ -183,6 +188,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         monthly_generation_register = new HashMap<>();
         monthly_domestic_consumers_register = new HashMap<>();
         cpi_conversion = new HashMap<>();
+        annual_inflation = new HashMap<>();
         tariff_contribution_wholesale_register = new HashMap<>();
         halfhour_solar_exposure = new HashMap<>();
         solar_aggregated_kw = new HashMap<>();
@@ -343,6 +349,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     }
 
     public HashMap<Date, Float> getCpi_conversion() { return cpi_conversion; }
+
+    public HashMap<Integer, Float> getAnnual_inflation() { return annual_inflation; }
 
     public HashMap<Integer, Float> getTariff_contribution_wholesale_register() { return tariff_contribution_wholesale_register; }
 
@@ -860,6 +868,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         LoadData.selectArena(this);
         LoadData.selectTariffs(this, startDate, endDate, areaCode);
+        LoadData.selectInflation( this );
 
         LoadData.selectDemandHalfHour(this, startDate, endDate);
         LoadData.selectForecastConsumption(this);
@@ -919,6 +928,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         dataToSerialize.put("monthly_generation_register", monthly_generation_register);
         dataToSerialize.put("monthly_domestic_consumers_register", monthly_domestic_consumers_register);
         dataToSerialize.put("cpi_conversion", cpi_conversion);
+        dataToSerialize.put("annual_inflation", annual_inflation);
         dataToSerialize.put("halfhour_solar_exposure", halfhour_solar_exposure);
 
         dataToSerialize.put("solar_number_installs", solar_number_installs);
@@ -981,6 +991,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             monthly_generation_register = (HashMap<Date, Generation>) retreived.get("monthly_generation_register");
             monthly_domestic_consumers_register = (HashMap<Date, Integer>) retreived.get("monthly_domestic_consumers_register");
             cpi_conversion = (HashMap<Date, Float>) retreived.get("cpi_conversion");
+            annual_inflation = (HashMap<Integer, Float>) retreived.get("annual_inflation");
             halfhour_solar_exposure = (HashMap<Date, Float>) retreived.get("halfhour_solar_exposure");
 
             solar_number_installs = (HashMap<Date, Integer>) retreived.get("solar_number_installs");

@@ -163,11 +163,11 @@ public class SpotMarket implements java.io.Serializable{
             if( successfulBids.size() > 0 ) {
                 Generator lastgen = (Generator) successfulBids.get(successfulBids.size() - 1).asset;
                 Bid lastBid = successfulBids.get(successfulBids.size() - 1);
-                data.LOGGER.warning(currentTime + " - " + this.name + " - Unmet Demand (imported) " + unmetDemand +
-                        "- at the import price of " + marketPrice + " $/MWh." +
-                        "The highest bidder: " + lastgen.getFuelSourceDescriptor() + "-"
+                data.LOGGER.warning(currentTime + " - " + this.name + " The highest bidder: " + lastgen.getFuelSourceDescriptor() + "-"
                         + lastgen.getTechTypeDescriptor() + " - " + lastgen.getName() +
-                        " - " + lastgen.getOwnerName() + " at " + lastBid.dollarMWh + " $/MWh."
+                        " - " + lastgen.getOwnerName() + " at " + lastBid.dollarMWh + " $/MWh" +
+                        " at CF " + lastgen.getHistoricCapacityFactor() + " Base Price: " + lastgen.basePriceMWh +
+                        "$/MWh (divided by HistCF is "+lastgen.basePriceMWh / lastgen.getHistoricCapacityFactor() + ")"
                 );
             }
         }

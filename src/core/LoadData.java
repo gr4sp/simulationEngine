@@ -54,6 +54,33 @@ public class LoadData implements java.io.Serializable {
         return ActorActorRelationshipType.OTHER;
     }
 
+    public static void
+    selectInflation(Gr4spSim data) {
+        //Loading Inflation data (from 1990 to 2019)
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        String sql = "SELECT  year, average FROM  historic_inflation";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                int year = rs.getInt("year");
+                Float inflation = rs.getFloat("average");
+                data.LOGGER.info("\t" + "Inflation rate" + "\t" +
+                        year + "\t" +
+                        inflation + "\n");
+
+                data.getAnnual_inflation().put(year,inflation);
+            }
+        } catch (SQLException e) {
+            data.LOGGER.warning(e.getMessage());
+        }
+
+    }
+
     // Select Forecast ISP annual consumption (GWh)
 
     public static void

@@ -72,8 +72,8 @@ class SolarEfficiency implements java.io.Serializable {
 }
 
 class GeneratorSettings implements java.io.Serializable {
-    public double priceMinMWh;
-    public double priceMaxMWh;
+    public double basePriceMWh;
+    public double marketPriceCap;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -210,20 +210,21 @@ public class Settings implements java.io.Serializable {
         return 0.0;
     }
 
-    public double getPriceMinMWh(String fuelType, String techType) {
-        return getGenSettings(fuelType, techType).priceMinMWh;
+
+    public double getBasePriceMWh(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).basePriceMWh;
     }
 
-    public double getPriceMaxMWh(String fuelType, String techType) {
-        return getGenSettings(fuelType, techType).priceMaxMWh;
+    public double getMarketPriceCap(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).marketPriceCap;
     }
 
-    public void setPriceMinMWh(String fuelType, String techType, double price) {
-        getGenSettings(fuelType, techType).priceMinMWh = price;
+    public void setBasePriceMWh(String fuelType, String techType, double price) {
+        getGenSettings(fuelType, techType).basePriceMWh = price;
     }
 
-    public void setPriceMaxMWh(String fuelType, String techType,  double price) {
-        getGenSettings(fuelType, techType).priceMaxMWh = price;
+    public void setMarketPriceCap(String fuelType, String techType, double price) {
+        getGenSettings(fuelType, techType).marketPriceCap = price;
     }
 
 
