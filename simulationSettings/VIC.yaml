@@ -1,10 +1,10 @@
 #Folder that has the following folders: logs, csv, and plots
 folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
-#folderOutput: "/mnt/data/gr4sp"
+  #folderOutput: "/mnt/data/gr4sp"
 
-#report can be "full" or "light"
+  #report can be "full" or "light"
   #"full": generates all csv data ~8MB, and all the plots 2.5MB per simulation
-  #"light": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB
+#"light": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB
 reportGeneration: "light"
 
 #OFF: no logging at all
@@ -18,10 +18,11 @@ simulationDates:
   startDate:  1998-01-01
 
   # There's only forecast data up to 2050/12.
-  endDate: 2051-01-01
+  #2051-01-01
+  endDate: 2021-01-01
 
   # Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before
-  startDateSpotMarket: 1999-07-01
+  startDateSpotMarket: 1999-01-01
 
 population:
   # Population and scale
@@ -30,14 +31,14 @@ population:
   # Include regional with all framework indicators, 100% Population data
   areaCode: VIC
   populationPercentageAreacCode: 1.0
-#    # percentage of households with one, two, three, four, or 5 or more occupants
-     # From
-#    householdTypePercentageArea:
-#      h1: 0.1
-#      h2: 0.4
-#      h3: 0.2
-#      h4: 0.15
-#      h5: 0.15
+    #    # percentage of households with one, two, three, four, or 5 or more occupants
+  # From
+  #    householdTypePercentageArea:
+  #      h1: 0.1
+  #      h2: 0.4
+  #      h3: 0.2
+  #      h4: 0.15
+  #      h5: 0.15
 
   # Adds all households as a single actor connected to a single SPM (Integer.MAX_VALUE: 2147483647)
   maxHouseholdsPerConsumerUnit: 2147483647
@@ -100,7 +101,7 @@ policy:
   # Consumers will choose the Best (MIN), Worst (MAX), Random (RND), Average (AVG) available retail price
   endConsumerTariff: AVG
 
-  # Apply inflation to the max and min value used by generators to define the LCOE
+  # Apply inflation to the max and min value used by generators to define the LCOE from the base year onwards
   # median inflation from 1949-2019 is 3.33% and average 5.06%, Max 19.33% and min -0.33%
   # source from https://www.rateinflation.com/inflation-rate/australia-historical-inflation-rate.php?start-year=1949&end-year=2019
   annualInflation: 0.033
@@ -133,8 +134,8 @@ generators:
 
   Default:
     #LCOE Price Parameters
-    priceMinMWh: 1
-    priceMaxMWh: 10
+    basePriceMWh: 1
+    marketPriceCap: 10
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -146,24 +147,6 @@ generators:
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.151
 
-  # LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11
-  Battery:
-    #LCOE Price Parameters
-    priceMinMWh: 180
-    priceMaxMWh: 400
-    # Capacity Factor for simplicity but in storage systems is better referred as usage factor, as it is based on gross
-    # generation rather than net generation. This tech uses more energy than the energy it stored (resulting always
-    # in negative net generation)
-    minCapacityFactor: 0
-    maxCapacityFactor: 0.30
-    maxCapacityFactorSummer: 0.5
-    # Emission Factor List, by increasing start year.
-    emissionFactors:
-      - startYear: 1800
-        minEF: 0.00
-        linRateEF: 0.0
-        expRateEF: 0.0
-
   # Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data
   #greenhouse and energy data
   # or data for the usual CO2EII for landfill biogas methane: 0.062
@@ -171,8 +154,8 @@ generators:
   # "Wholesale electricity market performance report" from 2018.
   Biogas:
     #LCOE Price Parameters
-    priceMinMWh: 14
-    priceMaxMWh: 40
+    basePriceMWh: 14
+    marketPriceCap: 40
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -188,12 +171,12 @@ generators:
   # usual CO2EII Diesel oil: 0.957
   Diesel:
     #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
-    priceMinMWh: 150
-    priceMaxMWh: 300
+    basePriceMWh: 80
+    marketPriceCap: 120
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.5
-    maxCapacityFactorSummer: 0.9
+    maxCapacityFactorSummer: 0.8
     # Emission Factor List, by increasing start year
     emissionFactors:
       - startYear: 1800
@@ -203,8 +186,8 @@ generators:
   # Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)
   Dry wood:
     #LCOE Price Parameters: assumed less expensive than landfill
-    priceMinMWh: 10
-    priceMaxMWh: 30
+    basePriceMWh: 10
+    marketPriceCap: 30
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.85
@@ -219,8 +202,8 @@ generators:
   # usual CO2EII for landfill biogas methane: 0.06
   Landfill:
     #LCOE Price Parameters
-    priceMinMWh: 14
-    priceMaxMWh: 40
+    basePriceMWh: 14
+    marketPriceCap: 40
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
@@ -234,11 +217,11 @@ generators:
 
   Brown Coal:
     #LCOE Price Parameters
-    priceMinMWh: 14
-    priceMaxMWh: 80
+    basePriceMWh: 1.88
+    marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.47
-    maxCapacityFactor: 0.9
+    maxCapacityFactor: 0.85
     maxCapacityFactorSummer: 0.9
     # Emission Factor, by increasing start year
     emissionFactors:
@@ -253,10 +236,10 @@ generators:
 
   Natural Gas Pipeline Turbine - OCGT:
     #LCOE Price Parameters
-    priceMinMWh: 15
-    priceMaxMWh: 150
+    basePriceMWh: 7.88
+    marketPriceCap: 8000
     # Capacity Factor
-    minCapacityFactor: 0.08
+    minCapacityFactor: 0.06
     maxCapacityFactor: 0.3   # 30% in LCOE report truncation assuming more usage of this tech
     maxCapacityFactorSummer: 0.3
     # Emission Factor, by increasing start year
@@ -268,8 +251,8 @@ generators:
 
   Natural Gas Pipeline Turbine - CCGT:
     #LCOE Price Parameters
-    priceMinMWh: 35
-    priceMaxMWh: 90
+    basePriceMWh: 7.25
+    marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.22
     maxCapacityFactor: 0.65
@@ -285,12 +268,12 @@ generators:
     #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
     #https://co2crc.com.au/wp-content/uploads/2019/12/Exec-Briefing_A4_forweb.pdf
     # also from CSRIO report from 2018 on Generation Costs
-    priceMinMWh: 24
-    priceMaxMWh: 200
+    basePriceMWh: 10
+    marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.28
-    maxCapacityFactor: 0.38 # in LCOE report this is truncated at 50% assuming improvements in technology and costs
-    maxCapacityFactorSummer: 0.38
+    maxCapacityFactor: 0.5 # in LCOE report this is truncated at 50% assuming improvements in technology and costs
+    maxCapacityFactorSummer: 0.43
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1800
@@ -300,11 +283,11 @@ generators:
 
   Water:
     #LCOE Price Parameters
-    priceMinMWh: 10
-    priceMaxMWh: 40
+    basePriceMWh: 2.75
+    marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.03
-    maxCapacityFactor: 0.4
+    maxCapacityFactor: 0.3
     maxCapacityFactorSummer: 0.3
     # Emission Factor, by increasing start year
     emissionFactors:
@@ -316,16 +299,16 @@ generators:
   Solar:
     #TODO: Solar. According to LCOE report, CF varies from 12% to 26%. But they truncated solar at 40 and wind at 50
     #LCOE Price Parameters
-    priceMinMWh: 100
-    priceMaxMWh: 250
+    basePriceMWh: 16.67 #100
+    marketPriceCap: 8000 #250
     # Capacity Factor
     minCapacityFactor: 0.12
-    maxCapacityFactor: 0.26
+    maxCapacityFactor: 0.4 #0.26
     maxCapacityFactorSummer: 0.4
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1800
-        minEF: 0.031 #0 or average scope 1 emissions from Clean Energy Regulator data (0.031)
+        minEF: 0.0009 #0 or average scope 1 emissions from Clean Energy Regulator data (0.031)
         linRateEF: 0.0
         expRateEF: 0.0
     solarEfficiency: # solarEfficiency = fman * fdirt * ftemp  * npv_inv * ninv * ninv_sb;
@@ -346,6 +329,23 @@ generators:
       # recommended voltage drop between inverter and main switch shouldn't be greater than 1%
       ninv_sb: 0.99
 
+    # LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11
+  Battery:
+    #LCOE Price Parameters
+    basePriceMWh: 33.33
+    marketPriceCap: 8000
+    # Capacity Factor for simplicity but in storage systems is better referred as usage factor, as it is based on gross
+    # generation rather than net generation. This tech uses more energy than the energy it stored (resulting always
+    # in negative net generation)
+    minCapacityFactor: 0.0053 #0.1
+    maxCapacityFactor: 0.9
+    maxCapacityFactorSummer: 0.9
+    # Emission Factor List, by increasing start year.
+    emissionFactors:
+      - startYear: 1800
+        minEF: 0.00
+        linRateEF: 0.0
+        expRateEF: 0.0
 
 
 tariffs:
