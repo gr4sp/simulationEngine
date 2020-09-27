@@ -19,7 +19,7 @@ simulationDates:
 
   # There's only forecast data up to 2050/12.
   #2051-01-01
-  endDate: 2021-01-01
+  endDate: 2051-01-01
 
   # Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before
   startDateSpotMarket: 1999-01-01
@@ -106,6 +106,7 @@ policy:
   # source from https://www.rateinflation.com/inflation-rate/australia-historical-inflation-rate.php?start-year=1949&end-year=2019
   annualInflation: 0.033
 
+
 # market settings
 arena:
   #Regulation https://www.aemc.gov.au/sites/default/files/2020-06/NER%20-%20v142%20-%20Chapter%202.pdf
@@ -146,6 +147,9 @@ generators:
         minEF: 0.023
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.151
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   # Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data
   #greenhouse and energy data
@@ -166,6 +170,9 @@ generators:
         minEF: 0.062
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.151
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   # Fuel bucket: Other
   # usual CO2EII Diesel oil: 0.957
@@ -183,6 +190,10 @@ generators:
         minEF: 0.957
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.178
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
+
   # Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)
   Dry wood:
     #LCOE Price Parameters: assumed less expensive than landfill
@@ -198,6 +209,9 @@ generators:
         minEF: 0.023
         linRateEF: 0.0 # 0.01
         expRateEF: 0.0 # 0.151
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   # usual CO2EII for landfill biogas methane: 0.06
   Landfill:
@@ -214,6 +228,9 @@ generators:
         minEF: 0.062
         linRateEF: 0.0 # 0.01
         expRateEF: 0.0 # 0.151
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   Brown Coal:
     #LCOE Price Parameters
@@ -233,6 +250,9 @@ generators:
         minEF: 1.23 #0.49
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.151
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   Natural Gas Pipeline Turbine - OCGT:
     #LCOE Price Parameters
@@ -248,6 +268,9 @@ generators:
         minEF: 0.56   #0.49
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.151
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   Natural Gas Pipeline Turbine - CCGT:
     #LCOE Price Parameters
@@ -263,6 +286,9 @@ generators:
         minEF: 0.49
         linRateEF: 0.0 # 0.01
         expRateEF: 0.0 #0.151
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   Wind:
     #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
@@ -280,6 +306,9 @@ generators:
         minEF: 0.0024 # 0 or average scope 1 emissions from Clean Energy Regulator data (0.0024)
         linRateEF: 0.0
         expRateEF: 0.0
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   Water:
     #LCOE Price Parameters
@@ -295,11 +324,14 @@ generators:
         minEF: 0.0003 # 0 or average scope 1 emissions from Clean Energy Regulator data (0.0003)
         linRateEF: 0.0
         expRateEF: 0.0
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
   Solar:
     #TODO: Solar. According to LCOE report, CF varies from 12% to 26%. But they truncated solar at 40 and wind at 50
     #LCOE Price Parameters
-    basePriceMWh: 16.67 #100
+    basePriceMWh: 12.5 #100
     marketPriceCap: 8000 #250
     # Capacity Factor
     minCapacityFactor: 0.12
@@ -328,6 +360,9 @@ generators:
       # efficiency of the subsystem (cables) between the inverter and the switchboard (AC cable loss)
       # recommended voltage drop between inverter and main switch shouldn't be greater than 1%
       ninv_sb: 0.99
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
     # LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11
   Battery:
@@ -346,7 +381,9 @@ generators:
         minEF: 0.00
         linRateEF: 0.0
         expRateEF: 0.0
-
+    # This will be used to multiply the nameplate capacity of the generators in the DB
+    # It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity
+    nameplateCapacityChange: 1.0
 
 tariffs:
 
