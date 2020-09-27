@@ -278,12 +278,12 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 if (g.getInPrimaryMarket()) {
                     Bid b = new Bid(null, g, dollarMWh, availableCapacity);
                     this.primarySpot.addBidder(b);
-                    g.setBidsInSpot(g.getBidsInSpot() + 1);
+                    g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity);
                 } else {
                     if (g.getInSecondaryMarket()) {
                         Bid b = new Bid(null, g, dollarMWh, availableCapacity);
                         this.secondarySpot.addBidder(b);
-                        g.setBidsInSpot(g.getBidsInSpot() + 1);
+                        g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity);
                     }
                 }
             }
@@ -291,15 +291,23 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
     }
 
-    private void applyInflation(SimState state) {
+    private void applyInflation(SimState state, int currentYear) {
         Gr4spSim data = (Gr4spSim) state;
+        double inflation = 1.0;
+
+        // Use historic inflation data up to the base year.
+        if( currentYear <= data.settings.getBaseYearConsumptionForecast())
+            inflation += data.getAnnual_inflation().get(currentYear);
+        else
+            inflation += data.settings.getAnnualInflation();
+
         for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
             Vector<Generator> gens = entry.getValue();
             for (Generator g : gens) {
 
-                //Apply annual inflation
-                g.setPriceMinMWh(g.getPriceMinMWh() * (1 + data.settings.getAnnualInflation()));
-                g.setPriceMaxMWh(g.getPriceMaxMWh() * (1 + data.settings.getAnnualInflation()));
+                //TODO: Apply annual inflation to base prices and market price caps since market started
+                g.setBasePriceMWh(g.getBasePriceMWh() * inflation);
+                g.setMarketPriceCap(g.getMarketPriceCap() * inflation);
 
             }
         }
@@ -322,8 +330,12 @@ public class Arena implements Steppable,  java.io.Serializable  {
             int currentMonth = c.get(Calendar.MONTH) + 1;
             int currentYear = c.get(Calendar.YEAR);
 
-            if (currentMonth == 1 && currentYear > data.settings.getBaseYearConsumptionForecast()) {
-                applyInflation(state);
+
+            /**
+             * Apply inflation in January
+             * */
+            if (currentMonth == 1 ) {
+                applyInflation(state, currentYear);
             }
 
             /**

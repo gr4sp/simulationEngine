@@ -54,6 +54,33 @@ public class LoadData implements java.io.Serializable {
         return ActorActorRelationshipType.OTHER;
     }
 
+    public static void
+    selectInflation(Gr4spSim data) {
+        //Loading Inflation data (from 1990 to 2019)
+        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+
+        String sql = "SELECT  year, average FROM  historic_inflation";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            // loop through the result set
+            while (rs.next()) {
+                int year = rs.getInt("year");
+                Float inflation = rs.getFloat("average");
+                data.LOGGER.info("\t" + "Inflation rate" + "\t" +
+                        year + "\t" +
+                        inflation + "\n");
+
+                data.getAnnual_inflation().put(year,inflation);
+            }
+        } catch (SQLException e) {
+            data.LOGGER.warning(e.getMessage());
+        }
+
+    }
+
     // Select Forecast ISP annual consumption (GWh)
 
     public static void
@@ -1572,6 +1599,8 @@ public class LoadData implements java.io.Serializable {
                     expectedEndDate = cEndDate.getTime();
                 }
 
+                double nameplateCapacity = rs.getDouble("nameplate_capacity_mw") * data.settings.getNameplateCapacityChange(rs.getString("fuel_type"),rs.getString("technology_type"));
+
                 //Publically announced Generators are rolled out incrementally (each with capacity/rolloutYears)
                 //across a period specified in YAML settings.
                 String unit_status = rs.getString("unit_status");
@@ -1589,6 +1618,7 @@ public class LoadData implements java.io.Serializable {
                         }
                         cStartDate.add(Calendar.YEAR, year);
 
+
                         int idGen = (rs.getInt("asset_id") *1000) +year;
 
                         Generator gen = new Generator(
@@ -1599,7 +1629,7 @@ public class LoadData implements java.io.Serializable {
                                 rs.getString("owner_name"),
                                 rs.getString("technology_type"),
                                 rs.getString("fuel_type"),
-                                rs.getDouble("nameplate_capacity_mw") / rolloutPeriod,
+                                nameplateCapacity / rolloutPeriod,
                                 rs.getString("dispatch_type"),
                                 cStartDate.getTime(),
                                 expectedEndDate,
@@ -1633,7 +1663,7 @@ public class LoadData implements java.io.Serializable {
                             rs.getString("owner_name"),
                             rs.getString("technology_type"),
                             rs.getString("fuel_type"),
-                            rs.getDouble("nameplate_capacity_mw"),
+                            nameplateCapacity,
                             rs.getString("dispatch_type"),
                             rs.getDate("full_commercial_use_date"),
                             expectedEndDate,

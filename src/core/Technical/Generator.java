@@ -6,11 +6,9 @@ import core.settings.Settings;
 import sim.engine.SimState;
 import sim.util.Double2D;
 
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 /*** Definition of the class generator ****/
 
@@ -45,8 +43,8 @@ public class Generator implements java.io.Serializable, Asset {
     public double solarSurplusCapacity;
 
     //LCOE Price Parameters
-    public double priceMinMWh;
-    public double priceMaxMWh;
+    public double basePriceMWh;
+    public double marketPriceCap;
 
     //Price Evolution
     private double historicCapacityFactor;
@@ -145,8 +143,8 @@ public class Generator implements java.io.Serializable, Asset {
         bidsOffSpot = 0;
 
         //Load Settings specified through YAML settings file
-        priceMinMWh = settings.getPriceMinMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
-        priceMaxMWh = settings.getPriceMaxMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        basePriceMWh = settings.getBasePriceMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        marketPriceCap = settings.getMarketPriceCap(this.fuelSourceDescriptor, this.techTypeDescriptor);
 
         minCapacityFactor = settings.getMinCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         maxCapacityFactor = settings.getMaxCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
@@ -258,21 +256,30 @@ public class Generator implements java.io.Serializable, Asset {
     public double priceMWhLCOE() {
 
         double result;
-        double historicCF = historicCapacityFactor + 0.01;
+        double historicCF = historicCapacityFactor;
 
-        if (historicCF < minCapacityFactor) historicCF = minCapacityFactor;
-
-        //If the generator has never bid and never produced even off market (OTC), then use the LCOE assuming it starts with maxCapacity
-        //otherwise just use the historicCF
-        if (bidsInSpot == 0 || historicCF < 0.01) {
-            result = priceMinMWh() / maxCapacityFactor;
-        } else {
-            result = priceMinMWh() / historicCF;
+        //Make sure bid is not below base price/minCF
+        if (historicCF < minCapacityFactor) {
+            historicCF = minCapacityFactor;
         }
 
+        //If the generator has never bid and never produced even off market (OTC), then use the LCOE assuming it starts with maxCapacity
+        //If historicCF is above maxCF because it participated in a bid with high pay off, then make sure price above base price/maxCF
+        //otherwise just use the historicCF
+        if (bidsInSpot == 0 || historicCF > maxCapacityFactor) {
+            result = basePriceMWh() / maxCapacityFactor;
+        } else {
+            result = basePriceMWh() / historicCF;
+        }
+
+        if (name.equalsIgnoreCase("Challicum Hills")){
+            //System.out.println(result);
+            result = result;
+        }
         //double result =  priceMinMWh() +  ( (priceMaxMWh()-priceMinMWh()) * (Math.exp( - priceRateParameterMWh() * historicCF)) );
 
-        if(result > priceMaxMWh ) result = priceMaxMWh;
+        //make sure price does not go above maximum allowed price
+        if(result > marketPriceCap) result = marketPriceCap;
 
         return result;
     }
@@ -280,12 +287,12 @@ public class Generator implements java.io.Serializable, Asset {
     public double getSolarSurplusCapacity() { return solarSurplusCapacity; }
 
     //$/MWH
-    public double priceMinMWh() {
-        return priceMinMWh;
+    public double basePriceMWh() {
+        return basePriceMWh;
     }
 
-    public double priceMaxMWh() {
-        return priceMaxMWh;
+    public double marketPriceCap() {
+        return marketPriceCap;
     }
 
 
@@ -377,9 +384,10 @@ public class Generator implements java.io.Serializable, Asset {
     }
 
     //When a Bid is added, keep track of the potential historic revenue;
-    public void setBidsInSpot(int bidsInSpot) {
+    public void setBidsInSpot(int bidsInSpot, double availableCapacity) {
         this.bidsInSpot = bidsInSpot;
-        potentialRevenue += (maxCapacity * priceMinMWh) / 2.0;
+        //potentialRevenue += (availableCapacity * (priceMinMWh/maxCapacityFactor) ) / 2.0;
+        potentialRevenue += (availableCapacity * priceMWhLCOE()) / 2.0;
 
     }
 
@@ -503,20 +511,20 @@ public class Generator implements java.io.Serializable, Asset {
         return dispatchTypeDescriptor;
     }
 
-    public void setPriceMinMWh(double priceMinMWh) {
-        this.priceMinMWh = priceMinMWh;
+    public void setBasePriceMWh(double basePriceMWh) {
+        this.basePriceMWh = basePriceMWh;
     }
 
-    public void setPriceMaxMWh(double priceMaxMWh) {
-        this.priceMaxMWh = priceMaxMWh;
+    public void setMarketPriceCap(double marketPriceCap) {
+        this.marketPriceCap = marketPriceCap;
     }
 
-    public double getPriceMinMWh() {
-        return priceMinMWh;
+    public double getBasePriceMWh() {
+        return basePriceMWh;
     }
 
-    public double getPriceMaxMWh() {
-        return priceMaxMWh;
+    public double getMarketPriceCap() {
+        return marketPriceCap;
     }
 
     public Boolean getInPrimaryMarket() { return inPrimaryMarket; }
