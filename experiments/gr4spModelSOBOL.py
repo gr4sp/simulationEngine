@@ -26,6 +26,8 @@ def getModel():
     #model.constants += [Constant('capacityFactorChangeOcgt', 0)]
     model.constants += [Constant('capacityFactorChangeCcgt', 0)]
     model.constants += [Constant('capacityFactorChangeWind', 0)]
+    model.constants += [Constant('priceChangePercentageSolar', 0)]
+
     #model.constants += [Constant('scheduleMinCapMarketGen', 30)]
 
 

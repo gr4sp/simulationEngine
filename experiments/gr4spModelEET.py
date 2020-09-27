@@ -48,13 +48,13 @@ def getModel():
     model.uncertainties += [IntegerParameter('priceChangePercentageSolar', -30,30)]
 
 # variation of min and max capacity factors as a percentage of current values
-    model.uncertainties += [IntegerParameter('capacityFactorChangeBattery', -10, 10)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeBrownCoal', -30, 5)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeOcgt', -20, 20)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeCcgt', -5, 25)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeWind', -10, 30)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeWater', -15, 50)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeSolar', -5, 20)]
+    model.uncertainties += [IntegerParameter('nameplaceCapacityChangeBattery', -10, 10)]
+    model.uncertainties += [IntegerParameter('nameplaceCapacityChangeBrownCoal', -30, 5)]
+    model.uncertainties += [IntegerParameter('nameplaceCapacityChangeOcgt', -20, 20)]
+    model.uncertainties += [IntegerParameter('nameplaceCapacityChangeCcgt', -5, 25)]
+    model.uncertainties += [IntegerParameter('nameplaceCapacityChangeWind', -10, 20)]
+    model.uncertainties += [IntegerParameter('nameplaceCapacityChangeWater', -15, 50)]
+    model.uncertainties += [IntegerParameter('nameplaceCapacityChangeSolar', -5, 20)]
 
 # variation of contribution of networks, retail and other charges in the tariff
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 11, 45)]
