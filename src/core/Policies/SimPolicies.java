@@ -88,8 +88,8 @@ public class SimPolicies implements java.io.Serializable, Steppable {
             double learningCurve = data.settings.getLearningCurve();
 
             // WIND
-            double WindPriceMinMWh = data.settings.getPriceMinMWh("Wind","") * (1-learningCurve);
-            double WindPriceMaxMWh = data.settings.getPriceMaxMWh("Wind","") * (1-learningCurve);
+            double WindBasePriceMWh = data.settings.getBasePriceMWh("Wind","") * (1-learningCurve);
+            double WindMarketPriceCap = data.settings.getMarketPriceCap("Wind","") * (1-learningCurve);
             double WindMaxCapacityFactor = data.settings.getMaxCapacityFactor("Wind","");
             double WindMaxCapacityFactorSummer = data.settings.getMaxCapacityFactorSummer("Wind","");
 
@@ -98,16 +98,16 @@ public class SimPolicies implements java.io.Serializable, Steppable {
                 data.settings.setMaxCapacityFactor("Wind","", WindMaxCapacityFactor + factor);
             if (WindMaxCapacityFactorSummer + factor <= 0.5)
                 data.settings.setMaxCapacityFactorSummer("Wind","", WindMaxCapacityFactorSummer + factor);
-            data.settings.setPriceMinMWh("Wind","",WindPriceMinMWh);
-            data.settings.setPriceMaxMWh("Wind","",WindPriceMaxMWh);
+            data.settings.setBasePriceMWh("Wind","",WindBasePriceMWh);
+            data.settings.setMarketPriceCap("Wind","",WindMarketPriceCap);
 
             //SOLAR
-            double SolarPriceMinMWh = data.settings.getPriceMinMWh("Solar","") * (1-learningCurve);
-            double SolarPriceMaxMWh = data.settings.getPriceMaxMWh("Solar","") * (1-learningCurve);
+            double SolarBasePriceMWh = data.settings.getBasePriceMWh("Solar","") * (1-learningCurve);
+            double SolarMarketPriceCap = data.settings.getMarketPriceCap("Solar","") * (1-learningCurve);
             double solarEfficiency = data.settings.getSolarEfficiency("Solar","");
 
-            data.settings.setPriceMinMWh("Solar","",SolarPriceMinMWh);
-            data.settings.setPriceMaxMWh("Solar","",SolarPriceMaxMWh);
+            data.settings.setBasePriceMWh("Solar","", SolarBasePriceMWh);
+            data.settings.setMarketPriceCap("Solar","",SolarMarketPriceCap);
             if (solarEfficiency + factor < 1.0) data.settings.improveSolarEfficiency( factor );
 
 
