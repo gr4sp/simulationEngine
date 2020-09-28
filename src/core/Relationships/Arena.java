@@ -205,7 +205,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
     }
 
     /**
-     * This tariff represents price for $/MWh -> c/KWh (divide by 10)
+     * This tariff represents price for $/MWh -> c/KWh (/ by 10)
      */
     public double getTariff(SimState state) {
         Gr4spSim data = (Gr4spSim) state;
@@ -216,7 +216,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
             return getEndConsumerTariff(state);
         }
 
-        //If spot is on, get the price market
+        //If spot is on, get the market price
         double price = 0;
         for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
             Arena a = entry.getValue();

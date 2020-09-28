@@ -21,7 +21,7 @@ public class Generator implements java.io.Serializable, Asset {
     private String name;//name of power plant or "Site Name" according to the GenerationInformation database from the NEM
     private String ownerName;//name of the owner
     private String techTypeDescriptor; //combustion steam-subcritical, combustion Open Cycle Gas turbines (OCGT) phtovoltaic flat panet, hydro-gravity, hydro-run of river, solar PV, wind onshore/offshore,
-    private String fuelSourceDescriptor; //fuel source descriptor: according to AEMO it can be: brown coal, black coal, natural gas, Diesel, waste coal mine gas, landfill methane, etc.
+    private String fuelSourceDescriptor; //fuel source descriptor: according to AEMO it can be: brown coal, black coal, gas, Diesel, waste coal mine gas, landfill methane, etc.
     private String ownership;//public, private, PPP, Cooperative?
     private double maxCapacity; //I assume the maximum capacity as being the nameplate capacity in MW
     private double availableCapacity; //Capacity available once the capacity factor is taken into account. It can change every month for all techs, but for solar it changes every 30min.
