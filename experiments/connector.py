@@ -128,8 +128,8 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
              domesticConsumptionPercentage, includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
              learningCurve, importPriceFactor, priceChangePercentageBattery, priceChangePercentageBrownCoal, priceChangePercentageOcgt,
              priceChangePercentageCcgt, priceChangePercentageWind, priceChangePercentageWater, priceChangePercentageSolar,
-             nameplaceCapacityChangeBattery, nameplaceCapacityChangeBrownCoal, nameplaceCapacityChangeOcgt,
-             nameplaceCapacityChangeCcgt, nameplaceCapacityChangeWind, nameplaceCapacityChangeWater, nameplaceCapacityChangeSolar, wholesaleTariffContribution,
+             nameplateCapacityChangeBattery, nameplateCapacityChangeBrownCoal, nameplateCapacityChangeOcgt,
+             nameplateCapacityChangeCcgt, nameplateCapacityChangeWind, nameplateCapacityChangeWater, nameplateCapacityChangeSolar, wholesaleTariffContribution,
              scheduleMinCapMarketGen, semiScheduleGenSpotMarket, semiScheduleMinCapMarketGen, nonScheduleGenSpotMarket,
              nonScheduleMinCapMarketGen):
     startJVM()
@@ -181,56 +181,56 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
 
             # LCOEs and CFs variations
 
-            brown_coal_min_price = gr4spObj.settings.getBasePriceMWh('Brown Coal', '') * (
+            brown_coal_base_price = gr4spObj.settings.getBasePriceMWh('Brown Coal', '') * (
                     100.0 + priceChangePercentageBrownCoal) / 100.0;
-            gr4spObj.settings.setBasePriceMWh('Brown Coal', '', brown_coal_min_price)
+            gr4spObj.settings.setBasePriceMWh('Brown Coal', '', brown_coal_base_price)
 
-            battery_min_price = gr4spObj.settings.getBasePriceMWh('Battery', '') * (
+            battery_base_price = gr4spObj.settings.getBasePriceMWh('Battery', '') * (
                     100.0 + priceChangePercentageBattery) / 100.0;
-            gr4spObj.settings.setBasePriceMWh('Battery', '', battery_min_price)
+            gr4spObj.settings.setBasePriceMWh('Battery', '', battery_base_price)
 
-            ocgt_min_price = gr4spObj.settings.getBasePriceMWh('Natural Gas Pipeline Turbine - OCGT', '') * (
+            ocgt_base_price = gr4spObj.settings.getBasePriceMWh('Gas Pipeline Turbine - OCGT', '') * (
                     100.0 + priceChangePercentageOcgt) / 100.0;
-            gr4spObj.settings.setBasePriceMWh('Natural Gas Pipeline Turbine - OCGT', '', ocgt_min_price)
+            gr4spObj.settings.setBasePriceMWh('Gas Pipeline Turbine - OCGT', '', ocgt_base_price)
 
-            ccgt_min_price = gr4spObj.settings.getBasePriceMWh('Natural Gas Pipeline Turbine - CCGT', '') * (
+            ccgt_base_price = gr4spObj.settings.getBasePriceMWh('Gas Pipeline Turbine - CCGT', '') * (
                     100.0 + priceChangePercentageCcgt) / 100.0;
-            gr4spObj.settings.setBasePriceMWh('Natural Gas Pipeline Turbine - CCGT', '', ccgt_min_price)
+            gr4spObj.settings.setBasePriceMWh('Gas Pipeline Turbine - CCGT', '', ccgt_base_price)
 
-            wind_min_price = gr4spObj.settings.getBasePriceMWh('Wind', '') * (
+            wind_base_price = gr4spObj.settings.getBasePriceMWh('Wind', '') * (
                     100.0 + priceChangePercentageWind) / 100.0;
-            gr4spObj.settings.setBasePriceMWh('Wind', '', wind_min_price)
+            gr4spObj.settings.setBasePriceMWh('Wind', '', wind_base_price)
 
-            water_min_price = gr4spObj.settings.getBasePriceMWh('Water', '') * (
+            water_base_price = gr4spObj.settings.getBasePriceMWh('Water', '') * (
                     100.0 + priceChangePercentageWater) / 100.0;
-            gr4spObj.settings.setBasePriceMWh('Water', '', water_min_price)
+            gr4spObj.settings.setBasePriceMWh('Water', '', water_base_price)
 
-            solar_min_price = gr4spObj.settings.getBasePriceMWh('Solar', '') * (
+            solar_base_price = gr4spObj.settings.getBasePriceMWh('Solar', '') * (
                     100.0 + priceChangePercentageSolar) / 100.0;
-            gr4spObj.settings.setBasePriceMWh('Solar', '', solar_min_price)
+            gr4spObj.settings.setBasePriceMWh('Solar', '', solar_base_price)
 
             # Nameplate Capacity Change
 
-            brown_coal_min_cf = (100.0 + nameplaceCapacityChangeBrownCoal) / 100.0;
-            gr4spObj.settings.setNameplateCapacityChange('Brown Coal', '', brown_coal_min_cf)
+            brown_coal_nameplate_change = (100.0 + nameplateCapacityChangeBrownCoal) / 100.0;
+            gr4spObj.settings.setNameplateCapacityChange('Brown Coal', '', brown_coal_nameplate_change)
 
-            battery_min_cf = (100.0 + nameplaceCapacityChangeBattery) / 100.0;
-            gr4spObj.settings.setNameplateCapacityChange('Battery', '', battery_min_cf)
+            battery_nameplate_change = (100.0 + nameplateCapacityChangeBattery) / 100.0;
+            gr4spObj.settings.setNameplateCapacityChange('Battery', '', battery_nameplate_change)
 
-            ocgt_min_cf = (100.0 + nameplaceCapacityChangeOcgt) / 100.0;
-            gr4spObj.settings.setNameplateCapacityChange('Natural Gas Pipeline Turbine - OCGT', '', ocgt_min_cf)
+            ocgt_nameplate_change = (100.0 + nameplateCapacityChangeOcgt) / 100.0;
+            gr4spObj.settings.setNameplateCapacityChange('Gas Pipeline Turbine - OCGT', '', ocgt_nameplate_change)
 
-            ccgt_min_cf = (100.0 + nameplaceCapacityChangeCcgt) / 100.0;
-            gr4spObj.settings.setNameplateCapacityChange('Natural Gas Pipeline Turbine - CCGT', '', ccgt_min_cf)
+            ccgt_nameplate_change = (100.0 + nameplateCapacityChangeCcgt) / 100.0;
+            gr4spObj.settings.setNameplateCapacityChange('Gas Pipeline Turbine - CCGT', '', ccgt_nameplate_change)
 
-            wind_min_cf = (100.0 + nameplaceCapacityChangeWind) / 100.0;
-            gr4spObj.settings.setNameplateCapacityChange('Wind', '', wind_min_cf)
+            wind_nameplate_change = (100.0 + nameplateCapacityChangeWind) / 100.0;
+            gr4spObj.settings.setNameplateCapacityChange('Wind', '', wind_nameplate_change)
 
-            water_min_cf = (100.0 + nameplaceCapacityChangeWater) / 100.0;
-            gr4spObj.settings.setNameplateCapacityChange('Water', '', water_min_cf)
+            water_nameplate_change = (100.0 + nameplateCapacityChangeWater) / 100.0;
+            gr4spObj.settings.setNameplateCapacityChange('Water', '', water_nameplate_change)
 
-            solar_min_cf = (100.0 + nameplaceCapacityChangeSolar) / 100.0;
-            gr4spObj.settings.setNameplateCapacityChange('Solar', '', solar_min_cf)
+            solar_nameplate_change = (100.0 + nameplateCapacityChangeSolar) / 100.0;
+            gr4spObj.settings.setNameplateCapacityChange('Solar', '', solar_nameplate_change)
 
 
 
