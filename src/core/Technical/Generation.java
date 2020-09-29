@@ -143,8 +143,8 @@ public class Generation implements java.io.Serializable {
         int currentYear = c.get(Calendar.YEAR);
 
         // Average emmission factors NSW and SA from "existing Generation" tab Snapshots xls. Includes all generation fuel types.
-        double emissionsNSW = 0.78; //Steam turbine - Black Coal, also OCGT - Distillate, CCGT - Natural gas,Cogeneration - Natural gas
-        double emissionsSA = 0.84; // Steam turbine - Black Coal, OCGT - Distillate, CCGT - Natural gas, Steam turbine - Natural gas
+        double emissionsNSW = 0.78; //Steam turbine - Black Coal, also OCGT - Distillate, CCGT - gas,Cogeneration - Natural gas
+        double emissionsSA = 0.84; // Steam turbine - Black Coal, OCGT - Distillate, CCGT - gas, Steam turbine - Natural gas
 
         //Find out the total Emission Factor of all fuel types combined. Using the
         float CDE = 0;
@@ -162,9 +162,9 @@ public class Generation implements java.io.Serializable {
         if (batteryGWh > 0.0)
             CDE += CDEFuelType(currentYear, activeGens, batteryGWh * 1000, "Battery");
         if (gasOcgtGWh > 0.0)
-            CDE += CDEFuelType(currentYear, activeGens, gasOcgtGWh * 1000, "Natural Gas");
+            CDE += CDEFuelType(currentYear, activeGens, gasOcgtGWh * 1000, "Gas");
         if (gasSteamGWh > 0.0)
-            CDE += CDEFuelType(currentYear, activeGens, gasSteamGWh * 1000, "Natural Gas");
+            CDE += CDEFuelType(currentYear, activeGens, gasSteamGWh * 1000, "Gas");
         if (brownCoalGWh > 0.0)
             CDE += CDEFuelType(currentYear, activeGens, brownCoalGWh * 1000, "Brown Coal");
 

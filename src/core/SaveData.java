@@ -747,7 +747,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                             numWind ++;
                         }
 
-                        if (gens.elementAt(i).getfuelSourceDescriptor().equals("Natural Gas Pipeline")) {
+                        if (gens.elementAt(i).getfuelSourceDescriptor().equals("Gas Pipeline")) {
                             MWhGas += gens.get(i).getMonthlyGeneratedMWh();
                             PriceAvgGas += gens.get(i).priceMWhLCOE();
                             numGas ++;
