@@ -29,7 +29,7 @@ if __name__ == '__main__':
         results = evaluator.perform_experiments(scenarios=1, policies=0, uncertainty_sampling='uncertainties.morris.object')
 
         # Sample using Morris
-        #results = evaluator.perform_experiments(scenarios=100, policies=0, uncertainty_sampling=MORRIS) #levers + 1 * policies
+        #results = evaluator.perform_experiments(scenarios=200, policies=0, uncertainty_sampling=MORRIS) #levers + 1 * policies
 
 
         #Testing
