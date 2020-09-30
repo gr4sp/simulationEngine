@@ -58,33 +58,37 @@ def getModel():
     # variation of contribution of networks, retail and other charges in the tariff
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 11, 46)]
 
-    model.uncertainties += [IntegerParameter('energyEfficiency', 0,3)]
+    model.uncertainties += [IntegerParameter('energyEfficiency', 0, 3)]
     model.uncertainties += [IntegerParameter('solarUptake', 0, 5)]
     model.uncertainties += [IntegerParameter('rooftopPV', 5, 8)]
 
-    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20,36)] # percentage
+    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 36)] # percentage
 
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 2)]
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 0, 11)]
     model.uncertainties += [IntegerParameter('generatorRetirement', -5, 6)]
     model.uncertainties += [IntegerParameter('technologicalImprovement', 0, 11)] #percentage
+    model.uncertainties += [IntegerParameter('importPriceFactor', -60, 61)]
 
     # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
     # This could represent a subsidy
-    # model.levers += [IntegerParameter('priceChangePercentageBattery', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -30, 31)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -30, 31)]
+    #model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -30, 31)]
     model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -30, 31)]
-    # model.levers += [IntegerParameter('priceChangePercentageCcgt', -30, 30)]
+    #model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -30, 31)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWind', -30, 31)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWater', -30, 31)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageSolar', -30, 31)]
 
-    # variation of min and max capacity factors as a percentage of current values
-    # model.levers += [IntegerParameter('capacityFactorChangeBattery', -10, 10)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeBrownCoal', -10, 11)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeOcgt', -10, 11)]
-    # model.levers += [IntegerParameter('capacityFactorChangeCcgt', -10, 10)]
-    # model.levers += [IntegerParameter('capacityFactorChangeWind', -10, 10)]
-    model.uncertainties += [IntegerParameter('capacityFactorChangeWater', -10, 11)]
+
+    # variation of nameplate capacity as a percentage of current values
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeBattery', -30, 31)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -30, 31)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeOcgt', -30, 31)]
+    #model.uncertainties += [IntegerParameter('nameplateCapacityChangeCcgt', -30, 31)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWind', -30, 31)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWater', -30, 31)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeSolar', -30, 31)]
 
 
 

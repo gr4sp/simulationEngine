@@ -40,9 +40,9 @@ def getModel():
 # (e.g. https://aemo.com.au/-/media/files/electricity/nem/planning_and_forecasting/inputs-assumptions-methodologies/2019/csiro-gencost2019-20_draftforreview.pdf?la=en).
 
     model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -30, 30)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -30, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -30, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -30, 50)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWind', -30, 30)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWater', -30, 30)]
     model.uncertainties += [IntegerParameter('priceChangePercentageSolar', -30, 30)]
