@@ -19,9 +19,9 @@ def getModel():
     model.uncertainties += [CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.uncertainties += [CategoricalParameter('rooftopPV', ['residential', 'business', 'both'])]
 
-    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20,35)] # percentage
+    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 15, 35)] #percentage
 
-    model.uncertainties += [IntegerParameter('annualCpi', 1,5)] #percentage
+    model.uncertainties += [IntegerParameter('annualCpi', 1, 5)] #percentage
     model.uncertainties += [IntegerParameter('annualInflation', 1, 5)] #percentage
 
 
@@ -39,13 +39,13 @@ def getModel():
 # Max and min values, both for LCOEs and CFs were found in different sources
 # (e.g. https://aemo.com.au/-/media/files/electricity/nem/planning_and_forecasting/inputs-assumptions-methodologies/2019/csiro-gencost2019-20_draftforreview.pdf?la=en).
 
-    model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageWind', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageWater', -30, 30)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageSolar', -30, 30)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -500, 500)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -500, 500)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -500, 500)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -500, 500)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageWind', -500, 500)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageWater', -500, 500)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageSolar', -500, 500)]
 
 # variation of nameplate capacity as a percentage of current values
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeBattery', -30, 30)]

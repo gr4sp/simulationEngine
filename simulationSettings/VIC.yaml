@@ -1,7 +1,7 @@
 #Folder that has the following folders: logs, csv, and plots
 
-folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
-#folderOutput: "/mnt/data/gr4sp"
+#folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
+folderOutput: "/data/gr4sp"
 
 
 # report can be "full" or "light"
@@ -236,7 +236,7 @@ generators:
 
   Brown Coal:
     #LCOE Price Parameters
-    basePriceMWh: 1.88
+    basePriceMWh: 4.75 # option 2: 14.25
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.47
@@ -258,7 +258,7 @@ generators:
 
   Gas Pipeline Turbine - OCGT:
     #LCOE Price Parameters
-    basePriceMWh: 7.88
+    basePriceMWh: 7.9 #option 2: 5.06
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.06
@@ -276,7 +276,7 @@ generators:
 
   Gas Pipeline Turbine - CCGT:
     #LCOE Price Parameters
-    basePriceMWh: 7.25
+    basePriceMWh: 16.41 # option 2: 13.95
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.22
@@ -296,7 +296,7 @@ generators:
     #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
     #https://co2crc.com.au/wp-content/uploads/2019/12/Exec-Briefing_A4_forweb.pdf
     # also from CSRIO report from 2018 on Generation Costs
-    basePriceMWh: 10
+    basePriceMWh: 6.27 #option 2: 10.44
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.28
@@ -314,7 +314,7 @@ generators:
 
   Water:
     #LCOE Price Parameters
-    basePriceMWh: 2.75
+    basePriceMWh: 5.06 #option 2: 2.10
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.03
@@ -333,7 +333,7 @@ generators:
   Solar:
     #TODO: Solar. According to LCOE report, CF varies from 12% to 26%. But they truncated solar at 40 and wind at 50
     #LCOE Price Parameters
-    basePriceMWh: 8.33 #100
+    basePriceMWh: 7.05 #6.71
     marketPriceCap: 8000 #250
     # Capacity Factor
     minCapacityFactor: 0.12
@@ -369,12 +369,12 @@ generators:
     # LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11
   Battery:
     #LCOE Price Parameters
-    basePriceMWh: 16.67
+    basePriceMWh: 42.43 #20.2
     marketPriceCap: 8000
     # Capacity Factor for simplicity but in storage systems is better referred as usage factor, as it is based on gross
     # generation rather than net generation. This tech uses more energy than the energy it stored (resulting always
     # in negative net generation)
-    minCapacityFactor: 0.0053 #0.1
+    minCapacityFactor: 0.01 #0.0053
     maxCapacityFactor: 0.9
     maxCapacityFactorSummer: 0.9
     # Emission Factor List, by increasing start year.
