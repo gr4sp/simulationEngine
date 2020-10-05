@@ -19,7 +19,7 @@ def getModel():
     model.uncertainties += [CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.uncertainties += [CategoricalParameter('rooftopPV', ['residential', 'business', 'both'])]
 
-    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 15, 35)] #percentage
+    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 55)] #percentage (15, 35)
 
     model.uncertainties += [IntegerParameter('annualCpi', 1, 5)] #percentage
     model.uncertainties += [IntegerParameter('annualInflation', 1, 5)] #percentage
@@ -28,9 +28,9 @@ def getModel():
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 0, 10)]
     model.uncertainties += [IntegerParameter('generatorRetirement', -5, 5)]
-    model.uncertainties += [IntegerParameter('technologicalImprovement', 0, 10)] #percentage
-    model.uncertainties += [IntegerParameter('learningCurve', 0, 10)] #percentage
-    model.uncertainties += [IntegerParameter('importPriceFactor', -60, 60)] #percentage from historic variations observed in OpenNem
+    model.uncertainties += [IntegerParameter('technologicalImprovement', 0, 15)] #percentage
+    model.uncertainties += [IntegerParameter('learningCurve', 0, 15)] #percentage
+    model.uncertainties += [IntegerParameter('importPriceFactor', -50, 50)] #percentage from historic variations observed in OpenNem
 
 # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
 # This could represent a subsidy. A constant variability was assumed before for all the price changes of -30 to 30; and
@@ -39,25 +39,25 @@ def getModel():
 # Max and min values, both for LCOEs and CFs were found in different sources
 # (e.g. https://aemo.com.au/-/media/files/electricity/nem/planning_and_forecasting/inputs-assumptions-methodologies/2019/csiro-gencost2019-20_draftforreview.pdf?la=en).
 
-    model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -500, 500)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -500, 500)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -500, 500)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -500, 500)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageWind', -500, 500)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageWater', -500, 500)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageSolar', -500, 500)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -50, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -50, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -50, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -50, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageWind', -50, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageWater', -50, 50)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageSolar', -50, 50)]
 
 # variation of nameplate capacity as a percentage of current values
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeBattery', -30, 30)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -30, 30)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeOcgt', -30, 30)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeCcgt', -30, 30)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWind', -30, 30)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWater', -30, 30)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeSolar', -30, 30)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeBattery', -50, 50)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -50, 50)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeOcgt', -50, 50)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeCcgt', -50, 50)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWind', -50, 50)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWater', -50, 50)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeSolar', -50, 50)]
 
 # variation of contribution of networks, retail and other charges in the tariff
-    model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 11, 45)]
+    model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 10, 45)] # ( 11, 45)
 
 # arenas
     model.uncertainties += [IntegerParameter('scheduleMinCapMarketGen', 10, 30)]
