@@ -61,7 +61,7 @@ forecast:
 
   #This is applied to the tariffs (see EndUser class). If price rises in year baseYear+1 is 2%, then annualCpi should be 0.02.
   #https://www.rateinflation.com/consumer-price-index/australia-historical-cpi.php?start-year=1948&end-year=2019
-  # median change of CPI between 1990 to 2019 was 2.33 and average 2.43. Max 5 and min 0.
+  # From base year onwards, BAU is median change of CPI between 1990 to 2019 was 2.33 and average 2.43. Max 5 and min 0.
   annualCpi: 0.0233
 
   #true means new generation that has been publically announced but not committed is included.
@@ -389,7 +389,9 @@ tariffs:
 
   wholesaleContribution:
     fixed: 1
-    #percentage contribution of final tariff with respect to wholesale price. It is set by default
+    # percentage contribution of final tariff with respect to wholesale price. It applies after
+    # the forecast date. Quantification of historic tariff takes wholesale contribution
+    # from historic annual average from the "historic_tariff_contribution" table.
     # to the median value between min (11.37%) and max (45.37%) values from historic data.
     usage: 0.2837
 
