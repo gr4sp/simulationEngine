@@ -164,7 +164,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 //        Calendar cal = Calendar.getInstance();
 //        outputID = sdf.format(cal.getTime())+"_seed"+seed;
 
-        outputID = "_seed_"+seed;
+        outputID = "_seed_" + seed;
 
         //Num generator, storage, grid to generate unique id
         numGenerators = 0; //for real example, it is going to be the number of generators supplying the area under study at the scale under study.
@@ -217,7 +217,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         }catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Problems with creating the log files");
+            throw new RuntimeException("Problems creating the log files");
         }
 
 
@@ -227,7 +227,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     }
 
 
-    private void simulParametres() {
+    private void    simulParametres() {
 
         try {
             

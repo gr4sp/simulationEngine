@@ -301,14 +301,10 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
      * @param recursionLevel
      */
     public void computeIndicators(SimState state, double consumption, int recursionLevel) {
-        Gr4spSim data = (Gr4spSim) state;
-
-
+        Gr4spSim data;
+        data = (Gr4spSim) state;
 
         Date today = data.getCurrentSimDate();
-
-
-
 
         /**
          * Get the emission factor of generators
