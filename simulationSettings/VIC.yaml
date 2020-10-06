@@ -19,7 +19,7 @@ simulationDates:
 
   # There's only forecast data up to 2050/12.
   #2051-01-01
-  endDate: 2051-01-01
+  endDate: 2020-01-01
 
   # Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before
   startDateSpotMarket: 1999-01-01
@@ -55,7 +55,8 @@ forecast:
     solarUptake: Central #Slow change
 
   baseYear: 2019
-  startDemandForecast: 2020-06-01
+  #2020-06-01
+  startDemandForecast: 2020-01-01
 
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
 
