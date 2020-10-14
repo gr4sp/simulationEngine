@@ -991,6 +991,9 @@ public class LoadData implements java.io.Serializable {
             currentDate = stringToDate.parse(data.settings.getStartDemandForecast());
             c.setTime(currentDate);
             endCalibrationDate = c.getTime();
+            // Calibrate up to the end simulation year if it happens before the start of the forecast
+            if (endCalibrationDate.after( data.getEndSimDate() ) ) endCalibrationDate = data.getEndSimDate();
+
             currentDate = stringToDate.parse(data.settings.getStartDateSpotMarket());
             c.setTime(currentDate);
         } catch (ParseException e) {
