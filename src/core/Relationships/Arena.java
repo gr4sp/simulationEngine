@@ -477,8 +477,8 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                         //Historic Capacity Factor Off Spot non scheduled
                         g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + capacity );
-                        g.setBidsOffSpot( g.getBidsOffSpot() + 1 );
-                        g.setHistoricCapacityFactor( g.getHistoricGeneratedMWh() / (g.getMaxCapacity() * (g.getBidsOffSpot())) );
+                        g.setNumTimesUsedOffSpot( g.getNumTimesUsedOffSpot() + 1 );
+                        g.setHistoricCapacityFactor( g.getHistoricGeneratedMWh() / (g.getMaxCapacity() * (g.getNumTimesUsedOffSpot())) );
 
 
                     }

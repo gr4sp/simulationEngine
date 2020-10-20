@@ -1847,10 +1847,6 @@ public class SaveData implements Steppable, java.io.Serializable {
             HashMap<String, ArrayList<Double>> datasetSecondarymaxUnmetDemandMwhPerDaySummary = new HashMap<>();
 
 
-
-
-
-
             XYSeries cseries = consumptionActorSeries.get(0);
             XYSeries tseries = tariffUsageConsumptionActorSeries.get(0);
             XYSeries wseries = wholesaleSeries.get(0);

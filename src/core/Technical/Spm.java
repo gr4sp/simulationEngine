@@ -50,8 +50,8 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
     private double embGHG;
 
     //Generation metrics
-    private double genAvailable;
-    private double genEmissionIntensityIndex;
+    private double genAvailable; //generation available in the SPM (in and off spot)
+    private double genEmissionIntensityIndex; //emissions from the SPM
 
     //Costs
     private double installCosts;
