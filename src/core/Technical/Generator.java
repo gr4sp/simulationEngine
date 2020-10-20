@@ -33,10 +33,6 @@ public class Generator implements java.io.Serializable, Asset {
     private String fuelBucketSummary; // type of fuel
 
     private int lifecycle; //life cycle in years
-    //private double constructionPeriod;//construction period
-    //private double capex; //capital costs in AUD/capacity unit (kW)
-    //private double fixedCosts; //fixed costs operation and maintenance in AUD/capacity unit per year
-    //private double peakContribFactor; //peak contribution factor in percentage
 
     //Surplus capacity after supplying households with solar. The number of
     //households equals the no_units
@@ -60,7 +56,7 @@ public class Generator implements java.io.Serializable, Asset {
     public double maxCapacityFactorSummer;
 
     //NonScheduled evolution
-    private int bidsOffSpot;
+    private int numTimesUsedOffSpot;
 
 
     //Emission Factor
@@ -140,7 +136,7 @@ public class Generator implements java.io.Serializable, Asset {
         historicRevenue = 0.0;
         potentialRevenue = 0.0;
         bidsInSpot = 0;
-        bidsOffSpot = 0;
+        numTimesUsedOffSpot = 0;
 
         //Load Settings specified through YAML settings file
         basePriceMWh = settings.getBasePriceMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
@@ -391,12 +387,12 @@ public class Generator implements java.io.Serializable, Asset {
 
     }
 
-    public int getBidsOffSpot() {
-        return bidsOffSpot;
+    public int getNumTimesUsedOffSpot() {
+        return numTimesUsedOffSpot;
     }
 
-    public void setBidsOffSpot(int bidsOffSpot) {
-        this.bidsOffSpot = bidsOffSpot;
+    public void setNumTimesUsedOffSpot(int numTimesUsedOffSpot) {
+        this.numTimesUsedOffSpot = numTimesUsedOffSpot;
     }
 
     public double getMonthlyGeneratedMWh() {

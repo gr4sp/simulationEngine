@@ -995,6 +995,8 @@ public class LoadData implements java.io.Serializable {
             if (endCalibrationDate.after( data.getEndSimDate() ) ) endCalibrationDate = data.getEndSimDate();
 
             currentDate = stringToDate.parse(data.settings.getStartDateSpotMarket());
+            // Calibrate from the start simulation year if it happens after the start of the spot market
+            if (currentDate.before( data.getStartSimDate() ) ) currentDate = data.getStartSimDate();
             c.setTime(currentDate);
         } catch (ParseException e) {
             data.LOGGER.warning(e.toString());
@@ -1215,6 +1217,17 @@ public class LoadData implements java.io.Serializable {
          * and Percentage of domestic usage
          * */
 
+        //Set Base Date
+        Date baseDate = null;
+        int baseYear = data.settings.getBaseYearConsumptionForecast();
+
+        String dateInString = baseYear + "-01-01";
+        try {
+            baseDate = stringToDate.parse(dateInString);
+        } catch (java.text.ParseException e) {
+            data.LOGGER.warning(e.toString());
+        }
+
         for (Date month : data.getMonthly_consumption_register().keySet()) {
 
             double gwh = data.getMonthly_consumption_register().get(month);
@@ -1225,6 +1238,7 @@ public class LoadData implements java.io.Serializable {
             Integer consumers = data.getMonthly_domestic_consumers_register().get(month);
 
             if (consumers == null) continue;
+
 
             //convert to MWh and only domestic demand
             double newMwh = (gwh * 1000.0 * data.getDomesticConsumptionPercentage()) / (double) consumers;

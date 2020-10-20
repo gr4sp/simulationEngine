@@ -13,14 +13,12 @@ import java.util.*;
 
 public class SimPolicies implements java.io.Serializable, Steppable {
 
-    private EndConsumerTariff endConsumerTariff;
-    private AccelerateSolarPV accelerateSolarPV;
+    private EndConsumerTariff endConsumerTariff; //use to gather past data on tariffs according to a policy (max,min,avg)
     private int availableIDGen;
     Random random;
 
     public SimPolicies() {
         this.endConsumerTariff = EndConsumerTariff.MAX;
-        this.accelerateSolarPV = new AccelerateSolarPV(0.0);
         availableIDGen = 1;
         random = new Random();
     }
@@ -33,13 +31,7 @@ public class SimPolicies implements java.io.Serializable, Steppable {
         this.endConsumerTariff = endConsumerTariff;
     }
 
-    public AccelerateSolarPV getAccelerateSolarPV() {
-        return accelerateSolarPV;
-    }
 
-    public void setAccelerateSolarPV(AccelerateSolarPV accelerateSolarPV) {
-        this.accelerateSolarPV = accelerateSolarPV;
-    }
 
     private Date getDate(String sdate) {
         Date date = null;
@@ -63,17 +55,6 @@ public class SimPolicies implements java.io.Serializable, Steppable {
     public void step(SimState simState) {
         Gr4spSim data = (Gr4spSim) simState;
 
-        //Apply Houshold conversion policy only from 2010
-
-        //TODO: Use Diffusion model as S-Curve logistic function (see https://github.com/angelara/gr4sp/issues/2)
-        // INTERACTIVE LINK WITH FORMULA: https://www.desmos.com/calculator/agxuc5gip8
-        // IMPLEMENTATION IN JAVA: https://commons.apache.org/proper/commons-math/javadocs/api-3.1.1/org/apache/commons/math3/analysis/function/Logistic.html
-//
-//        if(data.getCurrentSimDate().after( getDate("2010-01-01"))) {
-//            double rnd = random.nextDouble();
-//            double uptakePercentage = rnd * accelerateSolarPV.getMonthlyHousholdsPercentageConversion();
-//            data.convertIntoNonConventionalHouseholds(uptakePercentage);
-//        }
 
         Calendar c = Calendar.getInstance();
         c.setTime(data.getCurrentSimDate());

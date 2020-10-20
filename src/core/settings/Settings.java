@@ -22,7 +22,6 @@ class PopulationSettings implements java.io.Serializable {
 }
 
 class PolicySettings implements java.io.Serializable {
-    public double uptakeRate;
     public EndConsumerTariff endConsumerTariff;
     public double annualInflation;
 
@@ -313,9 +312,6 @@ public class Settings implements java.io.Serializable {
      * Policy
      */
 
-    public double getUptakeRate() {
-        return policy.uptakeRate;
-    }
 
     public EndConsumerTariff getEndConsumerTariff() {
         return policy.endConsumerTariff;

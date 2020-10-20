@@ -16,7 +16,7 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
     private HashMap<Date, Integer > newHousholdsPerDate;
     private boolean family;
     private boolean hasGas;
-    private double income; //median weekly income according to ABS census 2016
+    private double income;
     public double currentConsumption;
     public double surplusMWh;
     public double currentEmissions;
@@ -29,10 +29,10 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                        OwnershipModel ownershipModel, int numberOfPerson, int numberOfHouseholds, boolean gas,
                        boolean family, double income, Date CreationDate ) {
         super(actor, actorType, name, mainRole, businessType, ownershipModel);
-        this.numberOfPerson = numberOfPerson;
-        this.family = family;
-        this.income = income;
-        this.hasGas = gas;
+        this.numberOfPerson = numberOfPerson; //not used
+        this.family = family; //not used
+        this.income = income; //not used
+        this.hasGas = gas; //not used
         this.currentConsumption = 0.0;
         this.currentEmissions = 0.0;
         this.surplusMWh = 0.0;
