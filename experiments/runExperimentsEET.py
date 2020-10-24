@@ -2,7 +2,7 @@ import os, sys
 
 sys.path.append(r'{}\EMAworkbench'.format(os.getcwd()))
 
-from gr4spModelEET import getModel
+from gr4spModelEET import getModel, getModelAFterBaseYear
 from datetime import date
 
 if __name__ == '__main__':
