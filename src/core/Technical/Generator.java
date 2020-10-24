@@ -527,5 +527,9 @@ public class Generator implements java.io.Serializable, Asset {
 
     public Boolean getInSecondaryMarket() { return inSecondaryMarket; }
 
+    public void setInPrimaryMarket( boolean v ) { inPrimaryMarket = v; }
+
+    public void setInSecondaryMarket( boolean v ) { inSecondaryMarket = v; }
+
     public double getAvailableCapacity() { return availableCapacity; }
 }

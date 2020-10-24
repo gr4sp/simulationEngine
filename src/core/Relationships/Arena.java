@@ -218,26 +218,46 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
         //If spot is on, get the market price
         double price = 0;
-        for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
-            Arena a = entry.getValue();
-            if (a.type.equalsIgnoreCase("Spot")) {
+        if(today.after(data.getBaseYearForecastDate())){
+            for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
+                Arena a = entry.getValue();
+                if (a.type.equalsIgnoreCase("Spot")) {
 
-                //Weighted average between secondaryPrice and unmet demand supplied by the primary spot
-                if(data.settings.existsMarket("secondary")) {
-                    price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
-                            avgMonthlyPriceSecondarySpot * avgMonthlyDemandSecondarySpot +
-                            avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot ) /
-                            (avgMonthlyDemandPrimarySpot + avgMonthlyDemandSecondarySpot + avgMonthlyDemandOffSpot);
+                    //Weighted average between secondaryPrice and unmet demand supplied by the primary spot
+                    if (data.settingsAfterBaseYear.existsMarket("secondary")) {
+                        price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
+                                avgMonthlyPriceSecondarySpot * avgMonthlyDemandSecondarySpot +
+                                avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot) /
+                                (avgMonthlyDemandPrimarySpot + avgMonthlyDemandSecondarySpot + avgMonthlyDemandOffSpot);
+
+                    } else
+                        price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
+                                avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot) /
+                                (avgMonthlyDemandPrimarySpot + avgMonthlyDemandOffSpot);
 
                 }
-                else
-                    price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
-                            avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot ) /
-                            (avgMonthlyDemandPrimarySpot  + avgMonthlyDemandOffSpot);
-
             }
         }
+        else {
+            for (Map.Entry<Integer, Arena> entry : data.getArena_register().entrySet()) {
+                Arena a = entry.getValue();
+                if (a.type.equalsIgnoreCase("Spot")) {
 
+                    //Weighted average between secondaryPrice and unmet demand supplied by the primary spot
+                    if (data.settings.existsMarket("secondary")) {
+                        price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
+                                avgMonthlyPriceSecondarySpot * avgMonthlyDemandSecondarySpot +
+                                avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot) /
+                                (avgMonthlyDemandPrimarySpot + avgMonthlyDemandSecondarySpot + avgMonthlyDemandOffSpot);
+
+                    } else
+                        price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
+                                avgMonthlyPriceOffSpot * avgMonthlyDemandOffSpot) /
+                                (avgMonthlyDemandPrimarySpot + avgMonthlyDemandOffSpot);
+
+                }
+            }
+        }
         //$/MWh
         return price;
 
@@ -299,13 +319,17 @@ public class Arena implements Steppable,  java.io.Serializable  {
         if( currentYear <= data.settings.getBaseYearConsumptionForecast())
             inflation += data.getAnnual_inflation().get(currentYear);
         else
-            inflation += data.settings.getAnnualInflation();
+            inflation += data.settingsAfterBaseYear.getAnnualInflation();
 
+        //Update base price settings for future new generation
+        data.settingsAfterBaseYear.applyInflationToAllGenBasePrice(inflation);
+        data.settings.applyInflationToAllGenBasePrice(inflation);
+
+        //Update existing generator prices
         for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
             Vector<Generator> gens = entry.getValue();
             for (Generator g : gens) {
 
-                //TODO: Apply annual inflation to base prices and market price caps since market started
                 g.setBasePriceMWh(g.getBasePriceMWh() * inflation);
                 g.setMarketPriceCap(g.getMarketPriceCap() * inflation);
 
@@ -325,11 +349,34 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 return;
             }
 
+
+
             c.setTime(today);
             int daysInMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
             int currentMonth = c.get(Calendar.MONTH) + 1;
             int currentYear = c.get(Calendar.YEAR);
 
+            //Update markets setting after the baseyear
+            if( currentYear == data.settings.getBaseYearConsumptionForecast() ){
+                if(data.settingsAfterBaseYear.existsMarket("primary")) {
+                    if (primarySpot == null)
+                        primarySpot = new SpotMarket("Primary");
+                }
+                else
+                    primarySpot = null;
+
+                if(data.settingsAfterBaseYear.existsMarket("secondary")) {
+                    if (secondarySpot == null)
+                        secondarySpot = new SpotMarket("secondary");
+                }
+                else
+                    secondarySpot = null;
+
+                if(data.settingsAfterBaseYear.existsMarket("secondary"))
+                    existsSecondary = true;
+                else
+                    existsSecondary = false;
+            }
 
             /**
              * Apply inflation in January
@@ -495,22 +542,40 @@ public class Arena implements Steppable,  java.io.Serializable  {
                     totalDemandWholesale = 0.0;
 
                 double totalDemandResidential = 0.0;
-                if(data.settings.existsMarket("secondary")) {
-                    //Send residential demand (30% typically, see YAML) to secondary market, and remove it from primary market
-                    totalDemandResidential = totalDemandWholesale * data.settings.getDomesticConsumptionPercentage();
-                    totalDemandWholesale -= totalDemandResidential;
+                if( currentYear < data.settings.getBaseYearConsumptionForecast() ) {
+                    if (data.settings.existsMarket("secondary")) {
+                        //Send residential demand (30% typically, see YAML) to secondary market, and remove it from primary market
+                        totalDemandResidential = totalDemandWholesale * data.settings.getDomesticConsumptionPercentage();
+                        totalDemandWholesale -= totalDemandResidential;
 
 
-                    this.secondarySpot.computeMarketPrice(totalDemandResidential, data, currentTime);
+                        this.secondarySpot.computeMarketPrice(totalDemandResidential, data, currentTime, currentYear);
 
-                    //Add unmet demand by secondary market into the demand of the primary market
-                    if (this.secondarySpot.getUnmetDemand() > 0.0) {
-                        totalDemandWholesale += this.secondarySpot.getUnmetDemand();
-                        totalDemandResidential -= this.secondarySpot.getUnmetDemand();
+                        //Add unmet demand by secondary market into the demand of the primary market
+                        if (this.secondarySpot.getUnmetDemand() > 0.0) {
+                            totalDemandWholesale += this.secondarySpot.getUnmetDemand();
+                            totalDemandResidential -= this.secondarySpot.getUnmetDemand();
+                        }
+                    }
+                }
+                else{
+                    if(data.settingsAfterBaseYear.existsMarket("secondary")) {
+                        //Send residential demand (30% typically, see YAML) to secondary market, and remove it from primary market
+                        totalDemandResidential = totalDemandWholesale * data.settingsAfterBaseYear.getDomesticConsumptionPercentage();
+                        totalDemandWholesale -= totalDemandResidential;
+
+
+                        this.secondarySpot.computeMarketPrice(totalDemandResidential, data, currentTime, currentYear);
+
+                        //Add unmet demand by secondary market into the demand of the primary market
+                        if (this.secondarySpot.getUnmetDemand() > 0.0) {
+                            totalDemandWholesale += this.secondarySpot.getUnmetDemand();
+                            totalDemandResidential -= this.secondarySpot.getUnmetDemand();
+                        }
                     }
                 }
 
-                this.primarySpot.computeMarketPrice(totalDemandWholesale, data, currentTime);
+                this.primarySpot.computeMarketPrice(totalDemandWholesale, data, currentTime, currentYear);
 
 
 
@@ -526,10 +591,17 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 if(totalDemandWholesale + totalDemandResidential > 0.0001) {
                    avgMonthlyDemandPrimarySpot = (avgMonthlyDemandPrimarySpot * num_half_hours) + totalDemandWholesale;
                    avgMonthlyPricePrimarySpot = (avgMonthlyPricePrimarySpot * num_half_hours) + this.primarySpot.getMarketPrice() ;
-                   if(data.settings.existsMarket("secondary")) {
-                       avgMonthlyPriceSecondarySpot = (avgMonthlyPriceSecondarySpot * num_half_hours) + this.secondarySpot.getMarketPrice();
-                       avgMonthlyDemandSecondarySpot = (avgMonthlyDemandSecondarySpot * num_half_hours) + totalDemandResidential;
-                   }
+                    if( currentYear < data.settings.getBaseYearConsumptionForecast() ) {
+                        if (data.settings.existsMarket("secondary")) {
+                            avgMonthlyPriceSecondarySpot = (avgMonthlyPriceSecondarySpot * num_half_hours) + this.secondarySpot.getMarketPrice();
+                            avgMonthlyDemandSecondarySpot = (avgMonthlyDemandSecondarySpot * num_half_hours) + totalDemandResidential;
+                        }
+                    }else{
+                        if(data.settingsAfterBaseYear.existsMarket("secondary")) {
+                            avgMonthlyPriceSecondarySpot = (avgMonthlyPriceSecondarySpot * num_half_hours) + this.secondarySpot.getMarketPrice();
+                            avgMonthlyDemandSecondarySpot = (avgMonthlyDemandSecondarySpot * num_half_hours) + totalDemandResidential;
+                        }
+                    }
 
                 }else{
                     data.LOGGER.warning(currentTime + " - " +"demand in Spots was 0!! all covered off market");
@@ -560,9 +632,13 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 double unmetArena = this.primarySpot.getUnmetDemand() / 2.0; //30min;
 
                 double unmetSecondary = 0.0;
-                if(data.settings.existsMarket("secondary"))
-                    unmetSecondary = this.secondarySpot.getUnmetDemand() / 2.0; //30min;
-
+                if( currentYear < data.settings.getBaseYearConsumptionForecast() ) {
+                    if (data.settings.existsMarket("secondary"))
+                        unmetSecondary = this.secondarySpot.getUnmetDemand() / 2.0; //30min;
+                }else{
+                    if(data.settingsAfterBaseYear.existsMarket("secondary"))
+                        unmetSecondary = this.secondarySpot.getUnmetDemand() / 2.0; //30min;
+                }
 
                 //Update Unmet demand month
                 unmetDemandMwh += unmetArena;                
@@ -637,12 +713,19 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
             primarySpot.setMarketPrice(avgMonthlyPricePrimarySpot);
             primarySpot.setDemand(avgMonthlyDemandPrimarySpot); // MWh
-            if(data.settings.existsMarket("secondary")) {
+            if( currentYear < data.settings.getBaseYearConsumptionForecast() ) {
+                if (data.settings.existsMarket("secondary")) {
 
-                secondarySpot.setMarketPrice(avgMonthlyPriceSecondarySpot);
-                secondarySpot.setDemand(avgMonthlyDemandSecondarySpot);
+                    secondarySpot.setMarketPrice(avgMonthlyPriceSecondarySpot);
+                    secondarySpot.setDemand(avgMonthlyDemandSecondarySpot);
+                }
+            }else{
+                if(data.settingsAfterBaseYear.existsMarket("secondary")) {
+
+                    secondarySpot.setMarketPrice(avgMonthlyPriceSecondarySpot);
+                    secondarySpot.setDemand(avgMonthlyDemandSecondarySpot);
+                }
             }
-
 
         }
 

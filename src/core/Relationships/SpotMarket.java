@@ -106,7 +106,7 @@ public class SpotMarket implements java.io.Serializable{
     }
 
 
-    public void computeMarketPrice(double demand, Gr4spSim state, Date currentTime) {
+    public void computeMarketPrice(double demand, Gr4spSim state, Date currentTime, int currentYear) {
         Gr4spSim data = state;
 
         this.demand = demand;
@@ -158,7 +158,10 @@ public class SpotMarket implements java.io.Serializable{
             * The import price varies significantly over the historic period analysed in OpenNem.
             * In the first years of analysis a pattern of more expensive import price in summer is evident.
             * However this pattern blurs with the years, therefore it is decided to assign the median of 29% for the BAU */
-            marketPrice *= 1.0 + data.settings.getImportPriceFactor();
+            if( currentYear < data.settings.getBaseYearConsumptionForecast() )
+                marketPrice *= 1.0 + data.settings.getImportPriceFactor();
+            else
+                marketPrice *= 1.0 + data.settingsAfterBaseYear.getImportPriceFactor();
             unmetDemand = demand - offered;
             if( successfulBids.size() > 0 ) {
                 Generator lastgen = (Generator) successfulBids.get(successfulBids.size() - 1).asset;

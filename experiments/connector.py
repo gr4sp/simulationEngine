@@ -245,6 +245,99 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.setSpotMarket('semiScheduled', semiScheduleGenSpotMarket)
             gr4spObj.settings.setSpotMarket('nonScheduled', nonScheduleGenSpotMarket)
 
+
+            # UPDATE AFTER BASE YEAR SETTINGS
+
+            # Set Uncertainties
+            gr4spObj.settingsAfterBaseYear.forecast.annualCpi = annualCpi / 100.0
+            gr4spObj.settingsAfterBaseYear.policy.annualInflation = annualInflation / 100.0
+
+            gr4spObj.settingsAfterBaseYear.forecast.scenario.consumption = consumption
+            gr4spObj.settingsAfterBaseYear.forecast.scenario.energyEfficiency = energyEfficiency
+            gr4spObj.settingsAfterBaseYear.forecast.scenario.onsiteGeneration = onsiteGeneration
+            gr4spObj.settingsAfterBaseYear.forecast.scenario.solarUptake = solarUptake
+            gr4spObj.settingsAfterBaseYear.forecast.rooftopPV = rooftopPV
+
+            gr4spObj.settingsAfterBaseYear.population.domesticConsumptionPercentage = domesticConsumptionPercentage / 100.0
+
+            gr4spObj.settingsAfterBaseYear.forecast.includePublicallyAnnouncedGen = jpype.java.lang.Boolean(
+                includePublicallyAnnouncedGen)
+            gr4spObj.settingsAfterBaseYear.forecast.generationRolloutPeriod = generationRolloutPeriod
+            gr4spObj.settingsAfterBaseYear.forecast.generatorRetirement = generatorRetirement
+            gr4spObj.settingsAfterBaseYear.forecast.technologicalImprovement = technologicalImprovement / 100.0
+            gr4spObj.settingsAfterBaseYear.forecast.learningCurve = learningCurve / 100.0
+            gr4spObj.settingsAfterBaseYear.forecast.importPriceFactor = importPriceFactor / 100.0
+
+            # # LCOEs and CFs variations
+
+            brown_coal_base_price = gr4spObj.settingsAfterBaseYear.getBasePriceMWh('Brown Coal',
+                                                                                   '') * applyPercentageChange(
+                priceChangePercentageBrownCoal)
+            gr4spObj.settingsAfterBaseYear.setBasePriceMWh('Brown Coal', '', brown_coal_base_price)
+
+            battery_base_price = gr4spObj.settingsAfterBaseYear.getBasePriceMWh('Battery', '') * applyPercentageChange(
+                priceChangePercentageBattery)
+            gr4spObj.settingsAfterBaseYear.setBasePriceMWh('Battery', '', battery_base_price)
+
+            ocgt_base_price = gr4spObj.settingsAfterBaseYear.getBasePriceMWh('Gas Pipeline Turbine - OCGT',
+                                                                             '') * applyPercentageChange(
+                priceChangePercentageOcgt)
+            gr4spObj.settingsAfterBaseYear.setBasePriceMWh('Gas Pipeline Turbine - OCGT', '', ocgt_base_price)
+
+            ccgt_base_price = gr4spObj.settingsAfterBaseYear.getBasePriceMWh('Gas Pipeline Turbine - CCGT',
+                                                                             '') * applyPercentageChange(
+                priceChangePercentageCcgt)
+            gr4spObj.settingsAfterBaseYear.setBasePriceMWh('Gas Pipeline Turbine - CCGT', '', ccgt_base_price)
+
+            wind_base_price = gr4spObj.settingsAfterBaseYear.getBasePriceMWh('Wind', '') * applyPercentageChange(
+                priceChangePercentageWind)
+            gr4spObj.settingsAfterBaseYear.setBasePriceMWh('Wind', '', wind_base_price)
+
+            water_base_price = gr4spObj.settingsAfterBaseYear.getBasePriceMWh('Water', '') * applyPercentageChange(
+                priceChangePercentageWater)
+            gr4spObj.settingsAfterBaseYear.setBasePriceMWh('Water', '', water_base_price)
+
+            solar_base_price = gr4spObj.settingsAfterBaseYear.getBasePriceMWh('Solar', '') * applyPercentageChange(
+                priceChangePercentageSolar)
+            gr4spObj.settingsAfterBaseYear.setBasePriceMWh('Solar', '', solar_base_price)
+
+            # Nameplate Capacity Change
+
+            brown_coal_nameplate_change = applyPercentageChange(nameplateCapacityChangeBrownCoal)
+            gr4spObj.settingsAfterBaseYear.setNameplateCapacityChange('Brown Coal', '', brown_coal_nameplate_change)
+
+            battery_nameplate_change = applyPercentageChange(nameplateCapacityChangeBattery)
+            gr4spObj.settingsAfterBaseYear.setNameplateCapacityChange('Battery', '', battery_nameplate_change)
+
+            ocgt_nameplate_change = applyPercentageChange(nameplateCapacityChangeOcgt)
+            gr4spObj.settingsAfterBaseYear.setNameplateCapacityChange('Gas Pipeline Turbine - OCGT', '',
+                                                                      ocgt_nameplate_change)
+
+            ccgt_nameplate_change = applyPercentageChange(nameplateCapacityChangeCcgt)
+            gr4spObj.settingsAfterBaseYear.setNameplateCapacityChange('Gas Pipeline Turbine - CCGT', '',
+                                                                      ccgt_nameplate_change)
+
+            wind_nameplate_change = applyPercentageChange(nameplateCapacityChangeWind)
+            gr4spObj.settingsAfterBaseYear.setNameplateCapacityChange('Wind', '', wind_nameplate_change)
+
+            water_nameplate_change = applyPercentageChange(nameplateCapacityChangeWater)
+            gr4spObj.settingsAfterBaseYear.setNameplateCapacityChange('Water', '', water_nameplate_change)
+
+            solar_nameplate_change = applyPercentageChange(nameplateCapacityChangeSolar)
+            gr4spObj.settingsAfterBaseYear.setNameplateCapacityChange('Solar', '', solar_nameplate_change)
+
+            # tariff components
+            gr4spObj.settingsAfterBaseYear.setUsageTariff('wholesaleContribution',
+                                                          (float)(wholesaleTariffContribution / 100.0))
+
+            # arenas
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('scheduled', scheduleMinCapMarketGen)
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('semiScheduled', semiScheduleMinCapMarketGen)
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('nonScheduled', nonScheduleMinCapMarketGen)
+
+            gr4spObj.settingsAfterBaseYear.setSpotMarket('semiScheduled', semiScheduleGenSpotMarket)
+            gr4spObj.settingsAfterBaseYear.setSpotMarket('nonScheduled', nonScheduleGenSpotMarket)
+
             # Run JAVA Simulation
             gr4spObj.runFromPythonEMA()
 

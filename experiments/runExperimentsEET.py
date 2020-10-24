@@ -9,7 +9,7 @@ if __name__ == '__main__':
     '''
     Setup EMA Uncertainties, Levers and Outcomes
     '''
-    model = getModel()
+    model = getModelAFterBaseYear()
 
     '''
     Run EMA
