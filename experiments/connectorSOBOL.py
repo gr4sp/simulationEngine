@@ -14,7 +14,6 @@ import json
 Create Java Virtual Machine (jpype.getDefaultJVMPath())
 '''
 
-
 def startJVM():
     with open('settingsExperiments.json') as f:
         settings = json.load(f)
@@ -120,7 +119,7 @@ def getResults(outputID, experimentId):
     return timesYear, consumptionYear, tariffsYear, wholesaleYear, ghgYear, numConsumersYear, primarySpotYear, \
            secondarySpotYear, offSpotYear, renewableContributionYear, rooftopPVProductionYear, coalProductionYear, \
            waterProductionYear, windProductionYear, gasProductionYear, solarProductionYear, BatteryProductionYear, \
-           numActorsYear, primaryUnmetDemandMwh, primaryUnmetDemandHours, primaryUnmetDemandDays, primaryMaxUnmetDemandMwhPerHour,\
+           numActorsYear, primaryUnmetDemandMwh, primaryUnmetDemandHours, primaryUnmetDemandDays, primaryMaxUnmetDemandMwhPerHour, \
            secondaryUnmetDemandMwh, secondaryUnmetDemandHours, secondaryUnmetDemandDays, secondaryMaxUnmetDemandMwhPerHour, seedExperimentCsv
 
 

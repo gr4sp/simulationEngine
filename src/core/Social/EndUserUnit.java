@@ -157,7 +157,10 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 }
                 else {
                     //Find out wholesale price contribution percentage to the tariff (other values given in yaml file)
-                    wholesalePriceComponent = (float) data.settings.getUsageTariff("wholesaleContribution");
+                    if( today.after(data.getBaseYearForecastDate()))
+                        wholesalePriceComponent = (float) data.settingsAfterBaseYear.getUsageTariff("wholesaleContribution");
+                    else
+                        wholesalePriceComponent = (float) data.settings.getUsageTariff("wholesaleContribution");
                 }
                 //Wholesale component cannot fall below 0.01 and above 1.0
                 if(wholesalePriceComponent < 0.01) wholesalePriceComponent = (float)0.01;

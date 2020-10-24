@@ -198,6 +198,12 @@ public class Settings implements java.io.Serializable {
         return generators.get("Default");
     }
 
+    public void applyInflationToAllGenBasePrice( double inflation ){
+        for (Map.Entry<String, GeneratorSettings> e : generators.entrySet()) {
+            e.getValue().basePriceMWh *= inflation;
+        }
+    }
+
     public void improveSolarEfficiency( double factor ) {
         for (Map.Entry<String, GeneratorSettings> e : generators.entrySet()) {
             if( e.getValue().solarEfficiency != null )

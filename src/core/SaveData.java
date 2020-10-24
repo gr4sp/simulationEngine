@@ -358,7 +358,7 @@ public class SaveData implements Steppable, java.io.Serializable {
          * -8 Solar
          * -9 Battery
          */
-        if (data.settings.existsMarket("primary")) {
+        if (data.settings.existsMarket("primary") || data.settingsAfterBaseYear.existsMarket("primary")) {
             XYSeries seriesSystemProductionIn = new org.jfree.data.xy.XYSeries(
                     "PrimarySpot",
                     false);
@@ -391,7 +391,7 @@ public class SaveData implements Steppable, java.io.Serializable {
 
         }
 
-        if (data.settings.existsMarket("secondary")) {
+        if (data.settings.existsMarket("secondary") || data.settingsAfterBaseYear.existsMarket("secondary") ) {
             XYSeries seriesSystemProductionSec = new org.jfree.data.xy.XYSeries(
                     "SecondarySpot",
                     false);
@@ -422,7 +422,7 @@ public class SaveData implements Steppable, java.io.Serializable {
             maxUnmetDemandMwhPerDaySeries.put(-1, maxUnmetDemandMwhPerDay);
             maxUnmetDemandMwhPerDayChart.addSeries(maxUnmetDemandMwhPerDay, null);
         }
-        if (data.settings.existsOffMarket()) {
+        if (data.settings.existsOffMarket() || data.settingsAfterBaseYear.existsOffMarket() ) {
 
             XYSeries seriesSystemProductionOff = new org.jfree.data.xy.XYSeries(
                     "OffSpot",
@@ -483,7 +483,7 @@ public class SaveData implements Steppable, java.io.Serializable {
         PriceGenAvgSeries.put(1, seriesPriceAvgTariff);
         PriceGenAvgChart.addSeries(seriesPriceAvgTariff, null);
 
-        if (data.settings.existsMarket("primary")) {
+        if (data.settings.existsMarket("primary") || data.settingsAfterBaseYear.existsMarket("primary") ) {
 
             XYSeries seriesPriceAvgIn = new org.jfree.data.xy.XYSeries(
                     "PrimarySpot",
@@ -492,7 +492,7 @@ public class SaveData implements Steppable, java.io.Serializable {
             PriceGenAvgChart.addSeries(seriesPriceAvgIn, null);
         }
 
-        if (data.settings.existsMarket("secondary")) {
+        if (data.settings.existsMarket("secondary") || data.settingsAfterBaseYear.existsMarket("secondary") ) {
             XYSeries seriesPriceAvgIn = new org.jfree.data.xy.XYSeries(
                     "SecondarySpot",
                     false);
@@ -500,7 +500,7 @@ public class SaveData implements Steppable, java.io.Serializable {
             PriceGenAvgChart.addSeries(seriesPriceAvgIn, null);
         }
 
-        if (data.settings.existsOffMarket()){
+        if (data.settings.existsOffMarket()  || data.settingsAfterBaseYear.existsOffMarket() ){
             XYSeries seriesPriceAvgOff = new org.jfree.data.xy.XYSeries(
                         "OffSpot",
                         false);
@@ -572,12 +572,20 @@ public class SaveData implements Steppable, java.io.Serializable {
 
                 //Add series to the correct chart
                 //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
-                if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false){
+                if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false ){
                     genCapacityFactorOffSpotChart.addSeries(seriesGenCapacityFactors, null);
                     systemProductionOffSpotChart.addSeries(seriesSystemProduction, null);
+                    if(  data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == true ){
+                        genCapacityFactorInSpotChart.addSeries(seriesGenCapacityFactors, null);
+                        systemProductionInSpotChart.addSeries(seriesSystemProduction, null);
+                    }
                 } else {
                     genCapacityFactorInSpotChart.addSeries(seriesGenCapacityFactors, null);
                     systemProductionInSpotChart.addSeries(seriesSystemProduction, null);
+                    if(  data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false ){
+                        genCapacityFactorOffSpotChart.addSeries(seriesGenCapacityFactors, null);
+                        systemProductionOffSpotChart.addSeries(seriesSystemProduction, null);
+                    }
 
                 }
             }
@@ -703,9 +711,19 @@ public class SaveData implements Steppable, java.io.Serializable {
                                 data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) == false){
                                 genCapacityFactorOffSpotChart.addSeries(seriesGenCapacityFactors, null);
                                 systemProductionOffSpotChart.addSeries(seriesSystemProduction, null);
+                                if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ||
+                                        data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ){
+                                    genCapacityFactorInSpotChart.addSeries(seriesGenCapacityFactors, null);
+                                    systemProductionInSpotChart.addSeries(seriesSystemProduction, null);
+                                }
                             } else {
                                 genCapacityFactorInSpotChart.addSeries(seriesGenCapacityFactors, null);
                                 systemProductionInSpotChart.addSeries(seriesSystemProduction, null);
+                                if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false &&
+                                        data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) == false){
+                                    genCapacityFactorOffSpotChart.addSeries(seriesGenCapacityFactors, null);
+                                    systemProductionOffSpotChart.addSeries(seriesSystemProduction, null);
+                                }
 
                             }
                         }
@@ -715,13 +733,22 @@ public class SaveData implements Steppable, java.io.Serializable {
                         genCapacityFactorSeries.get(integer).add(floatDate, gens.get(i).getHistoricCapacityFactor(), false);
                         systemProductionSeries.get(integer).add(floatDate, gens.get(i).getMonthlyGeneratedMWh(), false);
 
-                        if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ){
-                            MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                        } else if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ) {
-                            MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                        } else {
-                            MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
-                        }
+                        if( currentDate.before(data.getBaseYearForecastDate()) )
+                            if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ){
+                                MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                            } else if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ) {
+                                MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                            } else {
+                                MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
+                            }
+                        else
+                            if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ){
+                                MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                            } else if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ) {
+                                MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                            } else {
+                                MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
+                            }
 
                         if (gens.elementAt(i).getTechTypeDescriptor().equals("Solar - Rooftop")) {
                             MWhRooftopPV += gens.get(i).getMonthlyGeneratedMWh();
@@ -784,10 +811,18 @@ public class SaveData implements Steppable, java.io.Serializable {
                  * -9 Battery
                  */
                 systemProductionSeries.get(0).add(floatDate, MWhPrimarySpot, false);
-                if (data.settings.existsMarket("secondary"))
-                    systemProductionSeries.get(-1).add(floatDate, MWhSecondarySpot, false);
-                if(data.settings.existsOffMarket())
-                    systemProductionSeries.get(-2).add(floatDate, MWhOffSpot, false);
+                if( currentDate.before(data.getBaseYearForecastDate()) ) {
+                    if (data.settings.existsMarket("secondary"))
+                        systemProductionSeries.get(-1).add(floatDate, MWhSecondarySpot, false);
+                    if (data.settings.existsOffMarket())
+                        systemProductionSeries.get(-2).add(floatDate, MWhOffSpot, false);
+                }
+                else{
+                    if (data.settingsAfterBaseYear.existsMarket("secondary"))
+                        systemProductionSeries.get(-1).add(floatDate, MWhSecondarySpot, false);
+                    if (data.settingsAfterBaseYear.existsOffMarket())
+                        systemProductionSeries.get(-2).add(floatDate, MWhOffSpot, false);
+                }
                 systemProductionSeries.get(-3).add(floatDate, MWhRooftopPV, false);
                 systemProductionSeries.get(-4).add(floatDate, MWhCoal, false);
                 systemProductionSeries.get(-5).add(floatDate, MWhWater, false);
@@ -856,17 +891,35 @@ public class SaveData implements Steppable, java.io.Serializable {
                         unmetDemandMwhSeries.get(0).add(floatDate, a.getUnmetDemandMwh(), false);;
                         maxUnmetDemandMwhPerDaySeries.get(0).add(floatDate, a.getMaxUnmetDemandMwhPerHour(), false);;
 
-                        if (data.settings.existsMarket("secondary")) {
-                            PriceGenAvgSeries.get(-1).add(floatDate, a.getAvgMonthlyPriceSecondarySpot(), false);
+                        if( currentDate.before(data.getBaseYearForecastDate()) ) {
+                            if (data.settings.existsMarket("secondary")) {
+                                PriceGenAvgSeries.get(-1).add(floatDate, a.getAvgMonthlyPriceSecondarySpot(), false);
 
-                            unmetDemandDaysSeries.get(-1).add(floatDate, a.getUnmetDemandDaysSecondary(), false);;
-                            unmetDemandHoursSeries.get(-1).add(floatDate, a.getUnmetDemandHoursSecondary(), false);;
-                            unmetDemandMwhSeries.get(-1).add(floatDate, a.getUnmetDemandMwhSecondary(), false);;
-                            maxUnmetDemandMwhPerDaySeries.get(-1).add(floatDate, a.getMaxUnmetDemandMwhPerHourSecondary(), false);;
+                                unmetDemandDaysSeries.get(-1).add(floatDate, a.getUnmetDemandDaysSecondary(), false);
+                                ;
+                                unmetDemandHoursSeries.get(-1).add(floatDate, a.getUnmetDemandHoursSecondary(), false);
+                                ;
+                                unmetDemandMwhSeries.get(-1).add(floatDate, a.getUnmetDemandMwhSecondary(), false);
+                                ;
+                                maxUnmetDemandMwhPerDaySeries.get(-1).add(floatDate, a.getMaxUnmetDemandMwhPerHourSecondary(), false);
+                                ;
+                            }
+                            if (data.settings.existsOffMarket())
+                                PriceGenAvgSeries.get(-2).add(floatDate, a.getAvgMonthlyPriceOffSpot(), false);
                         }
-                        if(data.settings.existsOffMarket())
-                            PriceGenAvgSeries.get(-2).add(floatDate, a.getAvgMonthlyPriceOffSpot(), false);
+                        else{
+                            if (data.settingsAfterBaseYear.existsMarket("secondary")) {
+                                PriceGenAvgSeries.get(-1).add(floatDate, a.getAvgMonthlyPriceSecondarySpot(), false);
 
+                                unmetDemandDaysSeries.get(-1).add(floatDate, a.getUnmetDemandDaysSecondary(), false);;
+                                unmetDemandHoursSeries.get(-1).add(floatDate, a.getUnmetDemandHoursSecondary(), false);;
+                                unmetDemandMwhSeries.get(-1).add(floatDate, a.getUnmetDemandMwhSecondary(), false);;
+                                maxUnmetDemandMwhPerDaySeries.get(-1).add(floatDate, a.getMaxUnmetDemandMwhPerHourSecondary(), false);;
+                            }
+                            if(data.settingsAfterBaseYear.existsOffMarket())
+                                PriceGenAvgSeries.get(-2).add(floatDate, a.getAvgMonthlyPriceOffSpot(), false);
+
+                        }
                     }
                 }
             }
@@ -1249,8 +1302,12 @@ public class SaveData implements Steppable, java.io.Serializable {
                     //if (gens.elementAt(i).getDispatchTypeDescriptor().equals("S") == false || gens.elementAt(i).getMaxCapacity() < 30) {
                     if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false){
                         headerGenrecordOffSpot.add(name);
+                        if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) )
+                            headerGenrecordInSpot.add(name);
                     } else {
                         headerGenrecordInSpot.add(name);
+                        if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) == false)
+                            headerGenrecordOffSpot.add(name);
                     }
                 }
             }

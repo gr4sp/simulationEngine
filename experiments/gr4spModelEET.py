@@ -9,10 +9,13 @@ from EMAworkbench.ema_workbench import (IntegerParameter, RealParameter, Categor
                                         ScalarOutcome, TimeSeriesOutcome, Constant, Model)
 
 
+def getModelAFterBaseYear():
+    model = Model('Gr4sp', function=connector.runGr4spAfterBaseYear)
+
 def getModel():
     model = Model('Gr4sp', function=connector.runGr4sp)
 
-# set levers/uncertainties
+    # set levers/uncertainties
     model.uncertainties = [CategoricalParameter('consumption', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.uncertainties += [CategoricalParameter('energyEfficiency', ['Central', 'Slow change', 'Step change'])]
     model.uncertainties += [CategoricalParameter('onsiteGeneration', ['Central', 'Slow change', 'Step change'])]

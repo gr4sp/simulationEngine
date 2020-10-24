@@ -123,6 +123,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private Date startSimDate;
     private Date endSimDate;
     private Date startSpotMarketDate;
+    private Date baseYearForecastDate;
 
     //Policies used for the simulation
     private SimPolicies policies;
@@ -258,6 +259,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             this.endSimDate = stringToDate.parse(settings.getEndDate());
 
             this.startSpotMarketDate = stringToDate.parse(settings.getStartDateSpotMarket());
+            this.baseYearForecastDate = stringToDate.parse(settings.getBaseYearConsumptionForecast() + "-01-01");
+
 
 
             /**
@@ -288,6 +291,11 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     public Date getStartSpotMarketDate() {
         return startSpotMarketDate;
     }
+
+    public Date getBaseYearForecastDate() {
+        return baseYearForecastDate;
+    }
+
 
     public Date getStartSimDate() {
         return startSimDate;
@@ -345,10 +353,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     }
 
     public HashMap<Date, Integer> getMonthly_domestic_consumers_register() { return monthly_domestic_consumers_register; }
-
-    public double getDomesticConsumptionPercentage() {
-        return settings.getDomesticConsumptionPercentage();
-    }
 
     public HashMap<Date, Generation> getMonthly_generation_register() {
         return monthly_generation_register;

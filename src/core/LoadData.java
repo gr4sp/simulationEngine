@@ -96,7 +96,7 @@ public class LoadData implements java.io.Serializable {
                 "FROM  isp_annual_consumption " +
                 "WHERE (category = 'Operational' OR category = 'PriceImpact' OR category ='EnergyEfficiency' OR category = 'SmallNonScheduledGeneration' OR category = 'RooftopPV') " +
                 "AND region = 'VIC' " +
-                "AND (scenario = 'Actual' OR scenario ='"+ data.settings.getForecastScenarioConsumption()+"') ";
+                "AND (scenario = 'Actual' OR scenario ='"+ data.settingsAfterBaseYear.getForecastScenarioConsumption()+"') ";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -140,7 +140,7 @@ public class LoadData implements java.io.Serializable {
                 "FROM  isp_annual_consumption " +
                 "WHERE (category ='EnergyEfficiency') " +
                 "AND region = 'VIC' " +
-                "AND (scenario ='"+ data.settings.getForecastScenarioEnergyEfficiency()+"') ";
+                "AND (scenario ='"+ data.settingsAfterBaseYear.getForecastScenarioEnergyEfficiency()+"') ";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -181,7 +181,7 @@ public class LoadData implements java.io.Serializable {
                 "FROM  isp_annual_consumption " +
                 "WHERE (category ='SmallNonScheduledGeneration') " +
                 "AND region = 'VIC' " +
-                "AND (scenario ='"+ data.settings.getForecastScenarioOnsiteGeneration()+"') ";
+                "AND (scenario ='"+ data.settingsAfterBaseYear.getForecastScenarioOnsiteGeneration()+"') ";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -222,7 +222,7 @@ public class LoadData implements java.io.Serializable {
                 "FROM  isp_annual_consumption " +
                 "WHERE (category = 'RooftopPV') " +
                 "AND region = 'VIC' " +
-                "AND (scenario ='"+ data.settings.getForecastScenarioSolarUptake()+"') ";
+                "AND (scenario ='"+ data.settingsAfterBaseYear.getForecastScenarioSolarUptake()+"') ";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();
@@ -247,14 +247,14 @@ public class LoadData implements java.io.Serializable {
                 gwh *= 1.25;
                 float rooftopPvGwh = gwh;
 
-                if(data.settings.getRooftopPVForecast().equals("both") == true){
+                if(data.settingsAfterBaseYear.getRooftopPVForecast().equals("both") == true){
                     rooftopPvGwh = gwh;
                 }
                 else if(rs.getString("consumptionForecastSubCategory").equals("Residential") == true &&
-                        data.settings.getRooftopPVForecast().equals("residential") == false){
+                        data.settingsAfterBaseYear.getRooftopPVForecast().equals("residential") == false){
                     rooftopPvGwh = 0;
                 }else if(rs.getString("consumptionForecastSubCategory").equals("Business") == true &&
-                        data.settings.getRooftopPVForecast().equals("business") == false){
+                        data.settingsAfterBaseYear.getRooftopPVForecast().equals("business") == false){
                     rooftopPvGwh = 0;
                 }
 
@@ -683,7 +683,7 @@ public class LoadData implements java.io.Serializable {
         //AnnualCPI corrects the value given as inflation below.
         while (baseYear < endYear) {
             float baseCPI = data.getCpi_conversion().get(baseDate);
-            float forecastedCPI = baseCPI * (1 - (float) data.settings.getAnnualCpiForecast());
+            float forecastedCPI = baseCPI * (1 - (float) data.settingsAfterBaseYear.getAnnualCpiForecast());
 
             //Add 1 year to the base reference date
             c.add(Calendar.YEAR, 1);
@@ -1239,9 +1239,13 @@ public class LoadData implements java.io.Serializable {
 
             if (consumers == null) continue;
 
+            double domesticConsumptionPercentage = data.settings.getDomesticConsumptionPercentage();
+
+            if( month.after(baseDate) )
+                domesticConsumptionPercentage = data.settingsAfterBaseYear.getDomesticConsumptionPercentage();
 
             //convert to MWh and only domestic demand
-            double newMwh = (gwh * 1000.0 * data.getDomesticConsumptionPercentage()) / (double) consumers;
+            double newMwh = (gwh * 1000.0 * domesticConsumptionPercentage) / (double) consumers;
             //to check total demand in KWh
             //double newkwh = (gwh * 1000000);
 
@@ -1576,7 +1580,7 @@ public class LoadData implements java.io.Serializable {
                 " OR expected_closure_date > '" + DateToString.format(data.getStartSimDate()) + "')";
 
         // to include publically announced projects or not.
-        if (data.settings.getIncludePublicallyAnnouncedGen() == false){
+        if (data.settingsAfterBaseYear.getIncludePublicallyAnnouncedGen() == false){
             sql += "AND unit_status != 'Publically Announced'";
         }
 
@@ -1612,7 +1616,7 @@ public class LoadData implements java.io.Serializable {
                 Calendar cEndDate = Calendar.getInstance();
                 if(expectedEndDate != null && rs.getString("fuel_type").equals("Brown Coal")){
                     cEndDate.setTime(expectedEndDate);
-                    cEndDate.add(Calendar.YEAR, data.settings.getForecastGeneratorRetirement());
+                    cEndDate.add(Calendar.YEAR, data.settingsAfterBaseYear.getForecastGeneratorRetirement());
                     expectedEndDate = cEndDate.getTime();
                 }
 
@@ -1623,7 +1627,7 @@ public class LoadData implements java.io.Serializable {
                 String unit_status = rs.getString("unit_status");
                 if ( unit_status.equals("Publically Announced") || unit_status.equals("Committed") || unit_status.equals("Committed*")
                         || unit_status.equals("Emerging") || unit_status.equals("In Commissioning")) {
-                    int rolloutPeriod = data.settings.getForecastGenerationRolloutPeriod();
+                    int rolloutPeriod = data.settingsAfterBaseYear.getForecastGenerationRolloutPeriod();
                     for(int year = 0; year < rolloutPeriod; year++) {
 
                         Calendar cStartDate = Calendar.getInstance();

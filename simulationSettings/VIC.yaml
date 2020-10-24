@@ -17,16 +17,21 @@ logLevel: "OFF"
 simulationDates:
 
   # Simulation Date Range
-  startDate:  1998-01-01
+  startDate:  1998-01-01 #1920-01-01
 
   # There's only forecast data up to 2050/12.
-  #2051-01-01
-  endDate: 2020-01-01
+  #2051-01-01 #REMEMBER TO CHANGE startDemandForecast:2020-06-01
+  endDate: 2051-01-01 #2019-01-01 #1995-01-01
 
   # Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before
   startDateSpotMarket: 1999-01-01
 
 population:
+  # Max number of Dwellings represented in a single ConsumerUnit, attached to a SPM
+  # It is a measure to control aggregation of dwellings per SPM
+  # New ConsumerUnits are created according to monthly population growth in the simulation Data monthly_domestic_consumers_register
+  # maxHouseholdsPerConsumerUnit = 1000;
+
   # Population and scale
   # To use M1(only Melbourne cityareaCode), populationPercentageAreacCode: 0.009 assuming 0.9% of Vic population,
 
@@ -57,8 +62,8 @@ forecast:
     solarUptake: Central #Slow change
 
   baseYear: 2019
-  #2020-06-01
-  startDemandForecast: 2020-01-01
+
+  startDemandForecast: 2020-01-01 #2020-06-01
 
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
 
