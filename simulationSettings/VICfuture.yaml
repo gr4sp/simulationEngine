@@ -8,10 +8,10 @@ population:
 forecast:
   #Forecast from ISP annual consumption includes for each category can be: (Slow change), (Fast change), (High DER), (Central), and (Step change)
   scenario:
-    consumption: Step change # consumptions = OpSentOut + PV + EE + ONSG
-    energyEfficiency: Slow change # consumption = consumption - EE  # consumption avoided given energy efficiency measures
-    onsiteGeneration: Slow change # consumption = consumption - ONSG # corresponds to the subcategory of SmallNonScheduledGeneration
-    solarUptake: Slow change #Slow change
+    consumption: Central # consumptions = OpSentOut + PV + EE + ONSG
+    energyEfficiency: Central # consumption = consumption - EE  # consumption avoided given energy efficiency measures
+    onsiteGeneration: Central # consumption = consumption - ONSG # corresponds to the subcategory of SmallNonScheduledGeneration
+    solarUptake: Central #Slow change
 
 #              baseYear: 2019
 #
