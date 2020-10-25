@@ -1402,11 +1402,14 @@ public class SaveData implements Steppable, java.io.Serializable {
 
                     XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
                     if (shifttimeseries <= t) {
-                        spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
+                        if( (t - shifttimeseries) < spprimaggseries.getItems().size())
+                            spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
                         if(spsecondaggseries != null)
-                            spsecondaggitem = (XYDataItem) spsecondaggseries.getItems().get(t - shifttimeseries);
+                            if( (t - shifttimeseries) < spsecondaggseries.getItems().size())
+                                spsecondaggitem = (XYDataItem) spsecondaggseries.getItems().get(t - shifttimeseries);
                         if(sposaggseries != null)
-                            sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
+                            if( (t - shifttimeseries) < sposaggseries.getItems().size())
+                                sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
                         sproofaggitem = (XYDataItem) sproofaggseries.getItems().get(t - shifttimeseries);
 
                         primaryunmetDemandMwhitem = (XYDataItem) primaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
@@ -1414,10 +1417,13 @@ public class SaveData implements Steppable, java.io.Serializable {
                         primaryunmetDemandDaysitem = (XYDataItem) primaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
                         primarymaxUnmetDemandMwhPerDayitem = (XYDataItem) primarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
                         if( secondaryunmetDemandMwhSeries != null){
-                            secondaryunmetDemandMwhitem = (XYDataItem) secondaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
-                            secondaryunmetDemandHoursitem = (XYDataItem) secondaryunmetDemandHoursSeries.getItems().get(t - shifttimeseries);
-                            secondaryunmetDemandDaysitem = (XYDataItem) secondaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
-                            secondarymaxUnmetDemandMwhPerDayitem = (XYDataItem) secondarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
+                            if( (t - shifttimeseries) < secondaryunmetDemandMwhSeries.getItems().size()) {
+
+                                secondaryunmetDemandMwhitem = (XYDataItem) secondaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
+                                secondaryunmetDemandHoursitem = (XYDataItem) secondaryunmetDemandHoursSeries.getItems().get(t - shifttimeseries);
+                                secondaryunmetDemandDaysitem = (XYDataItem) secondaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
+                                secondarymaxUnmetDemandMwhPerDayitem = (XYDataItem) secondarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
+                            }
                         }
 
                     }
@@ -1986,11 +1992,14 @@ public class SaveData implements Steppable, java.io.Serializable {
 
                 XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
                 if (shifttimeseries <= t) {
-                    spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
+                    if( (t - shifttimeseries) < spprimaggseries.getItems().size())
+                        spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
                     if(spsecondaggseries != null)
-                        spsecondaggitem = (XYDataItem) spsecondaggseries.getItems().get(t - shifttimeseries);
+                        if( (t - shifttimeseries) < spsecondaggseries.getItems().size())
+                            spsecondaggitem = (XYDataItem) spsecondaggseries.getItems().get(t - shifttimeseries);
                     if(sposaggseries != null)
-                        sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
+                        if( (t - shifttimeseries) < sposaggseries.getItems().size())
+                            sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
 
                     sproofaggitem = (XYDataItem) sproofaggseries.getItems().get(t - shifttimeseries);
                     spcoalaggitem = (XYDataItem) spcoalaggseries.getItems().get(t - shifttimeseries);
@@ -2005,10 +2014,12 @@ public class SaveData implements Steppable, java.io.Serializable {
                     primaryunmetDemandDaysitem = (XYDataItem) primaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
                     primarymaxUnmetDemandMwhPerDayitem = (XYDataItem) primarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
                     if( secondaryunmetDemandMwhSeries != null){
-                        secondaryunmetDemandMwhitem = (XYDataItem) secondaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
-                        secondaryunmetDemandHoursitem = (XYDataItem) secondaryunmetDemandHoursSeries.getItems().get(t - shifttimeseries);
-                        secondaryunmetDemandDaysitem = (XYDataItem) secondaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
-                        secondarymaxUnmetDemandMwhPerDayitem = (XYDataItem) secondarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
+                        if( (t - shifttimeseries) < secondaryunmetDemandMwhSeries.getItems().size()) {
+                            secondaryunmetDemandMwhitem = (XYDataItem) secondaryunmetDemandMwhSeries.getItems().get(t - shifttimeseries);
+                            secondaryunmetDemandHoursitem = (XYDataItem) secondaryunmetDemandHoursSeries.getItems().get(t - shifttimeseries);
+                            secondaryunmetDemandDaysitem = (XYDataItem) secondaryunmetDemandDaysSeries.getItems().get(t - shifttimeseries);
+                            secondarymaxUnmetDemandMwhPerDayitem = (XYDataItem) secondarymaxUnmetDemandMwhPerDaySeries.getItems().get(t - shifttimeseries);
+                        }
                     }
                 }
 
