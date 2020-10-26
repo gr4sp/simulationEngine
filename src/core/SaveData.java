@@ -811,18 +811,12 @@ public class SaveData implements Steppable, java.io.Serializable {
                  * -9 Battery
                  */
                 systemProductionSeries.get(0).add(floatDate, MWhPrimarySpot, false);
-                if( currentDate.before(data.getBaseYearForecastDate()) ) {
-                    if (data.settings.existsMarket("secondary"))
-                        systemProductionSeries.get(-1).add(floatDate, MWhSecondarySpot, false);
-                    if (data.settings.existsOffMarket())
-                        systemProductionSeries.get(-2).add(floatDate, MWhOffSpot, false);
-                }
-                else{
-                    if (data.settingsAfterBaseYear.existsMarket("secondary"))
-                        systemProductionSeries.get(-1).add(floatDate, MWhSecondarySpot, false);
-                    if (data.settingsAfterBaseYear.existsOffMarket())
-                        systemProductionSeries.get(-2).add(floatDate, MWhOffSpot, false);
-                }
+
+                if (data.settings.existsMarket("secondary") || data.settingsAfterBaseYear.existsMarket("secondary"))
+                    systemProductionSeries.get(-1).add(floatDate, MWhSecondarySpot, false);
+                if (data.settings.existsOffMarket() || data.settingsAfterBaseYear.existsOffMarket())
+                    systemProductionSeries.get(-2).add(floatDate, MWhOffSpot, false);
+
                 systemProductionSeries.get(-3).add(floatDate, MWhRooftopPV, false);
                 systemProductionSeries.get(-4).add(floatDate, MWhCoal, false);
                 systemProductionSeries.get(-5).add(floatDate, MWhWater, false);
@@ -891,36 +885,19 @@ public class SaveData implements Steppable, java.io.Serializable {
                         unmetDemandMwhSeries.get(0).add(floatDate, a.getUnmetDemandMwh(), false);;
                         maxUnmetDemandMwhPerDaySeries.get(0).add(floatDate, a.getMaxUnmetDemandMwhPerHour(), false);;
 
-                        if( currentDate.before(data.getBaseYearForecastDate()) ) {
-                            if (data.settings.existsMarket("secondary")) {
-                                PriceGenAvgSeries.get(-1).add(floatDate, a.getAvgMonthlyPriceSecondarySpot(), false);
+                        if (data.settings.existsMarket("secondary") || data.settingsAfterBaseYear.existsMarket("secondary")) {
+                            PriceGenAvgSeries.get(-1).add(floatDate, a.getAvgMonthlyPriceSecondarySpot(), false);
 
-                                unmetDemandDaysSeries.get(-1).add(floatDate, a.getUnmetDemandDaysSecondary(), false);
-                                ;
-                                unmetDemandHoursSeries.get(-1).add(floatDate, a.getUnmetDemandHoursSecondary(), false);
-                                ;
-                                unmetDemandMwhSeries.get(-1).add(floatDate, a.getUnmetDemandMwhSecondary(), false);
-                                ;
-                                maxUnmetDemandMwhPerDaySeries.get(-1).add(floatDate, a.getMaxUnmetDemandMwhPerHourSecondary(), false);
-                                ;
-                            }
-                            if (data.settings.existsOffMarket())
-                                PriceGenAvgSeries.get(-2).add(floatDate, a.getAvgMonthlyPriceOffSpot(), false);
-                        }
-                        else{
-                            if (data.settingsAfterBaseYear.existsMarket("secondary")) {
-                                PriceGenAvgSeries.get(-1).add(floatDate, a.getAvgMonthlyPriceSecondarySpot(), false);
-
-                                unmetDemandDaysSeries.get(-1).add(floatDate, a.getUnmetDemandDaysSecondary(), false);;
-                                unmetDemandHoursSeries.get(-1).add(floatDate, a.getUnmetDemandHoursSecondary(), false);;
-                                unmetDemandMwhSeries.get(-1).add(floatDate, a.getUnmetDemandMwhSecondary(), false);;
-                                maxUnmetDemandMwhPerDaySeries.get(-1).add(floatDate, a.getMaxUnmetDemandMwhPerHourSecondary(), false);;
-                            }
-                            if(data.settingsAfterBaseYear.existsOffMarket())
-                                PriceGenAvgSeries.get(-2).add(floatDate, a.getAvgMonthlyPriceOffSpot(), false);
+                            unmetDemandDaysSeries.get(-1).add(floatDate, a.getUnmetDemandDaysSecondary(), false);
+                            unmetDemandHoursSeries.get(-1).add(floatDate, a.getUnmetDemandHoursSecondary(), false);
+                            unmetDemandMwhSeries.get(-1).add(floatDate, a.getUnmetDemandMwhSecondary(), false);
+                            maxUnmetDemandMwhPerDaySeries.get(-1).add(floatDate, a.getMaxUnmetDemandMwhPerHourSecondary(), false);
 
                         }
-                    }
+                        if (data.settings.existsOffMarket() || data.settingsAfterBaseYear.existsOffMarket())
+                            PriceGenAvgSeries.get(-2).add(floatDate, a.getAvgMonthlyPriceOffSpot(), false);
+
+                }
                 }
             }
 
