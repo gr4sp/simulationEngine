@@ -979,7 +979,7 @@ public class LoadData implements java.io.Serializable {
     }
 
     //Select Consumption
-    private static void     calibrate30minHistoricDemandFromConsumption(Gr4spSim data) {
+    private static void calibrate30minHistoricDemandFromConsumption(Gr4spSim data) {
 
         //Set current Date
         Date currentDate;
