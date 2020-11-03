@@ -1,6 +1,8 @@
 import sys
 import os
 
+# This model apply changes from the beginning of the market, currently set at 1999. (It uses VIC.yaml)
+
 sys.path.append(r'{}\EMAworkbench'.format(os.getcwd()))
 
 import connectorSOBOL
