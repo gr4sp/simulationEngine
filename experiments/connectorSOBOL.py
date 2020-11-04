@@ -165,14 +165,14 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
         results = None
         outputID = "_seed_{}".format(experimentId)
 
-        print("seed "+experimentId, "cpi "+annualCpi, "inf"+ annualInflation, "consum"+consumption, "ee "+energyEfficiency, "og"+onsiteGeneration, "su"+ solarUptake, "rpv"+rooftopPV,
+        print(experimentId, annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV,
              domesticConsumptionPercentage, includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
              learningCurve, importPriceFactor, priceChangePercentageBattery, priceChangePercentageBrownCoal, priceChangePercentageOcgt,
              priceChangePercentageCcgt, priceChangePercentageWind, priceChangePercentageWater, priceChangePercentageSolar,
              nameplateCapacityChangeBattery, nameplateCapacityChangeBrownCoal, nameplateCapacityChangeOcgt,
              nameplateCapacityChangeCcgt, nameplateCapacityChangeWind, nameplateCapacityChangeWater, nameplateCapacityChangeSolar, wholesaleTariffContribution,
-             "sMin "+scheduleMinCapMarketGen, "ss "+semiScheduleGenSpotMarket, "ssMin "+semiScheduleMinCapMarketGen, "ns "+nonScheduleGenSpotMarket,
-             "nsMin "+nonScheduleMinCapMarketGen)
+             scheduleMinCapMarketGen, semiScheduleGenSpotMarket, semiScheduleMinCapMarketGen, nonScheduleGenSpotMarket,
+             nonScheduleMinCapMarketGen)
         #Check if file exists in the CSVs
         with open('settingsExperiments.json') as f:
             settings = json.load(f)
