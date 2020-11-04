@@ -19,7 +19,7 @@ def getModel():
     model.uncertainties += [CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
     model.uncertainties += [CategoricalParameter('rooftopPV', ['residential', 'business', 'both'])]
 
-    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 55)] #percentage (15, 35)
+    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 50)] #percentage (15, 35)
 
     model.uncertainties += [IntegerParameter('annualCpi', 1, 5)] #percentage
     model.uncertainties += [IntegerParameter('annualInflation', 1, 5)] #percentage
