@@ -26,7 +26,7 @@ def getModel():
 
 
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
-    model.uncertainties += [IntegerParameter('generationRolloutPeriod', 0, 10)]
+    model.uncertainties += [IntegerParameter('generationRolloutPeriod', 1, 10)]
     model.uncertainties += [IntegerParameter('generatorRetirement', -5, 5)]
     model.uncertainties += [IntegerParameter('technologicalImprovement', 0, 15)] #percentage
     model.uncertainties += [IntegerParameter('learningCurve', 0, 15)] #percentage
