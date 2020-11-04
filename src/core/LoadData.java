@@ -1697,6 +1697,8 @@ public class LoadData implements java.io.Serializable {
                             data.settings
                     );
 
+
+
                     int idGen = rs.getInt("asset_id");
                     //Get from Map the vector of GENERATORS with key = idGen, and add the new Generator to the vector
                     if (!data.getGen_register().containsKey(idGen))

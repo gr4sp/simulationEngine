@@ -21,38 +21,20 @@ def getModel():
 
     # specify constants - levers deemed not significant by EET
     model.constants = [Constant('onsiteGeneration', 'Central')]
+    model.constants += [Constant('technologicalImprovement', 10)]  # percentage
+    model.constants += [Constant('solarUptake', 0)]
+    model.constants += [Constant('generatorRetirement', 0)]
+    model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
     model.constants += [Constant('rooftopPV', 7)]
-    #model.constants += [Constant('priceChangePercentageBattery', 0)]
-    #model.constants += [Constant('priceChangePercentageCcgt', 0)]
-    #model.constants += [Constant('nameplateCapacityChangeBattery', 0)]
-    #model.constants += [Constant('nameplateCapacityChangeCcgt', 0)]
+    model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
+    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
+    model.constants += [Constant('priceChangePercentageSolar', 0)]
+    model.constants += [Constant('learningCurve', 5)]  # percentage
     model.constants += [Constant('annualCpi', 1)]  # percentage
     model.constants += [Constant('annualInflation', 1)]  # percentage
-    #model.constants += [Constant('consumption', 0)]
-    model.constants += [Constant('learningCurve', 5)]  # percentage
-
-    # variation of contribution of networks, retail and other charges in the tariff
-    #model.constants += [Constant('wholesaleTariffContribution', 28)]
-
     model.constants += [Constant('energyEfficiency', 0)]
-    model.constants += [Constant('solarUptake', 0)]
-
-    #model.constants += [Constant('includePublicallyAnnouncedGen', 1)]
-    #model.constants += [Constant('generationRolloutPeriod', 1)]
-    model.constants += [Constant('generatorRetirement', 0)]
-    #model.constants += [Constant('importPriceFactor', 29)]
 
     # arenas
-
-    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
-    model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
-
-
-    model.constants += [Constant('priceChangePercentageSolar', 0)]
-    model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
-    model.constants += [Constant('technologicalImprovement', 10)]  # percentage
-    #model.constants += [Constant('scheduleMinCapMarketGen', 30)]
-
 
 # set levers
 #
@@ -83,7 +65,7 @@ def getModel():
     model.uncertainties += [IntegerParameter('priceChangePercentageWater', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeCcgt', -50, 51)]
-    model.uncertainties += [IntegerParameter('generationRolloutPeriod', 0, 11)]
+    model.uncertainties += [IntegerParameter('generationRolloutPeriod', 1, 11)]
     model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 56)]  # percentage
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeOcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 10, 46)] # ( 11, 45)

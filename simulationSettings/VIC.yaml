@@ -17,11 +17,11 @@ logLevel: "OFF"
 simulationDates:
 
   # Simulation Date Range
-  startDate:  1998-01-01 #1920-01-01
+  startDate:  1995-01-01 #1920-01-01
 
   # There's only forecast data up to 2050/12.
   #2051-01-01 #REMEMBER TO CHANGE startDemandForecast:2020-06-01
-  endDate: 2051-01-01 #2019-01-01
+  endDate: 2051-01-01 #1995-01-01 #2019-01-01
 
   # Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before
   startDateSpotMarket: 1999-01-01
@@ -151,7 +151,7 @@ generators:
     maxCapacityFactorSummer: 0.5
     # Emission Factor List, by increasing start year.
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.023
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.151
@@ -174,7 +174,7 @@ generators:
     maxCapacityFactorSummer: 0.9
     # Emission Factor List, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.062
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.151
@@ -194,7 +194,7 @@ generators:
     maxCapacityFactorSummer: 0.8
     # Emission Factor List, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.957
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.178
@@ -213,7 +213,7 @@ generators:
     maxCapacityFactorSummer: 0.9
     # Emission Factor List, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.023
         linRateEF: 0.0 # 0.01
         expRateEF: 0.0 # 0.151
@@ -250,7 +250,7 @@ generators:
     maxCapacityFactorSummer: 0.9
     # Emission Factor, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 1.23 #1.19
         linRateEF: 0.0 # 0.01
         expRateEF: 0.0 # 0.178
@@ -272,7 +272,7 @@ generators:
     maxCapacityFactorSummer: 0.3
     # Emission Factor, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.56   #0.49
         linRateEF: 0.0 #0.01
         expRateEF: 0.0 #0.151
@@ -290,7 +290,7 @@ generators:
     maxCapacityFactorSummer: 0.65
     # Emission Factor, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.49
         linRateEF: 0.0 # 0.01
         expRateEF: 0.0 #0.151
@@ -310,7 +310,7 @@ generators:
     maxCapacityFactorSummer: 0.43
     # Emission Factor, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.0024 # 0 or average scope 1 emissions from Clean Energy Regulator data (0.0024)
         linRateEF: 0.0
         expRateEF: 0.0
@@ -328,7 +328,7 @@ generators:
     maxCapacityFactorSummer: 0.3
     # Emission Factor, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.0003 # 0 or average scope 1 emissions from Clean Energy Regulator data (0.0003)
         linRateEF: 0.0
         expRateEF: 0.0
@@ -347,7 +347,7 @@ generators:
     maxCapacityFactorSummer: 0.4
     # Emission Factor, by increasing start year
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.0009 #0 or average scope 1 emissions from Clean Energy Regulator data (0.031)
         linRateEF: 0.0
         expRateEF: 0.0
@@ -385,7 +385,7 @@ generators:
     maxCapacityFactorSummer: 0.9
     # Emission Factor List, by increasing start year.
     emissionFactors:
-      - startYear: 1900
+      - startYear: 1850
         minEF: 0.00
         linRateEF: 0.0
         expRateEF: 0.0
