@@ -21,7 +21,7 @@ def getModel():
 
     # specify constants - levers deemed not significant by EET
     model.constants = [Constant('onsiteGeneration', 'Central')]
-    model.constants += [Constant('technologicalImprovement', 10)]  # percentage
+    model.constants += [Constant('technologicalImprovement', 1)]  # percentage
     model.constants += [Constant('solarUptake', 0)]
     model.constants += [Constant('generatorRetirement', 0)]
     model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
@@ -30,8 +30,8 @@ def getModel():
     model.constants += [Constant('scheduleMinCapMarketGen', 30)]
     model.constants += [Constant('priceChangePercentageSolar', 0)]
     model.constants += [Constant('learningCurve', 5)]  # percentage
-    model.constants += [Constant('annualCpi', 1)]  # percentage
-    model.constants += [Constant('annualInflation', 1)]  # percentage
+    model.constants += [Constant('annualCpi', 2.33)]  # percentage
+    model.constants += [Constant('annualInflation', 3.3)]  # percentage
     model.constants += [Constant('energyEfficiency', 0)]
 
     # arenas
@@ -66,7 +66,7 @@ def getModel():
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeCcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 1, 11)]
-    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 56)]  # percentage
+    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 51)]  # percentage
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeOcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 10, 46)] # ( 11, 45)
     model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -50, 51)]

@@ -357,7 +357,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
             int currentYear = c.get(Calendar.YEAR);
 
             //Update markets setting after the baseyear
-            if( currentYear == data.settings.getBaseYearConsumptionForecast() ){
+            if( currentYear == data.settings.getBaseYearConsumptionForecast() && currentMonth == 1){
                 if(data.settingsAfterBaseYear.existsMarket("primary")) {
                     if (primarySpot == null)
                         primarySpot = new SpotMarket("Primary");
@@ -371,6 +371,8 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 }
                 else
                     secondarySpot = null;
+
+                System.out.println("Secondary Market exists?" + data.settingsAfterBaseYear.existsMarket("secondary") + " and is it Null? " + secondarySpot );
 
                 if(data.settingsAfterBaseYear.existsMarket("secondary"))
                     existsSecondary = true;

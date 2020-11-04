@@ -125,11 +125,12 @@ def getResults(outputID, experimentId):
 
 # LCOEs and CFs variations
 def applyPercentageChange(percentageChange):
-    factor = 100.0 + abs(percentageChange) / 100.0
-    if percentageChange < 0.0:
-        return 1.0 / factor
-    else:
-        return factor
+    return (100.0 + percentageChange) / 100.0
+    # factor = 100.0 + abs(percentageChange) / 100.0
+    # if percentageChange < 0.0:
+    #     return 1.0 / factor
+    # else:
+    #     return factor
 
 def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEfficiency, onsiteGeneration, solarUptake, rooftopPV,
              domesticConsumptionPercentage, includePublicallyAnnouncedGen, generationRolloutPeriod, generatorRetirement, technologicalImprovement,
