@@ -219,7 +219,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
             String pathSRC = Paths.get(".").toAbsolutePath().normalize().toString();
             pathSRC = pathSRC.split("gr4sp")[0];
-            yamlFileName = "VICTEST";
+            yamlFileName = "VIC";
             String sysName = System.getProperty("os.name");
 
             String folderYaml = pathSRC;
