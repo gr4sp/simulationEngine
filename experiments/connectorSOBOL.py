@@ -197,7 +197,7 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
 
             gr4spObj.settings.forecast.scenario.consumption = category(consumption)
             gr4spObj.settings.forecast.scenario.energyEfficiency = category(energyEfficiency)
-            gr4spObj.settings.forecast.scenario.onsiteGeneration = onsiteGeneration
+            gr4spObj.settings.forecast.scenario.onsiteGeneration = category(onsiteGeneration)
             gr4spObj.settings.forecast.scenario.solarUptake = category(solarUptake)
             gr4spObj.settings.forecast.rooftopPV = category(rooftopPV)
 
