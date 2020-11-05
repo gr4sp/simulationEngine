@@ -138,7 +138,7 @@ def getModelAFterBaseYear():
 
 
 
-    model.uncertainties = [IntegerParameter('consumption', 0, 6)]
+    model.uncertainties = [IntegerParameter('consumption', 0, 5)]
     model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWater', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -50, 51)]
