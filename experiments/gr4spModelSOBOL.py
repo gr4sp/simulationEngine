@@ -60,7 +60,7 @@ def getModel():
     # Uncertainties (26Oct2020: EET with 34 parameters, from 1998 to 2050, changes from 2019. 21 significant factors
     # using median results of mu* and sigma.
 
-    model.uncertainties = [IntegerParameter('consumption', 0, 6)]
+    model.uncertainties = [IntegerParameter('consumption', 0, 5)]
     model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWater', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -50, 51)]
