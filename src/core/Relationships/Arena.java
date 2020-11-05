@@ -372,8 +372,6 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 else
                     secondarySpot = null;
 
-                System.out.println("Secondary Market exists?" + data.settingsAfterBaseYear.existsMarket("secondary") + " and is it Null? " + secondarySpot );
-
                 if(data.settingsAfterBaseYear.existsMarket("secondary"))
                     existsSecondary = true;
                 else
