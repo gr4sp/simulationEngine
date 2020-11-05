@@ -20,7 +20,7 @@ def getModel():
     # model.uncertainties += [RealParameter('annualInflation', 0.01, 0.05)]
 
     # specify constants - levers deemed not significant by EET
-    model.constants = [Constant('onsiteGeneration', 'Central')]
+    model.constants = [Constant('onsiteGeneration', 0)]
     model.constants += [Constant('technologicalImprovement', 1)]  # percentage
     model.constants += [Constant('solarUptake', 0)]
     model.constants += [Constant('generatorRetirement', 0)]
