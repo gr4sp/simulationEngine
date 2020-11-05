@@ -2,14 +2,14 @@ import os, sys
 
 sys.path.append(r'{}\EMAworkbench'.format(os.getcwd()))
 
-from gr4spModelSOBOL import getModel
+from gr4spModelSOBOL import getModel, getModelAFterBaseYear
 from datetime import date
 
 if __name__ == '__main__':
     '''
     Setup EMA Uncertainties, Levers and Outcomes
     '''
-    model = getModel()
+    model = getModelAFterBaseYear()
 
     '''
     Run EMA
