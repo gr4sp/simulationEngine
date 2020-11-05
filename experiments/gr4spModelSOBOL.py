@@ -115,3 +115,80 @@ def getModel():
                       ]
 
     return model
+
+## MODEL with changes only after BASE YEAR
+
+def getModelAFterBaseYear():
+    model = Model('Gr4sp', function=connectorSOBOL.runGr4spAfterBaseYear)
+
+
+    model.constants = [Constant('onsiteGeneration', 0)]
+    model.constants += [Constant('technologicalImprovement', 1)]  # percentage
+    model.constants += [Constant('solarUptake', 0)]
+    model.constants += [Constant('generatorRetirement', 0)]
+    model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
+    model.constants += [Constant('rooftopPV', 7)]
+    model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
+    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
+    model.constants += [Constant('priceChangePercentageSolar', 0)]
+    model.constants += [Constant('learningCurve', 5)]  # percentage
+    model.constants += [Constant('annualCpi', 2.33)]  # percentage
+    model.constants += [Constant('annualInflation', 3.3)]  # percentage
+    model.constants += [Constant('energyEfficiency', 0)]
+
+
+
+    model.uncertainties = [IntegerParameter('consumption', 0, 6)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -50, 51)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageWater', -50, 51)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -50, 51)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeCcgt', -50, 51)]
+    model.uncertainties += [IntegerParameter('generationRolloutPeriod', 1, 11)]
+    model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 51)]  # percentage
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeOcgt', -50, 51)]
+    model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 10, 46)] # ( 11, 45)
+    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -50, 51)]
+    model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 2)]
+    model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8,11)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWind', -50, 51)]
+    model.uncertainties += [IntegerParameter('importPriceFactor', -50, 51)] #percentage from historic variations observed in OpenNem
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeBattery', -50, 51)]
+    model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8,11)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeSolar', -50, 51)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageWind', -50, 51)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -50, 51)]
+    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWater', -50, 51)]
+    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -50, 51)]
+
+
+    model.outcomes = [
+                        TimeSeriesOutcome('TIMEYear'),
+                        TimeSeriesOutcome('consumptionYear'),
+                        TimeSeriesOutcome('tariffsYear'),
+                        TimeSeriesOutcome('wholesalePriceYear'),
+                        TimeSeriesOutcome('GHGYear'),
+                        TimeSeriesOutcome('numConsumersYear'),
+                        TimeSeriesOutcome('primarySpotProductionYear'),
+                        TimeSeriesOutcome('secondarySpotProductionYear'),
+                        TimeSeriesOutcome('offSpotProductionYear'),
+                        TimeSeriesOutcome('renewableContributionYear'),
+                        TimeSeriesOutcome('rooftopPVProductionYear'),
+                        TimeSeriesOutcome('coalProductionYear'),
+                        TimeSeriesOutcome('waterProductionYear'),
+                        TimeSeriesOutcome('windProductionYear'),
+                        TimeSeriesOutcome('gasProductionYear'),
+                        TimeSeriesOutcome('solarProductionYear'),
+                        TimeSeriesOutcome('BatteryProductionYear'),
+                        TimeSeriesOutcome('numActorsYear'),
+                        TimeSeriesOutcome('primaryUnmetDemandMwh'),
+                        TimeSeriesOutcome('primaryUnmetDemandHours'),
+                        TimeSeriesOutcome('primaryUnmetDemandDays'),
+                        TimeSeriesOutcome('primaryMaxUnmetDemandMwhPerHour'),
+                        TimeSeriesOutcome('secondaryUnmetDemandMwh'),
+                        TimeSeriesOutcome('secondaryUnmetDemandHours'),
+                        TimeSeriesOutcome('secondaryUnmetDemandDays'),
+                        TimeSeriesOutcome('secondaryMaxUnmetDemandMwhPerHour'),
+                        ScalarOutcome('seedExperimentCsv')
+                      ]
+
+    return model
