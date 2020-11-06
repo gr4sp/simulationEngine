@@ -1,6 +1,5 @@
 package core.Social;
 
-import core.Relationships.ActorActorRelationship;
 import core.Relationships.ActorAssetRelationship;
 import sim.engine.SimState;
 import sim.engine.Steppable;
@@ -17,12 +16,7 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
     private static final long serialVersionUID = 1;
 
     private int id; // actor id
-    private ActorType actorType; // household, generator, transmission operator, distribution operator, retailer, gov institution, etc.
-
     private String name; //AGL, Angela, SunCorp, Powershop, AEMO, ACCC, COAG, Origin, AER, AEMO etc.
-    private GovRole role; // rule follower, rule implementer, rule maker
-    private BusinessStructure businessType; // cooperative, public company, private, etc.
-    private OwnershipModel ownershipModel;
     private Date start;
     private Date changeDate;
     private String region; //VIC, NSW, ACT, etc
@@ -30,16 +24,11 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
     private String actor_role;
     private String businessStructure;
 
-    public ArrayList<ActorActorRelationship> contracts;
     public ArrayList<ActorAssetRelationship> assetRelationships;
 
-    public Actor(int id, ActorType actorType, String name, GovRole role, BusinessStructure businessType, OwnershipModel ownershipModel) {
+    public Actor(int id, String name) {
         this.id = id;
         this.name = name;
-        this.role = role;
-        this.businessType = businessType;
-        this.ownershipModel = ownershipModel;
-        this.contracts = new ArrayList<>();
         this.assetRelationships = new ArrayList<>();
         this.start = null;
         this.changeDate = null;
@@ -53,8 +42,7 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
         this.reg_number = reg_number;
         this.region = region;
         this.actor_role = actor_role;
-        this.businessType = businessType;
-        this.contracts = new ArrayList<>();
+        this.businessStructure = businessStructure;
         this.assetRelationships = new ArrayList<>();
     }
 
@@ -72,10 +60,6 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
 
     public String getName() {
         return name;
-    }
-
-    public void addContract(ActorActorRelationship newContract) {
-        this.contracts.add(newContract);
     }
 
     public void addAssetRelationship(ActorAssetRelationship newAssetRel) {
