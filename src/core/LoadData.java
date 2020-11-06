@@ -28,32 +28,6 @@ public class LoadData implements java.io.Serializable {
         return ActorAssetRelationshipType.OTHER;
     }
 
-    public static ActorActorRelationshipType stringToActorActorTypeRelType(String actorRelType) {
-
-//todo: fix actor-actor (from continuous to static) and use these relationships
-
-        if (actorRelType.equalsIgnoreCase("BILLING"))
-            return ActorActorRelationshipType.BILLING;
-        if (actorRelType.equalsIgnoreCase("NONE_INDEPENDENT"))
-            return ActorActorRelationshipType.NONE_INDEPENDENT;
-        if (actorRelType.equalsIgnoreCase("HOLDER_PARENT"))
-            return ActorActorRelationshipType.HOLDER_PARENT;
-        if (actorRelType.equalsIgnoreCase("CHANGE_NAME"))
-            return ActorActorRelationshipType.CHANGE_NAME;
-        if (actorRelType.equalsIgnoreCase("BUYS_AQUIRES_ABSORBS"))
-            return ActorActorRelationshipType.BUYS_AQUIRES_ABSORBS;
-        if (actorRelType.equalsIgnoreCase("MANAGES_OPERATES_INTERMEDIARY"))
-            return ActorActorRelationshipType.MANAGES_OPERATES_INTERMEDIARY;
-        if (actorRelType.equalsIgnoreCase("DISSAGREGATED_FROM"))
-            return ActorActorRelationshipType.DISSAGREGATED_FROM;
-        if (actorRelType.equalsIgnoreCase("PARTNER_CO"))
-            return ActorActorRelationshipType.PARTNER_CO;
-        if (actorRelType.equalsIgnoreCase("PARTLY_OWNS"))
-            return ActorActorRelationshipType.PARTLY_OWNS;
-
-        return ActorActorRelationshipType.OTHER;
-    }
-
     public static void
     selectInflation(Gr4spSim data) {
         //Loading Inflation data (from 1990 to 2019)
@@ -1521,42 +1495,6 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
-    /**
-     * select all rows in the Actor table
-     */
-
-    public static void
-    selectActorActorRelationships(Gr4spSim data, String tableName) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
-
-
-        String sql = "SELECT Actor1, Actor2, RelType" +
-                " FROM " + tableName;
-
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            // loop through the result set
-            while (rs.next()) {
-                data.LOGGER.info("\t" + rs.getInt("Actor1") + "\t" +
-                        rs.getInt("Actor2") + "\t" +
-                        rs.getString("RelType"));
-
-
-                Actor act1 = data.getActor_register().get(rs.getInt("Actor1"));
-                Actor act2 = data.getActor_register().get(rs.getInt("Actor2"));
-
-                ActorActorRelationship actorRel = new ActorActorRelationship(act1, act2, stringToActorActorTypeRelType(rs.getString("RelType")));
-
-                data.getActorActorRelationships().add(actorRel);
-
-            }
-        } catch (SQLException e) {
-            data.LOGGER.warning(e.getMessage());
-        }
-    }
 
     /**
      * select all rows in the Generation Technologies table

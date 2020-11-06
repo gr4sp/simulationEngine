@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static core.Social.GovRole.*;
 import static java.lang.System.exit;
 
 class MySecurityManager extends SecurityManager {
@@ -102,7 +101,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //this is the array to be traverse to get the total non conventional consumption
     ArrayList<EndUserActor> nonConventionalConsumptionActors = new ArrayList<EndUserActor>();
 
-    ArrayList<ActorActorRelationship> actorActorRelationships = new ArrayList<ActorActorRelationship>();
     ArrayList<ActorAssetRelationship> actorAssetRelationships = new ArrayList<ActorAssetRelationship>();
 
     //Counter for the unique id each time a storage unit is created and other storage related variables
@@ -402,10 +400,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         return spm_register;
     }
 
-    public ArrayList<ActorActorRelationship> getActorActorRelationships() {
-        return actorActorRelationships;
-    }
-
     public int getNumGenerators() {
         return numGenerators;
     }
@@ -486,36 +480,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     }
 
 
-//    void addSPMLocation(Spm s, Double2D loc, double diameter) {
-//        //layout.setObjectLocation(s, loc);
-//        Double2D shift = new Double2D(10, 10);
-//
-//
-//        for (Spm spmc : s.getSpms_contained()) {
-//            spmc.diameter = diameter - 10;
-//            addSPMLocation(spmc, loc, spmc.diameter);
-//            loc = loc.add(shift);
-//
-//        }
-//    }
-
-
-    void addNewActorActorRel(Actor act1, Actor act2, ActorActorRelationshipType type) {
-
-        ActorActorRelationship newRel = new ActorActorRelationship(act1, act2, type);
-
-        act1.addContract(newRel);
-        act2.addContract(newRel);
-    }
-
-    void addNewActorAssetRel(Actor actor, Asset asset, ActorAssetRelationshipType type, double percentage) {
-
-        ActorAssetRelationship newRel = new ActorAssetRelationship(actor, asset, type, percentage);
-
-        actor.addAssetRelationship(newRel);
-        asset.addAssetRelationship(newRel);
-    }
-
     /**
      * Generate Conventional ConsumerUnit
      */
@@ -591,8 +555,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
 
             //Create new Consumer Unit
-            Actor actor = new EndUserUnit(numActors++, ActorType.HDCONSUMER, name,
-                    stringToGovRole("RULEFOLLOWER"), BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
+            Actor actor = new EndUserUnit(numActors++, name,
                     numPeople, householdsCreated, hasGas, true, 0, today);
 
             consumptionActors.add((EndUserActor) actor);
@@ -620,221 +583,13 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             //Store relationship in the global array of all actor asset rel
             actorAssetRelationships.add(actorSpmRel);
 
-            /**
-             * Actor Actor rel
-             * */
- /*           //create new relationship and contract btw the household and Retailer
-            ActorActorRelationship actorActHouseRetailRel = new ActorActorRelationship(actor, actor_register.get(4), ActorActorRelationshipType.BILLING);
-
-            //Store relationship with actor in the actor object
-            actor.addContract(actorActHouseRetailRel);
-            //Store relationship in the global array of all actor asset rel
-            actorActorRelationships.add(actorActHouseRetailRel);
-
-*/
-            /**
-             * The code below is only for visualization
-             **/
-
-            //Add Random Location of EU in the layout
-//            Double2D euLoc = new Double2D((i * 80) % 1600, (i / 20 + 1) * 80);
-//            layout.setObjectLocation(actor, euLoc);
-//
-//            //Use same Loc for the SPM
-//            Double2D spmLoc = new Double2D(euLoc.x + 0, euLoc.y + 0);
-//            for (ActorAssetRelationship rel : actor.assetRelationships) {
-//                //Add all SPMs location for this EU recursively, decreasing the diameter and
-//                //shifting when more than one smp is contained
-//                //Only draw SPMs in the meantime
-//                if (rel.getAsset() instanceof Spm)
-//                    addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
-//            }
 
 
         }
 
     }
 
-    /**
-     * Decrease conventional households, without deleting the ConsumerUnit if it gets down to 0 households
-     */
 
-    void decreaseConventionalHouseholds(int numHouseholds) {
-        //Get Last conventional ConsumerUnit, which may have space for more households
-        EndUserUnit conventionalConsumer = null;
-        int lastConvConsumer = conventionalConsumptionActors.size() - 1;
-
-        Date today = getCurrentSimDate();
-
-
-        //while there are still houses to remove from consumer units
-        while (numHouseholds > 0) {
-
-            //if index is positive, retrieve consumption actor to decrease households
-            if (lastConvConsumer >= 0)
-                conventionalConsumer = (EndUserUnit) conventionalConsumptionActors.get(lastConvConsumer);
-
-            //how many households remain if we remove them all from the last consumer unit?
-            int householdsLeft = conventionalConsumer.getNumberOfHouseholds() - numHouseholds;
-
-            //if positive, we can just remove them from consumer unit, and we are done
-            if (householdsLeft > 0) {
-                conventionalConsumer.setNumberOfNewHouseholds(today, -numHouseholds);
-                conventionalConsumer.setNumberOfHouseholds(householdsLeft);
-                break;
-            }
-            //if negative, then we have to set the consumer unit to 0, and repeat with the next consumer unit
-            else {
-
-                //store the decrease in population in consumer unit
-                conventionalConsumer.setNumberOfNewHouseholds(today, -conventionalConsumer.getNumberOfHouseholds());
-
-                //set households to 0
-                conventionalConsumer.setNumberOfHouseholds(0);
-
-                //Convert households left into a positive number
-                householdsLeft *= -1;
-
-                //get index of next consumerUnit
-                lastConvConsumer -= 1;
-            }
-
-            numHouseholds = householdsLeft;
-        }
-    }
-
-    /**
-     * Move housholds from Conventional ConsumerUnits to NonConventional Consumer Units
-     */
-
-    public void convertIntoNonConventionalHouseholds(double conversionPercentage) {
-
-        Date today = getCurrentSimDate();
-
-        //Get CONVENTIONAL Population today (this sim step)
-        int householdsToday = 0;
-
-        //sum population of each conventional consumer unit
-        for (EndUserActor c : conventionalConsumptionActors) {
-            EndUserUnit cu = (EndUserUnit) c;
-            householdsToday += cu.getNumberOfHouseholds();
-        }
-
-        int numHouseholdsConverted = (int) (householdsToday * conversionPercentage);
-
-
-        //Get Last Non conventional ConsumerUnit, which may has space for more households
-        EndUserUnit NonConventionalConsumer = null;
-        if (nonConventionalConsumptionActors.size() >= 1)
-            NonConventionalConsumer = (EndUserUnit) nonConventionalConsumptionActors.get(nonConventionalConsumptionActors.size() - 1);
-
-        int householdsLeft = numHouseholdsConverted;
-
-        if (NonConventionalConsumer != null) {
-            //If all new households fit in existing SPM, then just add them
-            if ((getMaxHouseholdsPerConsumerUnit() - NonConventionalConsumer.getNumberOfHouseholds()) > numHouseholdsConverted) {
-                NonConventionalConsumer.setNumberOfHouseholds(NonConventionalConsumer.getNumberOfHouseholds() + numHouseholdsConverted);
-                NonConventionalConsumer.setNumberOfNewHouseholds(today, numHouseholdsConverted);
-
-                //Decrease conventional households, after increasing the non-conventional
-                decreaseConventionalHouseholds(numHouseholdsConverted);
-                return;
-            }
-            //If not all households fit, increase SPM to full, and create a new SPM with remaining households
-            else if ((getMaxHouseholdsPerConsumerUnit() - NonConventionalConsumer.getNumberOfHouseholds()) <= numHouseholdsConverted) {
-                //Compute how many housholds fit in existing SPM
-                int decrease = getMaxHouseholdsPerConsumerUnit() - NonConventionalConsumer.getNumberOfHouseholds();
-                //Decrease conventional households, after increasing the non-conventional
-                decreaseConventionalHouseholds(decrease);
-
-                //update how many households remain
-                numHouseholdsConverted -= decrease;
-                householdsLeft = numHouseholdsConverted;
-
-                NonConventionalConsumer.setNumberOfNewHouseholds(today, decrease);
-                NonConventionalConsumer.setNumberOfHouseholds(getMaxHouseholdsPerConsumerUnit());
-            }
-        }
-
-        //If there are still houses remaining, then create a new consumer unit with fresh capacity
-        for (int i = 0; i < numHouseholdsConverted; i = i + getMaxHouseholdsPerConsumerUnit()) {
-
-            boolean hasGas = true;
-
-            LOGGER.info("Num Actors: " + numActors);
-
-            int numPeople = 2;
-            String name = "Household Non Conventional " + nonConventionalConsumptionActors.size();
-
-            int householdsCreated = getMaxHouseholdsPerConsumerUnit();
-            if (householdsLeft < getMaxHouseholdsPerConsumerUnit()) householdsCreated = householdsLeft;
-
-            Actor actor = new EndUserUnit(numActors++, ActorType.HDCONSUMER, name,
-                    RULEFOLLOW, BusinessStructure.OTHER, OwnershipModel.INDIVIDUAL,
-                    numPeople, householdsCreated, hasGas, true, 0, today);
-
-            //Decrease conventional households, after increasing the non-conventional
-            decreaseConventionalHouseholds(householdsCreated);
-
-
-            consumptionActors.add((EndUserActor) actor);
-            nonConventionalConsumptionActors.add((EndUserActor) actor);
-
-            householdsLeft -= householdsCreated;
-
-            //Schedule the actor in order to make decisions at every step
-            this.schedule.scheduleRepeating(0.0, 1, actor);
-
-            //Id of Non Conventional SPM
-            int idSpm = 2;
-
-            Spm spm = LoadData.createSpm(this, idSpm);
-
-            /**
-             * Actor Asset rel
-             * */
-            //create new relationship btw the household and SPM
-            ActorAssetRelationship actorSpmRel = new ActorAssetRelationship(actor, spm, ActorAssetRelationshipType.USE, 100);
-
-            //Store relationship with assets in the actor object
-            actor.addAssetRelationship(actorSpmRel);
-            //Store relationship in the global array of all actor asset rel
-            actorAssetRelationships.add(actorSpmRel);
-
-            /**
-             * Actor Actor rel
-             * */
-            //create new relationship and contract btw the household and Retailer
-            ActorActorRelationship actorActHouseRetailRel = new ActorActorRelationship(actor, actor_register.get(4), ActorActorRelationshipType.BILLING);
-
-            //Store relationship with actor in the actor object
-            actor.addContract(actorActHouseRetailRel);
-            //Store relationship in the global array of all actor asset rel
-            actorActorRelationships.add(actorActHouseRetailRel);
-
-
-            /**
-             * The code below is only for visualization
-             **/
-
-            //Add Random Location of EU in the layout
-//            Double2D euLoc = new Double2D((i * 80) % 1600, (i / 20 + 1) * 80);
-//            layout.setObjectLocation(actor, euLoc);
-//
-//            //Use same Loc for the SPM
-//            Double2D spmLoc = new Double2D(euLoc.x + 0, euLoc.y + 0);
-//            for (ActorAssetRelationship rel : actor.assetRelationships) {
-//                //Add all SPMs location for this EU recursively, decreasing the diameter and
-//                //shifting when more than one smp is contained
-//                //Only draw SPMs in the meantime
-//                if (rel.getAsset() instanceof Spm)
-//                    addSPMLocation((Spm) rel.getAsset(), spmLoc, rel.getAsset().diameter());
-//            }
-
-
-        }
-
-    }
 
     /**
      * Load Data From DataBase
@@ -930,7 +685,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         dataToSerialize.put("consumptionActors", consumptionActors);
         dataToSerialize.put("conventionalConsumptionActors", conventionalConsumptionActors);
         dataToSerialize.put("nonConventionalConsumptionActors", nonConventionalConsumptionActors);
-        dataToSerialize.put("actorActorRelationships", actorActorRelationships);
         dataToSerialize.put("actorAssetRelationships", actorAssetRelationships);
 
 
@@ -998,7 +752,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             consumptionActors = (ArrayList<EndUserActor>) retrieved.get("consumptionActors");
             conventionalConsumptionActors = (ArrayList<EndUserActor>) retrieved.get("conventionalConsumptionActors");
             nonConventionalConsumptionActors = (ArrayList<EndUserActor>) retrieved.get("nonConventionalConsumptionActors");
-            actorActorRelationships = (ArrayList<ActorActorRelationship>) retrieved.get("actorActorRelationships");
             actorAssetRelationships = (ArrayList<ActorAssetRelationship>) retrieved.get("actorAssetRelationships");
 
 

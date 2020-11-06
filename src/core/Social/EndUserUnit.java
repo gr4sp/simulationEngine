@@ -2,7 +2,6 @@ package core.Social;
 
 import core.Relationships.ActorAssetRelationship;
 import core.Relationships.Arena;
-import core.Relationships.Contract;
 import core.Gr4spSim;
 import core.Technical.Spm;
 import org.jfree.data.xy.XYDataItem;
@@ -18,24 +17,20 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
     private boolean hasGas;
     private double income;
     public double currentConsumption;
-    public double surplusMWh;
     public double currentEmissions;
     public float currentTariff;
-    public Contract currentTariffContract;
     public Date creationDate;
 
 
-    public EndUserUnit(int actor, ActorType actorType, String name, GovRole mainRole, BusinessStructure businessType,
-                       OwnershipModel ownershipModel, int numberOfPerson, int numberOfHouseholds, boolean gas,
+    public EndUserUnit(int actor, String name, int numberOfPerson, int numberOfHouseholds, boolean gas,
                        boolean family, double income, Date CreationDate ) {
-        super(actor, actorType, name, mainRole, businessType, ownershipModel);
-        this.numberOfPerson = numberOfPerson; //not used
+        super(actor, name);
+        this.numberOfPerson = numberOfPerson;
         this.family = family; //not used
         this.income = income; //not used
         this.hasGas = gas; //not used
         this.currentConsumption = 0.0;
         this.currentEmissions = 0.0;
-        this.surplusMWh = 0.0;
         this.numberOfHouseholds = numberOfHouseholds;
         this.creationDate = CreationDate;
         this.newHousholdsPerDate = new HashMap<>();
