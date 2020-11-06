@@ -25,7 +25,6 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
     private int id;
     //For the Technical layout
     //Generators
-
     private ArrayList<Generator> generators;
 
     //Contained SPMs
@@ -46,26 +45,15 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
     //Efficiency
     private double efficiency;
 
-    //Embodied GHG Emissions
-    private double embGHG;
-
     //Generation metrics
     private double genAvailable; //generation available in the SPM (in and off spot)
     private double genEmissionIntensityIndex; //emissions from the SPM
-
-    //Costs
-    private double installCosts;
-    private double maintenanceCosts;
-
 
     //Visualization Parameters
     public double diameter;
 
     //Indicators
     public double currentEmissions; //operational emissions
-    public float currentPrice;
-    public float currentReliability;
-
 
     //Ownerships
     //TODO: add list of owners
@@ -85,31 +73,12 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
         this.assetRelationships = new ArrayList<>();
 
         this.currentEmissions = 0;
-        this.currentPrice = 0;
-        this.currentReliability = 0;
 
         this.genAvailable = 0;
         this.genEmissionIntensityIndex = 0;
 
     }
 
-
-//    //Get currently active generators into 2 arrays, the ones in the spot market, and non spot market
-//    public void getActiveGensThisSPM(Date today, ArrayList<Generator> inSpotMarket, ArrayList<Generator> outSpotMarket) {
-//        for (Generator g : generators) {
-//            //Has started today or earlier?
-//            if (g.getStart().before(today) || g.getStart().equals(today)) {
-//                //Has not finished operations?
-//                if (g.getEnd().after(today)) {
-//                    //Check nominal capacity is greater than 30 MW in order to know participation in spot Market
-//                    if (g.getMaxCapacity() >= 30)
-//                        inSpotMarket.add(g);
-//                    else
-//                        outSpotMarket.add(g);
-//                }
-//            }
-//        }
-//    }
 
     //Get currently active generators in 1 array, this is used before the spot market
     public void getActiveGensThisSPM(Date today, ArrayList<Generator> gens) {
@@ -124,17 +93,6 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
         }
     }
 
-
-    //Get currently active generators in 2 lists as in/out spot market
-//    public void getActiveGensAllSPM(Date today, ArrayList<Generator> inSpotMarket, ArrayList<Generator> outSpotMarket) {
-//
-//        getActiveGensThisSPM(today, inSpotMarket, outSpotMarket);
-//
-//        //Recursively get active generators contained in SPM
-//        for (Spm scontained : spms_contained) {
-//            scontained.getActiveGensAllSPM(today, inSpotMarket, outSpotMarket);
-//        }
-//    }
 
     //Get currently active generators in 1 list, used before spot market
     public void getActiveGensAllSPM(Date today, ArrayList<Generator> gens) {
@@ -189,7 +147,6 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
 
         return networkLoss;
     }
-
 
     //Recursively get Total available Generation in each spm contained in this SPM
     public double getTotalGenerationInSPMs() {
@@ -407,13 +364,10 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
 
         }
 
-
-        currentPrice = 0;
-        currentReliability = 0;
     }
 
 
-//    //Get the emission factor of all genereators (This and contained SPM)
+//    Get the emission factor of all genereators (This and contained SPM)
 //    ArrayList<Generator> activeGensAllSPM = this.getActiveGensAllSPM(today);
 //    double emissionFactorAllGenerators = genData.computeGenEmissionIntensity(activeGensAllSPM);
 
@@ -481,8 +435,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
     public String toString() {
         return "Spm [id=" + id + ", spms_contained=" + spms_contained + ", generators=" + generators + ", network_assets=" + network_assets + ", storages=" + storages
                 + ", hasStorage=" + hasStorage + ", spm_interface=" + spm_interface +
-                "efficiency=" + efficiency + ", embGHG=" + embGHG + ", installCosts=" + installCosts + ", maintenanceCosts=" + maintenanceCosts
-                + "]";
+                "efficiency=" + efficiency + "]";
     }
 
     @Override
@@ -545,37 +498,6 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
     public void setEfficiency(double efficiency) {
         this.efficiency = efficiency;
     }
-
-
-    public double getEmbGHG() {
-        return embGHG;
-    }
-
-
-    public void setEmbGHG(double embGHG) {
-        this.embGHG = embGHG;
-    }
-
-
-    public double getInstallCosts() {
-        return installCosts;
-    }
-
-
-    public void setInstallCosts(double installCosts) {
-        this.installCosts = installCosts;
-    }
-
-
-    public double getMaintenanceCosts() {
-        return maintenanceCosts;
-    }
-
-
-    public void setMaintenanceCosts(double maintenanceCosts) {
-        this.maintenanceCosts = maintenanceCosts;
-    }
-
 
     public static long getSerialversionuid() {
         return serialVersionUID;

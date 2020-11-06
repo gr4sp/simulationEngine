@@ -162,18 +162,6 @@ public class Generator implements java.io.Serializable, Asset {
 
 
         solarEfficiency = settings.getSolarEfficiency(this.fuelSourceDescriptor, this.techTypeDescriptor);
-
-        //Price if a generator sells always at full capacity
-        //double targetPrice =  priceMinMWh();
-        //double targetGen = maxCapacity * 8760;
-
-        //Max capacity (MW)* hours per year (H) * TargetPrice ($/MWH) => $
-        // double targetReveneueYear = targetGen * targetPrice;
-
-       /* System.out.println("Gen " + this.fuelSourceDescriptor);
-        System.out.println("Target Price $/MWh: "+ targetPrice);
-        System.out.println("Target Generation MWh: "+ targetGen);
-        System.out.println("Target Historic Revenue per year $: "+ targetReveneueYear);*/
     }
 
     // get solar generation using monthly or half hour solar exposure
@@ -226,15 +214,9 @@ public class Generator implements java.io.Serializable, Asset {
 
     public void updateHistoricCapacityFactor(SimState state) {
 
-        // Update Capacity based on historic amount sold, and reset every year
-//        if(rounds%12 > 0)
-//            historicCapacityFactor = historicGeneratedMW / (maxCapacity * (double)rounds);
-//        else
-//            historicCapacityFactor = getCapacityFactor(1);
-
         // Update Capacity based on historic amount sold
         if (bidsInSpot > 0) {
-            //            historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh * (bidsInSpot / 2.0));
+            //historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh * (bidsInSpot / 2.0));
             historicCapacityFactor = historicRevenue / potentialRevenue;
             historicCapacityFactor = (double) Math.round(historicCapacityFactor * 100000d) / 100000d;
 
@@ -267,12 +249,6 @@ public class Generator implements java.io.Serializable, Asset {
         } else {
             result = basePriceMWh() / historicCF;
         }
-
-        if (name.equalsIgnoreCase("Challicum Hills")){
-            //System.out.println(result);
-            result = result;
-        }
-        //double result =  priceMinMWh() +  ( (priceMaxMWh()-priceMinMWh()) * (Math.exp( - priceRateParameterMWh() * historicCF)) );
 
         //make sure price does not go above maximum allowed price
         if(result > marketPriceCap) result = marketPriceCap;
