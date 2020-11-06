@@ -31,7 +31,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
     private double avgMonthlyDemandOffSpot;
 
     // Statistics of reliability, Data per month.
-    // When demand is unmet, is assumed to be imported at a high price: marketPrice *= 1.2; -> SpotMarket.java:157
+    // When demand is unmet, is assumed to be imported at a high price: marketPrice *= importFactor; -> SpotMarket.java:157
     private double unmetDemandMwh;
     private double unmetDemandHours;
     private double unmetDemandDays;

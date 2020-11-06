@@ -17,8 +17,7 @@ public class NetworkAssets implements java.io.Serializable, Asset
 	private String ownername;
 	private Double2D location;//coordinates where the network assets are located
 	private double gridLosses;
-	private String gridVoltate;
-	private String owner;
+	private String gridVoltage;
 
 	//Start and end of operations
 	private Date start;
@@ -39,7 +38,7 @@ public class NetworkAssets implements java.io.Serializable, Asset
 		this.assetName = assetName;
 		this.ownername = ownername;
 		this.gridLosses = gridLosses;
-		this.gridVoltate = gridVoltage;
+		this.gridVoltage = gridVoltage;
 		this.diameter  = 50;
 
 		this.assetRelationships = new ArrayList<>();
@@ -140,20 +139,12 @@ public class NetworkAssets implements java.io.Serializable, Asset
 		this.gridLosses = gridLosses;
 	}
 
-	public String getGridVoltate() {
-		return gridVoltate;
+	public String getGridVoltage() {
+		return gridVoltage;
 	}
 
-	public void setGridVoltate(String gridVoltate) {
-		this.gridVoltate = gridVoltate;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public void setGridVoltage(String gridVoltage) {
+		this.gridVoltage = gridVoltage;
 	}
 
 	public static long getSerialversionuid() {
@@ -171,7 +162,7 @@ public class NetworkAssets implements java.io.Serializable, Asset
 				", ownername='" + ownername + '\'' +
 				", location_MB=" + location +
 				", gridLosses=" + gridLosses +
-				", gridVoltate='" + gridVoltate +'\'' +
+				", gridVoltage='" + gridVoltage +'\'' +
 				'}';
 	}
 }

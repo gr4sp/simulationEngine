@@ -478,14 +478,11 @@ public class LoadData implements java.io.Serializable {
 
                 Contract contract = new Contract(
                         rs.getString("tariff_name"),
-                        0,
                         Arena.EndConsumer,
-                        0,
                         rs.getFloat("average_dckwh") * conversion_rate,
                         serviceFee,
                         cStartDate,
-                        cEndDate.getTime(),
-                        0);
+                        cEndDate.getTime());
 
 
                 //Add contract to arena
@@ -1862,75 +1859,7 @@ public class LoadData implements java.io.Serializable {
         return cpoints;
     }
 
-    public static void
-    selectArenaAndContracts(Gr4spSim data, String startDate, String endDate) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
-
-        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
-
-
-        String sql = "SELECT arenas.name as arenaname, arenas.type as arenatype, seller, buyer, assetused, pricemwh, startdate, enddate, capacitycontracted, arenaid" +
-                " FROM contracts, arenas WHERE " +
-                "contracts.arenaid = arenas.id AND contracts.startdate <= '" + endDate + "'" +
-                " AND contracts.enddate > '" + startDate + "';";
-
-
-        try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            // loop through the result set
-            while (rs.next()) {
-                data.LOGGER.info("\t" + rs.getInt("arenaid") + "\t" +
-                        rs.getString("arenaname") + "\t" +
-                        rs.getString("arenatype") + "\t" +
-                        rs.getString("seller") + "\t" +
-                        rs.getString("buyer") + "\t" +
-                        rs.getString("pricemwh") + "\t" +
-                        rs.getString("assetused") + "\t" +
-                        rs.getDate("startdate") + "\t" +
-                        rs.getDate("enddate") + "\t" +
-                        rs.getString("capacitycontracted"));
-
-
-                int arenaId = rs.getInt("arenaid");
-
-                //If arena doesn't exist, create it
-                if (!data.getArena_register().containsKey(arenaId)) {
-                    Arena arena = new Arena(arenaId, rs.getString("arenaname"), rs.getString("arenatype"), data);
-                    data.getArena_register().put(arenaId, arena);
-                }
-
-                Arena arena = data.getArena_register().get(arenaId);
-
-                //Actor seller, Actor buyer, Asset assetUsed, float dollarMWh, Date start, Date end, float capacityContracted
-
-                Contract contract = new Contract("",
-                        rs.getInt("seller"),
-                        rs.getInt("buyer"),
-                        rs.getInt("assetused"),
-                        rs.getFloat("pricemwh"),
-                        (float) 0.0,
-                        rs.getDate("startdate"),
-                        rs.getDate("enddate"),
-                        rs.getFloat("capacitycontracted"));
-
-
-                //Add contract to arena
-                if (arena.getType().equalsIgnoreCase("OTC") || arena.getType().equalsIgnoreCase("Retail")) {
-                    arena.getBilateral().add(contract);
-                }
-                if (arena.getType().equalsIgnoreCase("FiTs")) {
-                    arena.getFiTs().add(contract);
-                }
-
-            }
-        } catch (SQLException e) {
-            data.LOGGER.warning(e.getMessage());
-        }
-    }
-
-    /**
+     /**
      * Create SPM function
      */
 
