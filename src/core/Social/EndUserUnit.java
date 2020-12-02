@@ -120,7 +120,7 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
         //If Spot Market hasn't started yet, get historic prices
         if (data.getStartSpotMarketDate().after(today)) {
             //Historic tariff is given in c/KWh
-            this.currentTariff = (float) retail.getTariff(simState);
+            this.currentTariff = (float) retail.getWholesalePrice(simState);
 
         }
         else {
@@ -168,7 +168,7 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 //Compute Average Wholesale Price using the last 12 months values saved in SaveData.java
                 //Current month price hasn't been stored yet, so we initialize it with the price for the current month
                 // Convert $/MWh -> c/KWh
-                double avgWholesalePrice = (float) (spotArena.getTariff(simState) * conversion_rate) / (float) 10.0;
+                double avgWholesalePrice = (float) (spotArena.getWholesalePrice(simState) * conversion_rate) / (float) 10.0;
                 int nmonths = 1;
 
                 for (nmonths = 1 ; nmonths < 12 ; nmonths++) {

@@ -8,17 +8,15 @@ public class Contract implements java.io.Serializable{
     private int buyerId;
 
     private float pricecKWh;
-    private float mothlyServiceFee;
     private Date start;
     private Date end;
 
-    public Contract(String tariffName,  int buyerId,  float pricecKWh, float mothlyServiceFee, Date start, Date end) {
+    public Contract(String tariffName,  int buyerId,  float pricecKWh, Date start, Date end) {
         this.tariffName = tariffName;
         this.buyerId = buyerId;
         this.pricecKWh = pricecKWh;
         this.start = start;
         this.end = end;
-        this.mothlyServiceFee = mothlyServiceFee;
     }
 
 
@@ -42,7 +40,4 @@ public class Contract implements java.io.Serializable{
         return tariffName;
     }
 
-    public float getMothlyServiceFee() {
-        return mothlyServiceFee;
-    }
 }

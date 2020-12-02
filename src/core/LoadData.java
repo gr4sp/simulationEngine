@@ -31,7 +31,7 @@ public class LoadData implements java.io.Serializable {
     public static void
     selectInflation(Gr4spSim data) {
         //Loading Inflation data (from 1990 to 2019)
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         String sql = "SELECT  year, average FROM  historic_inflation";
 
@@ -59,7 +59,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectForecastConsumption(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -103,7 +103,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectForecastEnergyEfficency(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -144,7 +144,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectForecastOnsiteGeneration(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -185,7 +185,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectForecastSolarUptake(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -253,7 +253,7 @@ public class LoadData implements java.io.Serializable {
     // Select Forecast ISP maximum demand (MW)
     public static void
     selectMaximumDemandForecast(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -285,7 +285,7 @@ public class LoadData implements java.io.Serializable {
     // Select Forecast ISP minimum demand (MW)
     public static void
     selectMinimumDemandForecast(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -314,7 +314,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectArena(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -352,7 +352,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectTariffs(Gr4spSim data, String startDate, String endDate, String areaCode) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -383,18 +383,17 @@ public class LoadData implements java.io.Serializable {
 
         createCPIForecast(data);
 
-
-        sql = "SELECT id, casestudy_area, date, tariff_name, average_dckwh, chargeperroom_dmonth, secvij_gdgr_aud_quarter, standingcharge_aud_year" +
-                " FROM tariffdata WHERE" +
-                " casestudy_area SIMILAR TO '" + areaCode + "%' " +
+        sql = "SELECT id, casestudy_area,casestudy_area_code, date, organisation_tariff_name, average_dckwh" +
+                " FROM tariffshistoric WHERE" +
+                " casestudy_area_code SIMILAR TO '" + areaCode + "%' " +
                 " AND date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "';";
 
         //If areaCode is at state scale, do not filter tariffs by smaller areacodes, take all tariffs available
         //Agent will select a tariff according to simulation policy. For more details See SimulParameters()
         if (areaCode.equalsIgnoreCase("VIC"))
-            sql = "SELECT id, casestudy_area, date, tariff_name, average_dckwh, chargeperroom_dmonth, secvij_gdgr_aud_quarter, standingcharge_aud_year" +
-                    " FROM tariffdata WHERE" +
+            sql = "SELECT id, casestudy_area, casestudy_area_code, date, organisation_tariff_name, average_dckwh" +
+                    " FROM tariffshistoric WHERE" +
                     " date <= '" + endDate + "'" +
                     " AND date >= '" + startDate + "';";
 
@@ -407,12 +406,12 @@ public class LoadData implements java.io.Serializable {
             while (rs.next()) {
                 data.LOGGER.info("\t" + rs.getInt("id") + "\t" +
                         rs.getString("casestudy_area") + "\t" +
+                        rs.getString("casestudy_area_code") + "\t" +
                         rs.getString("date") + "\t" +
-                        rs.getString("tariff_name") + "\t" +
-                        rs.getString("average_dckwh") + "\t" +
-                        rs.getString("chargeperroom_dmonth") + "\t" +
-                        rs.getString("secvij_gdgr_aud_quarter") + "\t" +
-                        rs.getString("standingcharge_aud_year"));
+                        rs.getString("organisation_tariff_name") + "\t" +
+                        rs.getString("average_dckwh") + "\t");
+
+
 
                 //add tariffs to the Retail arena
                 int arenaId = 2;
@@ -434,30 +433,12 @@ public class LoadData implements java.io.Serializable {
                 //Get CPI conversion
                 float conversion_rate = data.getCpi_conversion().get(cStartDate);
 
-                //Compute serviceFee
-                Float chargeperroom_dmonth = rs.getFloat("chargeperroom_dmonth") * conversion_rate;
-                Float secvij_gdgr_aud_quarter = rs.getFloat("secvij_gdgr_aud_quarter") * conversion_rate;
-                Float standingcharge_aud_year = rs.getFloat("standingcharge_aud_year") * conversion_rate;
-
-                float serviceFee = 0;
-
-                if (chargeperroom_dmonth != null)
-                    serviceFee += chargeperroom_dmonth;
-                if (secvij_gdgr_aud_quarter != null)
-                    serviceFee += secvij_gdgr_aud_quarter / 3.0;
-                if (standingcharge_aud_year != null)
-                    serviceFee += standingcharge_aud_year / 12.0;
-
-                //Actor seller, Actor buyer, Asset assetUsed, float dollarMWh, Date start, Date end, float capacityContracted
-
                 Contract contract = new Contract(
-                        rs.getString("tariff_name"),
+                        rs.getString("organisation_tariff_name"),
                         Arena.EndConsumer,
                         rs.getFloat("average_dckwh") * conversion_rate,
-                        serviceFee,
                         cStartDate,
                         cEndDate.getTime());
-
 
                 //Add contract to arena
                 if (arena.getType().equalsIgnoreCase("OTC") || arena.getType().equalsIgnoreCase("Retail")) {
@@ -504,7 +485,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectDemandHalfHour(Gr4spSim data, String startDate, String endDate) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         /**
          * Load Total Consumption per month
@@ -629,7 +610,7 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
-    //Select Consumption
+    //Create CPI forecast
     public static void createCPIForecast(Gr4spSim data) {
 
         //Set Base Date
@@ -729,7 +710,7 @@ public class LoadData implements java.io.Serializable {
     }
 
     public static void createForecastDomesticConsumers(Gr4spSim data){
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1045,7 +1026,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectConsumption(Gr4spSim data, String startDate, String startSpotDate, String endDate) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1231,7 +1212,7 @@ public class LoadData implements java.io.Serializable {
      * */
     public static void
     selectGenerationHistoricData(Gr4spSim data, String startDate, String endDate) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1279,7 +1260,7 @@ public class LoadData implements java.io.Serializable {
     }
 
     public static void selectHalfHourSolarExposure(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         String sql = "SELECT time , ghi" +
                 " FROM solar_ghi;";
@@ -1297,9 +1278,9 @@ public class LoadData implements java.io.Serializable {
 
                 float solarHalfhourExposure = rs.getFloat("ghi") / toKwh;
 
-                data.LOGGER.info("\t" + date + "\t" +
+                /*data.LOGGER.info("\t" + date + "\t" +
                         solarHalfhourExposure
-                );
+                );*/
 
                 data.getHalfhour_solar_exposure().put(date, solarHalfhourExposure);
 
@@ -1310,7 +1291,7 @@ public class LoadData implements java.io.Serializable {
     }
 
     public static void selectSolarInstallation(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1359,7 +1340,7 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectActors(Gr4spSim data, String startDate, String changeDate) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT id, name, registration_date, change_date, reg_number, region, role, business_structure"  +
@@ -1412,7 +1393,7 @@ public class LoadData implements java.io.Serializable {
     // Actor asset relationships function
     public static void
     selectActorAssetRelationships(Gr4spSim data, String tableName) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres";//"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres";//"jdbc:sqlite:Spm_archetypes.db";
 
         for (Map.Entry<Integer, Actor> entry : data.getActor_register().entrySet()) {
             Actor actor = entry.getValue();
@@ -1500,7 +1481,7 @@ public class LoadData implements java.io.Serializable {
      * select all rows in the Generation Technologies table
      */
     public static ArrayList<Generator> selectGenTech(Gr4spSim data, String min_nameplate_capacity, String max_nameplate_capacity) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; // url for sqlite "jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; // url for sqlite "jdbc:sqlite:Spm_archetypes.db";
 
 
         SimpleDateFormat DateToString = new SimpleDateFormat("yyyy-MM-dd");
@@ -1656,7 +1637,7 @@ public class LoadData implements java.io.Serializable {
 
 
     public static ArrayList<Storage> selectStorage(Gr4spSim data, String idst) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT storage_id, storage_name, storagetype, storageoutputcap , storagecapacity, ownership," +
@@ -1698,7 +1679,7 @@ public class LoadData implements java.io.Serializable {
 
     //Select and create the type of energy grid
     public static ArrayList<NetworkAssets> selectNetwork(Gr4spSim data, String subname) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT networkassets.id as netid, networkassettype.type as type, networkassettype.subtype as subtype, " +
@@ -1760,7 +1741,7 @@ public class LoadData implements java.io.Serializable {
     //TODO knowledge and energy hubs within prosumer communities, where to include them?
 
     public static ArrayList<ConnectionPoint> selectConnectionPoint(Gr4spSim data, String name) {
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT cpoint_id, cpoint_name, cpoint_type, distancetodemand, cpoint_locationcode, cpoint_owner, ownership FROM connectionpoint WHERE cpoint_name = '" + name + "' ";
@@ -1808,7 +1789,7 @@ public class LoadData implements java.io.Serializable {
          *  If it's the first time this spm.id is needed, then we create its object,
          *  If it already exists, we just retrieve the object from the spm_register
          */
-        String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
+        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         String spmGenSql = "SELECT id, spm.shared, spm_contains, generation, network_assets, interface, storage, description FROM spm WHERE spm.id = '" + idSpmActor + "' ";
 
