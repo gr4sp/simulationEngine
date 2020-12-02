@@ -160,7 +160,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
         return totalGeneration;
     }
 
-    //Recursively get normalize each contained SPM with Total Capacity
+    //Recursively normalize each contained SPM with Total Capacity
     public void normalizeEmissionIntensityIndexRecursively(double totalCapacity) {
         this.genEmissionIntensityIndex /= totalCapacity;
 
@@ -236,13 +236,13 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
 
         //Get the emission factor of generators within THIS spm OUT spot market
         double totalGenerationOutSpot = 0.0;
-        double CDEOutSpot = 0.0;
+        double CDEOffSpot = 0.0;
 
         //It uses the same available capacity (capacity factors) used by bidders in markets
         for (Generator g : gensInSpmActive) {
             if( g.getInPrimaryMarket() || g.getInSecondaryMarket() ) continue;
 
-            CDEOutSpot += g.getMonthlyGeneratedMWh() * g.getEmissionsFactor(currentYear);
+            CDEOffSpot += g.getMonthlyGeneratedMWh() * g.getEmissionsFactor(currentYear);
             totalGenerationOutSpot += g.getMonthlyGeneratedMWh();
         }
 
@@ -250,7 +250,7 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
         this.genAvailable = totalGenerationInSpot + totalGenerationOutSpot;
 
         //CDE (not normalized yet - see function normalizeEmissionIntensityIndexRecursively() )
-        this.genEmissionIntensityIndex = CDEInSpot + CDEOutSpot;
+        this.genEmissionIntensityIndex = CDEInSpot + CDEOffSpot;
     }
 
     /**

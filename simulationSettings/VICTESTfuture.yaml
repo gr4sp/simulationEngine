@@ -3,7 +3,7 @@ population:
   # !!!!! DOES AFFECT 1998-2019
 
   # Percentage of Total Consumption that corresponds to residential consumption (use in secondary markets, and emissions per household)
-  domesticConsumptionPercentage: 0.23
+  domesticConsumptionPercentage: 0.32
 
 forecast:
   #Forecast from ISP annual consumption includes for each category can be: (Slow change), (Fast change), (High DER), (Central), and (Step change)

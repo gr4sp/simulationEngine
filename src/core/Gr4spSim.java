@@ -113,7 +113,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //counter organisation structures
     private int numOrg;
 
-    //couter for actors
+    //counter for actors
     private int numActors;
 
     //Date representing the start of the simulation, and the final date of the simulation
@@ -135,8 +135,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public String yamlFileName;
     public static String outputID;
-
-
 
     public Gr4spSim(long seed ) {
 
@@ -203,14 +201,12 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             throw new RuntimeException("Problems creating the log files");
         }
 
-
-
         saveData = new SaveData(this);
 
     }
 
 
-    private void    simulParametres() {
+    private void simulParametres() {
 
         try {
             
@@ -275,6 +271,284 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         }
 
 
+    }
+
+    /**
+     * Generate Conventional ConsumerUnit
+     */
+
+    public void generateHouseholds() {
+
+        Date today = getCurrentSimDate();
+
+        //Get Population today (this sim step)
+        int householdsToday = monthly_domestic_consumers_register.get(today);
+
+        //Get Last month date (last sim state)
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        int currentYear = c.get(Calendar.YEAR);
+
+        c.add(Calendar.MONTH, -1);
+        Date lastStepTime = c.getTime();
+
+
+        //Get Population before (last sim step)
+        int householdsBefore = 0;
+        if (monthly_domestic_consumers_register.containsKey(lastStepTime))
+            householdsBefore = monthly_domestic_consumers_register.get(lastStepTime);
+
+        //Get growth. Need to create ConsumerUnits if possitive
+        int householdsGrowth = householdsToday - householdsBefore;
+
+
+        int numHouseholds = (int) (householdsGrowth * getPopulationPercentageAreaCode());
+
+        //If currentYear is after the forecast, then do not adapt the population percentage, as the forecast already has data for regions.
+        if( settings.getBaseYearConsumptionForecast() >= currentYear)
+            numHouseholds = householdsGrowth;
+
+        //Get Last conventional ConsumerUnit, which may have space for more households
+        EndUserUnit consumer = null;
+        if (conventionalConsumptionActors.size() >= 1)
+            consumer = (EndUserUnit) conventionalConsumptionActors.get(conventionalConsumptionActors.size() - 1);
+
+        int householdsLeft = numHouseholds;
+
+        if (consumer != null) {
+            //If all new households fit in existing SPM, then just add them
+            if ((getMaxHouseholdsPerConsumerUnit() - consumer.getNumberOfHouseholds()) > numHouseholds) {
+                consumer.setNumberOfHouseholds(consumer.getNumberOfHouseholds() + numHouseholds);
+                consumer.setNumberOfNewHouseholds(today, numHouseholds);
+
+                return;
+            }
+            //If not all households fit, increase SPM to full, and create a new SPM with remaining households
+            else if ((getMaxHouseholdsPerConsumerUnit() - consumer.getNumberOfHouseholds()) <= numHouseholds) {
+                int decrease = getMaxHouseholdsPerConsumerUnit() - consumer.getNumberOfHouseholds();
+                numHouseholds -= decrease;
+                householdsLeft = numHouseholds;
+
+                consumer.setNumberOfNewHouseholds(today, decrease);
+                consumer.setNumberOfHouseholds(getMaxHouseholdsPerConsumerUnit());
+            }
+        }
+
+        for (int i = 0; i < numHouseholds; i = i + getMaxHouseholdsPerConsumerUnit()) {
+
+            boolean hasGas = false;
+
+            LOGGER.info("Num Actors: " + numActors);
+
+            int numPeople = 2;
+            String name = "Household Conventional " + conventionalConsumptionActors.size();
+
+            int householdsCreated = getMaxHouseholdsPerConsumerUnit();
+            if (householdsLeft < getMaxHouseholdsPerConsumerUnit()) householdsCreated = householdsLeft;
+
+
+            //Create new Consumer Unit
+            Actor actor = new EndUserUnit(numActors++, name,
+                    numPeople, householdsCreated, hasGas, true, 0, today);
+
+            consumptionActors.add((EndUserActor) actor);
+            conventionalConsumptionActors.add((EndUserActor) actor);
+
+            householdsLeft -= householdsCreated;
+
+            //Schedule the actor in order to make decisions at every step
+            this.schedule.scheduleRepeating(0.0, 1, actor);
+
+            //Id of conventional SPM
+            int idSpm = 1;
+
+            //Create new SPM
+            Spm spm = LoadData.createSpm(this, idSpm);
+
+            /**
+             * Actor Asset rel
+             * */
+            //create new relationship btw the household and SPM
+            ActorAssetRelationship actorSpmRel = new ActorAssetRelationship(actor, spm, ActorAssetRelationshipType.USE, 100);
+
+            //Store relationship with assets in the actor object
+            actor.addAssetRelationship(actorSpmRel);
+            //Store relationship in the global array of all actor asset rel
+            actorAssetRelationships.add(actorSpmRel);
+
+        }
+
+    }
+
+    /**
+     * Load Data From DataBase
+     */
+
+    public void loadData() {
+        //selectDemandTemp();
+
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
+        String startDate = stringToDate.format(this.startSimDate);
+        String endDate = stringToDate.format(this.endSimDate);
+
+        LoadData.selectArena(this);
+        LoadData.selectTariffs(this, startDate, endDate, getAreaCode());
+        LoadData.selectInflation( this );
+
+        LoadData.selectDemandHalfHour(this, startDate, endDate);
+        LoadData.selectForecastConsumption(this);
+        LoadData.selectForecastSolarUptake(this);
+        LoadData.selectForecastEnergyEfficency(this);
+        LoadData.selectForecastOnsiteGeneration(this);
+        LoadData.selectConsumption(this, startDate, this.settings.getStartDateSpotMarket(), endDate);
+        LoadData.selectGenerationHistoricData(this, startDate, endDate);
+        LoadData.selectHalfHourSolarExposure(this);
+        LoadData.createHalfHourSolarExposureForecast(this);
+        LoadData.selectSolarInstallation(this);
+        LoadData.createSolarInstallationForecast(this);
+        LoadData.selectActors(this,  startDate, endDate);
+
+//        LoadData.selectMaximumDemandForecast(this);
+//        LoadData.selectMinimumDemandForecast(this);
+
+        //loadNetwork();
+        //selectActorActorRelationships("actoractor93");
+
+        //LoadData.selectActorAssetRelationships(this, "actorasset");//from https://www.secv.vic.gov.au/history/
+    }
+
+
+
+//    private void loadNetwork(){
+//
+//        int numActiveActors = 0;
+//        for (Integer integer : actor_register.keySet()) {
+//            Actor actor = actor_register.get(integer);
+//            // if start of actor is after current date (it started) and has not ended (change date is after current date)
+//            if (simCalendar.getTime().after(actor.getStart()) && actor.getChangeDate().after(simCalendar.getTime())) {
+//                this.actorsNetwork.addNode(actor);
+//                numActiveActors++;
+//            }
+//        }
+//
+//        System.out.println(numActiveActors);
+//    }
+
+    private void serialize(){
+
+        HashMap<String, Object> dataToSerialize = new HashMap<String, Object>();
+
+        dataToSerialize.put("gen_register", gen_register);
+
+        dataToSerialize.put("spm_register", spm_register);
+        dataToSerialize.put("network_register", network_register);
+        dataToSerialize.put("actor_register", actor_register);
+        dataToSerialize.put("arena_register", arena_register);
+
+        dataToSerialize.put("halfhour_demand_register", halfhour_demand_register);
+        dataToSerialize.put("maximum_demand_forecast_register", maximum_demand_forecast_register);
+        dataToSerialize.put("minimum_demand_forecast_register", minimum_demand_forecast_register);
+
+        dataToSerialize.put("annual_forecast_consumption_register", annual_forecast_consumption_register);
+        dataToSerialize.put("annual_forecast_rooftopPv_register", annual_forecast_rooftopPv_register);
+        dataToSerialize.put("monthly_consumption_register", monthly_consumption_register);
+        dataToSerialize.put("total_monthly_consumption_register", total_monthly_consumption_register);
+
+        dataToSerialize.put("monthly_generation_register", monthly_generation_register);
+        dataToSerialize.put("monthly_domestic_consumers_register", monthly_domestic_consumers_register);
+        dataToSerialize.put("cpi_conversion", cpi_conversion);
+        dataToSerialize.put("annual_inflation", annual_inflation);
+        dataToSerialize.put("halfhour_solar_exposure", halfhour_solar_exposure);
+
+        dataToSerialize.put("solar_number_installs", solar_number_installs);
+        dataToSerialize.put("solar_aggregated_kw", solar_aggregated_kw);
+        dataToSerialize.put("solar_system_capacity_kw", solar_system_capacity_kw);
+
+        dataToSerialize.put("numGenerators", numGenerators);
+        dataToSerialize.put("numStorage", numStorage);
+        dataToSerialize.put("numGrid", numGrid);
+        dataToSerialize.put("numcpoints", numcpoints);
+        dataToSerialize.put("numOrg", numOrg);
+        dataToSerialize.put("numActors", numActors);
+
+        dataToSerialize.put("consumptionActors", consumptionActors);
+        dataToSerialize.put("conventionalConsumptionActors", conventionalConsumptionActors);
+        dataToSerialize.put("nonConventionalConsumptionActors", nonConventionalConsumptionActors);
+        dataToSerialize.put("actorAssetRelationships", actorAssetRelationships);
+
+
+        //more info here https://www.toolsqa.com/rest-assured/serialization-and-deserialization-in-java/
+
+         try {
+            FileOutputStream fileOutputStream = new FileOutputStream(this.settings.folderOutput+"/SimStateDB.ser");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(dataToSerialize);
+            objectOutputStream.close();
+            fileOutputStream.close();
+         } catch (FileNotFoundException i) {
+             i.printStackTrace();
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    private HashMap<String, Object> deserialize(){
+
+        try {
+
+            FileInputStream fileInputStream = new FileInputStream(this.settings.folderOutput+"/SimStateDB.ser");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            HashMap<String,Object> retrieved = (HashMap<String,Object>)objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStream.close();
+
+            gen_register = (HashMap<Integer, Vector<Generator>> ) retrieved.get("gen_register");
+
+            spm_register = (HashMap<Integer, Vector<Spm>> ) retrieved.get("spm_register");
+
+            network_register = (HashMap<Integer, Vector<NetworkAssets>> ) retrieved.get("network_register");
+            actor_register = (HashMap<Integer, Actor>) retrieved.get("actor_register");
+            arena_register = (HashMap<Integer, Arena>) retrieved.get("arena_register");
+
+            halfhour_demand_register = (HashMap<Date, Double>) retrieved.get("halfhour_demand_register");
+            maximum_demand_forecast_register = (HashMap<Integer, Float> ) retrieved.get("maximum_demand_forecast_register");
+            minimum_demand_forecast_register = (HashMap<Integer, Float> ) retrieved.get("minimum_demand_forecast_register");
+            annual_forecast_consumption_register = (HashMap<Integer, Float> ) retrieved.get("annual_forecast_consumption_register");
+            annual_forecast_rooftopPv_register = (HashMap<Integer, Float> ) retrieved.get("annual_forecast_rooftopPv_register");
+
+            monthly_consumption_register = (HashMap<Date, Double>) retrieved.get("monthly_consumption_register");
+            total_monthly_consumption_register = (HashMap<Date, Double>) retrieved.get("total_monthly_consumption_register");
+
+            monthly_generation_register = (HashMap<Date, Generation>) retrieved.get("monthly_generation_register");
+            monthly_domestic_consumers_register = (HashMap<Date, Integer>) retrieved.get("monthly_domestic_consumers_register");
+            cpi_conversion = (HashMap<Date, Float>) retrieved.get("cpi_conversion");
+            annual_inflation = (HashMap<Integer, Float>) retrieved.get("annual_inflation");
+            halfhour_solar_exposure = (HashMap<Date, Float>) retrieved.get("halfhour_solar_exposure");
+
+            solar_number_installs = (HashMap<Date, Integer>) retrieved.get("solar_number_installs");
+            solar_aggregated_kw = (HashMap<Date, Integer>) retrieved.get("solar_aggregated_kw");
+            solar_system_capacity_kw = (HashMap<Date, Float>) retrieved.get("solar_system_capacity_kw");
+
+            numGenerators = (int) retrieved.get("numGenerators");
+            numStorage = (int) retrieved.get("numStorage");
+            numGrid = (int) retrieved.get("numGrid");
+            numcpoints = (int) retrieved.get("numcpoints");
+            numOrg = (int) retrieved.get("numOrg");
+            numActors = (int) retrieved.get("numActors");
+
+
+            consumptionActors = (ArrayList<EndUserActor>) retrieved.get("consumptionActors");
+            conventionalConsumptionActors = (ArrayList<EndUserActor>) retrieved.get("conventionalConsumptionActors");
+            nonConventionalConsumptionActors = (ArrayList<EndUserActor>) retrieved.get("nonConventionalConsumptionActors");
+            actorAssetRelationships = (ArrayList<ActorAssetRelationship>) retrieved.get("actorAssetRelationships");
+
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
@@ -479,288 +753,6 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         return null;
     }
 
-
-    /**
-     * Generate Conventional ConsumerUnit
-     */
-
-    public void generateHouseholds() {
-
-        Date today = getCurrentSimDate();
-
-        //Get Population today (this sim step)
-        int householdsToday = monthly_domestic_consumers_register.get(today);
-
-        //Get Last month date (last sim state)
-        Calendar c = Calendar.getInstance();
-        c.setTime(today);
-        int currentYear = c.get(Calendar.YEAR);
-
-        c.add(Calendar.MONTH, -1);
-        Date lastStepTime = c.getTime();
-
-
-        //Get Population before (last sim step)
-        int householdsBefore = 0;
-        if (monthly_domestic_consumers_register.containsKey(lastStepTime))
-            householdsBefore = monthly_domestic_consumers_register.get(lastStepTime);
-
-        //Get growth. Need to create ConsumerUnits if possitive
-        int householdsGrowth = householdsToday - householdsBefore;
-
-
-        int numHouseholds = (int) (householdsGrowth * getPopulationPercentageAreaCode());
-
-        //If currentYear is after the forecast, then do not adapt the population percentage, as the forecast already has data for regions.
-        if( settings.getBaseYearConsumptionForecast() >= currentYear)
-            numHouseholds = householdsGrowth;
-
-        //Get Last conventional ConsumerUnit, which may have space for more households
-        EndUserUnit consumer = null;
-        if (conventionalConsumptionActors.size() >= 1)
-            consumer = (EndUserUnit) conventionalConsumptionActors.get(conventionalConsumptionActors.size() - 1);
-
-        int householdsLeft = numHouseholds;
-
-        if (consumer != null) {
-            //If all new households fit in existing SPM, then just add them
-            if ((getMaxHouseholdsPerConsumerUnit() - consumer.getNumberOfHouseholds()) > numHouseholds) {
-                consumer.setNumberOfHouseholds(consumer.getNumberOfHouseholds() + numHouseholds);
-                consumer.setNumberOfNewHouseholds(today, numHouseholds);
-
-                return;
-            }
-            //If not all households fit, increase SPM to full, and create a new SPM with remaining households
-            else if ((getMaxHouseholdsPerConsumerUnit() - consumer.getNumberOfHouseholds()) <= numHouseholds) {
-                int decrease = getMaxHouseholdsPerConsumerUnit() - consumer.getNumberOfHouseholds();
-                numHouseholds -= decrease;
-                householdsLeft = numHouseholds;
-
-                consumer.setNumberOfNewHouseholds(today, decrease);
-                consumer.setNumberOfHouseholds(getMaxHouseholdsPerConsumerUnit());
-            }
-        }
-
-        for (int i = 0; i < numHouseholds; i = i + getMaxHouseholdsPerConsumerUnit()) {
-
-            boolean hasGas = false;
-
-            LOGGER.info("Num Actors: " + numActors);
-
-            int numPeople = 2;
-            String name = "Household Conventional " + conventionalConsumptionActors.size();
-
-            int householdsCreated = getMaxHouseholdsPerConsumerUnit();
-            if (householdsLeft < getMaxHouseholdsPerConsumerUnit()) householdsCreated = householdsLeft;
-
-
-            //Create new Consumer Unit
-            Actor actor = new EndUserUnit(numActors++, name,
-                    numPeople, householdsCreated, hasGas, true, 0, today);
-
-            consumptionActors.add((EndUserActor) actor);
-            conventionalConsumptionActors.add((EndUserActor) actor);
-
-            householdsLeft -= householdsCreated;
-
-            //Schedule the actor in order to make decisions at every step
-            this.schedule.scheduleRepeating(0.0, 1, actor);
-
-            //Id of conventional SPM
-            int idSpm = 1;
-
-            //Create new SPM
-            Spm spm = LoadData.createSpm(this, idSpm);
-
-            /**
-             * Actor Asset rel
-             * */
-            //create new relationship btw the household and SPM
-            ActorAssetRelationship actorSpmRel = new ActorAssetRelationship(actor, spm, ActorAssetRelationshipType.USE, 100);
-
-            //Store relationship with assets in the actor object
-            actor.addAssetRelationship(actorSpmRel);
-            //Store relationship in the global array of all actor asset rel
-            actorAssetRelationships.add(actorSpmRel);
-
-
-
-        }
-
-    }
-
-
-
-    /**
-     * Load Data From DataBase
-     */
-
-    public void loadData() {
-        //selectDemandTemp();
-
-        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
-        String startDate = stringToDate.format(this.startSimDate);
-        String endDate = stringToDate.format(this.endSimDate);
-
-        LoadData.selectArena(this);
-        LoadData.selectTariffs(this, startDate, endDate, getAreaCode());
-        LoadData.selectInflation( this );
-
-        LoadData.selectDemandHalfHour(this, startDate, endDate);
-        LoadData.selectForecastConsumption(this);
-        LoadData.selectForecastSolarUptake(this);
-        LoadData.selectForecastEnergyEfficency(this);
-        LoadData.selectForecastOnsiteGeneration(this);
-        LoadData.selectConsumption(this, startDate, this.settings.getStartDateSpotMarket(), endDate);
-        LoadData.selectGenerationHistoricData(this, startDate, endDate);
-        LoadData.selectHalfHourSolarExposure(this);
-        LoadData.createHalfHourSolarExposureForecast(this);
-        LoadData.selectSolarInstallation(this);
-        LoadData.createSolarInstallationForecast(this);
-        LoadData.selectActors(this,  startDate, endDate);
-
-//        LoadData.selectMaximumDemandForecast(this);
-//        LoadData.selectMinimumDemandForecast(this);
-
-        //loadNetwork();
-        //selectActorActorRelationships("actoractor93");
-
-        //LoadData.selectActorAssetRelationships(this, "actorasset");//from https://www.secv.vic.gov.au/history/
-    }
-
-
-
-//    private void loadNetwork(){
-//
-//        int numActiveActors = 0;
-//        for (Integer integer : actor_register.keySet()) {
-//            Actor actor = actor_register.get(integer);
-//            // if start of actor is after current date (it started) and has not ended (change date is after current date)
-//            if (simCalendar.getTime().after(actor.getStart()) && actor.getChangeDate().after(simCalendar.getTime())) {
-//                this.actorsNetwork.addNode(actor);
-//                numActiveActors++;
-//            }
-//        }
-//
-//        System.out.println(numActiveActors);
-//    }
-
-    private void serialize(){
-
-        HashMap<String, Object> dataToSerialize = new HashMap<String, Object>();
-
-        dataToSerialize.put("gen_register", gen_register);
-
-        dataToSerialize.put("spm_register", spm_register);
-        dataToSerialize.put("network_register", network_register);
-        dataToSerialize.put("actor_register", actor_register);
-        dataToSerialize.put("arena_register", arena_register);
-
-        dataToSerialize.put("halfhour_demand_register", halfhour_demand_register);
-        dataToSerialize.put("maximum_demand_forecast_register", maximum_demand_forecast_register);
-        dataToSerialize.put("minimum_demand_forecast_register", minimum_demand_forecast_register);
-
-        dataToSerialize.put("annual_forecast_consumption_register", annual_forecast_consumption_register);
-        dataToSerialize.put("annual_forecast_rooftopPv_register", annual_forecast_rooftopPv_register);
-        dataToSerialize.put("monthly_consumption_register", monthly_consumption_register);
-        dataToSerialize.put("total_monthly_consumption_register", total_monthly_consumption_register);
-
-        dataToSerialize.put("monthly_generation_register", monthly_generation_register);
-        dataToSerialize.put("monthly_domestic_consumers_register", monthly_domestic_consumers_register);
-        dataToSerialize.put("cpi_conversion", cpi_conversion);
-        dataToSerialize.put("annual_inflation", annual_inflation);
-        dataToSerialize.put("halfhour_solar_exposure", halfhour_solar_exposure);
-
-        dataToSerialize.put("solar_number_installs", solar_number_installs);
-        dataToSerialize.put("solar_aggregated_kw", solar_aggregated_kw);
-        dataToSerialize.put("solar_system_capacity_kw", solar_system_capacity_kw);
-
-        dataToSerialize.put("numGenerators", numGenerators);
-        dataToSerialize.put("numStorage", numStorage);
-        dataToSerialize.put("numGrid", numGrid);
-        dataToSerialize.put("numcpoints", numcpoints);
-        dataToSerialize.put("numOrg", numOrg);
-        dataToSerialize.put("numActors", numActors);
-
-        dataToSerialize.put("consumptionActors", consumptionActors);
-        dataToSerialize.put("conventionalConsumptionActors", conventionalConsumptionActors);
-        dataToSerialize.put("nonConventionalConsumptionActors", nonConventionalConsumptionActors);
-        dataToSerialize.put("actorAssetRelationships", actorAssetRelationships);
-
-
-        //more info here https://www.toolsqa.com/rest-assured/serialization-and-deserialization-in-java/
-
-         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(this.settings.folderOutput+"/SimStateDB.ser");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(dataToSerialize);
-            objectOutputStream.close();
-            fileOutputStream.close();
-         } catch (FileNotFoundException i) {
-             i.printStackTrace();
-        } catch (IOException i) {
-            i.printStackTrace();
-        }
-    }
-
-    private HashMap<String, Object> deserialize(){
-
-        try {
-
-            FileInputStream fileInputStream = new FileInputStream(this.settings.folderOutput+"/SimStateDB.ser");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
-            HashMap<String,Object> retrieved = (HashMap<String,Object>)objectInputStream.readObject();
-            objectInputStream.close();
-            fileInputStream.close();
-
-            gen_register = (HashMap<Integer, Vector<Generator>> ) retrieved.get("gen_register");
-
-            spm_register = (HashMap<Integer, Vector<Spm>> ) retrieved.get("spm_register");
-
-            network_register = (HashMap<Integer, Vector<NetworkAssets>> ) retrieved.get("network_register");
-            actor_register = (HashMap<Integer, Actor>) retrieved.get("actor_register");
-            arena_register = (HashMap<Integer, Arena>) retrieved.get("arena_register");
-
-            halfhour_demand_register = (HashMap<Date, Double>) retrieved.get("halfhour_demand_register");
-            maximum_demand_forecast_register = (HashMap<Integer, Float> ) retrieved.get("maximum_demand_forecast_register");
-            minimum_demand_forecast_register = (HashMap<Integer, Float> ) retrieved.get("minimum_demand_forecast_register");
-            annual_forecast_consumption_register = (HashMap<Integer, Float> ) retrieved.get("annual_forecast_consumption_register");
-            annual_forecast_rooftopPv_register = (HashMap<Integer, Float> ) retrieved.get("annual_forecast_rooftopPv_register");
-
-            monthly_consumption_register = (HashMap<Date, Double>) retrieved.get("monthly_consumption_register");
-            total_monthly_consumption_register = (HashMap<Date, Double>) retrieved.get("total_monthly_consumption_register");
-
-            monthly_generation_register = (HashMap<Date, Generation>) retrieved.get("monthly_generation_register");
-            monthly_domestic_consumers_register = (HashMap<Date, Integer>) retrieved.get("monthly_domestic_consumers_register");
-            cpi_conversion = (HashMap<Date, Float>) retrieved.get("cpi_conversion");
-            annual_inflation = (HashMap<Integer, Float>) retrieved.get("annual_inflation");
-            halfhour_solar_exposure = (HashMap<Date, Float>) retrieved.get("halfhour_solar_exposure");
-
-            solar_number_installs = (HashMap<Date, Integer>) retrieved.get("solar_number_installs");
-            solar_aggregated_kw = (HashMap<Date, Integer>) retrieved.get("solar_aggregated_kw");
-            solar_system_capacity_kw = (HashMap<Date, Float>) retrieved.get("solar_system_capacity_kw");
-
-            numGenerators = (int) retrieved.get("numGenerators");
-            numStorage = (int) retrieved.get("numStorage");
-            numGrid = (int) retrieved.get("numGrid");
-            numcpoints = (int) retrieved.get("numcpoints");
-            numOrg = (int) retrieved.get("numOrg");
-            numActors = (int) retrieved.get("numActors");
-
-
-            consumptionActors = (ArrayList<EndUserActor>) retrieved.get("consumptionActors");
-            conventionalConsumptionActors = (ArrayList<EndUserActor>) retrieved.get("conventionalConsumptionActors");
-            nonConventionalConsumptionActors = (ArrayList<EndUserActor>) retrieved.get("nonConventionalConsumptionActors");
-            actorAssetRelationships = (ArrayList<ActorAssetRelationship>) retrieved.get("actorAssetRelationships");
-
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 
     public void start() {
         super.start();

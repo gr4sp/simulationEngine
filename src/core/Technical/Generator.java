@@ -302,8 +302,8 @@ public class Generator implements java.io.Serializable, Asset {
             availableCapacity = halfHourGeneration / (float) 1000.0;
 
             //Solar suplus as a function of generation and number of units consuming - (30days * 48 halfhour/day = 1440 approx equals half hours in month)
-            solarSurplusCapacity = availableCapacity - (numUnits * consumption / 1440 );
-            if(solarSurplusCapacity < 0 ) solarSurplusCapacity = 0;
+//            solarSurplusCapacity = availableCapacity - (numUnits * consumption / 1440 );
+//            if(solarSurplusCapacity < 0 ) solarSurplusCapacity = 0;
 
         }
     }

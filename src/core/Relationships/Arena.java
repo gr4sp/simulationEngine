@@ -32,10 +32,10 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
     // Statistics of reliability, Data per month.
     // When demand is unmet, is assumed to be imported at a high price: marketPrice *= importFactor; -> SpotMarket.java:157
-    private double unmetDemandMwh;
+    private double unmetDemandMwhPrimary;
     private double unmetDemandHours;
     private double unmetDemandDays;
-    private double maxUnmetDemandMwhPerHour;
+    private double maxUnmetDemandMwhPerHourPrimary;
 
     // Statistics of reliability for secondary market
     private double unmetDemandMwhSecondary;
@@ -59,7 +59,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
 
     public Arena(int id, String name, String type, Gr4spSim state) {
-        Gr4spSim data = (Gr4spSim) state;
+        Gr4spSim data = state;
 
         this.id = id;
         this.name = name;
@@ -137,13 +137,13 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
     public double getAvgMonthlyPriceOffSpot() { return avgMonthlyPriceOffSpot; }
 
-    public double getUnmetDemandMwh() { return unmetDemandMwh; }
+    public double getUnmetDemandMwhPrimary() { return unmetDemandMwhPrimary; }
 
     public double getUnmetDemandHours() {  return unmetDemandHours;  }
 
     public double getUnmetDemandDays() {  return unmetDemandDays;  }
 
-    public double getMaxUnmetDemandMwhPerHour() {  return maxUnmetDemandMwhPerHour;  }
+    public double getMaxUnmetDemandMwhPerHourPrimary() {  return maxUnmetDemandMwhPerHourPrimary;  }
 
     public double getUnmetDemandMwhSecondary() { return unmetDemandMwhSecondary;  }
 
@@ -205,13 +205,13 @@ public class Arena implements Steppable,  java.io.Serializable  {
     }
 
     /**
-     * This tariff represents price for $/MWh -> c/KWh (/ by 10)
+     * Wholesale price in $/MWh
      */
-    public double getTariff(SimState state) {
+    public double getWholesalePrice(SimState state) {
         Gr4spSim data = (Gr4spSim) state;
         Date today = data.getCurrentSimDate();
 
-        //If Spot Market hasn't started yet, get historic prices
+        //If Spot Market hasn't started yet, get historic prices of tariffs as wholesale is not available
         if (data.getStartSpotMarketDate().after(today)) {
             return getEndConsumerTariff(state);
         }
@@ -349,8 +349,6 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 return;
             }
 
-
-
             c.setTime(today);
             int daysInMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
             int currentMonth = c.get(Calendar.MONTH) + 1;
@@ -401,19 +399,19 @@ public class Arena implements Steppable,  java.io.Serializable  {
             avgMonthlyDemandPrimarySpot = 0;
             avgMonthlyDemandSecondarySpot = 0;
 
-            unmetDemandMwh = 0;
+            unmetDemandMwhPrimary = 0;
             unmetDemandMwhSecondary = 0;
             unmetDemandHours = 0;
             unmetDemandHoursSecondary = 0;
             unmetDemandDays = 0;
             unmetDemandDaysSecondary = 0;
-            maxUnmetDemandMwhPerHour = 0;
+            maxUnmetDemandMwhPerHourPrimary = 0;
             maxUnmetDemandMwhPerHourSecondary = 0;
 
-            double unmetDemandMwhDay = 0;
+            double unmetDemandMwhPrimaryDay = 0;
             double unmetDemandMwhSecondaryDay = 0;
 
-            double unmetDemandMwhHour = 0;
+            double unmetDemandMwhPrimaryHour = 0;
             double unmetDemandMwhSecondaryHour = 0;
 
 
@@ -500,7 +498,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
                     if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
                         g.computeAvailableSolarCapacity(state, today, currentTime, currentMonth, consumption);
                         capacity = g.getAvailableCapacity();
-                        consumptionSuppliedBySolar += capacity - g.getSolarSurplusCapacity();
+                        consumptionSuppliedBySolar += capacity; //- g.getSolarSurplusCapacity();
                     }
 
                     if( g.getInPrimaryMarket() == false && g.getInSecondaryMarket()  == false ){
@@ -629,7 +627,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 }
 
                 // Statistics about unmet demand
-                double unmetArena = this.primarySpot.getUnmetDemand() / 2.0; //30min;
+                double unmetPrimary = this.primarySpot.getUnmetDemand() / 2.0; //30min;
 
                 double unmetSecondary = 0.0;
                 if( currentYear < data.settings.getBaseYearConsumptionForecast() ) {
@@ -641,25 +639,25 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 }
 
                 //Update Unmet demand month
-                unmetDemandMwh += unmetArena;                
+                unmetDemandMwhPrimary += unmetPrimary;
                 unmetDemandMwhSecondary += unmetSecondary;
                 
                 //Unmet demand last 24h
-                unmetDemandMwhDay += unmetArena;
+                unmetDemandMwhPrimaryDay += unmetPrimary;
                 unmetDemandMwhSecondaryDay += unmetSecondary;
 
                 //Unmet demand last 1h
-                unmetDemandMwhHour += unmetArena;
+                unmetDemandMwhPrimaryHour += unmetPrimary;
                 unmetDemandMwhSecondaryHour += unmetSecondary;
 
                 //New day
                 if(c.get(Calendar.HOUR_OF_DAY) == 0 && c.get(Calendar.MINUTE) == 0){
                     
                     //Update numdays with unmet demand
-                    if( unmetDemandMwhDay > 0.0001 ) unmetDemandDays++;
+                    if( unmetDemandMwhPrimaryDay > 0.0001 ) unmetDemandDays++;
                     if( unmetDemandMwhSecondaryDay > 0.0001 ) unmetDemandDaysSecondary++;
 
-                    unmetDemandMwhDay = 0;
+                    unmetDemandMwhPrimaryDay = 0;
                     unmetDemandMwhSecondaryDay = 0;
                     
                 }
@@ -668,15 +666,15 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 if(c.get(Calendar.MINUTE) == 0){
 
                     //Update numhours unmet demand
-                    if( unmetDemandMwhHour > 0.0001 )
+                    if( unmetDemandMwhPrimaryHour > 0.0001 )
                         unmetDemandHours++;
                     if( unmetDemandMwhSecondaryHour > 0.0001 ) unmetDemandHoursSecondary++;
 
                     //Update max unmet demand per hour
-                    if( maxUnmetDemandMwhPerHour < unmetDemandMwhHour ) maxUnmetDemandMwhPerHour = unmetDemandMwhHour;
+                    if( maxUnmetDemandMwhPerHourPrimary < unmetDemandMwhPrimaryHour ) maxUnmetDemandMwhPerHourPrimary = unmetDemandMwhPrimaryHour;
                     if( maxUnmetDemandMwhPerHourSecondary < unmetDemandMwhSecondaryHour ) maxUnmetDemandMwhPerHourSecondary = unmetDemandMwhSecondaryHour;
 
-                    unmetDemandMwhHour = 0;
+                    unmetDemandMwhPrimaryHour = 0;
                     unmetDemandMwhSecondaryHour = 0;
                 }
 
