@@ -1,7 +1,7 @@
 #Folder that has the following folders: logs, csv, and plots
 
-folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
-#folderOutput: "/data/gr4sp"
+#folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
+folderOutput: "/data/gr4sp"
 
 
 # report can be "full" or "light"
@@ -18,11 +18,11 @@ logLevel: "OFF"
 simulationDates:
 
   # Simulation Date Range
-  startDate:  1995-01-01 #1998-01-01 #1920-01-01
+  startDate:  1998-01-01 #1998-01-01 #1920-01-01
 
   # There's only forecast data up to 2050/12.
   #2051-01-01 #REMEMBER TO CHANGE startDemandForecast:2020-06-01
-  endDate: 2021-01-01 #2000-01-01 #1995-01-01 #2019-01-01
+  endDate: 2051-01-01 #2000-01-01 #1995-01-01 #2019-01-01
 
   # Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before
   startDateSpotMarket: 1999-01-01
@@ -70,7 +70,7 @@ forecast:
 
   #This is applied to the tariffs (see EndUser class). If price rises in year baseYear+1 is 2%, then annualCpi should be 0.02.
   #https://www.rateinflation.com/consumer-price-index/australia-historical-cpi.php?start-year=1948&end-year=2019
-  # From base year onwards, BAU is median change of CPI between 1990 to 2019 was 2.33 and average 2.43. Max 5 and min 0.
+  # From base year onward, BAU is median change of CPI between 1990 to 2019 was 2.33 and average 2.43. Max 5 and min 0.
   annualCpi: 0.0233
 
   #true means new generation that has been publically announced but not committed is included.
