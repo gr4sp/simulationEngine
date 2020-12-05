@@ -124,25 +124,18 @@ def getModelAFterBaseYear():
 
     model.constants = [Constant('onsiteGeneration', 0)]
     model.constants += [Constant('technologicalImprovement', 1)]  # percentage
-    model.constants += [Constant('solarUptake', 0)]
-    model.constants += [Constant('generatorRetirement', 0)]
-    model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
     model.constants += [Constant('rooftopPV', 7)]
-    model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
-    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
     model.constants += [Constant('priceChangePercentageSolar', 0)]
-    model.constants += [Constant('learningCurve', 5)]  # percentage
     model.constants += [Constant('annualCpi', 2.33)]  # percentage
-    model.constants += [Constant('annualInflation', 3.3)]  # percentage
     model.constants += [Constant('energyEfficiency', 0)]
+    model.constants += [Constant('nameplateCapacityChangeCcgt', 0)]
+    model.constants += [Constant('priceChangePercentageCcgt', 0)]
 
-
-
+#Dec 2 results for AfterBaseYear changes. From 34 inputs, 26 important factors
     model.uncertainties = [IntegerParameter('consumption', 0, 5)]
     model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWater', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -50, 51)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeCcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 1, 11)]
     model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 51)]  # percentage
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeOcgt', -50, 51)]
@@ -158,7 +151,19 @@ def getModelAFterBaseYear():
     model.uncertainties += [IntegerParameter('priceChangePercentageWind', -50, 51)]
     model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeWater', -50, 51)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -50, 51)]
+    model.uncertainties += [IntegerParameter('learningCurve', 0, 16)]  # percentage
+    model.uncertainties += [IntegerParameter('solarUptake', 0, 5)]
+    model.uncertainties += [IntegerParameter('nonScheduleMinCapMarketGen', 1, 151)] #divided by 10
+    model.uncertainties += [IntegerParameter('semiScheduleMinCapMarketGen', 1, 301)] #divided by 10
+    model.uncertainties += [IntegerParameter('generatorRetirement', -5, 6)]
+    model.uncertainties += [IntegerParameter('annualInflation', 1, 6)]  # percentage
+    model.uncertainties += [IntegerParameter('scheduleMinCapMarketGen',1, 301)] #divided by 10
+
+
+
+
+
+
 
 
     model.outcomes = [

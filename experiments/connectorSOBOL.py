@@ -259,9 +259,12 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
             gr4spObj.settings.setUsageTariff('wholesaleContribution', (float) (wholesaleTariffContribution / 100.0))
 
             # arenas
-            gr4spObj.settings.setMinCapMarketGen('scheduled', scheduleMinCapMarketGen)
-            gr4spObj.settings.setMinCapMarketGen('semiScheduled', semiScheduleMinCapMarketGen)
-            gr4spObj.settings.setMinCapMarketGen('nonScheduled', nonScheduleMinCapMarketGen)
+            gr4spObj.settings.setMinCapMarketGen('scheduled',
+                                                 (float) (scheduleMinCapMarketGen / 10.0))
+            gr4spObj.settings.setMinCapMarketGen('semiScheduled',
+                                                 (float) (semiScheduleMinCapMarketGen / 10.0))
+            gr4spObj.settings.setMinCapMarketGen('nonScheduled',
+                                                 (float) (nonScheduleMinCapMarketGen / 10.0))
 
             gr4spObj.settings.setSpotMarket('semiScheduled', category(semiScheduleGenSpotMarket))
             gr4spObj.settings.setSpotMarket('nonScheduled', category(nonScheduleGenSpotMarket))
@@ -350,9 +353,12 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
                                                           (float)(wholesaleTariffContribution / 100.0))
 
             # arenas
-            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('scheduled', scheduleMinCapMarketGen)
-            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('semiScheduled', semiScheduleMinCapMarketGen)
-            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('nonScheduled', nonScheduleMinCapMarketGen)
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('scheduled',
+                                                              (float)(scheduleMinCapMarketGen / 10.0))
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('semiScheduled',
+                                                              (float)(semiScheduleMinCapMarketGen / 10.0))
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('nonScheduled',
+                                                              (float)(nonScheduleMinCapMarketGen / 10.0))
 
             gr4spObj.settingsAfterBaseYear.setSpotMarket('semiScheduled', category(semiScheduleGenSpotMarket))
             gr4spObj.settingsAfterBaseYear.setSpotMarket('nonScheduled', category(nonScheduleGenSpotMarket))
@@ -480,9 +486,12 @@ def runGr4spAfterBaseYear(experimentId, annualCpi, annualInflation, consumption,
             gr4spObj.settingsAfterBaseYear.setUsageTariff('wholesaleContribution', (float) (wholesaleTariffContribution / 100.0))
 
             # arenas
-            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('scheduled', scheduleMinCapMarketGen)
-            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('semiScheduled', semiScheduleMinCapMarketGen)
-            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('nonScheduled', nonScheduleMinCapMarketGen)
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('scheduled',
+                                                              (float)(scheduleMinCapMarketGen / 10.0))
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('semiScheduled',
+                                                              (float)(semiScheduleMinCapMarketGen / 10.0))
+            gr4spObj.settingsAfterBaseYear.setMinCapMarketGen('nonScheduled',
+                                                              (float)(nonScheduleMinCapMarketGen / 10.0))
 
             gr4spObj.settingsAfterBaseYear.setSpotMarket('semiScheduled', category(semiScheduleGenSpotMarket))
             gr4spObj.settingsAfterBaseYear.setSpotMarket('nonScheduled', category(nonScheduleGenSpotMarket))
