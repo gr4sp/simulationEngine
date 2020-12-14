@@ -137,14 +137,14 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 this.currentTariff = retail.getEndConsumerTariff(simState);
             }
             //Update tariff every 12 months
-            else if( (currentMonth + 1) % 12 == 0 ){
+            else if( currentMonth == 0 ){
             //else if( currentMonth == 0 ){
 
                 float wholesalePriceComponent = 0;
 
                 c.setTime(today);
                 c.set(Calendar.MONTH, 0);
-                int year = c.get(Calendar.YEAR);
+                int year = c.get(Calendar.YEAR)-1;
 
                 //If wholesale contribution is given by historic data (DB table historic_tariff_contribution)
                 if( data.getTariff_contribution_wholesale_register().containsKey(year) ) {
@@ -168,13 +168,14 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 //Compute Average Wholesale Price using the last 12 months values saved in SaveData.java
                 //Current month price hasn't been stored yet, so we initialize it with the price for the current month
                 // Convert $/MWh -> c/KWh
-                double avgWholesalePrice = (float) (spotArena.getWholesalePrice(simState) * conversion_rate) / (float) 10.0;
-                int nmonths = 1;
+                //double avgWholesalePrice = (float) (spotArena.getWholesalePrice(simState) * conversion_rate) / (float) 10.0;
+                double avgWholesalePrice = (float) 0.0;
+                int nmonths = 0;
 
-                for (nmonths = 1 ; nmonths < 12 ; nmonths++) {
+                for (nmonths = 0 ; nmonths < 6 ; nmonths++) {
 
                     //Get Wholesale price from the past nmonth(s)
-                    int idx = data.saveData.PriceGenAvgSeries.get(1).getItems().size() - nmonths;
+                    int idx = data.saveData.PriceGenAvgSeries.get(1).getItems().size() - nmonths - 1;
                     XYDataItem item = (XYDataItem) data.saveData.PriceGenAvgSeries.get(1).getItems().get(idx);
                     double wholesale = item.getYValue();
 
