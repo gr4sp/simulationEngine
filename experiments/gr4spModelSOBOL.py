@@ -19,20 +19,7 @@ def getModel():
     # model.uncertainties = [RealParameter('annualCpi', 0.01, 0.05)]
     # model.uncertainties += [RealParameter('annualInflation', 0.01, 0.05)]
 
-    # specify constants - levers deemed not significant by EET
-    model.constants = [Constant('onsiteGeneration', 0)]
-    model.constants += [Constant('technologicalImprovement', 1)]  # percentage
-    model.constants += [Constant('solarUptake', 0)]
-    model.constants += [Constant('generatorRetirement', 0)]
-    model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
-    model.constants += [Constant('rooftopPV', 7)]
-    model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
-    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
-    model.constants += [Constant('priceChangePercentageSolar', 0)]
-    model.constants += [Constant('learningCurve', 5)]  # percentage
-    model.constants += [Constant('annualCpi', 2.33)]  # percentage
-    model.constants += [Constant('annualInflation', 3.3)]  # percentage
-    model.constants += [Constant('energyEfficiency', 0)]
+
 
     # arenas
 
@@ -57,14 +44,25 @@ def getModel():
     # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
     # This could represent a subsidy
 
-    # Uncertainties (26Oct2020: EET with 34 parameters, from 1998 to 2050, changes from 2019. 21 significant factors
+    # Uncertainties (14Jan2021: EET with 34 parameters, from 1998 to 2050, changes in 1999 and 2019 (forecasts). 21 significant factors
     # using median results of mu* and sigma.
+    # specify constants - levers deemed not significant by EET
+    model.constants = [Constant('onsiteGeneration', 0)]
+    model.constants += [Constant('rooftopPV', 7)]
+    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
+    model.constants += [Constant('priceChangePercentageSolar', 0)]
+    model.constants += [Constant('annualCpi', 2.33)]  # percentage
+    model.constants += [Constant('annualInflation', 3.3)]  # percentage
+    model.constants += [Constant('energyEfficiency', 0)]
+    model.constants += [Constant('nameplateCapacityChangeCcgt', 0)]
+    model.constants += [Constant('priceChangePercentageCcgt', 0)]
+    model.constants += [Constant('generatorRetirement', 0)]
+
 
     model.uncertainties = [IntegerParameter('consumption', 0, 5)]
     model.uncertainties += [IntegerParameter('priceChangePercentageOcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('priceChangePercentageWater', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeBrownCoal', -50, 51)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeCcgt', -50, 51)]
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 1, 11)]
     model.uncertainties += [IntegerParameter('domesticConsumptionPercentage', 20, 51)]  # percentage
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeOcgt', -50, 51)]
@@ -80,7 +78,17 @@ def getModel():
     model.uncertainties += [IntegerParameter('priceChangePercentageWind', -50, 51)]
     model.uncertainties += [IntegerParameter('priceChangePercentageBattery', -50, 51)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeWater', -50, 51)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageCcgt', -50, 51)]
+    model.uncertainties += [IntegerParameter('technologicalImprovement', 0, 16)]  # percentage
+    model.uncertainties += [IntegerParameter('solarUptake', 0, 5)]
+    model.uncertainties += [IntegerParameter('semiScheduleMinCapMarketGen', 1, 301)]  # divided by 10
+    model.uncertainties += [IntegerParameter('nonScheduleMinCapMarketGen', 1, 151)]  # divided by 10
+    model.uncertainties += [IntegerParameter('learningCurve', 0, 16)]  # percentage
+
+
+
+
+
+
 
 
 # specify outcomes
