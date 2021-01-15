@@ -8,6 +8,7 @@ import connector
 from EMAworkbench.ema_workbench import (IntegerParameter, RealParameter, CategoricalParameter, BooleanParameter,
                                         ScalarOutcome, TimeSeriesOutcome, Constant, Model)
 
+#mode with varaible change before base year and future changes using forecast after base year
 def getModel():
     model = Model('Gr4sp', function=connector.runGr4sp)
 
