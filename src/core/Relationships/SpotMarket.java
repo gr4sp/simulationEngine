@@ -8,7 +8,9 @@ import java.util.Collections;
 import java.util.Date;
 
 //This market uses ABM to simulate the price of electricity in the Spot market using a Merit Order approach.
-
+//TODO: Economic curtailment: When there is a surplus of generation some dispatch periods and generators bid on with very low or negative prices to be able to sell. E.g. Brown coal gens beacuse it might e more expensive to revamp.
+// this makes wind and solar needing to pay to the market too if these want to sell. Sometimes, these generators withdrawn or curtail production to avoid having to pay (negative spot prices).
+// Economic curtailment example: Solar might bid at higher prices in the spot and then sell their production in other markets.
 public class SpotMarket implements java.io.Serializable{
     private double marketPrice;
     private double emissionsIntensity;

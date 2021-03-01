@@ -1034,7 +1034,7 @@ public class LoadData implements java.io.Serializable {
          * Load historic Total Consumption per month up to start of Spot market
          * */
 
-        String sql = "SELECT date, total_consumption_gwh" +
+        String sql = "SELECT date, total_consumption_gwh, hydro_gwh" +
                 " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "';";
@@ -1051,10 +1051,16 @@ public class LoadData implements java.io.Serializable {
 
                 Date d = rs.getDate("date");
                 Double gwh = rs.getDouble("total_consumption_gwh");
+                Double renewable_gwh = rs.getDouble("hydro_gwh");
 
                 //If monthly consumption doesn't exist, create it
                 if (!data.getMonthly_consumption_register().containsKey(d)) {
                     data.getMonthly_consumption_register().put(d, gwh);
+                }
+
+                //If monthly hydro doesn't exist, create it
+                if (!data.getMonthly_renewable_historic_register().containsKey(d)) {
+                    data.getMonthly_renewable_historic_register().put(d, renewable_gwh);
                 }
 
 

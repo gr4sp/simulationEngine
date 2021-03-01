@@ -154,7 +154,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
     public double getMaxUnmetDemandMwhPerHourSecondary() { return maxUnmetDemandMwhPerHourSecondary; }
 
     /**
-     * This tariff represents price for $/MWh
+     * This tariff represents price for c/KWh
      */
     public Float getEndConsumerTariff(SimState state) {
         float tariff = 0;
