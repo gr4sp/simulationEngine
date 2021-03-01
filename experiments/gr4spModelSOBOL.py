@@ -44,7 +44,7 @@ def getModel():
     # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
     # This could represent a subsidy
 
-    # Uncertainties (14Jan2021: EET with 34 parameters, from 1998 to 2050, changes in 1999 and 2019 (forecasts). 21 significant factors
+    # Uncertainties (14Jan2021: EET with 34 parameters, from 1998 to 2050, changes in 1999 and 2019 (forecasts). 24 significant factors
     # using median results of mu* and sigma.
     # specify constants - levers deemed not significant by EET
     model.constants = [Constant('onsiteGeneration', 0)]
