@@ -26,8 +26,6 @@ def getModel():
     model.constants += [Constant('generatorRetirement', 0)]
 
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
-    model.constants += [Constant('annualCpi', 1, 5)] #percentage
-    model.constants += [Constant('annualInflation', 1, 5)] #percentage
 
 
     model.constants += [Constant('includePublicallyAnnouncedGen', 0)]
