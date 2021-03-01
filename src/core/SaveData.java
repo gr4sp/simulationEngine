@@ -102,7 +102,7 @@ public class SaveData implements Steppable, java.io.Serializable {
 
 
         WholesaleChart = new sim.util.media.chart.TimeSeriesChartGenerator();
-        WholesaleChart.setTitle("30min Monthly Average Wholesale ($/MWh) area code: " + data.getAreaCode());
+        WholesaleChart.setTitle("30min Monthly Average Primary Wholesale ($/MWh) area code: " + data.getAreaCode());
         WholesaleChart.setXAxisLabel("Year");
         WholesaleChart.setYAxisLabel("$/MWh");
         WholesaleChart.getChart().getLegend().setItemFont(bigf);
@@ -843,6 +843,12 @@ public class SaveData implements Steppable, java.io.Serializable {
                 PriceGenAvgSeries.get(-9).add(floatDate, PriceAvgBattery, false);
 
             }
+            else{
+                Double totalgwh_historic = data.getTotal_monthly_consumption_register().get(currentDate) / 1000.0;
+                Double totalWater_historic = data.getMonthly_renewable_historic_register().get(currentDate);
+                systemProductionSeries.get(-4).add(floatDate, totalgwh_historic - totalWater_historic, false);
+                systemProductionSeries.get(-5).add(floatDate, totalWater_historic, false);
+            }
 
             for (int i = 0; i < data.consumptionActors.size(); i++) {
 
@@ -861,6 +867,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                 sumDwellings += c.getNumberOfHouseholds();
             }
             averageTariff = averageTariff / data.consumptionActors.size();
+
 
             consumptionActorSeries.get(0).add(floatDate, sumConsumption, false);
             tariffUsageConsumptionActorSeries.get(0).add(floatDateTariff, averageTariff, false);
@@ -1039,7 +1046,7 @@ public class SaveData implements Steppable, java.io.Serializable {
 	
         File fc = new File(data.settings.folderOutput+""+slash+"plots"+slash+"HouseholdConsumption" + data.outputID + ".png");
         File ft = new File(data.settings.folderOutput+""+slash+"plots"+slash+"HouseholdTariff" + data.outputID + ".png");
-        File fw = new File(data.settings.folderOutput+""+slash+"plots"+slash+"WholesalePrice" + data.outputID + ".png");
+        File fw = new File(data.settings.folderOutput+""+slash+"plots"+slash+"PrimaryWholesalePrice" + data.outputID + ".png");
         File fg = new File(data.settings.folderOutput+""+slash+"plots"+slash+"HouseholdGHG" + data.outputID + ".png");
         File fgenspot = new File(data.settings.folderOutput+""+slash+"plots"+slash+"GenCapFactorsSpot" + data.outputID + ".png");
         File fgenoffspot = new File(data.settings.folderOutput+""+slash+"plots"+slash+"GenCapFactorsOffSpot" + data.outputID + ".png");
@@ -1247,16 +1254,16 @@ public class SaveData implements Steppable, java.io.Serializable {
         ) {
 
 
-            String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (MWh)", "Tariff (c/KWh)", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
+            String[] headerRecord = {"ConsumerUnit", "Time (month)", "Consumption (MWh)", "Tariff (c/KWh)", "Primary Wholesale ($/MWh)", "GHG Emissions (tCO2-e)", "Number of Domestic Consumers (households)"};
             csvWriter.writeNext(headerRecord);
 
-            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
+            String[] headerRecordYear = {"Time (Year)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Primary Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
                                         "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
                                         "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
 
             csvWriterYear.writeNext(headerRecordYear);
 
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Primary Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot", "System Production Rooftop PV", "Number of Active Actors",
                                             "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
                                             "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
 
@@ -1816,7 +1823,7 @@ public class SaveData implements Steppable, java.io.Serializable {
             SimpleDateFormat dateToYear = new SimpleDateFormat("yyyy");
 
             //Store header Gen Productions
-            ArrayList<String> headerYear = new ArrayList<String>( Arrays.asList("Time (Year)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
+            ArrayList<String> headerYear = new ArrayList<String>( Arrays.asList("Time (Year)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Primary Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
                     "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
@@ -1847,7 +1854,7 @@ public class SaveData implements Steppable, java.io.Serializable {
 
             csvWriterYear.writeNext(hy);
 
-            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
+            String[] headerRecordMonthly = {"Time (Month)", "Consumption (KWh) per household", "Avg Tariff (c/KWh) per household", "Primary Wholesale ($/MWh)", "GHG Emissions (tCO2-e) per household", "Number of Domestic Consumers (households)",
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
                     "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
@@ -1968,6 +1975,9 @@ public class SaveData implements Steppable, java.io.Serializable {
                 XYDataItem secondarymaxUnmetDemandMwhPerDayitem = null;
 
                 XYDataItem naitem = (XYDataItem) naseries.getItems().get(t);
+                spcoalaggitem = (XYDataItem) spcoalaggseries.getItems().get(t );
+                spwateraggitem = (XYDataItem) spwateraggseries.getItems().get(t );
+
                 if (shifttimeseries <= t) {
                     if( (t - shifttimeseries) < spprimaggseries.getItems().size())
                         spprimaggitem = (XYDataItem) spprimaggseries.getItems().get(t - shifttimeseries);
@@ -1979,8 +1989,6 @@ public class SaveData implements Steppable, java.io.Serializable {
                             sposaggitem = (XYDataItem) sposaggseries.getItems().get(t - shifttimeseries);
 
                     sproofaggitem = (XYDataItem) sproofaggseries.getItems().get(t - shifttimeseries);
-                    spcoalaggitem = (XYDataItem) spcoalaggseries.getItems().get(t - shifttimeseries);
-                    spwateraggitem = (XYDataItem) spwateraggseries.getItems().get(t - shifttimeseries);
                     spwindaggitem = (XYDataItem) spwindaggseries.getItems().get(t - shifttimeseries);
                     spgasaggitem = (XYDataItem) spgasaggseries.getItems().get(t - shifttimeseries);
                     spsolaggitem = (XYDataItem) spsolaggseries.getItems().get(t - shifttimeseries);
@@ -2044,7 +2052,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                     MWhSolSpotAgg = spsolaggitem.getYValue();
                     MWhBatSpotAgg = spbataggitem.getYValue();
 
-                    MWhRenewable = MWhRoofSpotAgg + MWhWaterSpotAgg + MWhWaterSpotAgg + MWhWindSpotAgg + MWhSolSpotAgg + MWhBatSpotAgg;
+                    MWhRenewable = MWhRoofSpotAgg + MWhWaterSpotAgg + MWhWindSpotAgg + MWhSolSpotAgg + MWhBatSpotAgg;
                     MWhFossil = MWhCoalSpotAgg + MWhGasSpotAgg;
                     percentageRenwewable = MWhRenewable / (MWhRenewable + MWhFossil);
 
@@ -2058,6 +2066,14 @@ public class SaveData implements Steppable, java.io.Serializable {
                         secondaryunmetDemandDays = secondaryunmetDemandDaysitem.getYValue();
                         secondarymaxUnmetDemandMwhPerDay = secondarymaxUnmetDemandMwhPerDayitem.getYValue();
                     }
+                }
+                else{
+                    MWhCoalSpotAgg = spcoalaggitem.getYValue();
+                    MWhWaterSpotAgg = spwateraggitem.getYValue();
+
+                    MWhRenewable =  MWhWaterSpotAgg;
+                    MWhFossil = MWhCoalSpotAgg ;
+                    percentageRenwewable = MWhRenewable / (MWhRenewable + MWhFossil);
                 }
 
                 SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");

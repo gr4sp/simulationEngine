@@ -64,6 +64,10 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //Consumption per Domestic Costumer
     HashMap<Date, Double> monthly_consumption_register;
 
+    // Variable to get historic RE before market. In Victoria RE was only hydro
+    HashMap<Date, Double> monthly_renewable_historic_register;
+
+
     //Total monthly Consumption
     HashMap<Date, Double> total_monthly_consumption_register;
 
@@ -164,6 +168,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         halfhour_demand_register = new HashMap<>();
         monthly_consumption_register = new HashMap<>();
+        monthly_renewable_historic_register = new HashMap<>();
 
         total_monthly_consumption_register = new HashMap<>();
         monthly_generation_register = new HashMap<>();
@@ -619,6 +624,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         return monthly_consumption_register;
     }
 
+    public HashMap<Date, Double> getMonthly_renewable_historic_register() {
+        return monthly_renewable_historic_register;
+    }
 
     public HashMap<Date, Double> getTotal_monthly_consumption_register() {
         return total_monthly_consumption_register;
