@@ -69,7 +69,7 @@ def getModel():
         TimeSeriesOutcome('TIMEYear'),
         TimeSeriesOutcome('consumptionYear'),
         TimeSeriesOutcome('tariffsYear'),
-        TimeSeriesOutcome('primaryWholesalePriceYear'),
+        TimeSeriesOutcome('wholesalePriceYear'),
         TimeSeriesOutcome('GHGYear'),
         TimeSeriesOutcome('numConsumersYear'),
         TimeSeriesOutcome('primarySpotProductionYear'),
