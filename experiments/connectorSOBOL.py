@@ -75,7 +75,7 @@ def getResults(outputID, experimentId):
 
     gr4spPath = os.getcwd() + slash + ".."
 
-    csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
+    csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
     resultsMonth = pd.read_csv(csvFileName)
 
     # #Prepare time series
