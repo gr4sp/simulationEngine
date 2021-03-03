@@ -75,12 +75,14 @@ def getResults(outputID, experimentId):
 
     gr4spPath = os.getcwd() + slash + ".."
 
-    # csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
-    # results = pd.read_csv(csvFileName)
+    csvFileName = '{0}{1}csv{1}BAUVIC{1}BAUVICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
+    resultsMonth = pd.read_csv(csvFileName)
 
     # #Prepare time series
     # emptyArray = np.array([])
     # timesMonth = emptyArray
+    timesMonth = resultsMonth['Time (Month)'].to_numpy()
+    wholesaleMonth = resultsMonth['Primary Wholesale ($/MWh)'].to_numpy()
 
 
     csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataYearSummary{2}.csv'.format(gr4spPath, slash, outputID)
@@ -120,7 +122,8 @@ def getResults(outputID, experimentId):
            secondarySpotYear, offSpotYear, renewableContributionYear, rooftopPVProductionYear, coalProductionYear, \
            waterProductionYear, windProductionYear, gasProductionYear, solarProductionYear, BatteryProductionYear, \
            numActorsYear, primaryUnmetDemandMwh, primaryUnmetDemandHours, primaryUnmetDemandDays, primaryMaxUnmetDemandMwhPerHour, \
-           secondaryUnmetDemandMwh, secondaryUnmetDemandHours, secondaryUnmetDemandDays, secondaryMaxUnmetDemandMwhPerHour, seedExperimentCsv
+           secondaryUnmetDemandMwh, secondaryUnmetDemandHours, secondaryUnmetDemandDays, secondaryMaxUnmetDemandMwhPerHour, \
+           timesMonth, wholesaleMonth, seedExperimentCsv
 
 
 def category(i):
