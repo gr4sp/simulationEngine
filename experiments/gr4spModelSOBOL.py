@@ -119,6 +119,8 @@ def getModel():
                         TimeSeriesOutcome('secondaryUnmetDemandHours'),
                         TimeSeriesOutcome('secondaryUnmetDemandDays'),
                         TimeSeriesOutcome('secondaryMaxUnmetDemandMwhPerHour'),
+                        TimeSeriesOutcome('TIMEMonth'),
+                        TimeSeriesOutcome('primaryWholesalePriceMonth'),
                         ScalarOutcome('seedExperimentCsv')
                       ]
 
@@ -203,6 +205,8 @@ def getModelAFterBaseYear():
                         TimeSeriesOutcome('secondaryUnmetDemandHours'),
                         TimeSeriesOutcome('secondaryUnmetDemandDays'),
                         TimeSeriesOutcome('secondaryMaxUnmetDemandMwhPerHour'),
+                        TimeSeriesOutcome('TIMEMonth'),
+                        TimeSeriesOutcome('primaryWholesalePriceMonth'),
                         ScalarOutcome('seedExperimentCsv')
                       ]
 
