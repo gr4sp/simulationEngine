@@ -82,7 +82,7 @@ def getResults(outputID, experimentId):
     # emptyArray = np.array([])
     # timesMonth = emptyArray
     timesMonth = resultsMonth['Time (Month)'].to_numpy()
-    wholesaleMonth = resultsMonth['Primary Wholesale ($/MWh)'].to_numpy()
+    wholesaleMonth = resultsMonth['Wholesale ($/MWh)'].to_numpy()
 
 
     csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataYearSummary{2}.csv'.format(gr4spPath, slash, outputID)
