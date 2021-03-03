@@ -75,14 +75,11 @@ def getResults(outputID, experimentId):
 
     gr4spPath = os.getcwd() + slash + ".."
 
-    csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
-    resultsMonth = pd.read_csv(csvFileName)
-
-    # #Prepare time series
-    # emptyArray = np.array([])
-    # timesMonth = emptyArray
-    timesMonth = resultsMonth['Time (Month)'].to_numpy()
-    wholesaleMonth = resultsMonth['Wholesale ($/MWh)'].to_numpy()
+    # csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
+    # resultsMonth = pd.read_csv(csvFileName)
+    #
+    # timesMonth = resultsMonth['Time (Month)'].to_numpy()
+    # wholesaleMonth = resultsMonth['Wholesale ($/MWh)'].to_numpy()
 
 
     csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataYearSummary{2}.csv'.format(gr4spPath, slash, outputID)
@@ -93,7 +90,7 @@ def getResults(outputID, experimentId):
     timesYear = results['Time (Year)'].to_numpy()
     consumptionYear = results['Consumption (KWh) per household'].to_numpy()
     tariffsYear = results['Avg Tariff (c/KWh) per household'].to_numpy()
-    wholesaleYear = results['Wholesale ($/MWh)'].to_numpy()
+    wholesaleYear = results['Primary Wholesale ($/MWh)'].to_numpy()
     ghgYear = results['GHG Emissions (tCO2-e) per household'].to_numpy()
     numConsumersYear = results['Number of Domestic Consumers (households)'].to_numpy()
     primarySpotYear = results['System Production Primary Spot'].to_numpy()
@@ -122,8 +119,7 @@ def getResults(outputID, experimentId):
            secondarySpotYear, offSpotYear, renewableContributionYear, rooftopPVProductionYear, coalProductionYear, \
            waterProductionYear, windProductionYear, gasProductionYear, solarProductionYear, BatteryProductionYear, \
            numActorsYear, primaryUnmetDemandMwh, primaryUnmetDemandHours, primaryUnmetDemandDays, primaryMaxUnmetDemandMwhPerHour, \
-           secondaryUnmetDemandMwh, secondaryUnmetDemandHours, secondaryUnmetDemandDays, secondaryMaxUnmetDemandMwhPerHour, \
-           timesMonth, wholesaleMonth, seedExperimentCsv
+           secondaryUnmetDemandMwh, secondaryUnmetDemandHours, secondaryUnmetDemandDays, secondaryMaxUnmetDemandMwhPerHour, seedExperimentCsv
 
 
 def category(i):
