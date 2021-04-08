@@ -88,18 +88,18 @@ sudo -u postgres psql
 
 To load data into the database
 ```
-sudo -u postgres pg_restore -U postgres -d postgres < backupDB/DB-2020-7-23.sql
+sudo -u postgres pg_restore -U postgres -d postgres < backupDB/databaseName.sql
 ```
 
 :warning: If you already loaded the database and you need to recreate it again using a new different backup file run:
 ```
 sudo -u postgres dropdb postgres
 sudo -u postgres createdb postgres
-sudo -u postgres pg_restore -U postgres -d postgres < backupDB/DB-2020-7-23.sql
+sudo -u postgres pg_restore -U postgres -d postgres < backupDB/databaseName.sql
 ```
 
 
-Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/10/main/pg_hba.conf`:
+Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/XX/main/pg_hba.conf` where XX is the PostgreSQL version:
 
 ```
  sudo nano /etc/postgresql/10/main/pg_hba.conf
