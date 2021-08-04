@@ -20,9 +20,9 @@ if __name__ == '__main__':
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
-    with SequentialEvaluator(model) as evaluator:
+    with MultiprocessingEvaluator(model,n_processes=79) as evaluator:
 
-        results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling=FF)
+        results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling='uncertainties.morris.object',)#, uncertainty_sampling=FF , generate_experiments_file_only=True)
 
     '''
     Print Results
