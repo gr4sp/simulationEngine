@@ -2,14 +2,14 @@ import os, sys
 
 sys.path.append(r'{}\EMAworkbench'.format(os.getcwd()))
 
-from gr4spModelLCT import getModelAfterBaseYear
+from gr4spModelBAU import getModel
 from datetime import date
 
 if __name__ == '__main__':
     '''
     Setup EMA Uncertainties, Levers and Outcomes
     '''
-    model = getModelAfterBaseYear()
+    model = getModel()
 
     '''
     Run EMA
@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     with SequentialEvaluator(model) as evaluator:
 
-        results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling=FF)
+        results = evaluator.perform_experiments(scenarios=1, policies=1)
 
     '''
     Print Results
@@ -41,4 +41,4 @@ if __name__ == '__main__':
     datekey = today.strftime("%Y-%b-%d")
     from EMAworkbench.ema_workbench import save_results
 
-    save_results(results, r'./simulationData/gr4sp_LCT' + datekey + '.tar.gz')
+    save_results(results, r'./simulationData/gr4sp_BAU' + datekey + '.tar.gz')

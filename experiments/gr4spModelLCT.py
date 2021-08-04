@@ -9,8 +9,8 @@ from EMAworkbench.ema_workbench import (IntegerParameter, RealParameter, Categor
                                         ScalarOutcome, TimeSeriesOutcome, Constant, Model)
 
 #mode with varaible change before base year and future changes using forecast after base year
-def getModel():
-    model = Model('Gr4sp', function=connectorLCT.runGr4sp)
+def getModelAfterBaseYear():
+    model = Model('Gr4sp', function=connectorLCT.runGr4spAfterBaseYear)
     # set uncertainties according to first PRIM and FS resutls
     model.uncertainties = [IntegerParameter('consumption', 0, 5)]
     model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -50, 50)]
