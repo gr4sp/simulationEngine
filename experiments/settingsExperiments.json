@@ -2,6 +2,6 @@
 	"jvmPath": "jvmPathWindows",
 	"jvmPathWindows": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2019.1.3\\jbr\\bin\\server\\jvm.dll",
 	"jvmPathUbuntu": "/usr/lib/jvm/default-java/lib/server/libjvm.so",
-	"gr4spClasses": "bin/"
+	"gr4spClasses": "classes/production/gr4sp"
 
 }
