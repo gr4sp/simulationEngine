@@ -388,14 +388,14 @@ def runGr4spAfterBaseYear(experimentId, annualCpi, annualInflation, consumption,
         results = None
         outputID = "_seed_{}".format(experimentId)
 
-        print(f"experimentId: {experimentId}, annualCpi: {annualCpi}, annualInflation: {annualInflation}, consumption: {category(consumption)}, energyEfficiency: {category(energyEfficiency)}, onsiteGeneration: {category(onsiteGeneration)}, solarUptake: {category(solarUptake)}, rooftopPV: {category(rooftopPV)}")
-        print(f"domesticConsumptionPercentage: {domesticConsumptionPercentage}, includePublicallyAnnouncedGen: {includePublicallyAnnouncedGen}, generationRolloutPeriod: {generationRolloutPeriod}, generatorRetirement: {generatorRetirement}, technologicalImprovement:{technologicalImprovement}")
-        print(f"learningCurve: {learningCurve}, importPriceFactor: {importPriceFactor}, priceChangePercentageBattery: {priceChangePercentageBattery}, priceChangePercentageBrownCoal: {priceChangePercentageBrownCoal}, priceChangePercentageOcgt: {priceChangePercentageOcgt}")
-        print(f"priceChangePercentageCcgt: {priceChangePercentageCcgt}, priceChangePercentageWind: {priceChangePercentageWind}, priceChangePercentageWater: {priceChangePercentageWater}, priceChangePercentageSolar: {priceChangePercentageSolar}")
-        print(f"nameplateCapacityChangeBattery: {nameplateCapacityChangeBattery}, nameplateCapacityChangeBrownCoal: {nameplateCapacityChangeBrownCoal}, nameplateCapacityChangeOcgt: {nameplateCapacityChangeOcgt}")
-        print(f"nameplateCapacityChangeCcgt: {nameplateCapacityChangeCcgt}, nameplateCapacityChangeWind: {nameplateCapacityChangeWind}, nameplateCapacityChangeWater: {nameplateCapacityChangeWater}, nameplateCapacityChangeSolar: {nameplateCapacityChangeSolar}, wholesaleTariffContribution: {wholesaleTariffContribution}")
-        print(f"scheduleMinCapMarketGen: {scheduleMinCapMarketGen}, semiScheduleGenSpotMarket: {category(semiScheduleGenSpotMarket)}, semiScheduleMinCapMarketGen: {semiScheduleMinCapMarketGen}, nonScheduleGenSpotMarket: {category(nonScheduleGenSpotMarket)}")
-        print(f"nonScheduleMinCapMarketGen: {nonScheduleMinCapMarketGen}")
+        # print(f"experimentId: {experimentId}, annualCpi: {annualCpi}, annualInflation: {annualInflation}, consumption: {category(consumption)}, energyEfficiency: {category(energyEfficiency)}, onsiteGeneration: {category(onsiteGeneration)}, solarUptake: {category(solarUptake)}, rooftopPV: {category(rooftopPV)}")
+        # print(f"domesticConsumptionPercentage: {domesticConsumptionPercentage}, includePublicallyAnnouncedGen: {includePublicallyAnnouncedGen}, generationRolloutPeriod: {generationRolloutPeriod}, generatorRetirement: {generatorRetirement}, technologicalImprovement:{technologicalImprovement}")
+        # print(f"learningCurve: {learningCurve}, importPriceFactor: {importPriceFactor}, priceChangePercentageBattery: {priceChangePercentageBattery}, priceChangePercentageBrownCoal: {priceChangePercentageBrownCoal}, priceChangePercentageOcgt: {priceChangePercentageOcgt}")
+        # print(f"priceChangePercentageCcgt: {priceChangePercentageCcgt}, priceChangePercentageWind: {priceChangePercentageWind}, priceChangePercentageWater: {priceChangePercentageWater}, priceChangePercentageSolar: {priceChangePercentageSolar}")
+        # print(f"nameplateCapacityChangeBattery: {nameplateCapacityChangeBattery}, nameplateCapacityChangeBrownCoal: {nameplateCapacityChangeBrownCoal}, nameplateCapacityChangeOcgt: {nameplateCapacityChangeOcgt}")
+        # print(f"nameplateCapacityChangeCcgt: {nameplateCapacityChangeCcgt}, nameplateCapacityChangeWind: {nameplateCapacityChangeWind}, nameplateCapacityChangeWater: {nameplateCapacityChangeWater}, nameplateCapacityChangeSolar: {nameplateCapacityChangeSolar}, wholesaleTariffContribution: {wholesaleTariffContribution}")
+        # print(f"scheduleMinCapMarketGen: {scheduleMinCapMarketGen}, semiScheduleGenSpotMarket: {category(semiScheduleGenSpotMarket)}, semiScheduleMinCapMarketGen: {semiScheduleMinCapMarketGen}, nonScheduleGenSpotMarket: {category(nonScheduleGenSpotMarket)}")
+        # print(f"nonScheduleMinCapMarketGen: {nonScheduleMinCapMarketGen}")
         #
         #Check if file exists in the CSVs
         with open('settingsExperiments.json') as f:
