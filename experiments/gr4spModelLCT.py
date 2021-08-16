@@ -12,12 +12,14 @@ from EMAworkbench.ema_workbench import (IntegerParameter, RealParameter, Categor
 def getModelAfterBaseYear():
     model = Model('Gr4sp', function=connectorLCT.runGr4spAfterBaseYear)
     # set uncertainties according to first PRIM and FS resutls
-    model.uncertainties = [IntegerParameter('consumption', 0, 5)]
-    model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -50, 50)]
-    model.uncertainties += [IntegerParameter('generatorRetirement', -5, 5)]
-    model.uncertainties += [IntegerParameter('nameplateCapacityChangeWind', -50, 50)]
-    model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8,10)]
+    model.uncertainties = [IntegerParameter('consumption', 0, 3)]
+    model.uncertainties += [CategoricalParameter('priceChangePercentageBrownCoal', [-10, 0 , 15, 25, 35])]
+    model.uncertainties += [IntegerParameter('generatorRetirement', -5, 2)]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, 0 , 15, 20, 30] )]
+    model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
+    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20 , 0, 10, 40] )]
+
 
     # set inputs as constants for BAU
     model.constants += [Constant('energyEfficiency', 0)]
@@ -26,12 +28,13 @@ def getModelAfterBaseYear():
     model.constants += [Constant('rooftopPV', 0)]
     model.constants += [Constant('generationRolloutPeriod', 1)]
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
+    model.constants += [Constant('learningCurve', 5)] #percentage
+
 
     model.constants += [Constant('annualCpi', 2)] #percentage BAU 2.33
     model.constants += [Constant('annualInflation', 3)] #percentage BAU 3.3
 
     model.constants += [Constant('technologicalImprovement', 1)] #percentage
-    model.constants += [Constant('learningCurve', 5)] #percentage
     model.constants += [Constant('importPriceFactor', 29)] #percentage from historic variations observed in OpenNem
 
 # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
@@ -44,7 +47,6 @@ def getModelAfterBaseYear():
     model.constants += [Constant('priceChangePercentageBattery', 0)]
     model.constants += [Constant('priceChangePercentageOcgt', 0)]
     model.constants += [Constant('priceChangePercentageCcgt', 0)]
-    model.constants += [Constant('priceChangePercentageWind', 0)]
     model.constants += [Constant('priceChangePercentageWater', 0)]
     model.constants += [Constant('priceChangePercentageSolar', 0)]
 
