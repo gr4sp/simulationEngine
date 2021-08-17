@@ -31,9 +31,6 @@ def getModelAfterBaseYear():
 
 
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
-
-    model.constants += [Constant('annualCpi', 2)] #percentage BAU 2.33
-
     model.constants += [Constant('technologicalImprovement', 1)] #percentage
     model.constants += [Constant('learningCurve', 5)] #percentage
     model.constants += [Constant('importPriceFactor', 29)] #percentage from historic variations observed in OpenNem
