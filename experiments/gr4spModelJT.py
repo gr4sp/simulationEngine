@@ -19,6 +19,8 @@ def getModelAfterBaseYear():
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 2, 10)]
     model.uncertainties += [CategoricalParameter('scheduleMinCapMarketGen', [40, 100, 150, 200, 250, 300])]  # divided by 10
     model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8, 10)]
+    model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
+
 
     # set inputs as constants for BAU
 
