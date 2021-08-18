@@ -14,8 +14,8 @@ def getModelAfterBaseYear():
 
     model.uncertainties += [IntegerParameter('annualInflation', 2, 4)] #percentage BAU 3.3
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [10 , 15, 20, 30, 40, 50])]
-    model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 9, 10)]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [10, 15, 20, 30, 40, 50])]
+    model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('generationRolloutPeriod', 2, 10)]
     model.uncertainties += [CategoricalParameter('scheduleMinCapMarketGen', [40, 100, 150, 200, 250, 300])]  # divided by 10
     model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8, 10)]
