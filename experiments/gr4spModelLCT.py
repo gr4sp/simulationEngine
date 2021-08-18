@@ -13,12 +13,12 @@ def getModelAfterBaseYear():
     model = Model('Gr4sp', function=connectorLCT.runGr4spAfterBaseYear)
     # set uncertainties according to first PRIM and FS resutls
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
-    model.uncertainties += [CategoricalParameter('priceChangePercentageBrownCoal', [-10, 0 , 15, 25, 35])]
+    model.uncertainties += [CategoricalParameter('priceChangePercentageBrownCoal', [-10, 0, 15, 20, 25, 35])]
     model.uncertainties += [IntegerParameter('generatorRetirement', -5, 2)]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, 0 , 15, 20, 30] )]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, 0, 15, 20, 30, 50] )]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
-    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20 , 0, 10, 40] )]
+    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20, -10, 0, 10, 40] )]
 
 
     # set inputs as constants for BAU
@@ -64,7 +64,7 @@ def getModelAfterBaseYear():
 # arenas
     model.constants += [Constant('scheduleMinCapMarketGen', 30)]
     model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
-    model.constants += [Constant('nonScheduleGenSpotMarket', 8)]
+    model.constants += [Constant('nonScheduleGenSpotMarket', 10)]
     model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
 
 # specify outcomes
