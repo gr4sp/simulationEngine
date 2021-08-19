@@ -11,16 +11,16 @@ from EMAworkbench.ema_workbench import (IntegerParameter, RealParameter, Categor
 def getModelAfterBaseYear():
     model = Model('Gr4sp', function=connectorST.runGr4spAfterBaseYear)
     # set uncertainties according to first PRIM and FS resutls
-    model.uncertainties += [CategoricalParameter('generatorRetirement', [-5, -4, -3, -2, -1, 0, 1, 2])]
-    model.uncertainties += [IntegerParameter('annualCpi', 1, 4)] #percentage
+    model.uncertainties += [CategoricalParameter('generatorRetirement', [-5, -4, -3, -2, -1, 0, 1])]
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
-    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20, -15, -10, 0, 10, 30])]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-40, -20, -10, 0, 30, 40, 50])]
+    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20, -15, 0, 10, 30])]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, -10, 0, 30, 40, 50])]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8, 10)] #PRIM's box 6 worst cases (avoiding non-scehdule in markets)
+    model.uncertainties += [CategoricalParameter('priceChangePercentageBrownCoal', [-10, 0, 20, 25, 35])]
 
     # set inputs as constants for BAU
-
+    model.constants += [Constant('annualCpi', 2)] #percentage BAU 2.33
     model.constants += [Constant('energyEfficiency', 0)]
     model.constants += [Constant('solarUptake', 0)]
     model.constants += [Constant('onsiteGeneration', 0)]
