@@ -12,7 +12,6 @@ def getModelAfterBaseYear():
     model = Model('Gr4sp', function=connectorJT.runGr4spAfterBaseYear)
     # set uncertainties according to first PRIM and FS resutls
 
-    model.uncertainties += [IntegerParameter('annualInflation', 2, 4)] #percentage BAU 3.3
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
     model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [10, 15, 20, 30, 40, 50])]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
@@ -34,6 +33,7 @@ def getModelAfterBaseYear():
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
 
     model.constants += [Constant('annualCpi', 2)] #percentage BAU 2.33
+    model.constants += [Constant('annualInflation', 3)]  # percentage
 
     model.constants += [Constant('technologicalImprovement', 1)] #percentage
     model.constants += [Constant('learningCurve', 5)] #percentage

@@ -20,10 +20,12 @@ if __name__ == '__main__':
 
     ema_logging.log_to_stderr(ema_logging.INFO)
 
+
     with MultiprocessingEvaluator(model, n_processes=79) as evaluator:
 
         results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling='uncertainties.LCTff.object') 
 
+        #results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling='uncertainties.LCTff.object') # , uncertainty_sampling='uncertainties.ff.object')#
 
     '''
     Print Results
