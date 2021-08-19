@@ -14,7 +14,7 @@ def getModelAfterBaseYear():
     # set uncertainties according to first PRIM and FS resutls
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
     model.uncertainties += [CategoricalParameter('priceChangePercentageBrownCoal', [-10, 0, 15, 20, 25, 35])]
-    model.uncertainties += [IntegerParameter('generatorRetirement', -5, 2)]
+    model.uncertainties += [CategoricalParameter('generatorRetirement', [-5, -3, -2, -1, 0, 1])]
     model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, 0, 15, 20, 30, 50] )]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
