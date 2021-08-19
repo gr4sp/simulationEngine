@@ -14,9 +14,10 @@ def getModelAfterBaseYear():
     model.uncertainties += [CategoricalParameter('generatorRetirement', [-5, -4, -3, -2, -1, 0, 1, 2])]
     model.uncertainties += [IntegerParameter('annualCpi', 1, 4)] #percentage
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
-    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -25, -15, -10, 0, 10, 30])]
+    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20, -15, -10, 0, 10, 30])]
     model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-40, -20, -10, 0, 30, 40, 50])]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
+    model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8, 10)] #PRIM's box 6 worst cases (avoiding non-scehdule in markets)
 
     # set inputs as constants for BAU
 
@@ -63,7 +64,6 @@ def getModelAfterBaseYear():
     model.constants += [Constant('scheduleMinCapMarketGen', 30)]
     model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
     model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
-    model.constants += [Constant('nonScheduleGenSpotMarket', 10)] #PRIM's box 6 worst cases (avoiding non-scehdule in markets)
 
 # specify outcomes
     model.outcomes = [
