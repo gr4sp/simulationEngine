@@ -13,9 +13,9 @@ def getModelAfterBaseYear():
     # set uncertainties according to first PRIM and FS resutls
 
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [10, 15, 20, 30, 40, 50])]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [0, 10, 15, 20, 30, 50])]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
-    model.uncertainties += [IntegerParameter('generationRolloutPeriod', 2, 10)]
+    model.uncertainties += [CategoricalParameter('generationRolloutPeriod', [1, 2, 5, 6, 8, 10])]
     model.uncertainties += [CategoricalParameter('scheduleMinCapMarketGen', [40, 100, 150, 200, 250, 300])]  # divided by 10
     model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
@@ -32,8 +32,8 @@ def getModelAfterBaseYear():
 
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
 
-    model.constants += [Constant('annualCpi', 2)] #percentage BAU 2.33
-    model.constants += [Constant('annualInflation', 3)]  # percentage
+    model.constants += [Constant('annualCpi', 2.33)] #percentage BAU 2.33
+    model.constants += [Constant('annualInflation', 3.33)]  # percentage
 
     model.constants += [Constant('technologicalImprovement', 1)] #percentage
     model.constants += [Constant('learningCurve', 5)] #percentage

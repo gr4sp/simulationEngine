@@ -20,13 +20,13 @@ def getModelAfterBaseYear():
     model.uncertainties += [CategoricalParameter('priceChangePercentageBrownCoal', [-10, 0, 20, 25, 35])]
 
     # set inputs as constants for BAU
-    model.constants += [Constant('annualCpi', 2)] #percentage BAU 2.33
+    model.constants += [Constant('annualCpi', 2.33)] #percentage BAU 2.33
     model.constants += [Constant('energyEfficiency', 0)]
     model.constants += [Constant('solarUptake', 0)]
     model.constants += [Constant('onsiteGeneration', 0)]
     model.constants += [Constant('rooftopPV', 0)]
     model.constants += [Constant('includePublicallyAnnouncedGen', 1)]  #PRIM's output include publically announced
-    model.constants += [Constant('annualInflation', 3.3)]  # percentage
+    model.constants += [Constant('annualInflation', 3.33)]  # percentage
     model.constants += [Constant('generationRolloutPeriod', 1)]
 
 
