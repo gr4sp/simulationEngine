@@ -22,8 +22,8 @@ if __name__ == '__main__':
 
     with MultiprocessingEvaluator(model, n_processes=79) as evaluator:
 
-        results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling=FF, generate_experiments_file_only=True)#, uncertainty_sampling='uncertainties.ff.object' , generate_experiments_file_only=True)
-        #results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling='uncertainties.ffJT.object')
+        #results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling=FF, generate_experiments_file_only=True)#, uncertainty_sampling='uncertainties.ff.object' , generate_experiments_file_only=True)
+        results = evaluator.perform_experiments(scenarios=6, policies=0, uncertainty_sampling='uncertainties.ffJT.object')
 
     '''
     Print Results
