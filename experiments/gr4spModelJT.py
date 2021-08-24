@@ -13,12 +13,13 @@ def getModelAfterBaseYear():
     # set uncertainties according to first PRIM and FS resutls
 
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [0, -45, -30, -20, -15, -10])]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [0, -30, -20, -15, 10])]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [CategoricalParameter('generationRolloutPeriod', [1, 2, 5, 6, 8, 10])]
-    model.uncertainties += [CategoricalParameter('scheduleMinCapMarketGen', [40, 100, 150, 200, 250, 300])]  # divided by 10
-    model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8, 10)]
+    model.uncertainties += [CategoricalParameter('scheduleMinCapMarketGen', [100, 150, 200, 250, 300])]  # divided by 10
+    model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 9, 10)]
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [0, -30, 30, 40])]
 
 
     # set inputs as constants for BAU
@@ -55,7 +56,7 @@ def getModelAfterBaseYear():
 
 # variation of nameplate capacity as a percentage of current values
     model.constants += [Constant('nameplateCapacityChangeBattery', 0)]
-    model.constants += [Constant('nameplateCapacityChangeWind', 0)]
+    #model.constants += [Constant('nameplateCapacityChangeWind', 0)]
     model.constants += [Constant('nameplateCapacityChangeOcgt', 0)]
     model.constants += [Constant('nameplateCapacityChangeCcgt', 0)]
     model.constants += [Constant('nameplateCapacityChangeWater', 0)]
