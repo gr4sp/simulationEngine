@@ -21,16 +21,13 @@ def getModelAfterBaseYear():
 
     # set inputs as constants for BAU
     model.constants += [Constant('annualCpi', 2.33)] #percentage BAU 2.33
+    model.constants += [Constant('annualInflation', 3.3)]  # percentage
     model.constants += [Constant('energyEfficiency', 0)]
     model.constants += [Constant('solarUptake', 0)]
     model.constants += [Constant('onsiteGeneration', 0)]
-    model.constants += [Constant('rooftopPV', 0)]
+    model.constants += [Constant('rooftopPV', 7)]
     model.constants += [Constant('includePublicallyAnnouncedGen', 1)]  #PRIM's output include publically announced
-    model.constants += [Constant('annualInflation', 3.33)]  # percentage
     model.constants += [Constant('generationRolloutPeriod', 1)]
-
-
-
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
     model.constants += [Constant('technologicalImprovement', 1)] #percentage
     model.constants += [Constant('learningCurve', 5)] #percentage
@@ -42,7 +39,7 @@ def getModelAfterBaseYear():
 # Update (28/09/2020) The price change percentage will affect the newly created 'basePrice' variable.
 # Max and min values, both for LCOEs and CFs were found in different sources
 # (e.g. https://aemo.com.au/-/media/files/electricity/nem/planning_and_forecasting/inputs-assumptions-methodologies/2019/csiro-gencost2019-20_draftforreview.pdf?la=en).
-    model.constants += [Constant('priceChangePercentageBrownCoal', 0)]
+#   model.constants += [Constant('priceChangePercentageBrownCoal', 0)]
     model.constants += [Constant('priceChangePercentageBattery', 0)]
     model.constants += [Constant('priceChangePercentageOcgt', 0)]
     model.constants += [Constant('priceChangePercentageCcgt', 0)]
@@ -58,12 +55,12 @@ def getModelAfterBaseYear():
     model.constants += [Constant('nameplateCapacityChangeSolar', 0)]
 
 # variation of contribution of networks, retail and other charges in the tariff
-    model.constants += [Constant('wholesaleTariffContribution', 28)] # ( 11, 45) BAU 0.2837
+    model.constants += [Constant('wholesaleTariffContribution', 28.37)] # ( 11, 45) BAU 0.2837
 
 # arenas
-    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
-    model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
-    model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
+    model.constants += [Constant('scheduleMinCapMarketGen', 300)]
+    model.constants += [Constant('semiScheduleMinCapMarketGen', 300)]
+    model.constants += [Constant('nonScheduleMinCapMarketGen', 1)]
 
 # specify outcomes
     model.outcomes = [
