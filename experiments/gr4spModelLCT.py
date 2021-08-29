@@ -15,26 +15,23 @@ def getModelAfterBaseYear():
     model.uncertainties = [IntegerParameter('consumption', 0, 3)]
     model.uncertainties += [CategoricalParameter('priceChangePercentageBrownCoal', [-10, 0, 15, 20, 25, 35])]
     model.uncertainties += [CategoricalParameter('generatorRetirement', [-5, -3, -2, -1, 0, 1])]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, 0, 15, 20, 30, 50] )]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, 0, 15, 20, 30, 50])]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
-    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20, -10, 0, 10, 40] )]
+    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20, -10, 0, 10, 40])]
 
 
     # set inputs as constants for BAU
+    model.constants += [Constant('annualCpi', 2.33)]  # percentage BAU 2.33
+    model.constants += [Constant('annualInflation', 3.3)]  # percentage BAU 3.3
     model.constants += [Constant('energyEfficiency', 0)]
     model.constants += [Constant('solarUptake', 0)]
     model.constants += [Constant('onsiteGeneration', 0)]
-    model.constants += [Constant('rooftopPV', 0)]
+    model.constants += [Constant('rooftopPV', 7)]
     model.constants += [Constant('generationRolloutPeriod', 1)]
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
-    model.constants += [Constant('learningCurve', 5)] #percentage
-
-
-    model.constants += [Constant('annualCpi', 2.33)] #percentage BAU 2.33
-    model.constants += [Constant('annualInflation', 3.33)] #percentage BAU 3.3
-
     model.constants += [Constant('technologicalImprovement', 1)] #percentage
+    model.constants += [Constant('learningCurve', 5)] #percentage
     model.constants += [Constant('importPriceFactor', 29)] #percentage from historic variations observed in OpenNem
 
 # The variation on LCOEs are achieved increasing or decreasing a percentage depending on the type of fuel
@@ -59,13 +56,13 @@ def getModelAfterBaseYear():
     model.constants += [Constant('nameplateCapacityChangeSolar', 0)]
 
 # variation of contribution of networks, retail and other charges in the tariff
-    model.constants += [Constant('wholesaleTariffContribution', 28)] # ( 11, 45) BAU 0.2837
+    model.constants += [Constant('wholesaleTariffContribution', 28.37)] # ( 11, 45) BAU 0.2837
 
 # arenas
-    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
-    model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
+    model.constants += [Constant('scheduleMinCapMarketGen', 300)]
+    model.constants += [Constant('semiScheduleMinCapMarketGen', 300)]
     model.constants += [Constant('nonScheduleGenSpotMarket', 10)]
-    model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
+    model.constants += [Constant('nonScheduleMinCapMarketGen', 1)]
 
 # specify outcomes
     model.outcomes = [
