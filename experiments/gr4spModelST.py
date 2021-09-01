@@ -11,15 +11,17 @@ from EMAworkbench.ema_workbench import (IntegerParameter, RealParameter, Categor
 def getModelAfterBaseYear():
     model = Model('Gr4sp', function=connectorST.runGr4spAfterBaseYear)
     # set uncertainties according to first PRIM and FS resutls
-    model.uncertainties += [CategoricalParameter('generatorRetirement', [-5, -4, -3, -2, -1, 0, 1])]
-    model.uncertainties = [IntegerParameter('consumption', 0, 3)]
-    model.uncertainties += [CategoricalParameter('priceChangePercentageWind', [-50, -20, -15, 0, 10, 30])]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, -10, 0, 30, 40, 50])]
+    model.uncertainties += [CategoricalParameter('generatorRetirement', [-5, -2, 0, 1])]
+    model.uncertainties += [CategoricalParameter('priceChangePercentageWater', [-45, -20, 0, 10, 35])]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, -10, 0, 35, 50])]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
-    model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8, 10)] #PRIM's box 6 worst cases (avoiding non-scehdule in markets)
-    model.uncertainties += [CategoricalParameter('priceChangePercentageBrownCoal', [-10, 0, 20, 25, 35])]
+    model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 9, 10)] #PRIM's box 6 worst cases (avoiding non-scehdule in markets)
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWater', [-10, 0, 20, 45])]
+    model.uncertainties += [CategoricalParameter('generationRolloutPeriod', [1, 3, 5, 7, 10])]
+
 
     # set inputs as constants for BAU
+    model.constants += [Constant('consumption', 0)]
     model.constants += [Constant('annualCpi', 2.33)] #percentage BAU 2.33
     model.constants += [Constant('annualInflation', 3.3)]  # percentage
     model.constants += [Constant('energyEfficiency', 0)]
@@ -27,7 +29,6 @@ def getModelAfterBaseYear():
     model.constants += [Constant('onsiteGeneration', 0)]
     model.constants += [Constant('rooftopPV', 7)]
     model.constants += [Constant('includePublicallyAnnouncedGen', 1)]  #PRIM's output include publically announced
-    model.constants += [Constant('generationRolloutPeriod', 1)]
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
     model.constants += [Constant('technologicalImprovement', 1)] #percentage
     model.constants += [Constant('learningCurve', 5)] #percentage
@@ -39,19 +40,18 @@ def getModelAfterBaseYear():
 # Update (28/09/2020) The price change percentage will affect the newly created 'basePrice' variable.
 # Max and min values, both for LCOEs and CFs were found in different sources
 # (e.g. https://aemo.com.au/-/media/files/electricity/nem/planning_and_forecasting/inputs-assumptions-methodologies/2019/csiro-gencost2019-20_draftforreview.pdf?la=en).
-#   model.constants += [Constant('priceChangePercentageBrownCoal', 0)]
+    model.constants += [Constant('priceChangePercentageBrownCoal', 0)]
     model.constants += [Constant('priceChangePercentageBattery', 0)]
     model.constants += [Constant('priceChangePercentageOcgt', 0)]
     model.constants += [Constant('priceChangePercentageCcgt', 0)]
-    model.constants += [Constant('priceChangePercentageWater', 0)]
     model.constants += [Constant('priceChangePercentageSolar', 0)]
+    model.constants += [Constant('priceChangePercentageWind', 0)]
 
 # variation of nameplate capacity as a percentage of current values
     model.constants += [Constant('nameplateCapacityChangeBattery', 0)]
     model.constants += [Constant('nameplateCapacityChangeBrownCoal', 0)]
     model.constants += [Constant('nameplateCapacityChangeOcgt', 0)]
     model.constants += [Constant('nameplateCapacityChangeCcgt', 0)]
-    model.constants += [Constant('nameplateCapacityChangeWater', 0)]
     model.constants += [Constant('nameplateCapacityChangeSolar', 0)]
 
 # variation of contribution of networks, retail and other charges in the tariff
