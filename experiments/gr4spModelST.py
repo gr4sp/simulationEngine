@@ -16,8 +16,9 @@ def getModelAfterBaseYear():
     model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [-20, -10, 0, 35, 50])]
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 9, 10)] #PRIM's box 6 worst cases (avoiding non-scehdule in markets)
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWater', [-10, 0, 20, 45])]
     model.uncertainties += [CategoricalParameter('generationRolloutPeriod', [1, 3, 5, 7, 10])]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [-30, -20, -10, 0, 20])]
+
 
 
     # set inputs as constants for BAU
@@ -49,10 +50,11 @@ def getModelAfterBaseYear():
 
 # variation of nameplate capacity as a percentage of current values
     model.constants += [Constant('nameplateCapacityChangeBattery', 0)]
-    model.constants += [Constant('nameplateCapacityChangeBrownCoal', 0)]
     model.constants += [Constant('nameplateCapacityChangeOcgt', 0)]
     model.constants += [Constant('nameplateCapacityChangeCcgt', 0)]
     model.constants += [Constant('nameplateCapacityChangeSolar', 0)]
+    model.constants += [Constant('nameplateCapacityChangeWater', 0)]
+
 
 # variation of contribution of networks, retail and other charges in the tariff
     model.constants += [Constant('wholesaleTariffContribution', 28.37)] # ( 11, 45) BAU 0.2837
