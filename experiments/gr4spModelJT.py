@@ -12,15 +12,18 @@ def getModelAfterBaseYear():
     model = Model('Gr4sp', function=connectorJT.runGr4spAfterBaseYear)
     # set uncertainties according to first PRIM and FS resutls
 
-    model.uncertainties = [IntegerParameter('consumption', 0, 3)]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [0, -30, -20, -15, 10])]
-    model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
+    #model.uncertainties = [IntegerParameter('consumption', 0, 3)]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [0, -30, -20, 10, 20])]
     model.uncertainties += [CategoricalParameter('generationRolloutPeriod', [1, 2, 5, 6, 8, 10])]
-    model.uncertainties += [CategoricalParameter('scheduleMinCapMarketGen', [100, 150, 200, 250, 300])]  # divided by 10
+    model.uncertainties += [CategoricalParameter('scheduleMinCapMarketGen', [150, 250, 300])]  # divided by 10
+    model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 9, 10)]
-    model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [0, -30, 30, 40])]
+    #model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [0, -20, 30, 40])]
+
     # set inputs as constants for BAU
+    model.constants += [Constant('includePublicallyAnnouncedGen', 0)]
+    model.constants += [Constant('consumption', 0)]
     model.constants += [Constant('annualCpi', 2.33)]  # percentage BAU 2.33
     model.constants += [Constant('annualInflation', 3.3)]  # percentage
     model.constants += [Constant('energyEfficiency', 0)]
