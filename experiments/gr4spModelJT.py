@@ -14,12 +14,13 @@ def getModelAfterBaseYear():
 
     #model.uncertainties = [IntegerParameter('consumption', 0, 3)]
     model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [0, -30, -20, 10, 20])]
-    model.uncertainties += [CategoricalParameter('generationRolloutPeriod', [1, 2, 5, 6, 8, 10])]
+    model.uncertainties += [CategoricalParameter('generationRolloutPeriod', [1, 4, 6, 8, 10])]
     model.uncertainties += [CategoricalParameter('scheduleMinCapMarketGen', [150, 250, 300])]  # divided by 10
     model.uncertainties += [IntegerParameter('semiScheduleGenSpotMarket', 8, 10)]
     model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 9, 10)]
     #model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 1)]
-    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [0, -20, 30, 40])]
+    model.uncertainties += [CategoricalParameter('nameplateCapacityChangeWind', [0, -20, -10, 30, 40])]
+    model.uncertainties += [CategoricalParameter('wholesaleTariffContribution', [10, 20, 30, 40, 50])]  # ( 11, 45) BAU 0.2837
 
     # set inputs as constants for BAU
     model.constants += [Constant('includePublicallyAnnouncedGen', 0)]
@@ -59,7 +60,7 @@ def getModelAfterBaseYear():
     model.constants += [Constant('nameplateCapacityChangeSolar', 0)]
 
 # variation of contribution of networks, retail and other charges in the tariff
-    model.constants += [Constant('wholesaleTariffContribution', 28.37)] # ( 11, 45) BAU 0.2837
+   # model.constants += [Constant('wholesaleTariffContribution', 28.37)] # ( 11, 45) BAU 0.2837
 
 # arenas
     model.constants += [Constant('semiScheduleMinCapMarketGen', 300)]
