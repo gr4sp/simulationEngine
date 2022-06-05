@@ -2,8 +2,6 @@ package core.Social;
 
 public interface EndUserActor {
 
-     //boolean consumptionOnly = true; // if the actor has on-site generation, then this will be set to false
-
      double getCurrentConsumption();
      float getCurrentTariff();
      double getCurrentEmissions();

@@ -35,6 +35,14 @@ class EmissionFactor implements java.io.Serializable  {
 }
 
 class ArenaSettings implements java.io.Serializable {
+    public void setSpotMarket(String spotMarket) {
+        this.spotMarket = spotMarket;
+    }
+
+    public void setMinCapMarketGen(double minCapMarketGen) {
+        this.minCapMarketGen = minCapMarketGen;
+    }
+
     public String spotMarket;
     public double minCapMarketGen;
 
@@ -45,7 +53,6 @@ class SolarEfficiency implements java.io.Serializable {
     public double fman ;
     //de-rating factor for dirt, dimensionless
     public double fdirt;
-    //temperature de-rating factor, dimensionless, ƒtemp = 1 + (γ × (avg temp) y=-.005 * 20
     //y is the temperature coefficient, using example from CEC guidelines as -0.5%/C and average daily temperature of 20C
     //the de-rating factor increases with increasing average daily temperatures.
     public double ftemp;
@@ -147,6 +154,25 @@ public class Settings implements java.io.Serializable {
     public Map<String, TariffSettings> tariffs;
     public ForecastSetting forecast;
 
+    public void printArenas() {
+        for (String s : arena.keySet()){
+            System.out.println(s);
+            ArenaSettings a = arena.get(s);
+            System.out.println(a.minCapMarketGen + " " + a.spotMarket);
+
+        }
+        
+    }
+
+
+    public void setForecastGeneratorRetirement(int val){
+        this.forecast.generatorRetirement = val;
+    }
+
+    public void setSemiSecondary(String spot, double minCap){
+        this.arena.get("semiScheduled").spotMarket = spot;
+        this.arena.get("semiScheduled").minCapMarketGen = minCap;
+    }
 
     /*
      * Tariff
@@ -419,9 +445,13 @@ public class Settings implements java.io.Serializable {
 
     public int getForecastGeneratorRetirement() { return forecast.generatorRetirement; }
 
+    public void setForecastTechnologicalImprovement(double val){ forecast.technologicalImprovement = val; }
+
     public double getForecastTechnologicalImprovement() { return forecast.technologicalImprovement; }
 
     public double getLearningCurve() { return forecast.learningCurve; }
+
+    public void setLearningCurve(double val) { forecast.learningCurve = val; }
 
     public int getForecastGenerationRolloutPeriod() { return forecast.generationRolloutPeriod; }
 

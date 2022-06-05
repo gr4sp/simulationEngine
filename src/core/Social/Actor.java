@@ -92,13 +92,4 @@ Actor extends SimplePortrayal2D implements java.io.Serializable, Steppable {
         Ellipse2D.Double ellipse = new Ellipse2D.Double(range.draw.x - width / 2.0D - 1.0D, range.draw.y - height / 2.0D - 1.0D, width + 2.0D, height + 2.0D);
         return ellipse.intersects(range.clip.x, range.clip.y, range.clip.width, range.clip.height);
     }
-
-    /* private int minNumPeople; // minimum number of people to set up the organisation
-    private int maxNumPeople; //// minimum number of people to set up the organisation
-    private int numPeople; //number of people in the organisation
-    private boolean liability; //limited (1) or non-limited (0) liability;
-    private boolean taXemp; //tax exemptions or concessions;
-    private String activity; // part of the supply chain or SPM owned/managed by the organistion: e.g. generator, network operator, ret
-*/
-
 }

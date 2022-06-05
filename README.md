@@ -85,8 +85,6 @@ sudo apt install postgresql postgresql-contrib
 To create `postgres` username and database
 
 ```
-sudo -u postgres -i
-
 dropdb postgres
 createdb postgres
 sudo -u postgres psql

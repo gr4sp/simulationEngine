@@ -15,16 +15,35 @@ import java.util.Date;
 public class Generator implements java.io.Serializable, Asset {
     private static final long serialVersionUID = 1;
 
-    private int id;//asset id
-    private String region; //the list of generation assets includes all the regions of the NEM, therefore this has to be filtered out using VIC1 (or VIC) for  Victoria
-    private String assetType; // options are: "Existing Plant", "Lighting System", "Non- Existing Plant", and "Project"
-    private String name;//name of power plant or "Site Name" according to the GenerationInformation database from the NEM
-    private String ownerName;//name of the owner
-    private String techTypeDescriptor; //combustion steam-subcritical, combustion Open Cycle Gas turbines (OCGT) phtovoltaic flat panet, hydro-gravity, hydro-run of river, solar PV, wind onshore/offshore,
-    private String fuelSourceDescriptor; //fuel source descriptor: according to AEMO it can be: brown coal, black coal, gas, Diesel, waste coal mine gas, landfill methane, etc.
-    private String ownership;//public, private, PPP, Cooperative?
-    private double maxCapacity; //I assume the maximum capacity as being the nameplate capacity in MW
-    private double availableCapacity; //Capacity available once the capacity factor is taken into account. It can change every month for all techs, but for solar it changes every 30min.
+    public static boolean carbonTax = false;
+    public static double carbonTaxValue = 23.00;
+
+    public boolean reducedCapacity = false;
+    public double reducedCapacityValue;
+
+    public static boolean subExists = false;
+    public static boolean coalSubExists = false;
+    public static double renewableSubVal = 0.9;
+
+    public boolean isSub = false;
+
+    private int id;// asset id
+    private String region; // the list of generation assets includes all the regions of the NEM, therefore
+                           // this has to be filtered out using VIC1 (or VIC) for Victoria
+    private String assetType; // options are: "Existing Plant", "Lighting System", "Non- Existing Plant", and
+                              // "Project"
+    private String name;// name of power plant or "Site Name" according to the GenerationInformation
+                        // database from the NEM
+    private String ownerName;// name of the owner
+    private String techTypeDescriptor; // combustion steam-subcritical, combustion Open Cycle Gas turbines (OCGT)
+                                       // phtovoltaic flat panet, hydro-gravity, hydro-run of river, solar PV, wind
+                                       // onshore/offshore,
+    private String fuelSourceDescriptor; // fuel source descriptor: according to AEMO it can be: brown coal, black coal,
+                                         // gas, Diesel, waste coal mine gas, landfill methane, etc.
+    private String ownership;// public, private, PPP, Cooperative?
+    private double maxCapacity; // I assume the maximum capacity as being the nameplate capacity in MW
+    private double availableCapacity; // Capacity available once the capacity factor is taken into account. It can
+                                      // change every month for all techs, but for solar it changes every 30min.
     private double storageCapacity; // in MWh
     private String dispatchTypeDescriptor; // scheduled (S), Semi-scheduled (SS), non-scheduled (NS)
 
@@ -32,17 +51,17 @@ public class Generator implements java.io.Serializable, Asset {
     private int numUnits; // in NEM description
     private String fuelBucketSummary; // type of fuel
 
-    private int lifecycle; //life cycle in years
+    private int lifecycle; // life cycle in years
 
-    //Surplus capacity after supplying households with solar. The number of
-    //households equals the no_units
+    // Surplus capacity after supplying households with solar. The number of
+    // households equals the no_units
     public double solarSurplusCapacity;
 
-    //LCOE Price Parameters
+    // LCOE Price Parameters
     public double basePriceMWh;
     public double marketPriceCap;
 
-    //Price Evolution
+    // Price Evolution
     private double historicCapacityFactor;
     private double historicGeneratedMWh;
     private double monthlyGeneratedMWh;
@@ -50,51 +69,50 @@ public class Generator implements java.io.Serializable, Asset {
     private double potentialRevenue;
     private int bidsInSpot;
 
-    //Capacity Factor
+    // Capacity Factor
     public double minCapacityFactor;
     public double maxCapacityFactor;
     public double maxCapacityFactorSummer;
 
-    //NonScheduled evolution
+    // NonScheduled evolution
     private int numTimesUsedOffSpot;
 
-
-    //Emission Factor
+    // Emission Factor
     public double minEF;
     public double linRateEF;
     public double expRateEF;
 
-    //Solar Efficiency Generator
+    // Solar Efficiency Generator
     public double solarEfficiency;
 
+    private Double2D location;// coordinates where the generation is located
 
-    private Double2D location;//coordinates where the generation is located
-
-    //Start and end of operations
+    // Start and end of operations
     private Date start;
     private int startYear;
     private Date end;
 
-    //Visualization Parameters
+    // Visualization Parameters
     public double diameter;
 
-    //TODO: Ownership and Management definition
+    // TODO: Ownership and Management definition
     ArrayList<ActorAssetRelationship> assetRelationships;
 
-    //Market Participation
+    // Market Participation
     Boolean inPrimaryMarket;
     Boolean inSecondaryMarket;
 
     /**
-     * Create here other constructors that call the main constructor to include fix values to the parameters and make the class more flexible:
+     * Create here other constructors that call the main constructor to include fix
+     * values to the parameters and make the class more flexible:
      * public Generator (); this *include here the parameters values.
      **/
 
-
     public Generator(int genId, String region, String assetType,
-                     String genName, String owner, String techType, String fuelType,
-                     Double gencap, String dispachType, Date start, Date expectedEnd, Date end,
-                     String duid, int no_units, double storageCapacityMwh, String fuelBucketSummary, String unit_status, Settings settings) {
+            String genName, String owner, String techType, String fuelType,
+            Double gencap, String dispachType, Date start, Date expectedEnd, Date end,
+            String duid, int no_units, double storageCapacityMwh, String fuelBucketSummary, String unit_status,
+            Settings settings) {
         this.id = genId;
         this.region = region;
         this.assetType = assetType;
@@ -124,10 +142,9 @@ public class Generator implements java.io.Serializable, Asset {
         if (fuelBucketSummary != null)
             this.fuelBucketSummary = fuelBucketSummary.trim();
 
-
         this.location = null;
 
-        //default lifecycle of 30 years
+        // default lifecycle of 30 years
         this.lifecycle = 30;
 
         historicCapacityFactor = getCapacityFactor(1);
@@ -138,30 +155,42 @@ public class Generator implements java.io.Serializable, Asset {
         bidsInSpot = 0;
         numTimesUsedOffSpot = 0;
 
-        //Load Settings specified through YAML settings file
+        // Load Settings specified through YAML settings file
         basePriceMWh = settings.getBasePriceMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
         marketPriceCap = settings.getMarketPriceCap(this.fuelSourceDescriptor, this.techTypeDescriptor);
 
         minCapacityFactor = settings.getMinCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         maxCapacityFactor = settings.getMaxCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
-        maxCapacityFactorSummer = settings.getMaxCapacityFactorSummer(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        maxCapacityFactorSummer = settings.getMaxCapacityFactorSummer(this.fuelSourceDescriptor,
+                this.techTypeDescriptor);
 
         minEF = settings.getMinEF(this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear);
         linRateEF = settings.getLinRateEF(this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear);
         expRateEF = settings.getExpRateEF(this.fuelSourceDescriptor, this.techTypeDescriptor, this.startYear);
 
-        if( settings.isMarketPaticipant( dispatchTypeDescriptor,"primary", maxCapacity ) )
+        if (settings.isMarketPaticipant(dispatchTypeDescriptor, "primary", maxCapacity))
             inPrimaryMarket = true;
         else
             inPrimaryMarket = false;
 
-        if( settings.isMarketPaticipant( dispatchTypeDescriptor,"secondary", maxCapacity ) )
+        if (settings.isMarketPaticipant(dispatchTypeDescriptor, "secondary", maxCapacity))
             inSecondaryMarket = true;
         else
             inSecondaryMarket = false;
 
-
         solarEfficiency = settings.getSolarEfficiency(this.fuelSourceDescriptor, this.techTypeDescriptor);
+
+        if (Generator.subExists
+                && (this.fuelSourceDescriptor.contains("Solar") || this.fuelSourceDescriptor.contains("Wind"))) {
+            this.isSub = true;
+        }
+
+        // if (Generator.coalSubExists && (this.fuelSourceDescriptor.contains("Coal"))){
+        // this.isSub = true;
+        // }
+        // System.out.println(this.fuelSourceDescriptor);
+        // System.out.println(this.techTypeDescriptor);
+
     }
 
     // get solar generation using monthly or half hour solar exposure
@@ -171,22 +200,24 @@ public class Generator implements java.io.Serializable, Asset {
 
         generation = capacitySolar * solarExposure * solarEfficiency;
 
-        //in this case, the energy yield is given in energy output per area, or energy generated in KWh//m2 per month
+        // in this case, the energy yield is given in energy output per area, or energy
+        // generated in KWh//m2 per month
         return generation;
     }
 
-
-
-    //Once the generator has been running for longer than its lifecycle (30 years by default), the Emission Factor will stop growing,
-    //It will remain at the 30 year level
-    //Brown Coal generators prior 1964 (year Hazelwood started operating) had less thermal efficiency
+    // Once the generator has been running for longer than its lifecycle (30 years
+    // by default), the Emission Factor will stop growing,
+    // It will remain at the 30 year level
+    // Brown Coal generators prior 1964 (year Hazelwood started operating) had less
+    // thermal efficiency
+    @Override
     public double getEmissionsFactor(int currentYear) {
 
         int age = currentYear - startYear;
-        if (age > this.lifecycle) age = this.lifecycle;
+        if (age > this.lifecycle)
+            age = this.lifecycle;
 
         double emissionsFactor = minEF + (linRateEF * (Math.exp(expRateEF * (age))));
-
         return emissionsFactor;
 
     }
@@ -216,49 +247,51 @@ public class Generator implements java.io.Serializable, Asset {
 
         // Update Capacity based on historic amount sold
         if (bidsInSpot > 0) {
-            //historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh * (bidsInSpot / 2.0));
+            // historicCapacityFactor = historicRevenue / (maxCapacity * priceMinMWh *
+            // (bidsInSpot / 2.0));
             historicCapacityFactor = historicRevenue / potentialRevenue;
             historicCapacityFactor = (double) Math.round(historicCapacityFactor * 100000d) / 100000d;
 
             if (historicCapacityFactor > 1.0) {
-                System.out.printf("Capacity Factor greater than 1: " + historicCapacityFactor);
+                System.out.println("Capacity Factor greater than 1: " + historicCapacityFactor);
             }
 
         }
 
     }
 
-    //If historic is below minCapacityFactor, then use min CapacityFactor to ge prices.
-    // MinCapacityFactors makes the assumption that the capacity
-    //factor didn't fall  below that threshold by selling through OTCs instead of SPOT
-    public double priceMWhLCOE() {
+    public double priceMWhLCOE(int year) {
+
+        // Adjust for Java Date
+        year = year % 1900;
+
+        double historicCF = Math.max(historicCapacityFactor, minCapacityFactor);
 
         double result;
-        double historicCF = historicCapacityFactor;
 
-        //Make sure bid is not below base price/minCF
-        if (historicCF < minCapacityFactor) {
-            historicCF = minCapacityFactor;
-        }
-
-        //If the generator has never bid and never produced even off market (OTC), then use the LCOE assuming it starts with maxCapacity
-        //If historicCF is above maxCF because it participated in a bid with high pay off, then make sure price above base price/maxCF
-        //otherwise just use the historicCF
-        if (bidsInSpot == 0 || historicCF > maxCapacityFactor) {
-            result = basePriceMWh() / maxCapacityFactor;
+        if (this.isSub) {
+            result = (bidsInSpot == 0 || historicCF > maxCapacityFactor)
+                    ? (Generator.renewableSubVal * basePriceMWh) / maxCapacityFactor
+                    : (Generator.renewableSubVal * basePriceMWh) / historicCF;
         } else {
-            result = basePriceMWh() / historicCF;
+            result = (bidsInSpot == 0 || historicCF > maxCapacityFactor) ? basePriceMWh / maxCapacityFactor
+                    : basePriceMWh / historicCF;
+        }
+        if (Generator.carbonTax && (year + 1900 > 2011)) {
+            double tax = (getEmissionsFactor(year) * Generator.carbonTaxValue);
+
+            result += tax;
         }
 
-        //make sure price does not go above maximum allowed price
-        if(result > marketPriceCap) result = marketPriceCap;
+        return Math.min(result, marketPriceCap);
 
-        return result;
     }
 
-    public double getSolarSurplusCapacity() { return solarSurplusCapacity; }
+    public double getSolarSurplusCapacity() {
+        return solarSurplusCapacity;
+    }
 
-    //$/MWH
+    // $/MWH
     public double basePriceMWh() {
         return basePriceMWh;
     }
@@ -266,7 +299,6 @@ public class Generator implements java.io.Serializable, Asset {
     public double marketPriceCap() {
         return marketPriceCap;
     }
-
 
     public double getCapacityFactor(int currentMonth) {
 
@@ -276,40 +308,30 @@ public class Generator implements java.io.Serializable, Asset {
             return maxCapacityFactor;
     }
 
-    //returns MW
-    public void computeAvailableSolarCapacity(SimState state, Date today, Date currentTime, int currentMonth, double consumption) {
+    // returns MW
+    public void computeAvailableSolarCapacity(SimState state, Date today, Date currentTime, int currentMonth,
+            double consumption) {
         Gr4spSim data = (Gr4spSim) state;
 
-        //Solar doesn't use capacity factor, but instead uses the available solar exposure by month
+        // Solar doesn't use capacity factor, but instead uses the available solar
+        // exposure by month
         if (currentTime != null) {
-            double dollarMWh = 0;
 
-            //get Generation in KWh
-            float solarExposure = (float) 0.0;
-            if (data.getHalfhour_solar_exposure().containsKey(currentTime)) {
-                //get Generation in KWh
-                solarExposure = data.getHalfhour_solar_exposure().get(currentTime);
-            }
-//            else {
-//                System.out.println("\t\t\t" + currentTime + " For some reason this key is lost, use last available value ");
-//            }
-
-
-            //generation in KWh given sun
-            double halfHourGeneration = getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0, this.solarEfficiency);
-
-            //Solar capacity is the same as half hour generation in this case. MWh each half hour will be capacity in MW
-            availableCapacity = halfHourGeneration / (float) 1000.0;
-
-            //Solar suplus as a function of generation and number of units consuming - (30days * 48 halfhour/day = 1440 approx equals half hours in month)
-//            solarSurplusCapacity = availableCapacity - (numUnits * consumption / 1440 );
-//            if(solarSurplusCapacity < 0 ) solarSurplusCapacity = 0;
+            availableCapacity = getSolarGeneration(
+                    data.getDaily_solar_exposure().getOrDefault(currentTime, (float) 0.0),
+                    (float) this.maxCapacity * (float) 1000.0, this.solarEfficiency) / (float) 1000.0;
 
         }
     }
+
     public void computeAvailableCapacity(SimState state, Date today, Date currentTime, int currentMonth) {
-            double capacityFactor = getCapacityFactor(currentMonth);
-            availableCapacity = this.getMaxCapacity() * capacityFactor;
+        double capacityFactor = getCapacityFactor(currentMonth);
+        availableCapacity = this.getMaxCapacity() * capacityFactor;
+
+        // Reduced capacity action
+        if (this.reducedCapacity) {
+            availableCapacity *= reducedCapacityValue;
+        }
     }
 
     @Override
@@ -336,16 +358,13 @@ public class Generator implements java.io.Serializable, Asset {
         return id;
     }
 
-
     public void setId(int id) {
         this.id = id;
     }
 
-
     public String getfuelSourceDescriptor() {
         return fuelSourceDescriptor;
     }
-
 
     public void setfuelSourceDescriptor(String fuelSourceDescriptor) {
         this.fuelSourceDescriptor = fuelSourceDescriptor;
@@ -355,11 +374,19 @@ public class Generator implements java.io.Serializable, Asset {
         return bidsInSpot;
     }
 
-    //When a Bid is added, keep track of the potential historic revenue;
-    public void setBidsInSpot(int bidsInSpot, double availableCapacity) {
+    // When a Bid is added, keep track of the potential historic revenue;
+    public void setBidsInSpot(int bidsInSpot, double availableCapacity, int year) {
         this.bidsInSpot = bidsInSpot;
-        //potentialRevenue += (availableCapacity * (priceMinMWh/maxCapacityFactor) ) / 2.0;
-        potentialRevenue += (availableCapacity * priceMWhLCOE()) / 2.0;
+        // potentialRevenue += (availableCapacity * (priceMinMWh/maxCapacityFactor) ) /
+        // 2.0;
+        potentialRevenue += (availableCapacity * priceMWhLCOE(year)) / 2.0;
+
+        // if (Generator.carbonTax && (year + 1900 > 2011)){
+        // potentialRevenue -= (getEmissionsFactor(year) * availableCapacity *
+        // Generator.carbonTaxValue) / 2.0;
+        // }
+        // if (potentialRevenue < 0) System.out.println((year+1900) + " TOO MUCH " +
+        // Generator.carbonTaxValue);
 
     }
 
@@ -391,7 +418,7 @@ public class Generator implements java.io.Serializable, Asset {
         return historicRevenue;
     }
 
-    public void setHistoricRevenue(double historicRevenue) {
+    public void setHistoricRevenue(double historicRevenue, int year) {
         this.historicRevenue = historicRevenue;
     }
 
@@ -407,77 +434,69 @@ public class Generator implements java.io.Serializable, Asset {
         return name;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
-
 
     public double getMaxCapacity() {
         return maxCapacity;
     }
 
-
     public void setMaxCapacity(double maxCapacity) {
         this.maxCapacity = maxCapacity;
     }
-
 
     public int getLifecycle() {
         return lifecycle;
     }
 
-
     public void setLifecycle(int lifecycle) {
         this.lifecycle = lifecycle;
     }
-
 
     public Double2D getLocation() {
         return location;
     }
 
-
     public void setLocation(Double2D location) {
         this.location = location;
     }
-
 
     public String getOwnership() {
         return ownership;
     }
 
-
     public void setOwnership(String ownership) {
         this.ownership = ownership;
     }
-
 
     public String getFuelSourceDescriptor() {
         return fuelSourceDescriptor;
     }
 
+    public void setFuelSourceDescriptor(String fuelSourceDescriptor) {
+        this.fuelSourceDescriptor = fuelSourceDescriptor;
+    }
 
-    public void setFuelSourceDescriptor(String fuelSourceDescriptor) { this.fuelSourceDescriptor = fuelSourceDescriptor; }
-
-    public String getOwnerName(){ return ownerName; }
-
+    public String getOwnerName() {
+        return ownerName;
+    }
 
     public String getTechTypeDescriptor() {
         return techTypeDescriptor;
     }
 
-
     public void setTechTypeDescriptor(String techTypeDescriptor) {
         this.techTypeDescriptor = techTypeDescriptor;
     }
-
 
     public double getHistoricCapacityFactor() {
         return historicCapacityFactor;
     }
 
-    public void setHistoricCapacityFactor(double h){ historicCapacityFactor = h;}
+    public void setHistoricCapacityFactor(double h) {
+        historicCapacityFactor = h;
+    }
 
     public String getDispatchTypeDescriptor() {
         return dispatchTypeDescriptor;
@@ -499,13 +518,23 @@ public class Generator implements java.io.Serializable, Asset {
         return marketPriceCap;
     }
 
-    public Boolean getInPrimaryMarket() { return inPrimaryMarket; }
+    public Boolean getInPrimaryMarket() {
+        return inPrimaryMarket;
+    }
 
-    public Boolean getInSecondaryMarket() { return inSecondaryMarket; }
+    public Boolean getInSecondaryMarket() {
+        return inSecondaryMarket;
+    }
 
-    public void setInPrimaryMarket( boolean v ) { inPrimaryMarket = v; }
+    public void setInPrimaryMarket(boolean v) {
+        inPrimaryMarket = v;
+    }
 
-    public void setInSecondaryMarket( boolean v ) { inSecondaryMarket = v; }
+    public void setInSecondaryMarket(boolean v) {
+        inSecondaryMarket = v;
+    }
 
-    public double getAvailableCapacity() { return availableCapacity; }
+    public double getAvailableCapacity() {
+        return availableCapacity;
+    }
 }

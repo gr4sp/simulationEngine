@@ -7,6 +7,7 @@ import sim.engine.SimState;
 import sim.engine.Steppable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Arena implements Steppable,  java.io.Serializable  {
     private int id;
@@ -14,12 +15,13 @@ public class Arena implements Steppable,  java.io.Serializable  {
     private String type;
     private int rounds;
 
+    public static boolean reduceTopPct = true;
+    public static boolean reducedCapacity = false;
+    public static double reducedCapacityValue = 0.5;
+    public static double reducedCapacityGens = 0.02;
+
     //Constant value that represents End-Consumer contracts. 999 is the value assigned to contracts DB to end consumer
     public static final int EndConsumer = 999;
-
-    //    private ArrayList<EligibilityRule> eligibilityRules;
-
-    //    private float transactionFee; //percentage fee
 
     private SpotMarket primarySpot;
     private double avgMonthlyPricePrimarySpot;
@@ -272,7 +274,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
         Gr4spSim data = (Gr4spSim) state;
         Date today = data.getCurrentSimDate();
-
+        int year = today.getYear();
         /**
          * Create a bid for each Generator that participates in the SPOT market
          */
@@ -292,18 +294,19 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 availableCapacity = g.getSolarSurplusCapacity();
             }
 
-            double dollarMWh = g.priceMWhLCOE();
+            double dollarMWh = g.priceMWhLCOE(year);
             //Don't add bids of 0 capacity
             if(availableCapacity != 0) {
+            
                 if (g.getInPrimaryMarket()) {
                     Bid b = new Bid(null, g, dollarMWh, availableCapacity);
                     this.primarySpot.addBidder(b);
-                    g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity);
+                    g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity, year);
                 } else {
                     if (g.getInSecondaryMarket()) {
                         Bid b = new Bid(null, g, dollarMWh, availableCapacity);
                         this.secondarySpot.addBidder(b);
-                        g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity);
+                        g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity, year);
                     }
                 }
             }
@@ -325,11 +328,16 @@ public class Arena implements Steppable,  java.io.Serializable  {
         data.settingsAfterBaseYear.applyInflationToAllGenBasePrice(inflation);
         data.settings.applyInflationToAllGenBasePrice(inflation);
 
+
+        // APPLY INFLATION TO CARBON TAX
+        if (currentYear > 2011){
+            Generator.carbonTaxValue *= inflation;
+        }
+
         //Update existing generator prices
         for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
             Vector<Generator> gens = entry.getValue();
             for (Generator g : gens) {
-
                 g.setBasePriceMWh(g.getBasePriceMWh() * inflation);
                 g.setMarketPriceCap(g.getMarketPriceCap() * inflation);
 
@@ -376,6 +384,16 @@ public class Arena implements Steppable,  java.io.Serializable  {
                     existsSecondary = false;
             }
 
+            if (currentYear >= data.settings.getBaseYearConsumptionForecast() && data.settingsAfterBaseYear.existsMarket("secondary") && this.secondarySpot == null){
+                secondarySpot = new SpotMarket("secondary");
+                existsSecondary = true;
+            } else if (currentYear >= data.settings.getBaseYearConsumptionForecast() && !data.settingsAfterBaseYear.existsMarket("secondary")){
+                secondarySpot = null;
+                existsSecondary = false;
+            }
+
+
+
             /**
              * Apply inflation in January
              * */
@@ -418,6 +436,52 @@ public class Arena implements Steppable,  java.io.Serializable  {
             int num_half_hours = 1;
             this.rounds = num_half_hours;
             double totalDemand  = 0;
+            List<Double> temp = new ArrayList<>();
+            for (Vector<Generator> gens : data.getGen_register().values()) {
+                for (Generator g : gens) {
+                    temp.add(g.getMaxCapacity());
+                }
+            }
+            Collections.sort(temp);
+
+            if (reducedCapacity){
+                // Collect all gens
+                List<Generator> emissionsGens = data.getGen_register().values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+
+                // Set reduced capacity to 0
+                emissionsGens.stream().forEach(g -> g.reducedCapacity=false);
+
+                double maxE = emissionsGens.stream().mapToDouble(Generator::getMonthlyGeneratedMWh).max().orElse(0.0);
+
+                if (maxE > 0){
+
+                    // Sort by generated capacity
+                    Collections.sort(emissionsGens, new Comparator<Generator>() {
+                        @Override
+                        public int compare(Generator o1, Generator o2) {
+                            int e1 = (int) (o1.getMonthlyGeneratedMWh() * o1.getEmissionsFactor(currentYear));
+                            int e2 = (int) (o2.getMonthlyGeneratedMWh() * o2.getEmissionsFactor(currentYear));
+
+                            if (e1 < e2) return -1;
+                            if (e1 == e2) return 0;
+                            return  1;
+                        }
+                    });
+
+                    int num_gens = reduceTopPct ? (int) (emissionsGens.size() * reducedCapacityGens) : (int) reducedCapacityGens;
+
+                    for(int i = 1; i <= num_gens; i++){
+                        emissionsGens.get(emissionsGens.size() - i).reducedCapacity = true;
+                        emissionsGens.get(emissionsGens.size() - i).reducedCapacityValue = reducedCapacityValue;
+                    }
+//                    emissionsGens.get(emissionsGens.size() - 1).reducedCapacity = true;
+//                    emissionsGens.get(emissionsGens.size() - 1).reducedCapacityValue = 0.5;
+
+                }
+
+
+
+            }
 
             //Reset Monthly generation data for each Generator
             for (Map.Entry<Integer, Vector<Generator>> entry : data.getGen_register().entrySet()) {
@@ -464,8 +528,15 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                 Date currentTime = c.getTime();
 
-                if(data.getHalfhour_demand_register().containsKey(currentTime)) {
-                    double newDemand = data.getHalfhour_demand_register().get(currentTime);
+//                if(data.getHalfhour_demand_register().containsKey(currentTime)) {
+//                    double newDemand = data.getHalfhour_demand_register().get(currentTime);
+                if(data.getDaily_demand_register().containsKey(currentTime)) {
+                    double newDemand = data.getDaily_demand_register().get(currentTime);
+//                    if(data.getHalfhour_demand_register().containsKey(currentTime)) {
+//                        System.out.println();
+//                    }
+
+
                     //Check if it is above 0. If it's 0, just take the previous one as it is likely to be due to misleading data
                     if( newDemand > 0.001 )
                         totalDemand = newDemand;
@@ -507,13 +578,13 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                         //If going through Off spot (OTC), then account only for surplus
                         if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
-                            priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (g.getSolarSurplusCapacity() * g.priceMWhLCOE());
+                            priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (g.getSolarSurplusCapacity() * g.priceMWhLCOE(currentYear - 1900));
                             availableCapacityOffMarket += g.getSolarSurplusCapacity();
                             if(availableCapacityOffMarket > 0.0)
                                 priceOffMarket /= availableCapacityOffMarket;
                         }
                         else {
-                            priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (capacity * g.priceMWhLCOE());
+                            priceOffMarket = (priceOffMarket*availableCapacityOffMarket) + (capacity * g.priceMWhLCOE(currentYear - 1900));
                             availableCapacityOffMarket += capacity;
                             if(availableCapacityOffMarket > 0.0)
                                 priceOffMarket /= availableCapacityOffMarket;
@@ -575,17 +646,9 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                 this.primarySpot.computeMarketPrice(totalDemandWholesale, data, currentTime, currentYear);
 
-
-
-                //Generator lastGenBid = (Generator) this.getSpot().getSuccessfulBids().get(this.getSpot().getSuccessfulBids().size()-1).asset;
-                //System.out.println("Price - " + currentTime + ": " + this.spot.getMarketPrice() + " - Last Bid in "+ lastGenBid.getFuelSourceDescriptor() + "Gen Name: " +lastGenBid.getName()
-                //        + "Gen Id: " +lastGenBid.getId()  +" Historic Capacity Factor: "+ lastGenBid.getHistoricCapacityFactor() );
-
                 /**
                  * Update spot Average Monthly Price and Demand
                  */
-
-
                 if(totalDemandWholesale + totalDemandResidential > 0.0001) {
                    avgMonthlyDemandPrimarySpot = (avgMonthlyDemandPrimarySpot * num_half_hours) + totalDemandWholesale;
                    avgMonthlyPricePrimarySpot = (avgMonthlyPricePrimarySpot * num_half_hours) + this.primarySpot.getMarketPrice() ;
@@ -627,15 +690,15 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 }
 
                 // Statistics about unmet demand
-                double unmetPrimary = this.primarySpot.getUnmetDemand() / 2.0; //30min;
+                double unmetPrimary = this.primarySpot.getUnmetDemand();// / 2.0; //30min;
 
                 double unmetSecondary = 0.0;
                 if( currentYear < data.settings.getBaseYearConsumptionForecast() ) {
                     if (data.settings.existsMarket("secondary"))
-                        unmetSecondary = this.secondarySpot.getUnmetDemand() / 2.0; //30min;
+                        unmetSecondary = this.secondarySpot.getUnmetDemand();// / 2.0; //30min;
                 }else{
                     if(data.settingsAfterBaseYear.existsMarket("secondary"))
-                        unmetSecondary = this.secondarySpot.getUnmetDemand() / 2.0; //30min;
+                        unmetSecondary = this.secondarySpot.getUnmetDemand();// / 2.0; //30min;
                 }
 
                 //Update Unmet demand month
@@ -679,35 +742,8 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 }
 
                 //Add 30 min to get next demand
-                c.add(Calendar.MINUTE, 30);
+                c.add(Calendar.MINUTE, data.merit_freq * 60);
 
-
-//                //----------DEBUG AND REMOVE--------------
-//                // creating a Calendar object
-//                Date date = new Date(124, 8, 0);
-//
-//                if(currentTime.after(date) )
-//                    System.out.println("Foo");
-//                //-------------------------------------------------
-
-            }
-//            //CODE TO DEBUG and CHECK that GENERATORS PRODUCTION EQUALS THE TOTAL DEMAND after all 30min BIDDING
-//            monthDemand = monthDemand / 2000.0;
-//            monthDemandRemoved = monthDemandRemoved / 2000.0;
-//
-//            double totalMonthGenerators = 0.0;
-//            double totalMonthGeneratorsOFF = 0.0;
-//            for (Integer integer : data.getGen_register().keySet()) {
-//                Vector<Generator> gens = data.getGen_register().get(integer);
-//                for (int i = 0; i < gens.size(); i++) {
-//                    if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) )
-//                        totalMonthGenerators += gens.get(i).getMonthlyGeneratedMWh();
-//                    else
-//                        totalMonthGeneratorsOFF += gens.get(i).getMonthlyGeneratedMWh();
-//                }
-//            }
-//            totalMonthGenerators = totalMonthGenerators / 1000.0;
-//            totalMonthGeneratorsOFF = totalMonthGeneratorsOFF / 1000.0;
 
             primarySpot.setMarketPrice(avgMonthlyPricePrimarySpot);
             primarySpot.setDemand(avgMonthlyDemandPrimarySpot); // MWh

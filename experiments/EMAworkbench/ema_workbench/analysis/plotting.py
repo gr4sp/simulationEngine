@@ -665,8 +665,9 @@ def multiple_densities(experiments,
                        plot_type=PlotType.ENVELOPE,
                        log=False,
                        **kwargs):
+    print(kwargs)
     ''' Make an envelope plot with multiple density plots over the run time
-
+    
     Parameters
     ----------
     experiments : DataFrame
@@ -792,6 +793,28 @@ def multiple_densities(experiments,
             ax5 = plt.subplot2grid((2, 6), (1, 4), sharex=ax1, sharey=ax_env)
             ax6 = plt.subplot2grid((2, 6), (1, 5), sharex=ax1, sharey=ax_env)
             kde_axes = [ax1, ax2, ax3, ax4, ax5, ax6, ]
+        elif len(points_in_time) == 7:
+            ax_env = plt.subplot2grid((2, 7), (0, 0), colspan=8)
+            ax1 = plt.subplot2grid((2, 7), (1, 0), sharey=ax_env)
+            ax2 = plt.subplot2grid((2, 7), (1, 1), sharex=ax1, sharey=ax_env)
+            ax3 = plt.subplot2grid((2, 7), (1, 2), sharex=ax1, sharey=ax_env)
+            ax4 = plt.subplot2grid((2, 7), (1, 3), sharex=ax1, sharey=ax_env)
+            ax5 = plt.subplot2grid((2, 7), (1, 4), sharex=ax1, sharey=ax_env)
+            ax6 = plt.subplot2grid((2, 7), (1, 5), sharex=ax1, sharey=ax_env)
+            ax7 = plt.subplot2grid((2, 7), (1, 6), sharex=ax1, sharey=ax_env)
+            kde_axes = [ax1, ax2, ax3, ax4, ax5, ax6, ax7]
+        elif len(points_in_time) == 8:
+            ax_env = plt.subplot2grid((2, 8), (0, 0), colspan=8)
+            ax1 = plt.subplot2grid((2, 8), (1, 0), sharey=ax_env)
+            ax2 = plt.subplot2grid((2, 8), (1, 1), sharex=ax1, sharey=ax_env)
+            ax3 = plt.subplot2grid((2, 8), (1, 2), sharex=ax1, sharey=ax_env)
+            ax4 = plt.subplot2grid((2, 8), (1, 3), sharex=ax1, sharey=ax_env)
+            ax5 = plt.subplot2grid((2, 8), (1, 4), sharex=ax1, sharey=ax_env)
+            ax6 = plt.subplot2grid((2, 8), (1, 5), sharex=ax1, sharey=ax_env)
+            ax7 = plt.subplot2grid((2, 8), (1, 6), sharex=ax1, sharey=ax_env)
+            ax8 = plt.subplot2grid((2, 8), (1, 7), sharex=ax1, sharey=ax_env)
+            kde_axes = [ax1, ax2, ax3, ax4, ax5, ax6, ax7, ax8]
+
         else:
             raise EMAError("too many points in time provided")
 
@@ -811,19 +834,23 @@ def multiple_densities(experiments,
             grouping_labels = [""]
             outcomes[""] = outcomes
 
+        print(grouping_labels)
         for j, key in enumerate(grouping_labels):
             value = outcomes[key][outcome_to_show]
+
+            color = kwargs['color_map'].get(key, get_color(j))
 
             if plot_type == PlotType.ENVELOPE:
                 plot_envelope(ax_env, j, time, value, **kwargs)
             elif plot_type == PlotType.LINES:
-                ax_env.plot(time.T, value.T)
+                ax_env.plot(time.T, value.T, color=color, alpha=0.01)
             elif plot_type == PlotType.ENV_LIN:
                 plot_envelope(ax_env, j, time, value, **kwargs)
                 if experiments_to_show is not None:
-                    ax_env.plot(time.T, value[experiments_to_show].T)
+                    ax_env.plot(time.T, value[experiments_to_show].T, color=color, alpha=0.01)
                 else:
-                    ax_env.plot(time.T, value.T)
+                    ax_env.plot(time.T, value.T, color=color, alpha=0.01)
+                    
             ax_env.set_xlim(time[0], time[-1])
 
             ax_env.set_xlabel(TIME_LABEL)
@@ -834,7 +861,7 @@ def multiple_densities(experiments,
             index = np.where(time == time_value)[0][0]
 
             group_density(ax, density, outcomes, outcome_to_show,
-                          grouping_labels, index=index, log=log)
+                          grouping_labels, index=index, log=log, color_map=kwargs['color_map'])
 
         min_y, max_y = ax_env.get_ylim()
         ax_env.autoscale(enable=False, axis='y')
@@ -852,11 +879,12 @@ def multiple_densities(experiments,
                                   coordsB="data", axesA=ax_env, axesB=ax)
             ax_env.add_artist(con)
 
+
         if legend and group_by:
             lt = LegendEnum.PATCH
             alpha = 0.3
             if plot_type == PlotType.LINES:
                 lt = LegendEnum.LINE
                 alpha = 1
-            make_legend(grouping_labels, ax_env, legend_type=lt, alpha=alpha)
+            make_legend(grouping_labels, ax_env, legend_type=lt, alpha=alpha, color_map = kwargs['color_map'])
     return figures, axes_dicts

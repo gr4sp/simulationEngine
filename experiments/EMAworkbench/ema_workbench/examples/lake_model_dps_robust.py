@@ -13,10 +13,12 @@ import math
 import numpy as np
 
 from scipy.optimize import brentq
+import sys
+sys.path.append("/home/XXX/Repositories/gr4sp/experiments/")
 
-from ema_workbench import (Model, RealParameter, ScalarOutcome, Constant,
-                           ema_logging, MultiprocessingEvaluator)
-from ema_workbench.em_framework.samplers import sample_uncertainties
+from EMAworkbench.ema_workbench import (Model, RealParameter, ScalarOutcome, Constant,
+                           ema_logging, MultiprocessingEvaluator, SequentialEvaluator)
+from EMAworkbench.ema_workbench.em_framework.samplers import sample_uncertainties
 
 
 # Created on 1 Jun 2017
@@ -116,7 +118,7 @@ if __name__ == '__main__':
     # instantiate the model
     lake_model = Model('lakeproblem', function=lake_problem)
     # specify uncertainties
-    lake_model.uncertainties = [RealParameter('b', 0.1, 0.45),
+    lake_model.uncertainties = [
                                 RealParameter('q', 2.0, 4.5),
                                 RealParameter('mean', 0.01, 0.05),
                                 RealParameter('stdev', 0.001, 0.005),

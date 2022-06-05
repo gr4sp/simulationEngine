@@ -5,6 +5,7 @@ import core.Technical.Generator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 //This market uses ABM to simulate the price of electricity in the Spot market using a Merit Order approach.
@@ -17,6 +18,8 @@ public class SpotMarket implements java.io.Serializable{
     private double demand;
     private double unmetDemand;
     private String name;
+
+    public static boolean efMerit = false;
 
     private ArrayList<Bid> bidders;
     private ArrayList<Bid> successfulBids;
@@ -99,6 +102,7 @@ public class SpotMarket implements java.io.Serializable{
         return bids;
     }
 
+    // TODO: FOR NEW MERIT, MAY NEED TO CHANGE
     private boolean isResidual(int init_idx, double offered, double demand) {
 
         double totalCapacitySamePrice = getCapacitySamePrice( init_idx );
@@ -117,8 +121,23 @@ public class SpotMarket implements java.io.Serializable{
         //Reset MarketPrice
         marketPrice=0;
 
-        //Sort Bidders by price
-        Collections.sort(bidders);
+
+
+        if (SpotMarket.efMerit){
+            Collections.sort(bidders, new Comparator<Bid>() {
+                @Override
+                public int compare(Bid o1, Bid o2) {
+                    if (o1.getBidEF(currentYear) < o2.getBidEF(currentYear)) return -1;
+                    if (o1.getBidEF(currentYear) == o2.getBidEF(currentYear)) return 0;
+                    return 1;
+                }
+            });
+
+        } else{
+            //Sort Bidders by price
+            Collections.sort(bidders);
+        }
+
 
         float offered = 0;
 
@@ -139,7 +158,8 @@ public class SpotMarket implements java.io.Serializable{
                     //get only the portion needed to meet demand at that price
                     bsp.capacity = bsp.capacity * percentageResidualBid;
                     offered += bsp.capacity;
-                    marketPrice = bsp.dollarMWh;
+
+                    marketPrice = SpotMarket.efMerit ? Math.max(bsp.dollarMWh, marketPrice) : bsp.dollarMWh;
                     successfulBids.add(bsp);
                 }
 
@@ -149,7 +169,7 @@ public class SpotMarket implements java.io.Serializable{
             }else {
                 //Include bid fully
                 offered += b.capacity;
-                marketPrice = b.dollarMWh;
+                marketPrice = SpotMarket.efMerit ? Math.max(b.dollarMWh, marketPrice) : b.dollarMWh;
                 successfulBids.add(b);
             }
 
@@ -186,7 +206,7 @@ public class SpotMarket implements java.io.Serializable{
 
             g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + mwhGenerated );
             g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + mwhGenerated );
-            g.setHistoricRevenue( g.getHistoricRevenue() + (mwhGenerated * b.dollarMWh) );
+            g.setHistoricRevenue( g.getHistoricRevenue() + (mwhGenerated * b.dollarMWh), currentYear );
         }
     }
 

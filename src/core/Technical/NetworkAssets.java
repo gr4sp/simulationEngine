@@ -59,6 +59,11 @@ public class NetworkAssets implements java.io.Serializable, Asset
 	}
 
 	@Override
+	public double getEmissionsFactor(int currentYear) {
+		return 0;
+	}
+
+	@Override
 	public double diameter() {
 		return diameter;
 	}

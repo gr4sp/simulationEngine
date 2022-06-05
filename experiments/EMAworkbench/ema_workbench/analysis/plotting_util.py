@@ -98,6 +98,7 @@ def plot_envelope(ax, j, time, value, fill=False):
     mean = np.mean(value, axis=0)
 
     color = get_color(j)
+    color = 'black'
 
     if fill:
         #        ax.plot(time, minimum, color=color, alpha=0.3)
@@ -165,7 +166,7 @@ def plot_histogram(ax, values, log):
     return a
 
 
-def plot_kde(ax, values, log):
+def plot_kde(ax, values, log, group_labels=None, color_map = {}):
     '''
 
     Helper function, responsible for plotting a KDE.
@@ -178,9 +179,14 @@ def plot_kde(ax, values, log):
 
 
     '''
-
+    print("kde labels", group_labels)
     for j, value in enumerate(values):
-        color = get_color(j)
+        if group_labels:
+
+            color = color_map.get(group_labels[j], get_color(j))
+
+        else:
+            color = get_color(j)
         kde_x, kde_y = determine_kde(value)
 
         ax.plot(kde_x, kde_y, c=color, ms=1, markevery=20)
@@ -192,6 +198,7 @@ def plot_kde(ax, values, log):
                            ax.get_xaxis().
                            get_view_interval()[1]])
             labels = ["{0:.2g}".format(0), "{0:.2g}".format(ax.get_xlim()[1])]
+
             ax.set_xticklabels(labels)
 
 
@@ -217,7 +224,7 @@ def plot_boxplots(ax, values, log, group_labels=None):
         ax.set_xticklabels(group_labels, rotation='vertical')
 
 
-def plot_violinplot(ax, value, log, group_labels=None):
+def plot_violinplot(ax, value, log, group_labels=None, color_map = {}):
     '''
     helper function for plotting violin plots on axes
 
@@ -236,6 +243,7 @@ def plot_violinplot(ax, value, log, group_labels=None):
     pos = range(len(value))
     dist = max(pos) - min(pos)
     _ = min(0.15 * max(dist, 1.0), 0.5)
+
     for data, p in zip(value, pos):
         if len(data) > 0:
             kde = gaussian_kde(data)  # calculates the kernel density
@@ -245,8 +253,12 @@ def plot_violinplot(ax, value, log, group_labels=None):
 
             scl = 1 / (v.max() / 0.4)
             v = v * scl  # scaling the violin to the available space
+
+            color = color_map.get(group_labels[p], get_color(p))
+
+
             ax.fill_betweenx(
-                x, p - v, p + v, facecolor=get_color(p), alpha=0.6, lw=1.5)
+                x, p - v, p + v, facecolor=color, alpha=0.6, lw=1.5)
 
             for percentile in [25, 75]:
                 quant = scoreatpercentile(data.ravel(), percentile)
@@ -265,7 +277,7 @@ def plot_violinplot(ax, value, log, group_labels=None):
 
 
 def group_density(ax_d, density, outcomes, outcome_to_plot, group_labels,
-                  log=False, index=-1):
+                  log=False, index=-1, color_map= {}):
     '''
     helper function for plotting densities in case of grouped data
 
@@ -298,11 +310,11 @@ def group_density(ax_d, density, outcomes, outcome_to_plot, group_labels,
     elif density == Density.VIOLIN:
         values = [outcomes[key][outcome_to_plot][:, index] for key in
                   group_labels]
-        plot_violinplot(ax_d, values, log, group_labels=group_labels)
+        plot_violinplot(ax_d, values, log, group_labels=group_labels, color_map = color_map)
     elif density == Density.KDE:
         values = [outcomes[key][outcome_to_plot][:, index] for key in
                   group_labels]
-        plot_kde(ax_d, values, log)
+        plot_kde(ax_d, values, log, group_labels, color_map = color_map)
     else:
         raise EMAError("unknown density type: {}".format(density))
 
@@ -390,7 +402,7 @@ def simple_kde(outcomes, outcomes_to_show, colormap, log, minima, maxima):
 
 
 def make_legend(categories, ax, ncol=3, legend_type=LegendEnum.LINE,
-                alpha=1):
+                alpha=1, color_map = {}):
     '''
     Helper function responsible for making the legend
 
@@ -409,11 +421,22 @@ def make_legend(categories, ax, ncol=3, legend_type=LegendEnum.LINE,
             the alpha of the artists
 
     '''
-
+    print(categories)
     some_identifiers = []
     labels = []
     for i, category in enumerate(categories):
-        color = get_color(i)
+        color = color_map.get(category, get_color(i))
+        
+        # if category == 'DQNParam100Ave90Eval':
+        #     color = 'green'
+        #     print("LEGEND GREEN")
+        # elif category == 'DQNPure100AveEval':
+        #     color='red'
+        #     print("LEGEND RED")
+        # else:
+        #     print("LEGEND OTHER")
+        #     color = get_color(i)
+
 
         if legend_type == LegendEnum.LINE:
             artist = plt.Line2D([0, 1], [0, 1], color=color,
@@ -436,6 +459,7 @@ def make_legend(categories, ax, ncol=3, legend_type=LegendEnum.LINE,
         elif legend_type == LegendEnum.PATCH:
             artist = plt.Rectangle((0, 0), 1, 1, edgecolor=color,
                                    facecolor=color, alpha=alpha)
+            
 
         some_identifiers.append(artist)
 

@@ -23,6 +23,9 @@ import pandas as pd
 from ..util import ema_exceptions, get_module_logger
 from .parameters import (CategoricalParameter, IntegerParameter,
                          BooleanParameter)
+from discord_webhook import DiscordWebhook
+
+discord_url = ''
 
 
 #
@@ -106,6 +109,9 @@ class AbstractCallback(object):
 
         if self.i % self.reporting_interval == 0:
             _logger.info(str(self.i) + " cases completed")
+            # webhook = DiscordWebhook(
+            #     url=discord_url, content=str(self.i) + " cases completed")
+            # response = webhook.execute()
 
     @abc.abstractmethod
     def get_results(self):
@@ -227,6 +233,12 @@ class DefaultCallback(AbstractCallback):
                 _logger.debug(message)
             else:
                 try:
+
+                    # if outcome == 'TIMEYear':
+                    #     print(outcome)
+
+                    #     print(case_id)
+                    #     print(self.results)
                     self.results[outcome][case_id, ] = outcome_res
                 except KeyError:
                     a = np.asarray(outcome_res)
@@ -241,7 +253,10 @@ class DefaultCallback(AbstractCallback):
                     shape.insert(0, self.nr_experiments)
 
                     self.results[outcome] = np.empty(shape, dtype=a.dtype)
+                    # print(self.results[outcome][:])
                     self.results[outcome][:] = np.nan
+                    # print(self.results[outcome][:])
+
                     self.results[outcome][case_id, ] = outcome_res
 
     def __call__(self, experiment, outcomes):

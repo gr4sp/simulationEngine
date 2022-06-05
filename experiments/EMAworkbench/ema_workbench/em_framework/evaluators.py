@@ -3,6 +3,22 @@ collection of evaluators for performing experiments, optimization, and robust
 optimization
 
 '''
+from .callbacks import DefaultCallback
+from .ema_multiprocessing import LogQueueReader, initializer, add_tasks
+from .experiment_runner import ExperimentRunner
+from .model import AbstractModel
+from .optimization import (evaluate_robust, evaluate, EpsNSGAII,
+                           to_problem, to_robust_problem,
+                           process_levers, process_uncertainties,
+                           process_robust, _optimize)
+from .outcomes import ScalarOutcome, AbstractOutcome
+from .parameters import (experiment_generator, Scenario, Policy)
+from .samplers import (MonteCarloSampler, FullFactorialSampler, LHSSampler,
+                       PartialFactorialSampler, sample_levers,
+                       sample_uncertainties)
+from .salib_samplers import (SobolSampler, MorrisSampler, FASTSampler)
+from .util import NamedObjectMap, determine_objects
+from ..util import EMAError, get_module_logger, ema_logging
 import multiprocessing
 import numbers
 import os
@@ -22,22 +38,6 @@ except (ImportError, ModuleNotFoundError):
     warnings.warn(
         'ipyparallel not installed - IpyparalleEvaluator not available')
 
-from ..util import EMAError, get_module_logger, ema_logging
-from .util import NamedObjectMap, determine_objects
-from .salib_samplers import (SobolSampler, MorrisSampler, FASTSampler)
-from .samplers import (MonteCarloSampler, FullFactorialSampler, LHSSampler,
-                       PartialFactorialSampler, sample_levers,
-                       sample_uncertainties)
-from .parameters import (experiment_generator, Scenario, Policy)
-from .outcomes import ScalarOutcome, AbstractOutcome
-from .optimization import (evaluate_robust, evaluate, EpsNSGAII,
-                           to_problem, to_robust_problem,
-                           process_levers, process_uncertainties,
-                           process_robust, _optimize)
-from .model import AbstractModel
-from .experiment_runner import ExperimentRunner
-from .ema_multiprocessing import LogQueueReader, initializer, add_tasks
-from .callbacks import DefaultCallback
 
 # TODO:: should become optional import
 
@@ -247,7 +247,7 @@ class MultiprocessingEvaluator(BaseEvaluator):
     def __init__(self, msis, n_processes=None,
                  maxtasksperchild=None, **kwargs):
         super(MultiprocessingEvaluator, self).__init__(msis, **kwargs)
-
+        # multiprocessing.set_start_method('spawn', force=True)
         self._pool = None
         self.n_processes = n_processes
         self.maxtasksperchild = maxtasksperchild
@@ -277,6 +277,9 @@ class MultiprocessingEvaluator(BaseEvaluator):
             self.root_dir = os.path.abspath("tmp" + random_part)
             os.makedirs(self.root_dir)
 
+        # self._pool = multiprocessing.get_context('spawn').Pool(self.n_processes, initializer,
+        #                                                        (self._msis, log_queue, loglevel,
+        #                                                         self.root_dir), self.maxtasksperchild)
         self._pool = multiprocessing.Pool(self.n_processes, initializer,
                                           (self._msis, log_queue, loglevel,
                                            self.root_dir), self.maxtasksperchild)
@@ -421,7 +424,8 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
             counts = np.zeros(len(val))
             for i in range(len(val)):
                 counts[i] = np.count_nonzero(val[i] == var)
-            print("Uncertainty: {} - values {} - counts for each value{}".format(scenarios.parameters[l], val, counts))
+            # print("Uncertainty: {} - values {} - counts for each value{}".format(
+            #     scenarios.parameters[l], val, counts))
 
     else:
         try:
@@ -442,12 +446,12 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
         levers = []
         n_policies = 1
     elif(isinstance(policies, numbers.Integral)):
-        #If a file was given, then load the policies from the file
+        # If a file was given, then load the policies from the file
         if ".object" in levers_sampling:
             with open(levers_sampling, 'rb') as config_dictionary_file:
                 policies = pickle.load(config_dictionary_file)
         else:
-            #otherwise, use one of the samplers
+            # otherwise, use one of the samplers
             policies = sample_levers(models, policies, union=lever_union,
                                      sampler=SAMPLERS[levers_sampling]())
 
@@ -463,7 +467,8 @@ def perform_experiments(models, scenarios=0, policies=0, evaluator=None,
             counts = np.zeros(len(val))
             for i in range(len(val)):
                 counts[i] = np.count_nonzero(val[i] == var)
-            print("lever: {} - values {} - counts for each value{}".format(policies.parameters[l], val, counts))
+            # print("lever: {} - values {} - counts for each value{}".format(
+            #     policies.parameters[l], val, counts))
 
         levers = policies.parameters
         n_policies = policies.n

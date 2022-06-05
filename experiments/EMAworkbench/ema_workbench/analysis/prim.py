@@ -373,7 +373,7 @@ class PrimBox(object):
         else:
             raise AttributeError
 
-    def inspect(self, i=None, style='table', **kwargs):
+    def inspect(self, i=None, style='table', ax = None, **kwargs):
         '''Write the stats and box limits of the user specified box to
         standard out. if i is not provided, the last box will be
         printed
@@ -404,7 +404,7 @@ class PrimBox(object):
         if style == 'table':
             return self._inspect_table(i, uncs, qp_values, **kwargs)
         elif style == 'graph':
-            return self._inspect_graph(i, uncs, qp_values, **kwargs)
+            return self._inspect_graph(i, uncs, qp_values, ax = ax, **kwargs)
         else:
             raise ValueError("style must be one of graph or table")
 
@@ -433,7 +433,7 @@ class PrimBox(object):
     def _inspect_graph(self, i, uncs, qp_values,
                        ticklabel_formatter="{} ({})",
                        boxlim_formatter="{: .2g}",
-                       table_formatter='{:.3g}'):
+                       table_formatter='{:.3g}', ax = None):
         '''Helper function for visualizing box statistics in
         graph form'''
 
@@ -443,7 +443,7 @@ class PrimBox(object):
                                self.peeling_trajectory.at[i, "density"],
                                ticklabel_formatter=ticklabel_formatter,
                                boxlim_formatter=boxlim_formatter,
-                               table_formatter=table_formatter)
+                               table_formatter=table_formatter, ax = ax)
 
     def inspect_tradeoff(self):
         # TODO::
@@ -750,7 +750,7 @@ class PrimBox(object):
         '''show the peeling and pasting trajectory in a figure'''
         return sdutil.plot_ppt(self.peeling_trajectory)
 
-    def show_tradeoff(self, cmap=mpl.cm.viridis):  # @UndefinedVariable
+    def show_tradeoff(self, cmap=mpl.cm.viridis, ax=None):  # @UndefinedVariable
         '''Visualize the trade off between coverage and density. Color
         is used to denote the number of restricted dimensions.
 
@@ -763,7 +763,7 @@ class PrimBox(object):
         a Figure instance
 
         '''
-        return sdutil.plot_tradeoff(self.peeling_trajectory, cmap=cmap)
+        return sdutil.plot_tradeoff(self.peeling_trajectory, cmap=cmap, ax=ax)
 
     def show_pairs_scatter(self, i=None):
         ''' Make a pair wise scatter plot of all the restricted

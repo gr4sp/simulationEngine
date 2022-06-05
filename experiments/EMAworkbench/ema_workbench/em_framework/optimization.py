@@ -19,6 +19,10 @@ from .util import determine_objects
 from ..util import get_module_logger, EMAError, temporary_filter, INFO
 from . import callbacks, evaluators
 
+from discord_webhook import DiscordWebhook
+
+discord_url = ''
+
 try:
     from platypus import (
         EpsNSGAII,
@@ -235,6 +239,7 @@ def to_platypus_types(decision_variables):
             decision_variable = klass(dv.categories, 1)
 
         types.append(decision_variable)
+    print("TYPES", types)
     return types
 
 
@@ -600,6 +605,9 @@ class Convergence(object):
             _logger.info(
                 "generation {}: {}/{} nfe".format(self.generation, nfe,
                                                   self.max_nfe))
+            # webhook = DiscordWebhook(url=discord_url, content="generation {}: {}/{} nfe".format(self.generation, nfe,
+            #                                                                                     self.max_nfe))
+            # response = webhook.execute()
 
     def to_dataframe(self):
         progress = {metric.name: metric.results for metric in
@@ -804,8 +812,7 @@ class CombinedMutator(CombinedVariator):
 
 
 def _optimize(problem, evaluator, algorithm, convergence, nfe,
-              convergence_freq, logging_freq, **kwargs):
-
+              convergence_freq, logging_freq, restart_optimizer=None, **kwargs):
     klass = problem.types[0].__class__
 
     if all([isinstance(t, klass) for t in problem.types]):
@@ -814,9 +821,17 @@ def _optimize(problem, evaluator, algorithm, convergence, nfe,
         variator = CombinedVariator()
     mutator = CombinedMutator()
 
-    optimizer = algorithm(problem, evaluator=evaluator, variator=variator,
-                          log_frequency=500, **kwargs)
-    optimizer.mutator = mutator
+    if restart_optimizer == None:
+        optimizer = algorithm(problem, evaluator=evaluator, variator=variator,
+                              log_frequency=500, **kwargs)
+        optimizer.mutator = mutator
+    else:
+        optimizer = restart_optimizer
+        # optimizer.problem = problem
+        optimizer.evaluator = evaluator
+        optimizer.algorithm.evaluator = evaluator
+        optimizer.problem.ema_constraints = problem.ema_constraints
+        # optimizer.problem.scenarios = problem.scenarios
 
     convergence = Convergence(convergence, nfe,
                               convergence_freq=convergence_freq,
@@ -836,9 +851,9 @@ def _optimize(problem, evaluator, algorithm, convergence, nfe,
     _logger.info(message.format(len(optimizer.algorithm.archive)))
 
     if convergence.empty:
-        return results
+        return results, optimizer
     else:
-        return results, convergence
+        return results, convergence, optimizer
 
 
 class BORGDefaultDescriptor(object):

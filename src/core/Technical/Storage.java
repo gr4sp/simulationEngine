@@ -60,6 +60,11 @@ public class Storage implements java.io.Serializable, Asset
         this.assetRelationships.add(newAssetRel);
     }
 
+	@Override
+	public double getEmissionsFactor(int currentYear) {
+		return 0;
+	}
+
 
 	public double getGeneration(Gr4spSim data, Date d, HashMap<Date, Integer> newHouseholdsPerDate ){
 		double generation = 0.0;

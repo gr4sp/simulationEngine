@@ -7,4 +7,5 @@ public interface Asset {
     void addAssetRelationship( ActorAssetRelationship newAssetRel);
 
 
+    double getEmissionsFactor(int currentYear);
 }

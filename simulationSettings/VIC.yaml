@@ -1,7 +1,7 @@
 #Folder that has the following folders: logs, csv, and plots
 
 #folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
-folderOutput: "/data/gr4sp"
+folderOutput: "/home/XXX/Repositories/gr4sp"
 
 
 # report can be "full" or "light"
@@ -39,7 +39,7 @@ population:
   # Include regional with all framework indicators, 100% Population data
   areaCode: VIC
   populationPercentageAreacCode: 1.0
-    #    # percentage of households with one, two, three, four, or 5 or more occupants
+  #    # percentage of households with one, two, three, four, or 5 or more occupants
   # From
   #    householdTypePercentageArea:
   #      h1: 0.1
@@ -119,14 +119,14 @@ policy:
 # market settings
 arena:
   #Regulation https://www.aemc.gov.au/sites/default/files/2020-06/NER%20-%20v142%20-%20Chapter%202.pdf
-  scheduled:
+  scheduled: # Brown coal etc
     # primary/secondary/none
     spotMarket: primary
-    minCapMarketGen: 30
-  semiScheduled:
+    minCapMarketGen: 30 # Refers to right now in the Aus market only units that has at least 30Mw has to participate. If I lower that, unlikely to do anything.
+  semiScheduled: # Wind/solar
     spotMarket: primary
     minCapMarketGen: 30 #0.1
-  nonScheduled:
+  nonScheduled: # Sometimes is small/medium scale generation, not connected to the main grid. E.g. Rooftop, small diesel generators. Less than 30mW
     spotMarket: none
     minCapMarketGen: 0.1
 

@@ -450,7 +450,7 @@ def plot_box(boxlim, qp_values, box_init, uncs,
              coverage, density,
              ticklabel_formatter="{} ({})",
              boxlim_formatter="{: .2g}",
-             table_formatter="{:.3g}"):
+             table_formatter="{:.3g}", ax = None):
     '''Helper function for parallel coordinate style visualization
     of a box
 
@@ -593,7 +593,7 @@ def plot_ppt(peeling_trajectory):
     return fig
 
 
-def plot_tradeoff(peeling_trajectory, cmap=mpl.cm.viridis):  # @UndefinedVariable
+def plot_tradeoff(peeling_trajectory, cmap=mpl.cm.viridis, ax=None):  # @UndefinedVariable
     '''Visualize the trade off between coverage and density. Color
     is used to denote the number of restricted dimensions.
 
@@ -608,7 +608,8 @@ def plot_tradeoff(peeling_trajectory, cmap=mpl.cm.viridis):  # @UndefinedVariabl
     '''
 
     fig = plt.figure()
-    ax = fig.add_subplot(111, aspect='equal')
+    if not ax:
+        ax = fig.add_subplot(111, aspect='equal')
 
     boundaries = np.arange(-0.5,
                            max(peeling_trajectory['res_dim']) + 1.5,
@@ -630,7 +631,7 @@ def plot_tradeoff(peeling_trajectory, cmap=mpl.cm.viridis):  # @UndefinedVariabl
                          max(peeling_trajectory['res_dim']) + 1,
                          step=1)
     cb = fig.colorbar(p, spacing='uniform', ticks=ticklocs,
-                      drawedges=True)
+                      drawedges=True, ax=ax)
     cb.set_label("nr. of restricted dimensions")
 
     return fig

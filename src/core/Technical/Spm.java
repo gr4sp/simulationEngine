@@ -98,10 +98,16 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
     public void getActiveGensAllSPM(Date today, ArrayList<Generator> gens) {
 
         getActiveGensThisSPM(today, gens);
+        // if (spms_contained.size() == 1) System.out.println("Only 1");
 
         //Recursively get active generators contained in SPM
         for (Spm scontained : spms_contained) {
+            if (spms_contained == null) System.out.println("SPMS_CONTAINED");
+            if (today == null) System.out.println("TODAY");
+            if (gens == null) System.out.println("gens");
+
             scontained.getActiveGensAllSPM(today, gens);
+
         }
     }
 
@@ -339,7 +345,15 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
         //Recursion through SPMs
 
         for (Spm s_inside : spms_contained) {
-            s_inside.computeIndicators(state, consumption, recursionLevel + 1);
+            // try {
+                s_inside.computeIndicators(state, consumption, recursionLevel + 1);    
+            // } catch (Exception e) {
+            //     System.out.println("State" + String.valueOf(state == null));
+            //     System.out.println("s_inside " + String.valueOf(s_inside == null));
+
+            //     //TODO: handle exception
+            // }
+            
             this.genEmissionIntensityIndex += (1 / (1 - networkLosses)) * s_inside.getGenEmissionIntensityIndex();
         }
 
@@ -441,6 +455,11 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
     @Override
     public void addAssetRelationship(ActorAssetRelationship newAssetRel) {
         this.assetRelationships.add(newAssetRel);
+    }
+
+    @Override
+    public double getEmissionsFactor(int currentYear) {
+        return 0;
     }
 
     public double getGenAvailable() {
