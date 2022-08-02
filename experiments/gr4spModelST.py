@@ -18,6 +18,7 @@ def getModelAfterBaseYear():
     model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 9, 10)] #PRIM's box 6 worst cases (avoiding non-scehdule in markets)
     model.uncertainties += [CategoricalParameter('generationRolloutPeriod', [1, 3, 5, 7, 10])]
     model.uncertainties += [CategoricalParameter('nameplateCapacityChangeBrownCoal', [-30, -20, -10, 0, 20])]
+    model.uncertainties += [CategoricalParameter('wholesaleTariffContribution', [10, 20, 30, 40, 50])]  # ( 11, 45) BAU 0.2837
 
 
 
@@ -57,7 +58,7 @@ def getModelAfterBaseYear():
 
 
 # variation of contribution of networks, retail and other charges in the tariff
-    model.constants += [Constant('wholesaleTariffContribution', 28.37)] # ( 11, 45) BAU 0.2837
+    #model.constants += [Constant('wholesaleTariffContribution', 28.37)] # ( 11, 45) BAU 0.2837
 
 # arenas
     model.constants += [Constant('scheduleMinCapMarketGen', 300)]

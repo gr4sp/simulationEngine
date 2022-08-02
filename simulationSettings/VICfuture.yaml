@@ -1,6 +1,6 @@
 population:
 
-  # !!!!! DOES AFFECT 1998-2019
+  # !!!!!These changes apply from baseYear onward (2019)
 
   # Percentage of Total Consumption that corresponds to residential consumption (use in secondary markets, and emissions per household)
   domesticConsumptionPercentage: 0.3
@@ -20,11 +20,11 @@ forecast:
   #(latest forecast Nov 2019 - Dec 2021 https://www.rba.gov.au/publications/smp/2019/aug/forecasts.html)
 
   #This is applied to the tariffs (see EndUser class). If price rises in year baseYear+1 is 2%, then annualCpi should be 0.02.
-  #https://www.rateinflation.com/consumer-price-index/australia-historical-cpi.php?start-year=1948&end-year=2019
+  #https://www.rateinflation.com/consumer-price-index/australia-historical-cpi/
   # From base year onwards, BAU is median change of CPI between 1990 to 2019 was 2.33 and average 2.43. Max 5 and min 0.
   annualCpi: 0.0233
 
-  #true means new generation that has been publically announced but not committed is included.
+  #true means new generation that has been publically announced but not yet committed is included.
   includePublicallyAnnouncedGen: false #true
   #Rollout period of announced generation: including "Publically announced", "Emerging", "Committed",
   # and "In Commissioning". This are all the projects that are on their way to be integrated in the generation pool but haven't
@@ -41,8 +41,6 @@ forecast:
   #improves capacity factors of renewable technologies by adding a constant factor every year (not compounded)
   # Works only for Wind, added to cap factor [0,0.5], and Solar by increasing the solarEfficiency  [0.7,1])
 
-
-  # !!!!! DOES AFFECT 1998-2019
   technologicalImprovement: 0.01
 
   # Learning curve for solar and wind technologies.
@@ -54,18 +52,12 @@ forecast:
   # Changes of this variable will only affect price from imports after the base year.
   importPriceFactor: 0.29
 
-
-# !!!!! DOESN'T AFFECT 1998-2019
 policy:
-
 
   # Apply inflation to the max and min value used by generators to define the LCOE from the base year onwards
   # median inflation from 1990-2019 is 1.85% and average 5.06%, Max 19.33% and min -0.33%.
   # source from https://www.rateinflation.com/inflation-rate/australia-historical-inflation-rate.php?start-year=1949&end-year=2019
   annualInflation: 0.033
-
-
-# !!!!! DOES AFFECT 1998-2019
 
 # market settings
 arena:
@@ -81,7 +73,6 @@ arena:
     spotMarket: none
     minCapMarketGen: 0.1
 
-
 generators:
 
   # Gas other, Other
@@ -92,7 +83,7 @@ generators:
   # E.g. Municipal Solid Waste, Bagasse, other. Default will be similar to other Biomass numbers e.g. Dry Wood
 
   #TODO: battery storage LCOE. Only discharge
-
+##Prices are uptated at the same time in both settings (1998 adn 2019) but the changes are applied only to VICFuture
   Default:
     #LCOE Price Parameters
     basePriceMWh: 1

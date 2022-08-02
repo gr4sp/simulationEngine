@@ -14,8 +14,8 @@ import static java.lang.System.exit;
 
 //Class to load all the data to start the simulation
 public class LoadData implements java.io.Serializable {
-
-//todo: use these actor-asset relationships
+    
+    //todo: use these actor-asset relationships
     //Functions to convert readings from text in DB to Actor type, etc.
     public static ActorAssetRelationshipType stringToActorAssetTypeRelType(String actorAssetRelType) {
 
@@ -31,11 +31,10 @@ public class LoadData implements java.io.Serializable {
     public static void
     selectInflation(Gr4spSim data) {
         //Loading Inflation data (from 1990 to 2019)
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         String sql = "SELECT  year, average FROM  historic_inflation";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -59,7 +58,6 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectForecastConsumption(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -72,9 +70,10 @@ public class LoadData implements java.io.Serializable {
                 "AND region = 'VIC' " +
                 "AND (scenario = 'Actual' OR scenario ='"+ data.settingsAfterBaseYear.getForecastScenarioConsumption()+"') ";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
+
 
             // loop through the result set
             while (rs.next()) {
@@ -103,7 +102,6 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectForecastEnergyEfficency(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -116,7 +114,7 @@ public class LoadData implements java.io.Serializable {
                 "AND region = 'VIC' " +
                 "AND (scenario ='"+ data.settingsAfterBaseYear.getForecastScenarioEnergyEfficiency()+"') ";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -144,7 +142,6 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectForecastOnsiteGeneration(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -157,7 +154,7 @@ public class LoadData implements java.io.Serializable {
                 "AND region = 'VIC' " +
                 "AND (scenario ='"+ data.settingsAfterBaseYear.getForecastScenarioOnsiteGeneration()+"') ";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -185,7 +182,6 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectForecastSolarUptake(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -198,7 +194,7 @@ public class LoadData implements java.io.Serializable {
                 "AND region = 'VIC' " +
                 "AND (scenario ='"+ data.settingsAfterBaseYear.getForecastScenarioSolarUptake()+"') ";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -253,7 +249,6 @@ public class LoadData implements java.io.Serializable {
     // Select Forecast ISP maximum demand (MW)
     public static void
     selectMaximumDemandForecast(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -263,7 +258,7 @@ public class LoadData implements java.io.Serializable {
                 "isp_maximum_demand.scenario as maxDemandForecastScenario, isp_maximum_demand.maximum_demand as maxDemandForecast " +
                 "FROM  isp_maximum_demand";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -285,14 +280,13 @@ public class LoadData implements java.io.Serializable {
     // Select Forecast ISP minimum demand (MW)
     public static void
     selectMinimumDemandForecast(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
 
         String sql = "SELECT isp_minimum_demand.region as minDemandForecastRegion, isp_minimum_demand.year as minDemandForecastYear, isp_minimum_demand.category as minDemandForecastCategory, isp_minimum_demand.subcategory as minDemandForecastSubCategory, isp_minimum_demand.scenario as minDemandForecastScenario, isp_minimum_demand.maximum_demand as minDemandForecast FROM  isp_minimum_demand";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -314,7 +308,6 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectArena(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -322,7 +315,7 @@ public class LoadData implements java.io.Serializable {
         String sql = "SELECT arenas.name as arenaname, arenas.type as arenatype, id" +
                 " FROM  arenas ;";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -352,7 +345,6 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectTariffs(Gr4spSim data, String startDate, String endDate, String areaCode) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -360,7 +352,7 @@ public class LoadData implements java.io.Serializable {
                 " FROM cpi_conversion;";
 
         //Loading CPI Conversion data
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -398,7 +390,7 @@ public class LoadData implements java.io.Serializable {
                     " AND date >= '" + startDate + "';";
 
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -458,7 +450,7 @@ public class LoadData implements java.io.Serializable {
         sql = "SELECT year, wholesale" +
                 " FROM historic_tariff_contribution;";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -485,7 +477,6 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectDemandHalfHour(Gr4spSim data, String startDate, String endDate) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         /**
          * Load Total Consumption per month
@@ -495,7 +486,7 @@ public class LoadData implements java.io.Serializable {
                 " settlement_date <= '" + endDate + "'" +
                 " AND settlement_date >= '" + startDate + "';";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -710,7 +701,6 @@ public class LoadData implements java.io.Serializable {
     }
 
     public static void createForecastDomesticConsumers(Gr4spSim data){
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -725,7 +715,7 @@ public class LoadData implements java.io.Serializable {
         ArrayList< Map.Entry<Integer,Integer> > forecast = new ArrayList<>();
 
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1026,7 +1016,6 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectConsumption(Gr4spSim data, String startDate, String startSpotDate, String endDate) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1039,7 +1028,7 @@ public class LoadData implements java.io.Serializable {
                 " date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "';";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1100,7 +1089,7 @@ public class LoadData implements java.io.Serializable {
                 " AND date >= '" + startDate + "';";
 
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1218,7 +1207,6 @@ public class LoadData implements java.io.Serializable {
      * */
     public static void
     selectGenerationHistoricData(Gr4spSim data, String startDate, String endDate) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1235,7 +1223,7 @@ public class LoadData implements java.io.Serializable {
                 " AND date >= '" + startDate + "';";
 
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1266,13 +1254,12 @@ public class LoadData implements java.io.Serializable {
     }
 
     public static void selectHalfHourSolarExposure(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         String sql = "SELECT time , ghi" +
                 " FROM solar_ghi;";
 
         //Loading Solar Exposure data
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1297,7 +1284,6 @@ public class LoadData implements java.io.Serializable {
     }
 
     public static void selectSolarInstallation(Gr4spSim data) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -1305,7 +1291,7 @@ public class LoadData implements java.io.Serializable {
                 " FROM solar_installation_monthly;";
 
         //Loading Solar installation data
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1346,13 +1332,12 @@ public class LoadData implements java.io.Serializable {
 
     public static void
     selectActors(Gr4spSim data, String startDate, String changeDate) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT id, name, registration_date, change_date, reg_number, region, role, business_structure"  +
                 " FROM  actors  WHERE region = '" + data.settings.getAreaCode() + "';";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1399,7 +1384,6 @@ public class LoadData implements java.io.Serializable {
     // Actor asset relationships function
     public static void
     selectActorAssetRelationships(Gr4spSim data, String tableName) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres";//"jdbc:sqlite:Spm_archetypes.db";
 
         for (Map.Entry<Integer, Actor> entry : data.getActor_register().entrySet()) {
             Actor actor = entry.getValue();
@@ -1408,7 +1392,7 @@ public class LoadData implements java.io.Serializable {
                     " FROM " + tableName + " WHERE actorid = " + actor.getId();
 
 
-            try (Connection conn = DriverManager.getConnection(url);
+            try (Connection conn = DriverManager.getConnection(data.url);
                  Statement stmt = conn.createStatement();
                  ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1487,7 +1471,6 @@ public class LoadData implements java.io.Serializable {
      * select all rows in the Generation Technologies table
      */
     public static ArrayList<Generator> selectGenTech(Gr4spSim data, String min_nameplate_capacity, String max_nameplate_capacity) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; // url for sqlite "jdbc:sqlite:Spm_archetypes.db";
 
 
         SimpleDateFormat DateToString = new SimpleDateFormat("yyyy-MM-dd");
@@ -1507,7 +1490,7 @@ public class LoadData implements java.io.Serializable {
         }
 
         ArrayList<Generator> gens = new ArrayList<Generator>();
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1643,13 +1626,12 @@ public class LoadData implements java.io.Serializable {
 
 
     public static ArrayList<Storage> selectStorage(Gr4spSim data, String idst) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT storage_id, storage_name, storagetype, storageoutputcap , storagecapacity, ownership," +
                 " storage_cyclelife, storage_costrange  FROM storage WHERE storage_id = '" + idst + "' ";
         ArrayList<Storage> strs = new ArrayList<Storage>();
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1685,7 +1667,6 @@ public class LoadData implements java.io.Serializable {
 
     //Select and create the type of energy grid
     public static ArrayList<NetworkAssets> selectNetwork(Gr4spSim data, String subname) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT networkassets.id as netid, networkassettype.type as type, networkassettype.subtype as subtype, " +
@@ -1694,7 +1675,7 @@ public class LoadData implements java.io.Serializable {
                 "JOIN networkassettype ON networkassets.assettype = networkassettype.id " +
                 "and  networkassets.assetname SIMILAR TO '" + subname + "%' ";
         ArrayList<NetworkAssets> nets = new ArrayList<NetworkAssets>();
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1747,12 +1728,11 @@ public class LoadData implements java.io.Serializable {
     //TODO knowledge and energy hubs within prosumer communities, where to include them?
 
     public static ArrayList<ConnectionPoint> selectConnectionPoint(Gr4spSim data, String name) {
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
 
         String sql = "SELECT cpoint_id, cpoint_name, cpoint_type, distancetodemand, cpoint_locationcode, cpoint_owner, ownership FROM connectionpoint WHERE cpoint_name = '" + name + "' ";
         ArrayList<ConnectionPoint> cpoints = new ArrayList<ConnectionPoint>();
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -1795,11 +1775,10 @@ public class LoadData implements java.io.Serializable {
          *  If it's the first time this spm.id is needed, then we create its object,
          *  If it already exists, we just retrieve the object from the spm_register
          */
-        String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres"; //"jdbc:sqlite:Spm_archetypes.db";
 
         String spmGenSql = "SELECT id, spm.shared, spm_contains, generation, network_assets, interface, storage, description FROM spm WHERE spm.id = '" + idSpmActor + "' ";
 
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(spmGenSql)) {
 
@@ -1924,7 +1903,7 @@ public class LoadData implements java.io.Serializable {
 //                "on ConnectionPoint.cpoint_id = Spm_connection_mapping.connectionId and Spm.id = Spm_connection_mapping.spmId and Spm.name = '" + name + "' ";
 //        Bag cpoints = new Bag();
 //
-//        try (Connection conn = DriverManager.getConnection(url);
+//        try (Connection conn = DriverManager.getConnection(data.url);
 //             Statement stmt = conn.createStatement();
 //             ResultSet rs = stmt.executeQuery(spmCptSql)) {
 //            Boolean printed = false;

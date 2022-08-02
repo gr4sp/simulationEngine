@@ -9,22 +9,21 @@ from EMAworkbench.ema_workbench import (IntegerParameter, RealParameter, Categor
                                         ScalarOutcome, TimeSeriesOutcome, Constant, Model)
 
 #mode with varaible change before base year and future changes using forecast after base year
-def getModel():
-    model = Model('Gr4sp', function=connectorBAU.runGr4sp)
+#def getModel():
+
+def getModelAfterBaseYear():
+    model = Model('Gr4sp', function=connectorBAU.runGr4spAfterBaseYear)
     # set inputs as constants for BAU
-    model.uncertainties = [CategoricalParameter('energyEfficiency', ['Central', 'Slow change', 'Step change'])]
-    model.levers = [CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
-
-    model.constants = [Constant('consumption',0)]
+    model.constants = [Constant('consumption', 0)]
+    model.constants += [Constant('annualCpi', 2.33)]  # percentage BAU 2.33
+    model.constants += [Constant('annualInflation', 3.3)]  # percentage BAU 3.3
+    model.uncertainties = [CategoricalParameter('energyEfficiency', [0,1])]
+    #model.levers = [CategoricalParameter('solarUptake', ['Central', 'Slow change', 'Fast change', 'Step change', 'High DER'])]
+    #model.constants += [Constant('energyEfficiency', 0)]
     model.constants += [Constant('onsiteGeneration', 0)]
-    model.constants += [Constant('rooftopPV', 0)]
-
+    model.constants += [Constant('solarUptake', 0)]
+    model.constants += [Constant('rooftopPV', 7)]
     model.constants += [Constant('domesticConsumptionPercentage', 30)] #percentage (15, 35)
-
-    model.constants += [Constant('annualCpi', 2)] #percentage BAU 2.33
-    model.constants += [Constant('annualInflation', 3)] #percentage BAU 3.3
-
-
     model.constants += [Constant('includePublicallyAnnouncedGen', 0)]
     model.constants += [Constant('generationRolloutPeriod', 1)]
     model.constants += [Constant('generatorRetirement', 0)]
@@ -57,14 +56,14 @@ def getModel():
     model.constants += [Constant('nameplateCapacityChangeSolar', 0)]
 
 # variation of contribution of networks, retail and other charges in the tariff
-    model.constants += [Constant('wholesaleTariffContribution', 28)] # ( 11, 45) BAU 0.2837
+    model.constants += [Constant('wholesaleTariffContribution', 28.37)] # ( 11, 45) BAU 0.2837
 
 # arenas
-    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
+    model.constants += [Constant('scheduleMinCapMarketGen', 300)]
     model.constants += [Constant('semiScheduleGenSpotMarket', 8)]
-    model.constants += [Constant('semiScheduleMinCapMarketGen', 30)]
-    model.constants += [Constant('nonScheduleGenSpotMarket', 8)]
-    model.constants += [Constant('nonScheduleMinCapMarketGen', 0.1)]
+    model.constants += [Constant('semiScheduleMinCapMarketGen', 300)]
+    model.constants += [Constant('nonScheduleGenSpotMarket', 10)]
+    model.constants += [Constant('nonScheduleMinCapMarketGen', 1)]
 
 # specify outcomes
     model.outcomes = [

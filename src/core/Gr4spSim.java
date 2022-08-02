@@ -35,7 +35,7 @@ class MySecurityManager extends SecurityManager {
 
 public class Gr4spSim extends SimState implements java.io.Serializable {
     private static final long serialVersionUID = 1;
-
+    public static String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres";
     public final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 
@@ -141,7 +141,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     public static String outputID;
 
     public Gr4spSim(long seed ) {
-
+    //1607932481652L
         super(seed);
 
         //Generate Unique ID to represent all generated data Files (SaveData and Logger)

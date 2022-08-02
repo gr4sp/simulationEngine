@@ -88,9 +88,14 @@ sudo -u postgres psql
 \q
 ```
 
-To load data into the database
+To load data into the database in linux run
 ```
 sudo -u postgres pg_restore -U postgres -d postgres < backupDB/databaseName.sql
+```
+If you are using windows run instead
+
+```
+pg_restore.exe -U postgres -d postgres -l backupDB/databaseName.sql
 ```
 
 :warning: If you already loaded the database and you need to recreate it again using a new different backup file run:

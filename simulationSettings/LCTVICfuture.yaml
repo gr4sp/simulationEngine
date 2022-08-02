@@ -25,7 +25,7 @@ forecast:
   annualCpi: 0.0233
 
   #true means new generation that has been publically announced but not committed is included.
-  includePublicallyAnnouncedGen: false #true
+  includePublicallyAnnouncedGen: false
   #Rollout period of announced generation: including "Publically announced", "Emerging", "Committed",
   # and "In Commissioning". This are all the projects that are on their way to be integrated in the generation pool but haven't
   # start operating
@@ -75,7 +75,7 @@ arena:
     spotMarket: primary
     minCapMarketGen: 30
   semiScheduled:
-    spotMarket: primary
+    spotMarket: primary #primary
     minCapMarketGen: 30 #0.1
   nonScheduled:
     spotMarket: none
@@ -129,7 +129,7 @@ generators:
 
   Brown Coal:
     #LCOE Price Parameters
-    basePriceMWh: 4.75 # option 2: 14.25
+    basePriceMWh: 4.75 #5.4625 15% #5.225 10% #25% 5.9375   # 30% 6.175  #5.7 #4.75 #BAU
     nameplateCapacityChange: 1.0
 
   Gas Pipeline Turbine - OCGT:
@@ -146,7 +146,8 @@ generators:
     #LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf
     #https://co2crc.com.au/wp-content/uploads/2019/12/Exec-Briefing_A4_forweb.pdf
     # also from CSRIO report from 2018 on Generation Costs
-    basePriceMWh: 10.45 #option 2: 6.27
+    basePriceMWh: 10.45 #7.315 (30% cheaper) #10.45 # 8.36 (20 cheaper) #9.405 (10% cheaper) #10.45 #BAU #option 2: 6.27 # 8.8825 (15% cheaper)
+
     nameplateCapacityChange: 1.0
 
   Water:

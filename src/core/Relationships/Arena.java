@@ -20,7 +20,6 @@ public class Arena implements Steppable,  java.io.Serializable  {
     //    private ArrayList<EligibilityRule> eligibilityRules;
 
     //    private float transactionFee; //percentage fee
-
     private SpotMarket primarySpot;
     private double avgMonthlyPricePrimarySpot;
     private double avgMonthlyPriceSecondarySpot;
@@ -223,7 +222,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 Arena a = entry.getValue();
                 if (a.type.equalsIgnoreCase("Spot")) {
 
-                    //Weighted average between secondaryPrice and unmet demand supplied by the primary spot
+                    //Weighted average between secondarySpot Price and unmet demand supplied by the primary spot
                     if (data.settingsAfterBaseYear.existsMarket("secondary")) {
                         price = (avgMonthlyPricePrimarySpot * avgMonthlyDemandPrimarySpot +
                                 avgMonthlyPriceSecondarySpot * avgMonthlyDemandSecondarySpot +

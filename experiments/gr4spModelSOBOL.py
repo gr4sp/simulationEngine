@@ -49,7 +49,7 @@ def getModel():
     # specify constants - levers deemed not significant by EET
     model.constants = [Constant('onsiteGeneration', 0)]
     model.constants += [Constant('rooftopPV', 7)]
-    model.constants += [Constant('scheduleMinCapMarketGen', 30)]
+    model.constants += [Constant('scheduleMinCapMarketGen', 300)] # Sobol has to be re-run with 300. The value used for the latest experiments was 30
     model.constants += [Constant('priceChangePercentageSolar', 0)]
     model.constants += [Constant('annualCpi', 2.33)]  # percentage
     model.constants += [Constant('annualInflation', 3.3)]  # percentage
@@ -69,7 +69,7 @@ def getModel():
     model.uncertainties += [IntegerParameter('wholesaleTariffContribution', 10, 46)] # ( 11, 45)
     model.uncertainties += [IntegerParameter('priceChangePercentageBrownCoal', -50, 51)]
     model.uncertainties += [IntegerParameter('includePublicallyAnnouncedGen', 0, 2)]
-    model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8,11)]
+    model.uncertainties += [IntegerParameter('nonScheduleGenSpotMarket', 8, 11)]
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeWind', -50, 51)]
     model.uncertainties += [IntegerParameter('importPriceFactor', -50, 51)] #percentage from historic variations observed in OpenNem
     model.uncertainties += [IntegerParameter('nameplateCapacityChangeBattery', -50, 51)]

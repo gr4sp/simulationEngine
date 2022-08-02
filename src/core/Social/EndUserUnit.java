@@ -139,7 +139,6 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
             //Update tariff every 12 months
             else if( currentMonth == 0 ){
             //else if( currentMonth == 0 ){
-
                 float wholesalePriceComponent = 0;
 
                 c.setTime(today);
@@ -165,7 +164,7 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 Date cpiDate = c.getTime();
                 float conversion_rate = data.getCpi_conversion().get(cpiDate);
 
-                //Compute Average Wholesale Price using the last 12 months values saved in SaveData.java
+                //Compute Average Wholesale Price using the last 6 months values saved in SaveData.java
                 //Current month price hasn't been stored yet, so we initialize it with the price for the current month
                 // Convert $/MWh -> c/KWh
                 //double avgWholesalePrice = (float) (spotArena.getWholesalePrice(simState) * conversion_rate) / (float) 10.0;
