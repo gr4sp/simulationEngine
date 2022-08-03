@@ -28,7 +28,7 @@ sudo apt install default-jdk
 See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04) more details on how to setup JAVA in ubuntu
 ### Windows
 
-follow [this instructions](https://java.com/en/download/help/windows_manual_download.xml)
+follow [these instructions](https://java.com/en/download/help/windows_manual_download.xml)
 
 ## Python
 
@@ -40,9 +40,8 @@ Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
 
 You can use [InteliJ](https://www.jetbrains.com/idea/). Once installed, open the project clicking on the gr4sp.iml file. You can compile/build and run from InteliJ.
 
-Alternatively, run this command from the root of the repo to make the bash script executable
+Alternatively, run this command from the root of the repo to make the bash script executable:
 
-run this command from the root of the repo
 ```
 javac -d classes -cp src/:/mnt/data/gr4sp/experiments/../libraries/bsh-2.0b4.jar:/mnt/data/gr4sp/experiments/../libraries/itext-1.2.jar:/mnt/data/gr4sp/experiments/../libraries/j3dcore.jar:/mnt/data/gr4sp/experiments/../libraries/j3dutils.jar:/mnt/data/gr4sp/experiments/../libraries/jcommon-1.0.21.jar:/mnt/data/gr4sp/experiments/../libraries/jfreechart-1.0.17.jar:/mnt/data/gr4sp/experiments/../libraries/jmf.jar:/mnt/data/gr4sp/experiments/../libraries/mason.19.jar:/mnt/data/gr4sp/experiments/../libraries/portfolio.jar:/mnt/data/gr4sp/experiments/../libraries/vecmath.jar:/mnt/data/gr4sp/experiments/../libraries/postgresql-42.2.6.jar:/mnt/data/gr4sp/experiments/../libraries/opencsv-4.6.jar:/mnt/data/gr4sp/experiments/../libraries/yamlbeans-1.13.jar  $(find src -name *.java)
 ```
