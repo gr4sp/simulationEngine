@@ -1,6 +1,6 @@
 # gr4sp
 This repository holds the source code of the Generic Recursive Simulation of Socio-technical Systems for Service Provision (GR4SP) model.
-The simulation model uses data for the Victorian electricity system in Australia. But GR4SP's structure can guide the development of similar simulations in contexts.
+The simulation model uses data for the Victorian electricity system in Australia. But GR4SP's structure can guide the development of similar simulations in other contexts.
 
 In addition to the source code of the main simulation engine, an Agent-based model in Java, this repository holds several Jupyter notebooks for analysing and visualising sets of experimental results.
 
