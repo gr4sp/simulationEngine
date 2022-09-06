@@ -1,0 +1,43 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  GR4SP, a Generic Recursive Simulation of
+  Socio-technical Systems for Service Provision
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Angela Maria
+    family-names: Rojas-Arevalo
+    email: angel.rouges@gmail.com
+    affiliation: The University of Melbourne
+    orcid: 'https://orcid.org/0000-0003-4558-6423'
+repository-code: 'https://github.com/gr4sp/'
+abstract: >-
+  This simulation model is the outcome of the
+  analysis framework used to represent the
+  electricity system from a socio-technical point of
+  view. The computer simulation model bridges
+  qualitative historical narratives with quantitative
+  analysis using the Victorian electricity system as
+  a case study. This approach helped validate the
+  system's performance against historical data,
+  giving confidence in the model to explore future
+  transition pathways.
+
+  GR4SP stands for Generic Recursive Simulation of
+  Socio-technical Systems for Service Provision. The
+  simulation model uses energy (electricity) data
+  from the Victorian system, but GR4SP's structure
+  can be generalised to other systems for service
+  provision.
+keywords:
+  - Energy
+  - Sustainability transitions
+  - Socio-technical systems
+  - Simulation
+license: MIT
+date-released: '2022-08-03'
