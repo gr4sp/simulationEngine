@@ -1,0 +1,24 @@
+# Ensure Unix line endings for shell scripts (critical for gradlew on Linux/Mac)
+*.sh        text eol=lf
+gradlew     text eol=lf
+
+# Windows batch files use CRLF
+*.bat       text eol=crlf
+gradlew.bat text eol=crlf
+
+# Source and config files normalise to LF
+*.java      text eol=lf
+*.py        text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.json      text eol=lf
+*.gradle    text eol=lf
+*.md        text eol=lf
+*.properties text eol=lf
+
+# Binary files — no line ending conversion
+*.jar       binary
+*.png       binary
+*.pdf       binary
+*.zip       binary
+*.sql       binary
