@@ -231,6 +231,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
             settings = reader.read(Settings.class);
             settings.computeSolarEfficiency();
+            if (settings.folderOutput == null || settings.folderOutput.trim().equals("auto")) {
+                settings.folderOutput = System.getProperty("user.dir");
+            }
 
             // Load Future Yaml, if it doesn't exist, use the same yaml file
             String folderYamlfuture = pathSRC;
@@ -244,6 +247,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                 reader = new YamlReader(new FileReader(folderYamlfuture));
 
             settingsAfterBaseYear = reader.read(Settings.class);
+            if (settingsAfterBaseYear.folderOutput == null || settingsAfterBaseYear.folderOutput.trim().equals("auto")) {
+                settingsAfterBaseYear.folderOutput = settings.folderOutput;
+            }
 
 
             /**

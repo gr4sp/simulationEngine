@@ -9,6 +9,7 @@ import numpy as np
 from random import randint
 import os
 import json
+import platform
 
 '''
 Create Java Virtual Machine (jpype.getDefaultJVMPath())
@@ -19,6 +20,8 @@ def startJVM():
         settings = json.load(f)
 
     jvmpath = settings[settings["jvmPath"]]
+    if jvmpath == "auto":
+        jvmpath = jpype.getDefaultJVMPath()
 
     gr4spPath = os.getcwd() + "/.."
 
@@ -28,9 +31,7 @@ def startJVM():
     if jpype.isJVMStarted():
         return
 
-    classpathSeparator = ";"
-    if settings["jvmPath"] == "jvmPathUbuntu":
-        classpathSeparator = ":"
+    classpathSeparator = ";" if platform.system() == "Windows" else ":"
 
     classpath = "-Djava.class.path=" \
                 "{0}/{2}{1}" \

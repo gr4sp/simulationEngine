@@ -1,7 +1,6 @@
 #Folder that has the following folders: logs, csv, and plots
 
-folderOutput: "C:\\Users\\angel\\Documents\\GitHub\\gr4sp"
-#folderOutput: "/data/gr4sp"
+folderOutput: "auto"
 
 
 # report can be "full" or "light"
