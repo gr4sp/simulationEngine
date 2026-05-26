@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group = 'gr4sp'
+version = '1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libraries', include: ['*.jar'])
+}
+
+compileJava.options.encoding = 'UTF-8'
