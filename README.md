@@ -1,192 +1,160 @@
-# gr4sp
-This repository holds the source code of the Generic Recursive Simulation of Socio-technical Systems for Service Provision (GR4SP) model.
-The simulation model uses data for the Victorian electricity system in Australia. But GR4SP's structure can guide the development of similar simulations in other contexts.
+# GR4SP
 
-In addition to the source code of the main simulation engine, an Agent-based model in Java, this repository holds several Jupyter notebooks for analysing and visualising sets of experimental results.
+**Generic Recursive Simulation of Socio-technical Systems for Service Provision**
 
-## Set up Gr4sp
+GR4SP is an agent-based simulation model of the Victorian electricity system in Australia. The core engine is written in Java (using the [MASON](https://cs.gmu.edu/~eclab/projects/mason/) framework) and models how generators, consumers, networks, and policy interact over time. A Python layer built on [EMA Workbench](https://emaworkbench.readthedocs.io/) enables sensitivity analysis and large-scale scenario experiments. Jupyter notebooks in `experiments/notebookGr4sp/` support result analysis and visualisation. While the data is Victorian electricity-specific, GR4SP's structure can guide similar simulations in other contexts.
 
-Clone repo:
+---
 
-```git clone https://github.com/angelara/gr4sp.git```
+## Prerequisites
 
-go to the root folder `gr4sp` and run
+| Tool | Version | Purpose |
+|---|---|---|
+| [Java JDK 17+](https://adoptium.net) | 17 or later | Run the simulation |
+| [PostgreSQL](https://www.postgresql.org/download/) | 14 or later | Electricity system database |
+| [VS Code](https://code.visualstudio.com/) + [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack) | Any recent | Edit and build |
+| [Python 3.8+](https://www.python.org/downloads/) | 3.8 or later | Experiments and notebooks only |
 
-```
-mkdir logs
-mkdir csv
-mkdir plots
-```
+---
 
-To run the model, you need to install JAVA JRE and JDK.
-## JAVA
-### Ubuntu
-```
-sudo apt update
-sudo apt install default-jre
-sudo apt install default-jdk
-```
+## Quick Start
 
-See [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04) more details on how to setup JAVA in ubuntu
-### Windows
+### Step 1 — Clone
 
-follow [these instructions](https://java.com/en/download/help/windows_manual_download.xml)
-
-## Python
-
-Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
-
-```pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib```
-
-## compile java files
-
-You can use [InteliJ](https://www.jetbrains.com/idea/). Once installed, open the project clicking on the gr4sp.iml file. You can compile/build and run from InteliJ.
-
-Alternatively, run this command from the root of the repo to make the bash script executable:
-
-```
-javac -d classes -cp src/:/mnt/data/gr4sp/experiments/../libraries/bsh-2.0b4.jar:/mnt/data/gr4sp/experiments/../libraries/itext-1.2.jar:/mnt/data/gr4sp/experiments/../libraries/j3dcore.jar:/mnt/data/gr4sp/experiments/../libraries/j3dutils.jar:/mnt/data/gr4sp/experiments/../libraries/jcommon-1.0.21.jar:/mnt/data/gr4sp/experiments/../libraries/jfreechart-1.0.17.jar:/mnt/data/gr4sp/experiments/../libraries/jmf.jar:/mnt/data/gr4sp/experiments/../libraries/mason.19.jar:/mnt/data/gr4sp/experiments/../libraries/portfolio.jar:/mnt/data/gr4sp/experiments/../libraries/vecmath.jar:/mnt/data/gr4sp/experiments/../libraries/postgresql-42.2.6.jar:/mnt/data/gr4sp/experiments/../libraries/opencsv-4.6.jar:/mnt/data/gr4sp/experiments/../libraries/yamlbeans-1.13.jar  $(find src -name *.java)
+```bash
+git clone https://github.com/angelara/gr4sp.git
+cd gr4sp
 ```
 
-## Set simulation YAML file
+### Step 2 — Run the setup script
 
-The settings for the simulation are specified in YAML format. Which is a human readable file that can be edited to change the simulation settings.
+The setup script checks Java, builds the project, creates output directories, and loads the database.
 
-To run the simulation settings stored in the YAML file, the folderOutput variable in the YAML file should point to the main folder containing gr4sp (root folder where the code was cloned).
-
-Run the following command:
-```
-[src\core\settings\BAUVIC.yaml](src\core\settings\BAUVIC.yaml)
-```
-
-This command should have printed the full location path.
-Make sure the folderOutput variable at the beginning of the YAML file is set to the correct full path printed by pwd.
-
-For example, if you clone the repo in windows in this folder `c:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp`, then set the first variable in the yaml file [simulationSettings/BAUVIC.yaml](simulationSettings/VIC.yaml) as
-
-```
-folderOutput: "C:\\Users\\MyUserName\\Documents\\GitHub\\gr4sp"
+**Windows** (VS Code terminal):
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\setup.ps1
 ```
 
+**Linux / macOS**:
+```bash
+chmod +x setup.sh && ./setup.sh
 ```
 
-## Install PostGres and load database
+Both scripts will prompt for your PostgreSQL password and handle everything automatically.
 
-Install postgres
+> **One-time PostgreSQL configuration**
+>
+> GR4SP connects to the database without a password (JDBC). You need to configure PostgreSQL to trust local connections. Run the following **as Administrator** (Windows) or with `sudo` (Linux/Mac), then restart PostgreSQL.
+>
+> **Windows** (run each line separately in an Administrator PowerShell):
+> ```powershell
+> (Get-Content "C:\Program Files\PostgreSQL\18\data\pg_hba.conf") -replace '(host\s+all\s+all\s+127\.0\.0\.1/32\s+)scram-sha-256','${1}trust' -replace '(host\s+all\s+all\s+::1/128\s+)scram-sha-256','${1}trust' | Set-Content "C:\Program Files\PostgreSQL\18\data\pg_hba.conf"
+> ```
+> ```powershell
+> Restart-Service postgresql-x64-18
+> ```
+>
+> **Linux / macOS** — edit `/etc/postgresql/XX/main/pg_hba.conf` (where XX is your PostgreSQL version) and set the `host` lines for `127.0.0.1/32` and `::1/128` to `trust`, then run:
+> ```bash
+> sudo service postgresql restart
+> ```
 
-```
-sudo apt install postgresql postgresql-contrib
-```
+### Step 3 — Run the simulation
 
-To create `postgres` username and database
-
+**Windows:**
 ```
-sudo -u postgres -i
-
-dropdb postgres
-createdb postgres
-sudo -u postgres psql
-\q
-```
-
-To load data into the database in linux run
-```
-sudo -u postgres pg_restore -U postgres -d postgres < backupDB/databaseName.sql
-```
-If you are using windows run instead
-
-```
-pg_restore.exe -U postgres -d postgres -l backupDB/databaseName.sql
+.\runGr4sp.bat
 ```
 
-:warning: If you already loaded the database and you need to recreate it again using a new different backup file run:
-```
-sudo -u postgres dropdb postgres
-sudo -u postgres createdb postgres
-sudo -u postgres pg_restore -U postgres -d postgres < backupDB/databaseName.sql
-```
-
-
-Edit file pg_hba.conf. In ubuntu it can be found at `/etc/postgresql/XX/main/pg_hba.conf` where XX is the PostgreSQL version:
-
-```
- sudo nano /etc/postgresql/XX/main/pg_hba.conf
-```
-
-See [this guide](https://linuxize.com/post/how-to-use-nano-text-editor/#opening-and-creating-files) about how to edit files with nano. Scroll down to the end of the file and make sure that all the lines below finish with the word `trust`. The file should be edited so it looks as shown below:
-
-```local   all             postgres                                trust
-
-# "local" is for Unix domain socket connections only
-local   all             all                                     trust                                                                                                                                                                         # IPv4 local connections:
-host    all             all             127.0.0.1/32            trust                                                                                                                                                                        # IPv6 local connections:
-host    all             all             ::1/128                 trust   
-```
-
-and then run
-
-```
-sudo service postgresql restart
-```
-These changes make sure that gr4sp access the postgres database without any issues (e.g. username, passwords).
-
-You can run from InteliJ.
-
-Otherwise, make sure you added executable rights to `run_gr4sp.sh` by running
-
-```
-chmod +x *.sh
-```
-
-and then simply run:
-
-```
+**Linux / macOS:**
+```bash
 ./runGr4sp.sh
 ```
-It will run the simulation using the default simulationSettings [simulationSettings/BAUVIC.yaml](simulationSettings/VIC.yaml). Once the simulation is over, the results should appear in the `csv` and `plots` folders.
 
-if you want to run it with the Graphical interface to see the progress of the simulation with the live plots, then run
+The simulation runs the default scenario (`simulationSettings/VIC.yaml`). Results appear in `csv/` and `plots/` when complete.
 
+---
+
+## Run with Graphical UI
+
+To watch the simulation progress with live plots:
+
+**Windows:**
 ```
+.\runGr4spUI.bat
+```
+
+**Linux / macOS:**
+```bash
 ./runGr4spUI.sh
-
 ```
 
-alternatively, the command being used is as follows:
+---
 
+## Build from Source (VS Code)
+
+The project uses Gradle. No manual `javac` commands needed.
+
+- **VS Code**: open the Gradle panel (elephant icon in the left sidebar) → `gr4sp` → `Tasks` → `build` → double-click `build`
+- **Terminal**:
+  ```powershell
+  .\gradlew.bat build   # Windows
+  ./gradlew build       # Linux / macOS
+  ```
+
+Compiled classes go to `build/classes/java/main/`.
+
+---
+
+## Changing Simulation Settings
+
+Scenario settings are defined in `simulationSettings/*.yaml`. The default scenario loaded at startup is `VIC.yaml`.
+
+Key parameters:
+
+| Parameter | Values | Description |
+|---|---|---|
+| `reportGeneration` | `"full"` / `"light"` | `full` saves all CSV data and plots (~10 MB); `light` saves summary files only (~75 KB) |
+| `logLevel` | `"OFF"` / `"WARNING"` / `"ON"` | Simulation logging verbosity |
+| `simulationDates.startDate` | `YYYY-MM-DD` | Simulation start date |
+| `simulationDates.endDate` | `YYYY-MM-DD` | Simulation end date |
+
+> **Note:** `folderOutput` is auto-detected from the working directory — do not edit it.
+
+---
+
+## Running Experiments (Python / EMA Workbench)
+
+Install Python dependencies:
+
+```bash
+pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib
 ```
 
-java -classpath classes/production/gr4sp:libraries/bsh-2.0b4.jar:libraries/itext-1.2.jar:libraries/j3dcore.jar:libraries/j3dutils.jar:libraries/jcommon-1.0.21.jar:libraries/jfreechart-1.0.17.jar:libraries/jmf.jar:libraries/mason.19.jar:libraries/portfolio.jar:libraries/vecmath.jar:libraries/postgresql-42.2.6.jar:libraries/opencsv-4.6.jar:libraries/yamlbeans-1.13.jar core.Gr4spSim
+Then run an experiment from the `experiments/` folder:
 
+```bash
+cd experiments
+python3 runExperimentsBAU.py
 ```
 
-## Run Experiments with EMA Workbench
+`settingsExperiments.json` is pre-configured — the JVM path and classpath are detected automatically. No manual editing required.
 
-install python3 and pip3 following this [instructions](https://raturi.in/blog/installing-python3-and-pip3-ubuntu-mac-and-windows/)
-### Python dependencies
-install PIP python package manager:
+---
 
-```
-sudo apt update
-sudo apt install python3-pip
-```
-Install JPype, Pandas, ipyparallel, SALib, numpy, scipy, matplotlib:
+## Analysing Results
 
-```
-pip3 install JPype1 pandas ipyparallel SALib numpy scipy matplotlib
-```
+Jupyter notebooks for scenario analysis, sensitivity analysis, and visualisation are in `experiments/notebookGr4sp/`. Open them in VS Code or JupyterLab.
 
-### Set JVM library
+---
 
-open [experiments/settingsExperiments.json](experiments/settingsExperiments.json) file, and edit the file setting the variable `jvmPath` accordingly to `jvmPathWindows` or `jvmPathUbuntu` , making sure that the folders contain the `jvm.dll` or `libjvm.so` library.
+## Troubleshooting
 
-### Run EET or Variance-based SA
-
-go to `experiments` folder, edit the experiment you want to run in [experiments/runExperiments.py:26](experiments/runExperiments.py:26) and execute:
-
-```
-python3 runExperiments.py
-```
-## Analyze results
-
-see notebooks in [experiments/notebookGr4sp](experiments/notebookGr4sp)
+| Error | Cause | Fix |
+|---|---|---|
+| `NullPointerException` in `LoadData` | PostgreSQL not configured to trust local connections | Follow the trust configuration in Step 2 |
+| `Problems reading YAML file` | Running simulation from wrong directory | Always run from the project root (`gr4sp/`) |
+| `gradlew: Permission denied` | Fresh clone on Linux/macOS | `chmod +x gradlew` |
+| Java not found during setup | `JAVA_HOME` not yet in terminal PATH | The setup script auto-detects from `JAVA_HOME`; or restart VS Code |
+| `pg_restore` warnings about `adminpack` | Extension not available in newer PostgreSQL | Harmless — data is restored correctly |
