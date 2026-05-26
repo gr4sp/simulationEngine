@@ -10,16 +10,38 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+repositories {
+    mavenCentral()
+}
+
 sourceSets {
     main {
         java {
             srcDirs = ['src']
+            exclude 'test/**'
         }
+    }
+    test {
+        java { srcDirs = ['src/test/java'] }
     }
 }
 
 dependencies {
+    // Non-updatable local JARs (MASON, Java3D, JMF, iText, jfreechart, bsh, portfolio)
     implementation fileTree(dir: 'libraries', include: ['*.jar'])
+
+    // Updatable dependencies via Maven Central
+    implementation 'org.postgresql:postgresql:42.7.7'
+    implementation 'com.opencsv:opencsv:5.10'
+    implementation 'com.esotericsoftware.yamlbeans:yamlbeans:1.17'
+
+    // Test
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 compileJava.options.encoding = 'UTF-8'
