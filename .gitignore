@@ -1,3 +1,9 @@
+# Credentials - never commit
+.env
+
+# ERA5 downloaded NetCDF files
+*.nc
+
 # Compiled class file
 .class
 
