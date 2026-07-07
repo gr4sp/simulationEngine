@@ -1,6 +1,18 @@
 """
-Fetch monthly generation data from Open Electricity API (api.openelectricity.org.au)
-and load into gr4spdb.generation_consumption_historic for 2020-10-01 to 2025-12-31.
+Fetch monthly generation data from Open Electricity API v4 (api.openelectricity.org.au)
+and load into gr4spdb.generation_consumption_historic.
+
+Note: the v4 API's free/standard plan only serves the trailing 730 days of
+history, so this can't reach back to 2020-10-01 — it backfills from
+(today - 729 days) to 2025-12-31 instead. The 2020-10 to ~2024-07 gap stays
+open until there's a plan upgrade or another data source for that period.
+
+Also: the v4 API only exposes one network-wide price per interval, not
+per-fueltech revenue, so *_dollargwh columns are intentionally left NULL for
+rows this script writes (the pre-existing rows' non-null values came from
+whatever source originally populated them, which had real per-fuel revenue —
+reconstructing that from AEMO's raw per-generator dispatch data is a
+separate, much larger task).
 
 Setup:
   Copy .env.example to ../../.env and fill in OPENELECTRICITY_API_KEY and DB_URL.
@@ -11,7 +23,7 @@ Run from project root:
 """
 
 import os
-import sys
+from datetime import date, timedelta
 import requests
 import pandas as pd
 import psycopg2
@@ -25,8 +37,9 @@ DB_URL  = os.environ["DB_URL"]
 BASE_URL = "https://api.openelectricity.org.au/v4"
 HEADERS  = {"Authorization": f"Bearer {API_KEY}", "Accept": "application/json"}
 
-START = "2020-10-01"
+START = (date.today() - timedelta(days=729)).isoformat()
 END   = "2025-12-31"
+REGION = "VIC1"
 
 # Open Electricity fuel type → (gwh column, dollargwh column)
 FUEL_MAP = {
@@ -44,12 +57,19 @@ FUEL_MAP = {
 
 
 def fetch_energy():
-    """Fetch monthly energy (GWh) by fuel type for VIC1."""
-    print("Fetching energy data from Open Electricity...")
+    """Fetch monthly energy (MWh) by fuel type for VIC1."""
+    print(f"Fetching energy data from Open Electricity ({START} to {END})...")
     r = requests.get(
-        f"{BASE_URL}/energy/network/NEM/VIC1",
+        f"{BASE_URL}/data/network/NEM",
         headers=HEADERS,
-        params={"interval": "month", "start": START, "end": END},
+        params={
+            "metrics": "energy",
+            "interval": "1M",
+            "date_start": START,
+            "date_end": END,
+            "network_region": REGION,
+            "secondary_grouping": "fueltech",
+        },
         timeout=60,
     )
     r.raise_for_status()
@@ -57,12 +77,18 @@ def fetch_energy():
 
 
 def fetch_price():
-    """Fetch monthly volume-weighted price for VIC1."""
+    """Fetch monthly network price for VIC1."""
     print("Fetching price data from Open Electricity...")
     r = requests.get(
-        f"{BASE_URL}/price/network/NEM/VIC1",
+        f"{BASE_URL}/market/network/NEM",
         headers=HEADERS,
-        params={"interval": "month", "start": START, "end": END},
+        params={
+            "metrics": "price",
+            "interval": "1M",
+            "date_start": START,
+            "date_end": END,
+            "network_region": REGION,
+        },
         timeout=60,
     )
     r.raise_for_status()
@@ -70,44 +96,39 @@ def fetch_price():
 
 
 def parse_energy(data):
-    """
-    Parse API response into a DataFrame indexed by date with one column per fuel type.
-    Handles both {'data': [...]} and {'results': [...]} response shapes.
-    """
-    records = data.get("data") or data.get("results") or []
-    if not records:
-        print("WARNING: No energy records returned. Check API response shape:")
-        print(list(data.keys()))
+    """Parse the v4 /data/network response (one series per fueltech,
+    each carrying its own [timestamp, value_mwh] pairs) into a flat
+    DataFrame of date/fuel/gwh rows."""
+    results = (data.get("data") or [{}])[0].get("results", [])
+    if not results:
+        print("WARNING: No energy results returned.")
         return pd.DataFrame()
 
     rows = []
-    for rec in records:
-        date = pd.to_datetime(rec.get("date") or rec.get("interval") or rec.get("time"))
-        fuel = rec.get("fuel_tech") or rec.get("fuel_type") or rec.get("type")
-        energy_gwh  = rec.get("energy")   or rec.get("value") or 0.0
-        revenue     = rec.get("revenue")  or rec.get("cost")  or None
-        dollar_gwh  = (revenue / energy_gwh) if (revenue and energy_gwh) else None
-        rows.append({"date": date, "fuel": fuel, "gwh": energy_gwh, "dollar_gwh": dollar_gwh})
+    for series in results:
+        fuel = series["columns"].get("fueltech")
+        for ts, value_mwh in series["data"]:
+            rows.append({
+                "date": pd.to_datetime(ts).date(),
+                "fuel": fuel,
+                "gwh": (value_mwh or 0.0) / 1000.0,
+            })
 
-    df = pd.DataFrame(rows)
-    return df
+    return pd.DataFrame(rows)
 
 
 def parse_price(data):
-    """Return a Series of volume-weighted price indexed by date."""
-    records = data.get("data") or data.get("results") or []
-    if not records:
-        print("WARNING: No price records returned.")
+    """Return a Series of network price ($/MWh) indexed by date."""
+    results = (data.get("data") or [{}])[0].get("results", [])
+    if not results:
+        print("WARNING: No price results returned.")
         return pd.Series(dtype=float)
 
-    rows = []
-    for rec in records:
-        date  = pd.to_datetime(rec.get("date") or rec.get("interval") or rec.get("time"))
-        price = rec.get("price") or rec.get("value") or None
-        rows.append({"date": date, "price": price})
-
-    s = pd.DataFrame(rows).set_index("date")["price"]
-    return s
+    rows = [
+        {"date": pd.to_datetime(ts).date(), "price": price}
+        for ts, price in results[0]["data"]
+    ]
+    return pd.DataFrame(rows).set_index("date")["price"]
 
 
 def build_rows(energy_df, price_series):
@@ -118,10 +139,10 @@ def build_rows(energy_df, price_series):
     dates = energy_df["date"].unique()
     rows  = []
 
-    for date in sorted(dates):
-        month_df = energy_df[energy_df["date"] == date]
-        row = {"date": date.date(), "temperaturec": None,
-               "volumeweightedprice_dollarmwh": price_series.get(date)}
+    for month_date in sorted(dates):
+        month_df = energy_df[energy_df["date"] == month_date]
+        row = {"date": month_date, "temperaturec": None,
+               "volumeweightedprice_dollarmwh": price_series.get(month_date)}
 
         # Initialise all fuel columns to None
         for gwh_col, dollar_col in FUEL_MAP.values():
@@ -131,9 +152,9 @@ def build_rows(energy_df, price_series):
         for _, rec in month_df.iterrows():
             fuel = rec["fuel"]
             if fuel in FUEL_MAP:
-                gwh_col, dollar_col = FUEL_MAP[fuel]
-                row[gwh_col]    = rec["gwh"]
-                row[dollar_col] = rec["dollar_gwh"]
+                gwh_col, _dollar_col = FUEL_MAP[fuel]
+                row[gwh_col] = rec["gwh"]
+                # dollar_col intentionally left at its None default — see module docstring
 
         # total_consumption_gwh = all generation - exports + imports
         gen_cols = [c for c in row if c.endswith("_gwh") and c not in ("imports_gwh", "exports_gwh")]
@@ -165,7 +186,8 @@ def load_to_db(rows):
     insert_sql   = f"INSERT INTO generation_consumption_historic ({col_names}) VALUES ({placeholders})"
 
     for row in rows:
-        cur.execute(insert_sql, [row[c] for c in cols])
+        values = [v.item() if hasattr(v, "item") else v for v in (row[c] for c in cols)]
+        cur.execute(insert_sql, values)
 
     conn.commit()
     cur.close()

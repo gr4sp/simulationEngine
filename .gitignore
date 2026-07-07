@@ -4,6 +4,9 @@
 # ERA5 downloaded NetCDF files
 *.nc
 
+# Python virtual environment
+scripts/data/.venv/
+
 # Compiled class file
 .class
 
