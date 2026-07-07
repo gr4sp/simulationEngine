@@ -13,7 +13,7 @@ GR4SP is an agent-based simulation model of the Victorian electricity system in 
 | [Java JDK 17+](https://adoptium.net) | 17 or later | Run the simulation |
 | [PostgreSQL](https://www.postgresql.org/download/) | 14 or later | Electricity system database |
 | [VS Code](https://code.visualstudio.com/) + [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack) | Any recent | Edit and build |
-| [Python 3.8+](https://www.python.org/downloads/) | 3.8 or later | Experiments and notebooks only |
+| [Miniforge](https://github.com/conda-forge/miniforge) | Python 3.10+ | Experiments, notebooks, and the data-update scripts only |
 
 ---
 
@@ -126,11 +126,15 @@ Key parameters:
 
 ## Running Experiments (Python / EMA Workbench)
 
-Install Python dependencies:
+Create a conda environment with [Miniforge](https://github.com/conda-forge/miniforge) and install the experiment dependencies:
 
-```bash
+```powershell
+conda create -n gr4sp python=3.12
+conda activate gr4sp
 pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib
 ```
+
+Each new terminal session, re-activate the environment with `conda activate gr4sp`.
 
 Then run an experiment from the `experiments/` folder:
 
@@ -140,6 +144,32 @@ python3 runExperimentsBAU.py
 ```
 
 `settingsExperiments.json` is pre-configured — the JVM path and classpath are detected automatically. No manual editing required.
+
+---
+
+## Updating Victorian Electricity Data
+
+Scripts in `scripts/data/` refresh `gr4spdb` with current AEMO demand/price, Open Electricity generation, ERA5 solar/temperature, and CER rooftop solar data. They use the same `gr4spdb` database as the simulation, so re-run them periodically to keep scenarios current.
+
+Install their dependencies (in the same `gr4sp` conda environment used for experiments, or a separate one):
+
+```powershell
+conda activate gr4sp
+pip install -r scripts/data/requirements.txt
+```
+
+Copy `scripts/data/.env.example` to `scripts/data/.env` and fill in the required credentials (an Open Electricity API key from [platform.openelectricity.org.au](https://platform.openelectricity.org.au), and a Copernicus Climate Data Store key from [cds.climate.copernicus.eu](https://cds.climate.copernicus.eu) — accept the ERA5 dataset's license on its download page before first use). `.env` is gitignored; never commit it.
+
+Then run each script from the project root as needed:
+
+```powershell
+python scripts/data/fetch_aemo_demand.py          # VIC1 demand & price (AEMO NEMWeb, no API key needed)
+python scripts/data/fetch_openelectricity.py       # Generation & revenue by fuel type
+python scripts/data/fetch_era5.py                  # Solar irradiance & temperature (CDS; can take hours — queues per month)
+python scripts/data/fetch_cer_solar.py              # Rooftop solar installations by postcode
+```
+
+Each script is idempotent — safe to re-run, and re-running `fetch_openelectricity.py` after `fetch_era5.py` backfills the `temperaturec` column from ERA5's output. See the docstring at the top of each script for what it fetches and any known data-source limitations.
 
 ---
 
