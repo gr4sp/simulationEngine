@@ -1,18 +1,28 @@
 """
-Fetch monthly generation data from Open Electricity API v4 (api.openelectricity.org.au)
-and load into gr4spdb.generation_consumption_historic.
+Fetch monthly generation, revenue, and price data for VIC1 and load into
+gr4spdb.generation_consumption_historic.
 
-Note: the v4 API's free/standard plan only serves the trailing 730 days of
-history, so this can't reach back to 2020-10-01 — it backfills from
-(today - 729 days) to 2025-12-31 instead. The 2020-10 to ~2024-07 gap stays
-open until there's a plan upgrade or another data source for that period.
+Two sources spliced together to get real per-fueltech revenue across the
+whole 2020-10 to 2025-12 gap (the paid v4 API alone can't reach back that
+far, and doesn't expose per-fueltech revenue anyway):
 
-Also: the v4 API only exposes one network-wide price per interval, not
-per-fueltech revenue, so *_dollargwh columns are intentionally left NULL for
-rows this script writes (the pre-existing rows' non-null values came from
-whatever source originally populated them, which had real per-fuel revenue —
-reconstructing that from AEMO's raw per-generator dispatch data is a
-separate, much larger task).
+  - OpenElectricity's free static historical stats file
+    (data.openelectricity.org.au/v3/stats/au/all/monthly.json) — no auth,
+    no plan limit. Covers energy + per-fueltech market_value (= total AUD
+    revenue that month — despite the *_dollargwh column names, these are
+    NOT a $/GWh rate, they match the absolute-dollar convention the
+    pre-existing rows already use) + imports/exports, from 1998 through
+    whatever month it was last regenerated (currently ~2024-11).
+  - The paid v4 API (OPENELECTRICITY_API_KEY, 730-day plan limit) for the
+    months after the static file's coverage ends, through END. v4's
+    network-data endpoint has no imports/exports market_value/energy, so
+    those two columns (and their *_dollargwh) stay NULL for that tail
+    period only.
+
+Price (volumeweightedprice_dollarmwh) is computed the same way for both
+sources — total $ divided by total energy — rather than taken from v4's
+separate "price" metric, which turned out not to be volume-weighted (it
+diverged ~15-20% from the demand-value-based ratio on cross-check).
 
 Setup:
   Copy .env.example to ../../.env and fill in OPENELECTRICITY_API_KEY and DB_URL.
@@ -23,7 +33,6 @@ Run from project root:
 """
 
 import os
-from datetime import date, timedelta
 import requests
 import pandas as pd
 import psycopg2
@@ -34,14 +43,15 @@ load_dotenv()
 API_KEY = os.environ["OPENELECTRICITY_API_KEY"]
 DB_URL  = os.environ["DB_URL"]
 
-BASE_URL = "https://api.openelectricity.org.au/v4"
-HEADERS  = {"Authorization": f"Bearer {API_KEY}", "Accept": "application/json"}
+BASE_URL   = "https://api.openelectricity.org.au/v4"
+HEADERS    = {"Authorization": f"Bearer {API_KEY}", "Accept": "application/json"}
+STATIC_URL = "https://data.openelectricity.org.au/v3/stats/au/all/monthly.json"
+REGION     = "VIC1"
 
-START = (date.today() - timedelta(days=729)).isoformat()
+START = "2020-10-01"
 END   = "2025-12-31"
-REGION = "VIC1"
 
-# Open Electricity fuel type → (gwh column, dollargwh column)
+# fuel type → (gwh column, dollargwh column) in generation_consumption_historic
 FUEL_MAP = {
     "solar_rooftop":      ("solar_roofpv_gwh",    "solar_roofpv_dollargwh"),
     "solar_utility":      ("solar_utility_gwh",   "solar_utility_dollargwh"),
@@ -56,105 +66,126 @@ FUEL_MAP = {
 }
 
 
-def fetch_energy():
-    """Fetch monthly energy (MWh) by fuel type for VIC1."""
-    print(f"Fetching energy data from Open Electricity ({START} to {END})...")
-    r = requests.get(
-        f"{BASE_URL}/data/network/NEM",
-        headers=HEADERS,
-        params={
-            "metrics": "energy",
-            "interval": "1M",
-            "date_start": START,
-            "date_end": END,
-            "network_region": REGION,
-            "secondary_grouping": "fueltech",
-        },
-        timeout=60,
+def _series_to_monthly(record):
+    """Turn one static-file {history: {start, data}} record into a
+    {(year, month): value} dict."""
+    months = pd.date_range(
+        start=pd.Timestamp(record["history"]["start"]).tz_localize(None),
+        periods=len(record["history"]["data"]),
+        freq="MS",
     )
+    return {(m.year, m.month): v for m, v in zip(months, record["history"]["data"])}
+
+
+def fetch_static_monthly():
+    """Fetch the free static stats file and return
+    ({(year, month): {"price":..., "fuels": {fuel: {"gwh":..., "dollar":...}}}},
+     last_month_covered) for VIC1, restricted to [START, END]."""
+    print("Fetching free static OpenElectricity historical stats...")
+    r = requests.get(STATIC_URL, timeout=60)
     r.raise_for_status()
-    return r.json()
+    records = {d["id"]: d for d in r.json()["data"] if d.get("region") == REGION}
+
+    demand_energy = _series_to_monthly(records["au.nem.vic1.demand.energy"])
+    demand_value  = _series_to_monthly(records["au.nem.vic1.demand.market_value"])
+    last_month = max(demand_energy)
+
+    fuel_series = {}
+    for fuel in FUEL_MAP:
+        energy_id = f"au.nem.vic1.fuel_tech.{fuel}.energy"
+        value_id  = f"au.nem.vic1.fuel_tech.{fuel}.market_value"
+        if energy_id in records:
+            fuel_series[fuel] = (_series_to_monthly(records[energy_id]),
+                                  _series_to_monthly(records[value_id]))
+
+    start_ym = (pd.Timestamp(START).year, pd.Timestamp(START).month)
+    end_ym   = (pd.Timestamp(END).year, pd.Timestamp(END).month)
+
+    monthly = {}
+    for ym, energy_gwh in demand_energy.items():
+        if not (start_ym <= ym <= end_ym):
+            continue
+        price = (demand_value[ym] / (energy_gwh * 1000)) if energy_gwh else None
+        fuels = {}
+        for fuel, (energy_s, value_s) in fuel_series.items():
+            if ym not in energy_s:
+                continue
+            # The static file's imports/exports market_value is always ~0 —
+            # a "not computed" placeholder, not a real figure — so leave
+            # dollar NULL for those two rather than insert a misleading 0.
+            dollar = None if fuel in ("imports", "exports") else value_s.get(ym)
+            fuels[fuel] = {"gwh": energy_s[ym], "dollar": dollar}
+        monthly[ym] = {"price": price, "fuels": fuels}
+
+    return monthly, last_month
 
 
-def fetch_price():
-    """Fetch monthly network price for VIC1."""
-    print("Fetching price data from Open Electricity...")
-    r = requests.get(
-        f"{BASE_URL}/market/network/NEM",
-        headers=HEADERS,
-        params={
-            "metrics": "price",
-            "interval": "1M",
-            "date_start": START,
-            "date_end": END,
+def fetch_v4_monthly(start, end):
+    """Fetch energy + market_value by fueltech, plus network-level
+    market_value (for the price ratio), from the paid v4 API."""
+    print(f"Fetching v4 API data for {start} to {end}...")
+
+    def get(metrics, grouped):
+        params = {
+            "metrics": metrics, "interval": "1M",
+            "date_start": start, "date_end": end,
             "network_region": REGION,
-        },
-        timeout=60,
-    )
-    r.raise_for_status()
-    return r.json()
+        }
+        if grouped:
+            params["secondary_grouping"] = "fueltech"
+        r = requests.get(f"{BASE_URL}/data/network/NEM", headers=HEADERS, params=params, timeout=60)
+        r.raise_for_status()
+        return (r.json().get("data") or [{}])[0].get("results", [])
+
+    def to_fuel_dict(results):
+        out = {}
+        for series in results:
+            fuel = series["columns"].get("fueltech")
+            out[fuel] = {pd.to_datetime(ts).date(): (v or 0.0) for ts, v in series["data"]}
+        return out
+
+    energy_by_fuel = to_fuel_dict(get("energy", grouped=True))
+    value_by_fuel  = to_fuel_dict(get("market_value", grouped=True))
+    network_value_results = get("market_value", grouped=False)
+    network_value = ({pd.to_datetime(ts).date(): v for ts, v in network_value_results[0]["data"]}
+                      if network_value_results else {})
+
+    all_dates = sorted({d for series in energy_by_fuel.values() for d in series})
+    monthly = {}
+    for d in all_dates:
+        fuels = {}
+        total_gwh = 0.0
+        for fuel in FUEL_MAP:
+            if fuel in energy_by_fuel and d in energy_by_fuel[fuel]:
+                gwh = energy_by_fuel[fuel][d] / 1000.0
+                fuels[fuel] = {"gwh": gwh, "dollar": value_by_fuel.get(fuel, {}).get(d)}
+                if fuel not in ("imports", "exports"):
+                    total_gwh += gwh
+        price = (network_value.get(d) / (total_gwh * 1000)) if total_gwh else None
+        monthly[(d.year, d.month)] = {"price": price, "fuels": fuels}
+
+    return monthly
 
 
-def parse_energy(data):
-    """Parse the v4 /data/network response (one series per fueltech,
-    each carrying its own [timestamp, value_mwh] pairs) into a flat
-    DataFrame of date/fuel/gwh rows."""
-    results = (data.get("data") or [{}])[0].get("results", [])
-    if not results:
-        print("WARNING: No energy results returned.")
-        return pd.DataFrame()
-
+def build_rows(monthly):
+    """Combine the merged monthly dict into one row per month matching the DB schema."""
     rows = []
-    for series in results:
-        fuel = series["columns"].get("fueltech")
-        for ts, value_mwh in series["data"]:
-            rows.append({
-                "date": pd.to_datetime(ts).date(),
-                "fuel": fuel,
-                "gwh": (value_mwh or 0.0) / 1000.0,
-            })
-
-    return pd.DataFrame(rows)
-
-
-def parse_price(data):
-    """Return a Series of network price ($/MWh) indexed by date."""
-    results = (data.get("data") or [{}])[0].get("results", [])
-    if not results:
-        print("WARNING: No price results returned.")
-        return pd.Series(dtype=float)
-
-    rows = [
-        {"date": pd.to_datetime(ts).date(), "price": price}
-        for ts, price in results[0]["data"]
-    ]
-    return pd.DataFrame(rows).set_index("date")["price"]
-
-
-def build_rows(energy_df, price_series):
-    """Combine energy and price into one row per month matching the DB schema."""
-    if energy_df.empty:
-        return []
-
-    dates = energy_df["date"].unique()
-    rows  = []
-
-    for month_date in sorted(dates):
-        month_df = energy_df[energy_df["date"] == month_date]
-        row = {"date": month_date, "temperaturec": None,
-               "volumeweightedprice_dollarmwh": price_series.get(month_date)}
+    for (year, month), info in sorted(monthly.items()):
+        row = {
+            "date": pd.Timestamp(year=year, month=month, day=1).date(),
+            "temperaturec": None,
+            "volumeweightedprice_dollarmwh": info["price"],
+        }
 
         # Initialise all fuel columns to None
         for gwh_col, dollar_col in FUEL_MAP.values():
             row[gwh_col]    = None
             row[dollar_col] = None
 
-        for _, rec in month_df.iterrows():
-            fuel = rec["fuel"]
-            if fuel in FUEL_MAP:
-                gwh_col, _dollar_col = FUEL_MAP[fuel]
-                row[gwh_col] = rec["gwh"]
-                # dollar_col intentionally left at its None default — see module docstring
+        for fuel, vals in info["fuels"].items():
+            gwh_col, dollar_col = FUEL_MAP[fuel]
+            row[gwh_col]    = vals["gwh"]
+            row[dollar_col] = vals["dollar"]
 
         # total_consumption_gwh = all generation - exports + imports
         gen_cols = [c for c in row if c.endswith("_gwh") and c not in ("imports_gwh", "exports_gwh")]
@@ -221,15 +252,21 @@ def update_temperature(temp_csv_path):
 
 
 if __name__ == "__main__":
-    energy_data  = fetch_energy()
-    price_data   = fetch_price()
-    energy_df    = parse_energy(energy_data)
-    price_series = parse_price(price_data)
-    rows         = build_rows(energy_df, price_series)
+    static_monthly, static_last_month = fetch_static_monthly()
+    print(f"Static file covers through {static_last_month[0]}-{static_last_month[1]:02d}")
+
+    v4_start = pd.Timestamp(year=static_last_month[0], month=static_last_month[1], day=1) + pd.DateOffset(months=1)
+    v4_monthly = {}
+    if v4_start.date().isoformat() <= END:
+        v4_monthly = fetch_v4_monthly(v4_start.date().isoformat(), END)
+
+    monthly = {**static_monthly, **v4_monthly}
+    rows = build_rows(monthly)
     load_to_db(rows)
 
     # Update temperature if ERA5 output already exists
     temp_csv = os.path.join(os.path.dirname(__file__), "monthly_temp.csv")
     update_temperature(temp_csv)
 
-    print("Done. Run fetch_era5.py if temperature column is still NULL.")
+    print(f"Done. {len(rows)} months loaded "
+          f"({len(static_monthly)} from static file, {len(v4_monthly)} from v4 API).")
