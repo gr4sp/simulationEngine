@@ -4,6 +4,10 @@
 # ERA5 downloaded NetCDF files
 *.nc
 
+# ERA5 monthly zip cache and intermediate temperature output
+scripts/data/era5_downloads/
+scripts/data/monthly_temp.csv
+
 # Python virtual environment
 scripts/data/.venv/
 
