@@ -1,30 +1,30 @@
-archive,scenario,date,active_in,n_active,commented_in_count,keep_for_zenodo?
-gr4sp_EET2020ABY-Dec-02.tar.gz,(other),,ema_gr4sp_EET_ABY.ipynb,1,1,
-gr4sp_SOBOL2020ABY-Dec-23.tar.gz,(other),,(none - only commented),0,1,no (legacy - commented-only)
-gr4sp_2020-Aug-22-SOBOL.tar.gz,(other),2020-Aug-22,(none - only commented),0,7,no (legacy - commented-only)
-gr4sp_2020-Feb-07_EET_allV3.tar.gz,(other),2020-Feb-07,(none - only commented),0,10,no (legacy - commented-only)
-gr4sp_2020-Feb-20-years.tar.gz,(other),2020-Feb-20,(none - only commented),0,10,no (legacy - commented-only)
-gr4sp_2020-Feb-25-LHS.tar.gz,(other),2020-Feb-25,(none - only commented),0,2,no (legacy - commented-only)
-gr4sp_2020-Jul-11-SOBOL.tar.gz,(other),2020-Jul-11,(none - only commented),0,1,no (legacy - commented-only)
-gr4sp_2020-Mar-05-SOBOL.tar.gz,(other),2020-Mar-05,gr4sp_energy_vulnerability.ipynb,1,0,
-gr4sp_BAU2021-Aug-03.tar.gz,BAU,2021-Aug-03,gr4sp_energy_vulnerability_IMAP-LCT-OnlyOne.ipynb | gr4sp_energy_vulnerability_IMAP-LCT.ipynb | gr4sp_energy_vulnerability_IMAP-OnlyOneRun.ipynb,3,0,
-gr4sp_BAU2021-Aug-22.tar.gz,BAU,2021-Aug-22,ScenariosAnalysis.ipynb,1,0,
-gr4sp_BAU2021-Aug-29.tar.gz,BAU,2021-Aug-29,gr4sp_energy_vulnerability_IMAP-ST.ipynb,1,0,
-gr4sp_BAU2021-Aug-30.tar.gz,BAU,2021-Aug-30,gr4sp_energy_vulnerability_IMAP-JT.ipynb | gr4sp_energy_vulnerability_IMAP.ipynb,2,0,
-gr4sp_EET2020-Oct-05.tar.gz,EET,2020-Oct-05,(none - only commented),0,2,no (legacy - commented-only)
-gr4sp_EET3Regime2021-Mar-01.tar.gz,EET3Regime,2021-Mar-01,(none - only commented),0,2,no (legacy - commented-only)
-gr4sp_EETPast2021-Jan-14.tar.gz,EETPast,2021-Jan-14,ema_gr4sp_EET_HypoPast.ipynb,1,1,
-gr4sp_JT2021-Aug-30.tar.gz,JT,2021-Aug-30,ScenariosAnalysis.ipynb,1,1,
-gr4sp_JT2021-Sep-06.tar.gz,JT,2021-Sep-06,ScenariosAnalysis.ipynb,1,1,
-gr4sp_JT2021-Sep-07.tar.gz,JT,2021-Sep-07,ScenariosAnalysis.ipynb | gr4sp_energy_vulnerability_IMAP-JT.ipynb,2,0,
-gr4sp_LCT2021-Aug-04.tar.gz,LCT,2021-Aug-04,ema_gr4sp_PRIM-Scenarios.ipynb,1,0,
-gr4sp_LCT2021-Aug-24.tar.gz,LCT,2021-Aug-24,gr4sp_energy_vulnerability_IMAP-LCT-OnlyOne.ipynb | gr4sp_energy_vulnerability_IMAP-OnlyOneRun.ipynb,2,0,
-gr4sp_LCT2021-Sep-01.tar.gz,LCT,2021-Sep-01,ScenariosAnalysis.ipynb | gr4sp_energy_vulnerability_IMAP-LCT.ipynb,2,0,
-gr4sp_SOBOL2020-Dec-23.tar.gz,SOBOL,2020-Dec-23,ema_gr4sp_Envelopes.ipynb,1,0,
-gr4sp_SOBOL2021-Feb-03.tar.gz,SOBOL,2021-Feb-03,ScenariosAnalysis.ipynb | Uncertainty Analysis.ipynb | ema_gr4sp_PRIM-Scenarios.ipynb | ema_gr4sp_SOBOL_ABY.ipynb | gr4sp_energy_vulnerability_IMAP.ipynb | gr4sp_energy_vulnerability_IMAP_analysis_only.ipynb,6,7,
-gr4sp_SOBOL-HypoPast-2021-Jan-20.tar.gz,SOBOL-HypoPast,2021-Jan-20,ema_gr4sp_PRIM-Scenarios-HypoPast.ipynb | ema_gr4sp_SOBOL_HypoPast.ipynb,2,2,
-gr4sp_SOBOLhypopast2021-Mar-03_includ_wholesale_month.tar.gz,SOBOLhypopast,2021-Mar-03,ema_gr4sp_EET-3RegimeValidation.ipynb,1,0,
-gr4sp_ST2021-Aug-17.tar.gz,ST,2021-Aug-17,(none - only commented),0,1,no (legacy - commented-only)
-gr4sp_ST2021-Aug-31.tar.gz,ST,2021-Aug-31,ScenariosAnalysis.ipynb | ema_gr4sp_PRIM-Scenarios.ipynb,2,1,
-gr4sp_ST2021-Sep-01.tar.gz,ST,2021-Sep-01,ScenariosAnalysis.ipynb,1,1,
-gr4sp_ST2021-Sep-04.tar.gz,ST,2021-Sep-04,ScenariosAnalysis.ipynb | gr4sp_energy_vulnerability_IMAP-ST.ipynb,2,0,
+archive,scenario,date,on_zenodo_8320754?,status,active_in,n_active,commented_in_count
+gr4sp_BAU2021-Aug-03.tar.gz,BAU,2021-Aug-03,yes,fetched from Zenodo,gr4sp_energy_vulnerability_IMAP-LCT-OnlyOne.ipynb | gr4sp_energy_vulnerability_IMAP-LCT.ipynb | gr4sp_energy_vulnerability_IMAP-OnlyOneRun.ipynb,3,0
+gr4sp_BAU2021-Aug-22.tar.gz,BAU,2021-Aug-22,yes,fetched from Zenodo,ScenariosAnalysis.ipynb,1,0
+gr4sp_BAU2021-Aug-29.tar.gz,BAU,2021-Aug-29,yes,fetched from Zenodo,gr4sp_energy_vulnerability_IMAP-ST.ipynb,1,0
+gr4sp_BAU2021-Aug-30.tar.gz,BAU,2021-Aug-30,yes,fetched from Zenodo,gr4sp_energy_vulnerability_IMAP-JT.ipynb | gr4sp_energy_vulnerability_IMAP.ipynb,2,0
+gr4sp_EETPast2021-Jan-14.tar.gz,EETPast,2021-Jan-14,yes,fetched from Zenodo,ema_gr4sp_EET_HypoPast.ipynb,1,1
+gr4sp_JT2021-Aug-30.tar.gz,JT,2021-Aug-30,yes,fetched from Zenodo,ScenariosAnalysis.ipynb,1,1
+gr4sp_JT2021-Sep-06.tar.gz,JT,2021-Sep-06,yes,fetched from Zenodo,ScenariosAnalysis.ipynb,1,1
+gr4sp_JT2021-Sep-07.tar.gz,JT,2021-Sep-07,yes,fetched from Zenodo,ScenariosAnalysis.ipynb | gr4sp_energy_vulnerability_IMAP-JT.ipynb,2,0
+gr4sp_LCT2021-Aug-24.tar.gz,LCT,2021-Aug-24,yes,fetched from Zenodo,gr4sp_energy_vulnerability_IMAP-LCT-OnlyOne.ipynb | gr4sp_energy_vulnerability_IMAP-OnlyOneRun.ipynb,2,0
+gr4sp_LCT2021-Sep-01.tar.gz,LCT,2021-Sep-01,yes,fetched from Zenodo,ScenariosAnalysis.ipynb | gr4sp_energy_vulnerability_IMAP-LCT.ipynb,2,0
+gr4sp_SOBOL2021-Feb-03.tar.gz,SOBOL,2021-Feb-03,yes,fetched from Zenodo,ScenariosAnalysis.ipynb | Uncertainty Analysis.ipynb | ema_gr4sp_PRIM-Scenarios.ipynb | ema_gr4sp_SOBOL_ABY.ipynb | gr4sp_energy_vulnerability_IMAP.ipynb | gr4sp_energy_vulnerability_IMAP_analysis_only.ipynb,6,7
+gr4sp_ST2021-Aug-31.tar.gz,ST,2021-Aug-31,yes,fetched from Zenodo,ScenariosAnalysis.ipynb | ema_gr4sp_PRIM-Scenarios.ipynb,2,1
+gr4sp_ST2021-Sep-01.tar.gz,ST,2021-Sep-01,yes,fetched from Zenodo,ScenariosAnalysis.ipynb,1,1
+gr4sp_ST2021-Sep-04.tar.gz,ST,2021-Sep-04,yes,fetched from Zenodo,ScenariosAnalysis.ipynb | gr4sp_energy_vulnerability_IMAP-ST.ipynb,2,0
+gr4sp_EET2020ABY-Dec-02.tar.gz,(other),,no,"retire (legacy test, not deposited)",ema_gr4sp_EET_ABY.ipynb,1,1
+gr4sp_SOBOL2020ABY-Dec-23.tar.gz,(other),,no,retire (legacy - commented-only),(none - only commented),0,1
+gr4sp_2020-Aug-22-SOBOL.tar.gz,(other),2020-Aug-22,no,retire (legacy - commented-only),(none - only commented),0,7
+gr4sp_2020-Feb-07_EET_allV3.tar.gz,(other),2020-Feb-07,no,retire (legacy - commented-only),(none - only commented),0,10
+gr4sp_2020-Feb-20-years.tar.gz,(other),2020-Feb-20,no,retire (legacy - commented-only),(none - only commented),0,10
+gr4sp_2020-Feb-25-LHS.tar.gz,(other),2020-Feb-25,no,retire (legacy - commented-only),(none - only commented),0,2
+gr4sp_2020-Jul-11-SOBOL.tar.gz,(other),2020-Jul-11,no,retire (legacy - commented-only),(none - only commented),0,1
+gr4sp_2020-Mar-05-SOBOL.tar.gz,(other),2020-Mar-05,no,"retire (legacy test, not deposited)",gr4sp_energy_vulnerability.ipynb,1,0
+gr4sp_EET2020-Oct-05.tar.gz,EET,2020-Oct-05,no,retire (legacy - commented-only),(none - only commented),0,2
+gr4sp_EET3Regime2021-Mar-01.tar.gz,EET3Regime,2021-Mar-01,no,retire (legacy - commented-only),(none - only commented),0,2
+gr4sp_LCT2021-Aug-04.tar.gz,LCT,2021-Aug-04,no,"retire (legacy test, not deposited)",ema_gr4sp_PRIM-Scenarios.ipynb,1,0
+gr4sp_SOBOL2020-Dec-23.tar.gz,SOBOL,2020-Dec-23,no,"retire (legacy test, not deposited)",ema_gr4sp_Envelopes.ipynb,1,0
+gr4sp_SOBOL-HypoPast-2021-Jan-20.tar.gz,SOBOL-HypoPast,2021-Jan-20,no,"retire (legacy test, not deposited)",ema_gr4sp_PRIM-Scenarios-HypoPast.ipynb | ema_gr4sp_SOBOL_HypoPast.ipynb,2,2
+gr4sp_SOBOLhypopast2021-Mar-03_includ_wholesale_month.tar.gz,SOBOLhypopast,2021-Mar-03,no,"retire (legacy test, not deposited)",ema_gr4sp_EET-3RegimeValidation.ipynb,1,0
+gr4sp_ST2021-Aug-17.tar.gz,ST,2021-Aug-17,no,retire (legacy - commented-only),(none - only commented),0,1
