@@ -51,7 +51,11 @@ def scenario_of(fname):
 arch = defaultdict(lambda: {"active": set(), "commented": set()})
 nb_rows = []
 
-for path in sorted(glob.glob(os.path.join(nbdir, "*.ipynb"))):
+# Active notebooks live in notebookGr4sp/; retired ones in notebookGr4sp/legacy/.
+paths = (sorted(glob.glob(os.path.join(nbdir, "*.ipynb")))
+         + sorted(glob.glob(os.path.join(nbdir, "legacy", "*.ipynb"))))
+for path in paths:
+    retired = os.path.basename(os.path.dirname(path)) == "legacy"
     name = os.path.basename(path)
     nb = json.load(open(path, encoding="utf-8"))
     active_arch, commented_arch = set(), set()
@@ -84,14 +88,17 @@ for path in sorted(glob.glob(os.path.join(nbdir, "*.ipynb"))):
                             out_files.add(os.path.basename(fm.group(1)))
 
     missing = sorted(a for a in active_arch if a not in ZENODO_ARCHIVES)
-    if not active_arch:
+    if retired:
+        repro = "n/a (retired)"
+    elif not active_arch:
         repro = "n/a (no result archive)"
     elif missing:
-        repro = "no (legacy - needs retired archive)"
+        repro = "no (needs retired archive)"
     else:
         repro = "yes"
     nb_rows.append({
         "notebook": name,
+        "status": "retired" if retired else "active",
         "reproducible_from_zenodo?": repro,
         "active_archives": " | ".join(sorted(active_arch)),
         "archives_not_on_zenodo": " | ".join(missing),
