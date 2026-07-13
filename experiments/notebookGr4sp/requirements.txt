@@ -1,0 +1,23 @@
+# Python dependencies for the analysis notebooks in experiments/notebookGr4sp/.
+# Install into your conda/miniforge env:  pip install -r requirements.txt
+#
+# ema_workbench is NOT listed here: it is vendored in experiments/EMAworkbench/
+# and imported via sys.path.append('../EMAworkbench') inside the notebooks.
+#
+# Versions are the modern baseline the notebooks are being updated to work with
+# (task 2.5c modernisation). qgrid is intentionally excluded: it is unmaintained
+# and broken on Jupyter 7+, and is being replaced by plain DataFrame display.
+
+pandas>=3.0
+numpy>=2.0
+scipy>=1.13
+scikit-learn>=1.4
+matplotlib>=3.8
+seaborn>=0.13
+SALib>=1.5
+plotly>=5.0
+openpyxl>=3.1
+XlsxWriter>=3.1
+jupyter>=1.0
+nbconvert>=7.0
+nbformat>=5.9
