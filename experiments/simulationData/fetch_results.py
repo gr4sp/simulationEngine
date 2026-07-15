@@ -12,7 +12,10 @@ also pull the record's input CSV/XLSX/ZIP files.
     python fetch_results.py            # the 14 *.tar.gz result archives
     python fetch_results.py --all      # every file in the record
     python fetch_results.py --list     # list files without downloading
+    python fetch_results.py EETPast    # only files whose name contains "EETPast"
 
+Any non-flag argument is a case-insensitive substring filter on the filename,
+so a single scenario can be fetched without downloading the whole 1.3 GB record.
 See ../notebookGr4sp/reproducibility/ for which notebook needs which archive.
 """
 import json
@@ -41,14 +44,18 @@ def list_files():
 
 def download(url, dest, size):
     tmp = dest + ".part"
-    done = [0]
+    state = {"got": 0, "last_pct": -1}
 
     def hook(block, blocksize, total):
-        done[0] += blocksize
-        pct = min(100, 100 * done[0] / size) if size else 0
-        sys.stdout.write("\r    {:5.1f}%  {} / {}".format(
-            pct, human(min(done[0], size)), human(size)))
-        sys.stdout.flush()
+        state["got"] += blocksize
+        pct = int(min(100, 100 * state["got"] / size)) if size else 0
+        # Only redraw when the whole-number percent changes, so piped/captured
+        # output stays compact instead of one line per block.
+        if pct != state["last_pct"]:
+            state["last_pct"] = pct
+            sys.stdout.write("\r    {:3d}%  {} / {}".format(
+                pct, human(min(state["got"], size)), human(size)))
+            sys.stdout.flush()
 
     urllib.request.urlretrieve(url, tmp, reporthook=hook)
     sys.stdout.write("\n")
@@ -58,9 +65,13 @@ def download(url, dest, size):
 def main():
     want_all = "--all" in sys.argv
     list_only = "--list" in sys.argv
+    filters = [a.lower() for a in sys.argv[1:] if not a.startswith("--")]
 
     files = list_files()
     targets = [f for f in files if want_all or f["key"].endswith(".tar.gz")]
+    if filters:
+        targets = [f for f in targets
+                   if any(flt in f["key"].lower() for flt in filters)]
     total = sum(f.get("size", 0) for f in targets)
     print("Record {}: {} file(s) selected, {} total".format(
         RECORD, len(targets), human(total)))
