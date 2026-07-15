@@ -1,6 +1,12 @@
 # Credentials - never commit
 .env
 
+# Notebook intermediate pickle caches (regenerable from the run, large ~300MB)
+experiments/notebookGr4sp/outputs/data/*.pkl.bz2
+
+# Editor config
+.vscode/
+
 # ERA5 downloaded NetCDF files
 *.nc
 
