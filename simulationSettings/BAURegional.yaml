@@ -24,10 +24,6 @@ population:
 
 
 policy:
-  # goes from 0.00 to 1.0, represents percentage of monthly uptake and uses a normal gaussian distribution to simulate the uptake
-  # for example, 0.01 represents 1% per month, around 12% a year
-  uptakeRate: 0.0
-
   # Consumers will choose the Best (MIN), Worst (MAX), Random (RND), Average (AVG) available retail price
   endConsumerTariff: AVG
   annualInflation: 0.025
