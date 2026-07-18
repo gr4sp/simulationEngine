@@ -1184,7 +1184,7 @@ public class SaveData implements Steppable, java.io.Serializable {
         String folderName = data.settings.folderOutput+""+slash+"csv"+slash+"" + data.yamlFileName;
         File directory = new File(folderName);
         if (!directory.exists()) {
-            directory.mkdir();
+            directory.mkdirs();
 
         }
 
@@ -1794,7 +1794,7 @@ public class SaveData implements Steppable, java.io.Serializable {
         String folderName = data.settings.folderOutput+""+slash+"csv"+slash+"" + data.yamlFileName;
         File directory = new File(folderName);
         if (!directory.exists()) {
-            directory.mkdir();
+            directory.mkdirs();
 
         }
 

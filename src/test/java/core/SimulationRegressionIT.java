@@ -65,9 +65,6 @@ public class SimulationRegressionIT {
         sim.setEndSimDate(new GregorianCalendar(END_YEAR, 0, 1).getTime());
         sim.settings.folderOutput = tempOut.toString();
         sim.settingsAfterBaseYear.folderOutput = tempOut.toString();
-        // SaveData uses File.mkdir() (single level), which cannot create csv/VIC
-        // under a fresh directory — pre-create it here rather than patch SaveData.
-        assertTrue(tempOut.resolve("csv").resolve(sim.yamlFileName).toFile().mkdirs());
 
         // Drive the run the way runFromPythonEMA() does (minus the deprecated
         // SecurityManager): SaveData ends the schedule and writes the CSVs when
