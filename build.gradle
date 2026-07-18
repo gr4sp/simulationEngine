@@ -42,6 +42,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    // Pass-through for regenerating the simulation regression baseline:
+    // ./gradlew test --tests core.SimulationRegressionIT -Dgr4sp.updateBaseline=true
+    if (System.getProperty('gr4sp.updateBaseline') != null) {
+        systemProperty 'gr4sp.updateBaseline', System.getProperty('gr4sp.updateBaseline')
+    }
 }
 
 compileJava.options.encoding = 'UTF-8'
