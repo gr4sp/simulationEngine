@@ -148,7 +148,8 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.9
-    maxCapacityFactorSummer: 0.5
+    # DEFAULT summer CF equalised to annual for now (TODO: set the right % - divergent value was 0.5)
+    maxCapacityFactorSummer: 0.9
     # Emission intensity List, by increasing start year.
     emissionFactors:
       - startYear: 1850
@@ -191,7 +192,7 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.5
-    maxCapacityFactorSummer: 0.8
+    maxCapacityFactorSummer: 0.5   # equalised to annual for now (TODO: was 0.8)
     # Emission Factor List, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -210,7 +211,7 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0
     maxCapacityFactor: 0.85
-    maxCapacityFactorSummer: 0.9
+    maxCapacityFactorSummer: 0.85   # equalised to annual for now (TODO: was 0.9)
     # Emission Factor List, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -247,7 +248,8 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0.47
     maxCapacityFactor: 0.85
-    maxCapacityFactorSummer: 0.9
+    # BROWN COAL summer CF equalised to annual for now (TODO: set the right % - divergent value was 0.9)
+    maxCapacityFactorSummer: 0.85
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -307,7 +309,7 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0.28
     maxCapacityFactor: 0.4 # in LCOE report this is truncated at 50% assuming improvements in technology and costs
-    maxCapacityFactorSummer: 0.43
+    maxCapacityFactorSummer: 0.4   # equalised to annual for now (TODO: was 0.43)
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -344,7 +346,7 @@ generators:
     # Capacity Factor
     minCapacityFactor: 0.12
     maxCapacityFactor: 0.26 #0.26
-    maxCapacityFactorSummer: 0.4
+    maxCapacityFactorSummer: 0.26   # equalised to annual for now (TODO: was 0.4; note: solar CF is inert - solar uses irradiance)
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850

@@ -94,14 +94,17 @@ public class GeneratorTest {
     }
 
     @Test
-    void capacityFactorReturnsMaxForEveryMonth() {
+    void capacityFactorUsesSummerValueForDecJanFeb() {
         Generator g = makeGenerator(2000);
-        // Pins CURRENT behaviour: the summer branch condition (currentMonth > 11 && < 3)
-        // can never be true, so maxCapacityFactorSummer is never returned here.
-        // Flagged as a latent bug — an intentional fix would change simulation results
-        // and belongs in a separate, deliberate change (Phase 3 candidate).
-        for (int month = 1; month <= 12; month++) {
-            assertEquals(g.maxCapacityFactor, g.getCapacityFactor(month), EPS);
+        // Australian summer = Dec (12), Jan (1), Feb (2) -> summer CF; other months
+        // -> annual CF. (The summer CFs in VIC.yaml are currently equalised to their
+        // annual values, so the returned number matches either way, but the corrected
+        // branch now fires for the summer months.)
+        for (int month : new int[]{12, 1, 2}) {
+            assertEquals(g.maxCapacityFactorSummer, g.getCapacityFactor(month), EPS, "summer month " + month);
+        }
+        for (int month : new int[]{3, 4, 5, 6, 7, 8, 9, 10, 11}) {
+            assertEquals(g.maxCapacityFactor, g.getCapacityFactor(month), EPS, "non-summer month " + month);
         }
     }
 }

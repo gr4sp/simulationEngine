@@ -270,7 +270,10 @@ public class Generator implements java.io.Serializable, Asset {
 
     public double getCapacityFactor(int currentMonth) {
 
-        if (currentMonth > 11 && currentMonth < 3)
+        // Australian summer = Dec (12), Jan (1), Feb (2). currentMonth is 1-12
+        // (Calendar.MONTH + 1). The former condition (> 11 && < 3) could never be
+        // true, so maxCapacityFactorSummer never applied.
+        if (currentMonth == 12 || currentMonth < 3)
             return maxCapacityFactorSummer;
         else
             return maxCapacityFactor;
