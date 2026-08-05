@@ -1,0 +1,350 @@
+# GR4SP scenario definitions (task 3.1a consolidation).
+# Generated from the original gr4spModel<X>.py by _extract_scenarios.py,
+# then version-controlled as the single source of truth. Add a new
+# scenario by appending a block under `scenarios:`.
+outcomes:
+  timeseries:
+  - TIMEYear
+  - consumptionYear
+  - tariffsYear
+  - primaryWholesalePriceYear
+  - GHGYear
+  - numConsumersYear
+  - primarySpotProductionYear
+  - secondarySpotProductionYear
+  - offSpotProductionYear
+  - renewableContributionYear
+  - rooftopPVProductionYear
+  - coalProductionYear
+  - waterProductionYear
+  - windProductionYear
+  - gasProductionYear
+  - solarProductionYear
+  - BatteryProductionYear
+  - numActorsYear
+  - primaryUnmetDemandMwh
+  - primaryUnmetDemandHours
+  - primaryUnmetDemandDays
+  - primaryMaxUnmetDemandMwhPerHour
+  - secondaryUnmetDemandMwh
+  - secondaryUnmetDemandHours
+  - secondaryUnmetDemandDays
+  - secondaryMaxUnmetDemandMwhPerHour
+  scalar:
+  - seedExperimentCsv
+scenarios:
+  BAU:
+    model_type: afterBaseYear
+    after_base_year_energy_efficiency_zero: true
+    uncertainties:
+    - name: energyEfficiency
+      type: categorical
+      categories:
+      - 0
+      - 1
+    constants:
+      consumption: 0
+      annualCpi: 2.33
+      annualInflation: 3.3
+      onsiteGeneration: 0
+      solarUptake: 0
+      rooftopPV: 7
+      domesticConsumptionPercentage: 30
+      includePublicallyAnnouncedGen: 0
+      generationRolloutPeriod: 1
+      generatorRetirement: 0
+      technologicalImprovement: 1
+      learningCurve: 5
+      importPriceFactor: 29
+      priceChangePercentageBattery: 0
+      priceChangePercentageBrownCoal: 0
+      priceChangePercentageOcgt: 0
+      priceChangePercentageCcgt: 0
+      priceChangePercentageWind: 0
+      priceChangePercentageWater: 0
+      priceChangePercentageSolar: 0
+      nameplateCapacityChangeBattery: 0
+      nameplateCapacityChangeBrownCoal: 0
+      nameplateCapacityChangeOcgt: 0
+      nameplateCapacityChangeCcgt: 0
+      nameplateCapacityChangeWind: 0
+      nameplateCapacityChangeWater: 0
+      nameplateCapacityChangeSolar: 0
+      wholesaleTariffContribution: 28.37
+      scheduleMinCapMarketGen: 300
+      semiScheduleGenSpotMarket: 8
+      semiScheduleMinCapMarketGen: 300
+      nonScheduleGenSpotMarket: 10
+      nonScheduleMinCapMarketGen: 1
+    run:
+      n_processes: 1
+      scenarios: 1
+      policies: 1
+      sampling: null
+      generate_only: false
+      uncertainty_file: null
+  JT:
+    model_type: afterBaseYear
+    after_base_year_energy_efficiency_zero: false
+    uncertainties:
+    - name: nameplateCapacityChangeBrownCoal
+      type: categorical
+      categories:
+      - 0
+      - -30
+      - -20
+      - 10
+      - 20
+    - name: generationRolloutPeriod
+      type: categorical
+      categories:
+      - 1
+      - 4
+      - 6
+      - 8
+      - 10
+    - name: scheduleMinCapMarketGen
+      type: categorical
+      categories:
+      - 150
+      - 250
+      - 300
+    - name: semiScheduleGenSpotMarket
+      type: integer
+      lower: 8
+      upper: 10
+    - name: nonScheduleGenSpotMarket
+      type: integer
+      lower: 9
+      upper: 10
+    - name: nameplateCapacityChangeWind
+      type: categorical
+      categories:
+      - 0
+      - -20
+      - -10
+      - 30
+      - 40
+    - name: wholesaleTariffContribution
+      type: categorical
+      categories:
+      - 10
+      - 20
+      - 30
+      - 40
+      - 50
+    constants:
+      includePublicallyAnnouncedGen: 0
+      consumption: 0
+      annualCpi: 2.33
+      annualInflation: 3.3
+      energyEfficiency: 0
+      solarUptake: 0
+      onsiteGeneration: 0
+      rooftopPV: 7
+      generatorRetirement: 0
+      domesticConsumptionPercentage: 30
+      technologicalImprovement: 1
+      learningCurve: 5
+      importPriceFactor: 29
+      priceChangePercentageBrownCoal: 0
+      priceChangePercentageBattery: 0
+      priceChangePercentageOcgt: 0
+      priceChangePercentageCcgt: 0
+      priceChangePercentageWind: 0
+      priceChangePercentageWater: 0
+      priceChangePercentageSolar: 0
+      nameplateCapacityChangeBattery: 0
+      nameplateCapacityChangeOcgt: 0
+      nameplateCapacityChangeCcgt: 0
+      nameplateCapacityChangeWater: 0
+      nameplateCapacityChangeSolar: 0
+      semiScheduleMinCapMarketGen: 300
+      nonScheduleMinCapMarketGen: 1
+    run:
+      n_processes: 79
+      scenarios: 6
+      policies: 0
+      sampling: null
+      generate_only: false
+      uncertainty_file: uncertainties.ffJT.object
+  LCT:
+    model_type: afterBaseYear
+    after_base_year_energy_efficiency_zero: false
+    uncertainties:
+    - name: consumption
+      type: integer
+      lower: 0
+      upper: 3
+    - name: priceChangePercentageBrownCoal
+      type: categorical
+      categories:
+      - -10
+      - 0
+      - 15
+      - 20
+      - 25
+      - 35
+    - name: generatorRetirement
+      type: categorical
+      categories:
+      - -5
+      - -3
+      - -2
+      - -1
+      - 0
+      - 1
+    - name: nameplateCapacityChangeWind
+      type: categorical
+      categories:
+      - -20
+      - 0
+      - 15
+      - 20
+      - 30
+      - 50
+    - name: semiScheduleGenSpotMarket
+      type: integer
+      lower: 8
+      upper: 10
+    - name: includePublicallyAnnouncedGen
+      type: integer
+      lower: 0
+      upper: 1
+    - name: priceChangePercentageWind
+      type: categorical
+      categories:
+      - -50
+      - -20
+      - -10
+      - 0
+      - 10
+      - 40
+    constants:
+      annualCpi: 2.33
+      annualInflation: 3.3
+      energyEfficiency: 0
+      solarUptake: 0
+      onsiteGeneration: 0
+      rooftopPV: 7
+      generationRolloutPeriod: 1
+      domesticConsumptionPercentage: 30
+      technologicalImprovement: 1
+      learningCurve: 5
+      importPriceFactor: 29
+      priceChangePercentageBattery: 0
+      priceChangePercentageOcgt: 0
+      priceChangePercentageCcgt: 0
+      priceChangePercentageWater: 0
+      priceChangePercentageSolar: 0
+      nameplateCapacityChangeBattery: 0
+      nameplateCapacityChangeBrownCoal: 0
+      nameplateCapacityChangeOcgt: 0
+      nameplateCapacityChangeCcgt: 0
+      nameplateCapacityChangeWater: 0
+      nameplateCapacityChangeSolar: 0
+      wholesaleTariffContribution: 28.37
+      scheduleMinCapMarketGen: 300
+      semiScheduleMinCapMarketGen: 300
+      nonScheduleGenSpotMarket: 10
+      nonScheduleMinCapMarketGen: 1
+    run:
+      n_processes: 1
+      scenarios: 6
+      policies: 0
+      sampling: FF
+      generate_only: true
+      uncertainty_file: null
+  ST:
+    model_type: afterBaseYear
+    after_base_year_energy_efficiency_zero: false
+    uncertainties:
+    - name: generatorRetirement
+      type: categorical
+      categories:
+      - -5
+      - -2
+      - 0
+      - 1
+    - name: priceChangePercentageWater
+      type: categorical
+      categories:
+      - -45
+      - -20
+      - 0
+      - 10
+      - 35
+    - name: nameplateCapacityChangeWind
+      type: categorical
+      categories:
+      - -20
+      - -10
+      - 0
+      - 35
+      - 50
+    - name: semiScheduleGenSpotMarket
+      type: integer
+      lower: 8
+      upper: 10
+    - name: nonScheduleGenSpotMarket
+      type: integer
+      lower: 9
+      upper: 10
+    - name: generationRolloutPeriod
+      type: categorical
+      categories:
+      - 1
+      - 3
+      - 5
+      - 7
+      - 10
+    - name: nameplateCapacityChangeBrownCoal
+      type: categorical
+      categories:
+      - -30
+      - -20
+      - -10
+      - 0
+      - 20
+    - name: wholesaleTariffContribution
+      type: categorical
+      categories:
+      - 10
+      - 20
+      - 30
+      - 40
+      - 50
+    constants:
+      consumption: 0
+      annualCpi: 2.33
+      annualInflation: 3.3
+      energyEfficiency: 0
+      solarUptake: 0
+      onsiteGeneration: 0
+      rooftopPV: 7
+      includePublicallyAnnouncedGen: 1
+      domesticConsumptionPercentage: 30
+      technologicalImprovement: 1
+      learningCurve: 5
+      importPriceFactor: 29
+      priceChangePercentageBrownCoal: 0
+      priceChangePercentageBattery: 0
+      priceChangePercentageOcgt: 0
+      priceChangePercentageCcgt: 0
+      priceChangePercentageSolar: 0
+      priceChangePercentageWind: 0
+      nameplateCapacityChangeBattery: 0
+      nameplateCapacityChangeOcgt: 0
+      nameplateCapacityChangeCcgt: 0
+      nameplateCapacityChangeSolar: 0
+      nameplateCapacityChangeWater: 0
+      scheduleMinCapMarketGen: 300
+      semiScheduleMinCapMarketGen: 300
+      nonScheduleMinCapMarketGen: 1
+    run:
+      n_processes: 1
+      scenarios: 6
+      policies: 0
+      sampling: FF
+      generate_only: true
+      uncertainty_file: null
