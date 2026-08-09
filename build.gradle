@@ -50,3 +50,14 @@ test {
 }
 
 compileJava.options.encoding = 'UTF-8'
+
+// Assemble the full runtime classpath (local libraries/ jars + Maven-resolved
+// dependencies) into a single folder so the launch scripts (runGr4sp*.bat/.sh)
+// and the Python/JPype experiment connectors can build a classpath without
+// hardcoding jar versions. Regenerated on every build; not committed (build/ is
+// gitignored). This is the single source of truth for the runtime classpath.
+tasks.register('copyRuntimeLibs', Copy) {
+    from configurations.runtimeClasspath
+    into layout.buildDirectory.dir('runtime-libs')
+}
+tasks.named('build') { finalizedBy 'copyRuntimeLibs' }

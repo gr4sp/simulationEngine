@@ -59,19 +59,19 @@ def startJVM():
 
     classpathSeparator = ";" if platform.system() == "Windows" else ":"
 
-    classpath = "-Djava.class.path=" \
-                "{0}/{2}{1}" \
-                "{0}/libraries/bsh-2.0b4.jar{1}{0}/libraries/itext-1.2.jar{1}" \
-                "{0}/libraries/j3dcore.jar{1}{0}/libraries/j3dutils.jar{1}" \
-                "{0}/libraries/jcommon-1.0.21.jar{1}" \
-                "{0}/libraries/jfreechart-1.0.17.jar{1}" \
-                "{0}/libraries/jmf.jar{1}" \
-                "{0}/libraries/mason.19.jar{1}" \
-                "{0}/libraries/portfolio.jar{1}" \
-                "{0}/libraries/vecmath.jar{1}" \
-                "{0}/libraries/postgresql-42.2.6.jar{1}" \
-                "{0}/libraries/opencsv-4.6.jar{1}" \
-                "{0}/libraries/yamlbeans-1.13.jar".format(gr4spPath, classpathSeparator, settings["gr4spClasses"])
+    # Runtime classpath = compiled classes + every jar Gradle assembled into
+    # build/runtime-libs/ (local libraries/ jars + Maven deps, correct versions).
+    # No hardcoded jar names/versions -- run "./gradlew build" to (re)generate them.
+    import glob
+    runtime_dir = gr4spPath + "/build/runtime-libs"
+    runtime_libs = sorted(glob.glob(runtime_dir + "/*.jar"))
+    if not runtime_libs:
+        raise RuntimeError(
+            "No runtime jars found in " + runtime_dir + ". Build the project first "
+            "so Gradle can assemble the classpath: ./gradlew build "
+            "(Windows: gradlew.bat build).")
+    classpath = "-Djava.class.path=" + classpathSeparator.join(
+        [gr4spPath + "/" + settings["gr4spClasses"]] + runtime_libs)
 
     jpype.startJVM(jvmpath, classpath, "-Xmx8192M")  # 8GB
 
