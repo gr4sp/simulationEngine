@@ -26,6 +26,14 @@ git clone https://github.com/angelara/gr4sp.git
 cd gr4sp
 ```
 
+> **Windows: enable long paths first.** A few data files in `experiments/assesmentData/` have descriptive names up to 139 characters. Combined with a deep clone location, these can exceed the legacy 260-character Windows path limit and the clone fails with `error: unable to create file ...: Filename too long`. Enable long-path support once (Administrator PowerShell):
+>
+> ```powershell
+> git config --system core.longpaths true
+> ```
+>
+> Without Administrator rights, use `git config --global core.longpaths true`, or simply clone into a short path such as `C:\gr4sp`.
+
 ### Step 2 — Run the setup script
 
 The setup script checks Java, builds the project, creates output directories, and loads the database.
@@ -186,5 +194,6 @@ Jupyter notebooks for scenario analysis, sensitivity analysis, and visualisation
 | `NullPointerException` in `LoadData` | PostgreSQL not configured to trust local connections | Follow the trust configuration in Step 2 |
 | `Problems reading YAML file` | Running simulation from wrong directory | Always run from the project root (`gr4sp/`) |
 | `gradlew: Permission denied` | Fresh clone on Linux/macOS | `chmod +x gradlew` |
+| `Filename too long` during `git clone` (Windows) | Legacy 260-character path limit | `git config --system core.longpaths true`, then re-clone — or clone into a shorter path such as `C:\gr4sp` |
 | Java not found during setup | `JAVA_HOME` not yet in terminal PATH | The setup script auto-detects from `JAVA_HOME`; or restart VS Code |
 | `pg_restore` warnings about `adminpack` | Extension not available in newer PostgreSQL | Harmless — data is restored correctly |
