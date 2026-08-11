@@ -41,10 +41,25 @@ Write-OK "logs/, csv/, plots/ ready"
 # --- Step 4: Check PostgreSQL ---
 Write-Step "Checking PostgreSQL..."
 if (-not (Get-Command pg_restore -ErrorAction SilentlyContinue)) {
+    # The Windows installer does not add PostgreSQL's bin/ to PATH, so an
+    # otherwise correct installation looks missing here. Find it ourselves
+    # (highest version wins) before telling the user to go install it.
+    $pgBin = Get-ChildItem "$env:ProgramFiles\PostgreSQL\*\bin\pg_restore.exe" -ErrorAction SilentlyContinue |
+             Sort-Object { [int](($_.Directory.Parent.Name -split '\.')[0]) } -Descending |
+             Select-Object -First 1
+
+    if ($pgBin) {
+        $env:PATH = "$($pgBin.DirectoryName);$env:PATH"
+        Write-OK "Found PostgreSQL at $($pgBin.DirectoryName) (not on PATH; added for this session)"
+    }
+}
+
+if (-not (Get-Command pg_restore -ErrorAction SilentlyContinue)) {
     Write-Host ""
-    Write-Host "  PostgreSQL not found in PATH." -ForegroundColor Red
+    Write-Host "  PostgreSQL not found." -ForegroundColor Red
     Write-Host "  Install PostgreSQL from https://www.postgresql.org/download/windows/" -ForegroundColor Yellow
-    Write-Host "  Then re-run this script." -ForegroundColor Yellow
+    Write-Host "  If it is already installed somewhere unusual, add its bin\ folder to PATH" -ForegroundColor Yellow
+    Write-Host "  and re-run this script." -ForegroundColor Yellow
     exit 1
 }
 Write-OK (pg_restore --version)
