@@ -22,8 +22,8 @@ GR4SP is an agent-based simulation model of the Victorian electricity system in 
 ### Step 1 — Clone
 
 ```bash
-git clone https://github.com/angelara/gr4sp.git
-cd gr4sp
+git clone https://github.com/gr4sp/simulationEngine.git
+cd simulationEngine
 ```
 
 > **Windows: enable long paths first.** A few data files in `experiments/assesmentData/` have descriptive names up to 139 characters. Combined with a deep clone location, these can exceed the legacy 260-character Windows path limit and the clone fails with `error: unable to create file ...: Filename too long`. Enable long-path support once (Administrator PowerShell):
@@ -139,19 +139,25 @@ Create a conda environment with [Miniforge](https://github.com/conda-forge/minif
 ```powershell
 conda create -n gr4sp python=3.12
 conda activate gr4sp
-pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib
+pip install JPype1 pandas ipyparallel SALib numpy scipy matplotlib PyYAML
 ```
 
 Each new terminal session, re-activate the environment with `conda activate gr4sp`.
 
-Then run an experiment from the `experiments/` folder:
+EMA Workbench itself does not need installing — it is vendored in `experiments/EMAworkbench/` and imported from there.
+
+Scenarios are defined in `experiments/scenarios.yaml`, which holds the uncertainties, constants, and run settings for each one. Run a scenario by name from the `experiments/` folder:
 
 ```bash
 cd experiments
-python3 runExperimentsBAU.py
+python run_experiment.py BAU        # BAU, JT, LCT, or ST
+python run_experiment.py JT --dry-run    # print the run plan without executing
+python run_experiment.py LCT --processes 4
 ```
 
-`settingsExperiments.json` is pre-configured — the JVM path and classpath are detected automatically. No manual editing required.
+Results are written to `experiments/simulationData/gr4sp_<SCENARIO><date>.tar.gz`. Note that the sampled scenarios (JT, LCT, ST) run thousands of simulations and take hours; `BAU` is a single deterministic run and is the quickest way to check your setup works.
+
+`settingsExperiments.json` is pre-configured — the JVM path and classpath are detected automatically. No manual editing required, but the project must have been built first (`.\gradlew.bat build`) so that `build/runtime-libs/` exists.
 
 ---
 
@@ -184,6 +190,25 @@ Each script is idempotent — safe to re-run, and re-running `fetch_openelectric
 ## Analysing Results
 
 Jupyter notebooks for scenario analysis, sensitivity analysis, and visualisation are in `experiments/notebookGr4sp/`. Open them in VS Code or JupyterLab.
+
+Install the notebook dependencies first:
+
+```powershell
+conda activate gr4sp
+pip install -r experiments/notebookGr4sp/requirements.txt
+```
+
+The notebooks analyse the results of EMA experiment runs, which are large `.tar.gz` archives that are not stored in git. The published run results are archived on [Zenodo record 8320754](https://zenodo.org/records/8320754) and can be downloaded with the fetch script:
+
+```bash
+cd experiments/simulationData
+python fetch_results.py --list          # show what is available, download nothing
+python fetch_results.py                 # fetch the 14 result archives (~1.3 GB)
+python fetch_results.py --all           # also fetch the input CSV/XLSX files
+python fetch_results.py JT              # fetch only archives matching a substring
+```
+
+The script skips files already present, so it is safe to re-run. Fetching only the archives a given notebook needs is usually enough — see `experiments/notebookGr4sp/reproducibility/` for which notebook depends on which archive.
 
 ---
 
