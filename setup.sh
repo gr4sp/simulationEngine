@@ -34,13 +34,50 @@ step "Creating output directories..."
 mkdir -p logs csv plots
 ok "logs/, csv/, plots/ ready"
 
+# Print the bin/ directory of the newest PostgreSQL install that ships
+# pg_restore, or nothing. Homebrew's postgresql@NN formulae are keg-only and are
+# never linked onto PATH, and a server-only Linux install leaves the binaries
+# under /usr/lib/postgresql/NN/bin -- in both cases a correct installation looks
+# missing to command -v.
+find_pg_bin() {
+    local best_dir="" best_ver=-1 dir ver
+    for dir in \
+        /opt/homebrew/opt/postgresql@*/bin \
+        /usr/local/opt/postgresql@*/bin \
+        /opt/homebrew/opt/postgresql/bin \
+        /usr/local/opt/postgresql/bin \
+        /usr/lib/postgresql/*/bin \
+        /usr/pgsql-*/bin \
+        /Library/PostgreSQL/*/bin
+    do
+        [ -x "$dir/pg_restore" ] || continue
+        # Trailing version number in the path (postgresql@16, /14/, pgsql-16).
+        ver="$(printf '%s' "$dir" | sed -n 's/.*[@/-]\([0-9][0-9]*\)\(\.[0-9]*\)*\/bin$/\1/p')"
+        [ -n "$ver" ] || ver=0
+        if [ "$ver" -gt "$best_ver" ]; then
+            best_ver="$ver"
+            best_dir="$dir"
+        fi
+    done
+    printf '%s' "$best_dir"
+}
+
 # --- Step 4: Check PostgreSQL ---
 step "Checking PostgreSQL..."
+if ! command -v pg_restore &> /dev/null; then
+    PG_BIN="$(find_pg_bin)"
+    if [ -n "$PG_BIN" ]; then
+        export PATH="$PG_BIN:$PATH"
+        ok "Found PostgreSQL at $PG_BIN (not on PATH; added for this session)"
+    fi
+fi
+
 if ! command -v pg_restore &> /dev/null; then
     echo "  PostgreSQL not found."
     echo "  Ubuntu/Debian: sudo apt install postgresql"
     echo "  macOS:         brew install postgresql"
-    echo "  Then re-run this script."
+    echo "  If it is already installed somewhere unusual, add its bin/ directory"
+    echo "  to PATH and re-run this script."
     exit 1
 fi
 ok "$(pg_restore --version)"
