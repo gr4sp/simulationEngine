@@ -1,8 +1,14 @@
 #!/bin/bash
 # GR4SP Setup Script (Linux / macOS)
 # Run once after cloning the repository: ./setup.sh
+#
+# --force skips the confirmation prompt shown when an existing gr4spdb would be
+# destroyed (for unattended/CI use).
 
 set -e
+
+FORCE=0
+[ "$1" = "--force" ] && FORCE=1
 
 step() { echo; echo "[GR4SP] $1"; }
 ok()   { echo "  OK: $1"; }
@@ -44,6 +50,31 @@ step "Setting up database 'gr4spdb'..."
 read -s -p "Enter PostgreSQL password for user 'postgres': " PGPASSWORD
 echo
 export PGPASSWORD
+
+# Refuse to silently destroy an existing database. A first-time reader has no
+# gr4spdb and sails past this; anyone who has refreshed their data with the
+# scripts in scripts/data/ gets a chance to back it up first.
+PSQL="$(dirname "$(command -v pg_restore)")/psql"
+DB_EXISTS=""
+if [ -x "$PSQL" ]; then
+    DB_EXISTS="$("$PSQL" -U postgres -tAc "SELECT 1 FROM pg_database WHERE datname='gr4spdb'" 2>/dev/null || true)"
+fi
+
+if [ "$DB_EXISTS" = "1" ] && [ "$FORCE" -eq 0 ]; then
+    echo
+    echo "  WARNING: a database named 'gr4spdb' already exists."
+    echo "  Continuing DROPS it and restores the 2021 snapshot, discarding any data"
+    echo "  loaded since - including refreshes made with scripts/data/*.py."
+    echo
+    echo "  To keep a copy first, cancel and run:"
+    echo "    pg_dump -U postgres -Fc -f backupDB/DB-$(date +%Y-%m-%d).sql gr4spdb"
+    echo
+    read -p "  Type 'yes' to drop and re-restore gr4spdb (anything else cancels): " ANSWER
+    if [ "$ANSWER" != "yes" ]; then
+        echo "  Cancelled - your database was left untouched."
+        exit 0
+    fi
+fi
 
 dropdb --if-exists -U postgres gr4spdb 2>/dev/null && ok "Dropped existing gr4spdb (if any)" || true
 createdb -U postgres gr4spdb

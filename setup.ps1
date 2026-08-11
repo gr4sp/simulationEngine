@@ -1,5 +1,9 @@
 # GR4SP Setup Script (Windows / PowerShell)
 # Run once after cloning the repository: .\setup.ps1
+#
+# -Force skips the confirmation prompt shown when an existing gr4spdb would be
+# destroyed (for unattended/CI use).
+param([switch]$Force)
 
 $ErrorActionPreference = "Stop"
 
@@ -52,6 +56,40 @@ $env:PGPASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [Runtime.InteropServices.Marshal]::SecureStringToBSTR($pgPass))
 
 try {
+    # Refuse to silently destroy an existing database. A first-time reader has no
+    # gr4spdb and sails past this; anyone who has refreshed their data with the
+    # scripts in scripts/data/ gets a chance to back it up first.
+    $psql = Join-Path (Split-Path (Get-Command pg_restore).Source) "psql.exe"
+    $exists = ""
+    if (Test-Path $psql) {
+        $exists = (& $psql -U postgres -tAc "SELECT 1 FROM pg_database WHERE datname='gr4spdb'" 2>$null) -join ""
+    }
+
+    if ($exists.Trim() -eq "1" -and -not $Force) {
+        Write-Host ""
+        Write-Host "  WARNING: a database named 'gr4spdb' already exists." -ForegroundColor Yellow
+        Write-Host "  Continuing DROPS it and restores the 2021 snapshot, discarding any data" -ForegroundColor Yellow
+        Write-Host "  loaded since - including refreshes made with scripts/data/*.py." -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "  To keep a copy first, cancel and run:" -ForegroundColor Yellow
+        Write-Host "    pg_dump -U postgres -Fc -f backupDB\DB-$(Get-Date -Format 'yyyy-MM-dd').sql gr4spdb" -ForegroundColor Gray
+        Write-Host ""
+        # Read-Host throws in a non-interactive shell; treat that as "cancel" so an
+        # unattended run never destroys data by accident (use -Force to mean it).
+        $answer = ""
+        try {
+            $answer = Read-Host "  Type 'yes' to drop and re-restore gr4spdb (anything else cancels)"
+        } catch {
+            Write-Host "  (non-interactive shell - cannot prompt)" -ForegroundColor Yellow
+        }
+
+        if ($answer -ne "yes") {
+            Write-Host "  Cancelled - your database was left untouched." -ForegroundColor Green
+            Write-Host "  Re-run with -Force to skip this prompt." -ForegroundColor Gray
+            exit 0
+        }
+    }
+
     dropdb --if-exists -U postgres gr4spdb 2>&1 | Out-Null
     Write-OK "Dropped existing gr4spdb (if any)"
 
