@@ -222,3 +222,28 @@ The script skips files already present, so it is safe to re-run. Fetching only t
 | `Filename too long` during `git clone` (Windows) | Legacy 260-character path limit | `git config --system core.longpaths true`, then re-clone — or clone into a shorter path such as `C:\gr4sp` |
 | Java not found during setup | `JAVA_HOME` not yet in terminal PATH | The setup script auto-detects from `JAVA_HOME`; or restart VS Code |
 | `pg_restore` warnings about `adminpack` | Extension not available in newer PostgreSQL | Harmless — data is restored correctly |
+
+---
+
+## Data archives
+
+Two Zenodo records hold the data behind the published results.
+
+| Archive | DOI | Contents |
+|---|---|---|
+| GR4SP Victoria Electricity System | [10.5281/zenodo.4667997](https://doi.org/10.5281/zenodo.4667997) | The PostgreSQL input database that initialises the simulation engine — generation and network assets, actors, demand, tariffs, and the historical registers. |
+| GR4SP Suite: Additional Data and Simulation Results | [10.5281/zenodo.8320754](https://doi.org/10.5281/zenodo.8320754) | Additional input datasets, simulation outputs, and sensitivity and uncertainty analysis results. |
+
+`backupDB/` holds the database dumps the setup script restores from. The Zenodo record above is the archived, citable version of the input database.
+
+---
+
+## Citing GR4SP
+
+If you use GR4SP, please cite the software using the metadata in [`CITATION.cff`](CITATION.cff).
+
+The model and its Victorian application are documented in full in:
+
+> Rojas Arévalo, A. M. (2022). *Sustainability transitions modelling and assessment of socio-technical energy systems: An Australian case.* PhD thesis, The University of Melbourne. <https://hdl.handle.net/11343/324500>
+
+A methods article describing the GR4SP suite is in preparation. This section will be updated when it is published.
