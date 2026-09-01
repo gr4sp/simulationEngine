@@ -70,9 +70,14 @@ Both are Saltelli samples with N=2100. The validation ensemble is a
 hypothetical-past design: it varies parameters that could plausibly have differed
 historically and omits six forward-looking ones the sensitivity analysis
 includes. Neither is in the repository (`*.tar.gz` is gitignored, and the
-validation archive is 972 MB). The sensitivity archive is on Zenodo at
-<https://doi.org/10.5281/zenodo.8320754>; **the validation archive is not yet
-deposited anywhere.**
+validation archive is 972 MB). Both are deposited on Zenodo under the concept
+DOI <https://doi.org/10.5281/zenodo.8320754>: the sensitivity archive in the
+published version, and the validation archive in a new version being uploaded.
+Until that version is released, `fetch_results.py` will not find the validation
+archive — it reads the record's current files. Once it is public, add the
+filename to `ZENODO_ARCHIVES` in
+`../notebookGr4sp/reproducibility/build_manifest.py` and re-run that script so
+the manifests stop marking it as not deposited.
 
 Rows 41357 and 41379 of the validation ensemble are empty and are dropped, which
 is what the source notebook does.
