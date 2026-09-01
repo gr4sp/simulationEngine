@@ -9,10 +9,16 @@ Files already present with the expected size are skipped, so re-running resumes
 cleanly. By default only the *.tar.gz result archives are fetched; pass --all to
 also pull the record's input CSV/XLSX/ZIP files.
 
-    python fetch_results.py            # the 14 *.tar.gz result archives
+    python fetch_results.py            # the *.tar.gz result archives
     python fetch_results.py --all      # every file in the record
     python fetch_results.py --list     # list files without downloading
     python fetch_results.py EETPast    # only files whose name contains "EETPast"
+    python fetch_results.py --record 8320754   # pin one version instead of the latest
+
+The deposit is versioned. By default this follows the record to its newest
+version, so archives added after publication (such as the validation ensemble)
+are picked up without editing this file. The resolved version is printed on
+every run; pass --record to pin a specific one.
 
 Any non-flag argument is a case-insensitive substring filter on the filename,
 so a single scenario can be fetched without downloading the whole 1.3 GB record.
@@ -35,11 +41,32 @@ def human(n):
         n /= 1024.0
 
 
-def list_files():
-    req = urllib.request.Request(API, headers={"Accept": "application/json"})
+def get_record(url):
+    req = urllib.request.Request(url, headers={"Accept": "application/json"})
     with urllib.request.urlopen(req) as r:
-        record = json.load(r)
-    return record.get("files", [])
+        return json.load(r)
+
+
+def list_files(record_id, follow_latest=True):
+    """Return (files, resolved record id) for the deposit.
+
+    Zenodo gives every new version its own record id, and an older version's
+    API response only lists the files that version held. Follow links.latest so
+    a reader gets archives deposited after this script was written.
+    """
+    record = get_record("https://zenodo.org/api/records/{}".format(record_id))
+    latest = record.get("links", {}).get("latest") if follow_latest else None
+    if latest:
+        try:
+            newest = get_record(latest)
+        except Exception as e:  # offline, rate limited, API change
+            print("warning: could not check for a newer version ({})".format(e))
+        else:
+            if str(newest.get("id")) != str(record.get("id")):
+                print("Record {} superseded by version {}".format(
+                    record.get("id"), newest.get("id")))
+                record = newest
+    return record.get("files", []), record.get("id", record_id)
 
 
 def download(url, dest, size):
@@ -65,16 +92,28 @@ def download(url, dest, size):
 def main():
     want_all = "--all" in sys.argv
     list_only = "--list" in sys.argv
-    filters = [a.lower() for a in sys.argv[1:] if not a.startswith("--")]
+    argv = sys.argv[1:]
 
-    files = list_files()
+    record_id = RECORD
+    follow_latest = True
+    if "--record" in argv:
+        i = argv.index("--record")
+        if i + 1 >= len(argv):
+            sys.exit("--record needs a Zenodo record id")
+        record_id = argv[i + 1]
+        follow_latest = False
+        del argv[i:i + 2]
+
+    filters = [a.lower() for a in argv if not a.startswith("--")]
+
+    files, record_id = list_files(record_id, follow_latest)
     targets = [f for f in files if want_all or f["key"].endswith(".tar.gz")]
     if filters:
         targets = [f for f in targets
                    if any(flt in f["key"].lower() for flt in filters)]
     total = sum(f.get("size", 0) for f in targets)
     print("Record {}: {} file(s) selected, {} total".format(
-        RECORD, len(targets), human(total)))
+        record_id, len(targets), human(total)))
 
     for f in targets:
         key = f["key"]
