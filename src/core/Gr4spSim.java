@@ -21,7 +21,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.lang.System.exit;
 
 class MySecurityManager extends SecurityManager {
     @Override public void checkExit(int status) {
@@ -216,18 +215,15 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         try {
             
 
-            String pathSRC = Paths.get(".").toAbsolutePath().normalize().toString();
-            pathSRC = pathSRC.split("gr4sp")[0];
+            //Settings live under the project root, which is the directory the
+            //simulation is launched from. Do not derive the root from the folder
+            //name: a clone can be called anything.
+            Path settingsFolder = Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings");
             yamlFileName = "VIC";
-            String sysName = System.getProperty("os.name");
 
-            String folderYaml = pathSRC;
-            if( System.getProperty("os.name").contains("Windows") )
-                folderYaml+="gr4sp\\simulationSettings\\"+yamlFileName+".yaml";
-            else
-                folderYaml+="gr4sp/simulationSettings/"+yamlFileName+".yaml";
+            Path folderYaml = settingsFolder.resolve(yamlFileName + ".yaml");
 
-            YamlReader reader = new YamlReader(new FileReader(folderYaml));
+            YamlReader reader = new YamlReader(new FileReader(folderYaml.toFile()));
 
             settings = reader.read(Settings.class);
             settings.computeSolarEfficiency();
@@ -236,15 +232,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             }
 
             // Load Future Yaml, if it doesn't exist, use the same yaml file
-            String folderYamlfuture = pathSRC;
-            if( System.getProperty("os.name").contains("Windows") )
-                folderYamlfuture+="gr4sp\\simulationSettings\\"+yamlFileName+"future.yaml";
-            else
-                folderYamlfuture+="gr4sp/simulationSettings/"+yamlFileName+"future.yaml";
-
-            Path p = Paths.get(folderYamlfuture);
+            Path p = settingsFolder.resolve(yamlFileName + "future.yaml");
             if( Files.exists(p) )
-                reader = new YamlReader(new FileReader(folderYamlfuture));
+                reader = new YamlReader(new FileReader(p.toFile()));
 
             settingsAfterBaseYear = reader.read(Settings.class);
             if (settingsAfterBaseYear.folderOutput == null || settingsAfterBaseYear.folderOutput.trim().equals("auto")) {
@@ -277,8 +267,10 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             policies.setEndConsumerTariffs(settings.getEndConsumerTariff());
 
         } catch (ParseException | com.esotericsoftware.yamlbeans.YamlException | java.io.FileNotFoundException e) {
-            System.out.println("Problems reading YAML file!" + e.toString());
-            exit(0);
+            e.printStackTrace();
+            throw new RuntimeException("Problems reading the YAML settings in "
+                    + Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings")
+                    + " - run the simulation from the project root", e);
         }
 
 
