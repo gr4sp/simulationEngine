@@ -217,7 +217,7 @@ The script skips files already present, so it is safe to re-run. Fetching only t
 | Error | Cause | Fix |
 |---|---|---|
 | `NullPointerException` in `LoadData` | PostgreSQL not configured to trust local connections | Follow the trust configuration in Step 2 |
-| `Problems reading YAML file` | Running simulation from wrong directory | Always run from the project root (`gr4sp/`) |
+| `Problems reading the YAML settings in ...` | Running the simulation from somewhere other than the project root | Always run from the project root — the folder containing `simulationSettings/` |
 | `gradlew: Permission denied` | Fresh clone on Linux/macOS | `chmod +x gradlew` |
 | `Filename too long` during `git clone` (Windows) | Legacy 260-character path limit | `git config --system core.longpaths true`, then re-clone — or clone into a shorter path such as `C:\gr4sp` |
 | Java not found during setup | `JAVA_HOME` not yet in terminal PATH | The setup script auto-detects from `JAVA_HOME`; or restart VS Code |
