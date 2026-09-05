@@ -43,6 +43,10 @@ RENEWABLE = ["Solar (Rooftop) - GWh", "Solar (Utility) - GWh",
 GENERATION = RENEWABLE + ["Battery (Discharging) - GWh", "Gas (OCGT) - GWh",
                           "Gas (Steam) - GWh", "Brown Coal - GWh"]
 
+# Column order of 2001to2019_historicTariffs.csv, whose headers are too long to
+# tabulate. The second column is the price review the ACCC series comes from.
+TARIFF_SOURCES = ("St Vincent de Paul", "ACCC (price review)")
+
 
 def load_inputs():
     """Return the pinned BAU outputs and the four historical comparators."""
@@ -71,6 +75,31 @@ def renewable_share(opennem):
     return sum(annual[column] for column in RENEWABLE) / sum(annual.values()) * 100.0
 
 
+def tariff_years(tariffs, column):
+    """The years one tariff source actually covers, as a compact label."""
+    years = tariffs.iloc[:, column].dropna().index.tolist()
+    runs, start = [], years[0]
+    for previous, current in zip(years, years[1:] + [None]):
+        if current != previous + 1:
+            runs.append(str(start) if start == previous else f"{start}-{previous}")
+            start = current
+    return years, ", ".join(runs)
+
+
+def tariff_indicator(year, tariffs, column):
+    """Simulated and observed tariffs over one source's own coverage.
+
+    Each source is compared on its own years rather than against the row-wise
+    mean of the two. The mean changes composition across the window - one source
+    to 2009, both to 2017, the other after - and because the sources sit about
+    15 c/kWh apart that composition alone steps the composite, which shows up in
+    the bias and the NSE as if it were model error.
+    """
+    years, label = tariff_years(tariffs, column)
+    simulated = year["Avg Tariff (c/KWh) per household"].loc[years]
+    return simulated.values, tariffs.iloc[:, column].loc[years].values, label, "c/kWh"
+
+
 def series(year, month, ghge, opennem, tariffs):
     """Build the (simulated, observed, period, unit) tuple for each indicator."""
     ghge_total = (year["GHG Emissions (tCO2-e) per household"]
@@ -92,10 +121,8 @@ def series(year, month, ghge, opennem, tariffs):
             year["Percentage Renewable Production"].iloc[7:23].values * 100.0,
             renewable_share(opennem).values,
             "2005-2020", "pp"),
-        "Tariffs (annual)": (
-            year["Avg Tariff (c/KWh) per household"].iloc[3:22].values,
-            tariffs.mean(axis=1).values,
-            "2001-2002, 2007-2019", "c/kWh"),
+        "Tariffs vs ACCC": tariff_indicator(year, tariffs, 1),
+        "Tariffs vs St Vincent de Paul": tariff_indicator(year, tariffs, 0),
         "GHGE (annual)": (
             ghge_total.iloc[7:21].values,
             ghge_observed[7:],
@@ -121,20 +148,72 @@ def statistics(simulated, observed):
         "Bias": error.mean(),
         "NRMSE": 100.0 * np.sqrt((error ** 2).mean()) / observed.mean(),
         "NSE": 1.0 - (error ** 2).sum() / ((observed - observed.mean()) ** 2).sum(),
+        "r": np.corrcoef(simulated, observed)[0, 1],
     }
 
 
 def print_table(indicators):
     """Print the Section 5 summary table."""
-    header = (f"{'Indicator':26s}{'Period':22s}{'n':>5}{'Units':>8}"
+    header = (f"{'Indicator':30s}{'Period':22s}{'n':>5}{'Units':>8}"
               f"{'MAE':>9}{'RMSE':>9}{'Bias':>9}{'NRMSE':>9}{'NSE':>9}")
     print(header)
     print("-" * len(header))
     for name, (simulated, observed, period, unit) in indicators.items():
         result = statistics(simulated, observed)
-        print(f"{name:26s}{period:22s}{result['n']:>5}{unit:>8}"
+        print(f"{name:30s}{period:22s}{result['n']:>5}{unit:>8}"
               f"{result['MAE']:>9.2f}{result['RMSE']:>9.2f}{result['Bias']:>+9.2f}"
               f"{result['NRMSE']:>8.1f}%{result['NSE']:>9.2f}")
+
+
+def tariff_comparators(year, tariffs):
+    """Cross-checks behind the two tariff rows, and the cost of the composite.
+
+    The composite is no longer tabled. It is kept here so the size of the
+    artefact it introduced stays on the record, next to the disagreement between
+    the sources that produced it.
+    """
+    simulated = year["Avg Tariff (c/KWh) per household"]
+    both = tariffs.dropna()
+    union = tariffs.dropna(how="all").index
+
+    print()
+    print("Tariff comparators")
+    print("-" * 68)
+    for column, name in enumerate(TARIFF_SOURCES):
+        years, label = tariff_years(tariffs, column)
+        print(f"  {name:<26s}n={len(years):<3d} {label}")
+    print(f"  {'union of both sources':<26s}n={len(union):<3d} "
+          f"{union.min()}-{union.max()}, no observation 2003-2006")
+
+    print()
+    print(f"  Overlap ({both.index.min()}-{both.index.max()}, n={len(both)})")
+    gap = (both.iloc[:, 1] - both.iloc[:, 0]).values
+    print(f"    {'mean, ' + TARIFF_SOURCES[0]:<38s}{both.iloc[:, 0].mean():8.2f}")
+    print(f"    {'mean, ' + TARIFF_SOURCES[1]:<38s}{both.iloc[:, 1].mean():8.2f}")
+    print(f"    {'mean gap between the sources':<38s}{gap.mean():8.2f}")
+    print(f"    {'gap as a share of the row-wise mean':<38s}"
+          f"{100.0 * gap.mean() / both.mean(axis=1).mean():7.1f}%")
+    overlap = simulated.loc[both.index]
+    for label, observed in ((TARIFF_SOURCES[0], both.iloc[:, 0]),
+                            (TARIFF_SOURCES[1], both.iloc[:, 1]),
+                            ("row-wise mean (retired)", both.mean(axis=1))):
+        result = statistics(overlap.values, observed.values)
+        print(f"    vs {label:<30s} RMSE{result['RMSE']:7.2f}"
+              f"   Bias{result['Bias']:+7.2f}")
+
+    print()
+    print("  Correlation with the simulated series")
+    for column, name in enumerate(TARIFF_SOURCES):
+        sim, obs, label, _ = tariff_indicator(year, tariffs, column)
+        print(f"    {name + ' (' + label + ')':<48s}"
+              f"r ={statistics(sim, obs)['r']:6.2f}")
+    composite = tariffs.mean(axis=1).loc[union]
+    result = statistics(simulated.loc[union].values, composite.values)
+    print(f"    {'row-wise mean, retired (' + str(union.min()) + '-' + str(union.max()) + ')':<48s}"
+          f"r ={result['r']:6.2f}")
+    print(f"    {'-- as tabled before: MAE ' + format(result['MAE'], '.2f')}"
+          f", RMSE {result['RMSE']:.2f}, Bias {result['Bias']:+.2f}, "
+          f"NRMSE {result['NRMSE']:.1f}%, NSE {result['NSE']:.2f}")
 
 
 def read_ensemble(archive, member):
@@ -167,7 +246,7 @@ def ensemble_diagnostics(archive, indicators):
     print("  contain, so its coverage is guaranteed rather than earned.")
 
 
-def make_figures(indicators, opennem, month, tariffs, outdir):
+def make_figures(indicators, year, opennem, month, tariffs, outdir):
     """Write the four validation figures with +/-1 and +/-2 RMSE bands."""
     import matplotlib
     matplotlib.use("Agg")
@@ -218,7 +297,10 @@ def make_figures(indicators, opennem, month, tariffs, outdir):
     panel(np.arange(2005, 2021), simulated, observed, "% RE",
           "reRMSEValidation.png", legend_loc="upper left")
 
-    simulated, observed, _, _ = indicators["Tariffs (annual)"]
+    # The panel spans every year either source covers, so its band is still the
+    # composite. The tabled statistics are per source; these two differ on purpose.
+    simulated = year["Avg Tariff (c/KWh) per household"].loc[tariffs.index].values
+    observed = tariffs.mean(axis=1).values
     panel(tariffs.index.values, simulated, observed, "$c/kWh$",
           "tariffsRMSEValidation.png", legend_loc="upper left", legend_size=14,
           extra=[tariffs.iloc[:, 0].values, tariffs.iloc[:, 1].values])
@@ -260,11 +342,12 @@ def main():
     year, month, ghge, opennem, tariffs = load_inputs()
     indicators = series(year, month, ghge, opennem, tariffs)
     print_table(indicators)
+    tariff_comparators(year, tariffs)
 
     if args.ensemble:
         ensemble_diagnostics(args.ensemble, indicators)
     if args.figures:
-        make_figures(indicators, opennem, month, tariffs, args.figures)
+        make_figures(indicators, year, opennem, month, tariffs, args.figures)
 
 
 if __name__ == "__main__":
