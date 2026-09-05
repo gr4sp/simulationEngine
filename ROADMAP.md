@@ -543,12 +543,29 @@ obtained from AEMO's website:
 - **Generating Unit Expected Closure Year, July 2026** (AEMO, published alongside the
   Generation Information workbook) -- current closure years, against which the model's
   `expected_closure_date` and the brown-coal retirement shift can be checked.
-- **Guide to NEM Settlements Residue Auction Interface** (AEMO).
 - **CDEII Procedures version 4.1**, effective 9 August 2026 (AEMO) -- see item 11.
 
-Reading these against `Arena.java` and `VIC.yaml` is the cheapest available route to
-finding where the encoded rules have drifted from the current NER, and the closure
-workbook bears directly on the retirement scenarios.
+And, bearing specifically on the arena work, the **settlement residue auction** pair:
+
+- **Auction Participation Agreement (APA)** (AEMO) -- the executable agreement a party
+  signs to bid in the Settlements Residue Auction. It carries the **participation and
+  bidding rules**: who may be an auction participant, what units are auctioned, how
+  bids are made and settled, and the obligations attaching to a unit once acquired.
+- **Guide to NEM Settlements Residue Auction Interface** (AEMO) -- the operational
+  companion, covering how auctions are run and results published.
+
+Together these are the source material for a **settlement residue / inter-regional
+hedging arena**, which the model does not currently have. `Arena.java` supports
+`spot`, `otc` and `fiTs` types; a directional inter-regional right is a fourth kind of
+arena with its own participation rule and clearing, and it is the mechanism by which
+Victorian participants hedge exposure across the interconnectors. That makes it the
+natural pairing with item 6's "networks are parameters" limit -- settlement residues
+exist *because* of inter-regional price separation, which the model does not yet
+represent. Read the APA for the rules, the interface guide for the mechanics.
+
+Reading all of these against `Arena.java` and `VIC.yaml` is the cheapest available
+route to finding where the encoded rules have drifted from the current NER, and the
+closure workbook bears directly on the retirement scenarios.
 
 ---
 
