@@ -19,7 +19,7 @@ plain CSVs.
 |---|---|---|
 | Wholesale price (monthly, annual) | OpenNEM volume-weighted price | `2005_2020_OpenNemDataV1.csv` |
 | Renewable energy share | OpenNEM per-fuel generation | `2005_2020_OpenNemDataV1.csv` |
-| Retail tariffs | ACCC + St Vincent de Paul, row-wise mean | `2001to2019_historicTariffs.csv` |
+| Retail tariffs | ACCC, and St Vincent de Paul, each on its own window | `2001to2019_historicTariffs.csv` |
 | GHGE | Victorian Government inventory | `19902018_historic_emissions_Vic.csv` |
 
 The simulated side is the pinned BAU run, `VICSimDataYearSummary_bau19982051.csv`
@@ -54,6 +54,23 @@ GHGE is reported over two windows. 1998-2018 is the published span; 1998 is the
 run's first year and still in mapping mode, which is why the bias is larger
 there. 2005-2018 is the span that overlaps the other indicators.
 
+The two tariff sources are not measuring the same quantity, and over the eight
+years where both exist the ACCC series runs 1.5-1.9x the St Vincent de Paul one,
+a mean gap of 15.03 c/kWh. Each is therefore compared on its own coverage rather
+than against their row-wise mean: ACCC over 2001-2002 and 2007-2017 (n=13),
+St Vincent de Paul over 2010-2019 (n=10), 15 distinct years between them. The
+model sits inside the envelope the two sources span, and the sign of its error
+depends on which is chosen - bias +2.14 c/kWh against St Vincent de Paul,
+-12.14 c/kWh against the ACCC.
+
+The row-wise mean is no longer tabled. It changes composition across the window
+- one source to 2009, both to 2017, the other after - so with the sources 15
+c/kWh apart it steps at 2010 and again at 2018, and that step entered the
+composite's bias and NSE as if it were model error. `tariff_comparators` still
+prints the composite's statistics and the per-source overlap figures so the size
+of the artefact stays on the record. The tariff figure keeps the composite as
+its band, because the panel spans every year either source covers.
+
 The 2018 emissions comparator is not measured. It is the 2017 figure less
 11.8 Mt for the retirement of Hazelwood.
 
@@ -71,13 +88,24 @@ hypothetical-past design: it varies parameters that could plausibly have differe
 historically and omits six forward-looking ones the sensitivity analysis
 includes. Neither is in the repository (`*.tar.gz` is gitignored, and the
 validation archive is 972 MB). Both are deposited on Zenodo under the concept
-DOI <https://doi.org/10.5281/zenodo.8320754>: the sensitivity archive in the
-published version, and the validation archive in a new version being uploaded.
-Until that version is released, `fetch_results.py` will not find the validation
-archive — it reads the record's current files. Once it is public, add the
-filename to `ZENODO_ARCHIVES` in
-`../notebookGr4sp/reproducibility/build_manifest.py` and re-run that script so
-the manifests stop marking it as not deposited.
+DOI <https://doi.org/10.5281/zenodo.4667996>, but in different versions: the
+sensitivity archive in [8320754](https://zenodo.org/records/8320754), the
+validation archive in [22172036](https://zenodo.org/records/22172036), published
+2026-08-30. A Zenodo version does not inherit the previous one's files, so
+neither version holds both. `fetch_results.py` merges the two file lists and
+fetches either:
+
+```
+python ../simulationData/fetch_results.py hypopast   # the validation ensemble
+```
+
+You can cite all versions by using the DOI
+[10.5281/zenodo.4667996](https://doi.org/10.5281/zenodo.4667996), which always
+resolves to the latest one. Cite a version record only to pin the exact files.
+
+Version 22172036 also carries `VICSimDataYearSummary_bau19982051.csv`, the pinned
+BAU run this script reads. The copy in `../simulationData/` is the same file and
+is committed, so the table reproduces without any download.
 
 Rows 41357 and 41379 of the validation ensemble are empty and are dropped, which
 is what the source notebook does.
