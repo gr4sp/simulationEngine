@@ -19,7 +19,7 @@ plain CSVs.
 |---|---|---|
 | Wholesale price (monthly, annual) | OpenNEM volume-weighted price | `2005_2020_OpenNemDataV1.csv` |
 | Renewable energy share | OpenNEM per-fuel generation | `2005_2020_OpenNemDataV1.csv` |
-| Retail tariffs | ACCC, and St Vincent de Paul, each on its own window | `2001to2019_historicTariffs.csv` |
+| Retail tariffs | Oakley Greenwood, and St Vincent de Paul, each on its own window | `2001to2019_historicTariffs.csv` |
 | GHGE | Victorian Government inventory | `19902018_historic_emissions_Vic.csv` |
 
 The simulated side is the pinned BAU run, `VICSimDataYearSummary_bau19982051.csv`
@@ -79,13 +79,13 @@ run's first year and still in mapping mode, which is why the bias is larger
 there. 2005-2018 is the span that overlaps the other indicators.
 
 The two tariff sources are not measuring the same quantity, and over the eight
-years where both exist the ACCC series runs 1.5-1.9x the St Vincent de Paul one,
-a mean gap of 15.03 c/kWh. Each is therefore compared on its own coverage rather
-than against their row-wise mean: ACCC over 2001-2002 and 2007-2017 (n=13),
-St Vincent de Paul over 2010-2019 (n=10), 15 distinct years between them. The
-model sits inside the envelope the two sources span, and the sign of its error
+years where both exist the Oakley Greenwood series runs 1.5-1.9x the St Vincent
+de Paul one, a mean gap of 15.03 c/kWh. Each is therefore compared on its own
+coverage rather than against their row-wise mean: Oakley Greenwood over
+2001-2002 and 2007-2017 (n=13), St Vincent de Paul over 2010-2019 (n=10), 15
+distinct years between them. The model sits inside the envelope the two sources span, and the sign of its error
 depends on which is chosen - bias +2.14 c/kWh against St Vincent de Paul,
--12.14 c/kWh against the ACCC.
+-12.14 c/kWh against Oakley Greenwood.
 
 The row-wise mean is no longer tabled. It changes composition across the window
 - one source to 2009, both to 2017, the other after - so with the sources 15
@@ -205,7 +205,7 @@ of 0.031%, i.e. one deflator applied uniformly. For example 2017: $1,425 / 4000
 2003-2006 and nothing after 2017, so those years are blank and
 `validation_statistics.py` drops them (`dropna`, line 80). Nothing is
 interpolated or carried forward. **1995 is the one year present in the report and
-deliberately not used.** The ACCC row's n=13 is therefore exactly the report's
+deliberately not used.** The Oakley Greenwood row's n=13 is therefore exactly the report's
 coverage less 1995.
 
 Two consequences worth stating in any write-up:
@@ -215,8 +215,10 @@ Two consequences worth stating in any write-up:
   tariffs, VEET, RET, carbon price, wholesale, retail margin **and GST** — over an
   assumed 4,000 kWh. It amortises the fixed supply charge and includes GST, which
   plausibly accounts for much of the 15 c/kWh gap against St Vincent de Paul.
-- `TARIFF_SOURCES` prints it as `ACCC (price review)`. That label is a shorthand
-  for the inquiry the submission was made to, not an attribution to the ACCC.
+- The series is labelled **Oakley Greenwood** throughout - in `TARIFF_SOURCES`, in
+  the summary table row and in the tariff figure's legend. It was previously
+  labelled after the ACCC, which misattributed a consultant's analysis, prepared
+  for a submission, to the regulator receiving it.
 
 ### The register: `historic_tariff_contribution`
 

@@ -52,8 +52,10 @@ GENERATION = RENEWABLE + ["Battery (Discharging) - GWh", "Gas (OCGT) - GWh",
                           "Gas (Steam) - GWh", "Brown Coal - GWh"]
 
 # Column order of 2001to2019_historicTariffs.csv, whose headers are too long to
-# tabulate. The second column is the price review the ACCC series comes from.
-TARIFF_SOURCES = ("St Vincent de Paul", "ACCC (price review)")
+# tabulate. The second column is the Oakley Greenwood cost-stack analysis,
+# commissioned for the Victorian distribution businesses' submission to the ACCC's
+# retail pricing inquiry. It is not an ACCC publication; see README.md.
+TARIFF_SOURCES = ("St Vincent de Paul", "Oakley Greenwood")
 
 
 def load_inputs():
@@ -134,7 +136,7 @@ def series(year, month, ghge, opennem, tariffs):
             year["Percentage Renewable Production"].iloc[7:23].values * 100.0,
             renewable_share(opennem).values,
             "2005-2020", "pp"),
-        "Tariffs vs ACCC": tariff_indicator(year, tariffs, 1),
+        "Tariffs vs Oakley Greenwood": tariff_indicator(year, tariffs, 1),
         "Tariffs vs St Vincent de Paul": tariff_indicator(year, tariffs, 0),
         "GHGE (annual)": (
             ghge_total.iloc[7:21].values,
@@ -326,7 +328,7 @@ def make_figures(indicators, year, opennem, month, tariffs, outdir):
             for line in extra:
                 plt.plot(x, line, "g--", lw=1.0, alpha=0.75)
             handles.append(plt.plot([], [], "g--", lw=1.0, alpha=0.75,
-                                    label="Historic (ACCC; St Vincent de Paul)")[0])
+                                    label="Historic (Oakley Greenwood; St Vincent de Paul)")[0])
             handles.append(plt.plot(x, observed, "g-", lw=1.8,
                                     label="Historic (mean of the two series)")[0])
         handles.append(plt.plot(x, simulated, "r-", label="Simulated")[0])
