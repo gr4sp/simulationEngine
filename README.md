@@ -223,6 +223,8 @@ results move:
 > is the intended behaviour for current work, but it will not reproduce the article. Run
 > the reproduction first, or restore the dump before doing so.
 
+The model pins its timezone to `Australia/Melbourne` (`Gr4spSim.TIMEZONE`), so results do not depend on your machine's regional settings. You do not need to change your system clock or locale to reproduce the article from anywhere in the world.
+
 ### What regenerates what
 
 | Article artefact | Command |

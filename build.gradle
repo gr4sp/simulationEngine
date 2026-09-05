@@ -47,6 +47,14 @@ test {
     if (System.getProperty('gr4sp.updateBaseline') != null) {
         systemProperty 'gr4sp.updateBaseline', System.getProperty('gr4sp.updateBaseline')
     }
+    // Run the suite under a different ambient timezone, to check that Gr4spSim.TIMEZONE
+    // still pins results independently of the machine:
+    //   ./gradlew test --tests core.SimulationRegressionIT -Dgr4sp.tz=UTC
+    // Before that pin existed this failed, because simulation output depended on the
+    // JVM default timezone. It must now pass for any value.
+    if (System.getProperty('gr4sp.tz') != null) {
+        systemProperty 'user.timezone', System.getProperty('gr4sp.tz')
+    }
 }
 
 compileJava.options.encoding = 'UTF-8'
