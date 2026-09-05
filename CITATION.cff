@@ -41,3 +41,21 @@ keywords:
   - Simulation
 license: MIT
 date-released: '2022-08-03'
+
+# PENDING: the methods article describing the GR4SP suite is under review.
+# Uncomment and complete this block on acceptance, and mirror the same details
+# into the "Citing GR4SP" section of README.md.
+#
+# preferred-citation:
+#   type: article
+#   title: '<pending>'
+#   authors:
+#     - given-names: Angela Maria
+#       family-names: Rojas-Arevalo
+#       email: angel.rouges@gmail.com
+#       affiliation: The University of Melbourne
+#       orcid: 'https://orcid.org/0000-0003-4558-6423'
+#   journal: '<pending>'
+#   year: <pending>
+#   doi: '<pending>'
+#   url: '<pending preprint url>'

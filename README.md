@@ -187,6 +187,47 @@ Each script is idempotent — safe to re-run, and re-running `fetch_openelectric
 
 ---
 
+## Reproducing the Article's Results
+
+The methods article reports the model as it stood at its 2019 base year. Reproducing
+those numbers depends on **three pinned inputs, not one** — change any of them and the
+results move:
+
+| Pinned input | What reproduces the article |
+|---|---|
+| **Code** | the tagged release for the article (see [Citing GR4SP](#citing-gr4sp)) |
+| **Settings** | `simulationSettings/VIC.yaml`, unmodified |
+| **Database** | `backupDB/DB-2021-8-21.sql`, restored by `setup.ps1` / `setup.sh` |
+
+> ⚠️ **Do not refresh the database before reproducing.** The scripts under `scripts/data/`
+> ([Updating Victorian Electricity Data](#updating-victorian-electricity-data)) overwrite
+> `gr4spdb` with current AEMO, Open Electricity, ERA5 and CER data. A refreshed database
+> matches the shipped 2021 dump up to 2019 and then diverges from it by up to 23%. That
+> is the intended behaviour for current work, but it will not reproduce the article. Run
+> the reproduction first, or restore the dump before doing so.
+
+### What regenerates what
+
+| Article artefact | Command |
+|---|---|
+| Validation statistics (simulation-mode validation table) | `python experiments/validation/validation_statistics.py` |
+| Validation figures (RMSE bands) | `python experiments/validation/validation_statistics.py --figures ./out` |
+| Sensitivity top-five rankings and the S1-vs-ST figure | `python experiments/sensitivity/sobol_s1_st_figure.py` |
+| Scenario ensembles (BAU / JT / LCT / ST) | `python experiments/run_experiment.py <NAME>`, or `fetch_results.py` to download the published runs instead of re-running them |
+| Which notebook needs which result archive | `experiments/notebookGr4sp/reproducibility/archive_manifest.csv` |
+
+The first three read data that is committed to this repository. They need only
+`numpy`, `pandas` and (for figures) `matplotlib` — no database, no Java build, and no
+Zenodo download — so the headline numbers can be checked in a couple of minutes on a
+fresh clone. `sobol_s1_st_figure.py` verifies the published rankings before it plots and
+refuses to produce a figure if they do not reproduce.
+
+Reproducing the scenario ensembles from scratch is a much larger undertaking: the
+sampled scenarios run thousands of simulations and take hours. The published runs are on
+Zenodo (see [Data archives](#data-archives)) and are the practical starting point.
+
+---
+
 ## Analysing Results
 
 Jupyter notebooks for scenario analysis, sensitivity analysis, and visualisation are in `experiments/notebookGr4sp/`. Open them in VS Code or JupyterLab.
@@ -250,4 +291,16 @@ The model and its Victorian application are documented in full in:
 
 > Rojas Arévalo, A. M. (2022). *Sustainability transitions modelling and assessment of socio-technical energy systems: An Australian case.* PhD thesis, The University of Melbourne. <https://hdl.handle.net/11343/324500>
 
-A methods article describing the GR4SP suite is in preparation. This section will be updated when it is published.
+### Methods article — **PENDING**
+
+A methods article describing the GR4SP suite is currently under review. The details
+below will be filled in once it is available; until then, please cite the thesis above
+and the software metadata in `CITATION.cff`.
+
+<!-- PENDING: fill in on acceptance, and mirror into CITATION.cff -->
+> Rojas Arévalo, A. M., et al. (year). *Title.* **Journal** — *under review*.
+> DOI: `<pending>` · Preprint: `<pending>`
+
+The version of the code that produces the article's results is marked by a git tag and
+an accompanying release; see [Reproducing the Article's Results](#reproducing-the-articles-results)
+for the three inputs that must be pinned together.
