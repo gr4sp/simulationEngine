@@ -1,4 +1,4 @@
-# GR4SP model roadmap
+﻿# GR4SP model roadmap
 
 Proposed changes to the model itself, recorded as they are identified so that the
 evolution of GR4SP carries them forward. Each entry states what the code does now,
@@ -46,7 +46,7 @@ Consumption enters the recursion only at the SPM the `EndUserUnit` is attached t
 **Consequence, and this one is a defect:** `src/core/SaveData.java:632-643` iterates
 `spm_register` and writes a per-SPM emissions series for every SPM instance. For all
 SPMs below the root that series is a column of zeros. In the Victorian configuration
-that is SPMs 6, 5, 7 and 9 — four of the five.
+that is SPMs 6, 5, 7 and 9 â€” four of the five.
 
 ### What it should do
 
@@ -128,7 +128,7 @@ if (arena.getType().equalsIgnoreCase("OTC") || arena.getType().equalsIgnoreCase(
 (`LoadData.java:436-438`)
 
 Those contracts come from `tariffshistoric` and are all built with
-`Arena.EndConsumer` (999) as the buyer — household retail tariffs. An OTC arena is
+`Arena.EndConsumer` (999) as the buyer â€” household retail tariffs. An OTC arena is
 meant to hold swaps, caps and PPAs between registered market participants, not
 end-consumer tariffs.
 
@@ -149,7 +149,7 @@ Three reasons, in increasing order of importance:
    its ODD had inherited that story and stated that utility-scale hedging enters the
    model through the MinCF floor. It does not. The thesis motivates MinCF technically
    (`chap5.tex:185`: the operative limits of the technology, plant deterioration and
-   cycling costs), and the parameter values agree — brown coal 0.47, wind 0.28. Both
+   cycling costs), and the parameter values agree â€” brown coal 0.47, wind 0.28. Both
    documents were corrected on 28 August 2026.
 
 ### What it should do
@@ -162,7 +162,7 @@ Two routes, depending on intent:
    the registry honest.
 2. **If OTC is to be exercised:** give it its own contract source. An OTC arena needs
    contracts between two named market participants with a strike price and a term, not
-   `EndConsumer` tariffs, and it needs a settlement rule — a contract for difference
+   `EndConsumer` tariffs, and it needs a settlement rule â€” a contract for difference
    against the spot price is the standard form in the NEM. This is the route that would
    let the suite say something about hedging and investment timing, which the article
    currently lists as outside its scope.
@@ -654,7 +654,7 @@ exercise either, and the wording should stay on the capability rather than the r
 
 ## 10. The tariff update uses a half-year of prices and a lagged rate, and neither matches the comparator
 
-**Status:** open. Raised by Angela, 3 September 2026, while checking §4.4 of the EMS
+**Status:** open. Raised by Angela, 3 September 2026, while checking Â§4.4 of the EMS
 article. She proposed the diagnosis and the code confirms it.
 
 ### What the code does now
@@ -672,7 +672,7 @@ drawn from the *previous* calendar year:
    tariffs from costs they have already observed.
 
 So the simulated tariff for calendar year *Y* is
-`mean(wholesale price, Jul–Dec of Y-1) / R_w[Y-1]`.
+`mean(wholesale price, Julâ€“Dec of Y-1) / R_w[Y-1]`.
 
 The CPI conversion, by contrast, uses the year of the update itself
 (`EndUserUnit.java:164-165`), so it is contemporaneous while `R_w` is lagged.
@@ -691,7 +691,7 @@ credible contributor to that, and it has never been tested.** It is cheap to tes
 recompute the simulated tariff on a July-to-June basis and on a full-calendar-year
 basis, and see how the statistics move.
 
-### ⚠️ An open question about the year labels themselves
+### âš ï¸ An open question about the year labels themselves
 
 `historic_tariff_contribution` is keyed by a bare `year` integer, 22 rows covering
 **1999 to 2020 with no gaps**, and the code treats that key as a **calendar year**.
@@ -708,7 +708,7 @@ has data for.
 because the database preserves no provenance. Until it is settled, note that
 `historic_tariff_contribution` is attributed in the article to the ACCC's *Retail
 Electricity Pricing Inquiry: Final Report* of **June 2018**, which cannot be the
-source of the 2019 and 2020 rows — those must come from a later ACCC publication.
+source of the 2019 and 2020 rows â€” those must come from a later ACCC publication.
 
 ### What it should do
 
@@ -755,7 +755,7 @@ AEMO's published version history:
 | 2.0 | 23 July 2013 | |
 | 1.0 | 2 December 2010 | First issue |
 
-⚠️ **There is no 2016 version.** If a locally held copy is dated 2016 it is a
+âš ï¸ **There is no 2016 version.** If a locally held copy is dated 2016 it is a
 re-hosted copy of version 3.0 (December 2014), not a separate release.
 
 ### What to do
@@ -779,3 +779,64 @@ re-hosted copy of version 3.0 (December 2014), not a separate release.
 
 Both procedures versions are now cited in the EMS article (`AEMO2019_CDEII` for the
 version the model implements, `AEMOcdeii2026` for the current one).
+
+---
+
+## 12. Decide whether the model should run on NEM market time
+
+**Status:** open. Found 5 September 2026 while rehearsing a from-scratch install.
+
+### What was wrong, and what was done about it
+
+GR4SP is date-driven throughout: half-hourly demand and solar series are bucketed
+into months and years, and the retail tariff updates each January
+(`EndUserUnit.java:140`). Every one of those steps read the **JVM default timezone**,
+which is a property of the machine, not of the model.
+
+The same code, the same database and the same seed therefore gave different answers
+in different places. Measured on one machine by varying only the ambient timezone
+(Australia/Melbourne vs UTC), for a seeded 1998-2030 run:
+
+| Series | Melbourne | UTC | Shift |
+|---|---|---|---|
+| System Production Water | 1,073,321.98 | 1,071,825.36 | -0.14% |
+| System Production Coal | 43,287,162.05 | 43,284,528.94 | -0.006% |
+| Primary Wholesale ($/MWh) | 17.5295 | 17.5251 | -0.025% |
+| Percentage Renewable Production | 0.0240801 | 0.0240488 | -0.13% |
+
+Hydro moves most, which is consistent with a shifted day boundary changing the demand
+profile and so the dispatch at the margin. This is small but not negligible, and it
+meant the published results were reproducible only on a machine set to Melbourne
+time -- including, in practice, no continuous integration runner and few overseas
+readers.
+
+`Gr4spSim.TIMEZONE` now pins the default to `Australia/Melbourne`, chosen because it
+is the timezone the reported results were produced in. **The published numbers are
+unchanged by the fix**; what changes is that they are now obtained everywhere.
+`./gradlew test -Dgr4sp.tz=UTC` is the guard.
+
+### The open question
+
+**Australia/Melbourne observes daylight saving. The NEM does not** -- market settlement
+runs on Australian Eastern Standard Time year-round, UTC+10, and AEMO's dispatch and
+settlement data are stamped in it. So for roughly half of each year the model's day
+boundaries sit an hour away from the market's.
+
+Two candidate answers, and the choice is a modelling decision rather than a packaging
+one:
+
+1. **Keep `Australia/Melbourne`.** Consumption is a human activity that follows local
+   clock time, so household demand profiles arguably should shift with daylight saving.
+2. **Move to fixed UTC+10 (NEM market time).** Dispatch, prices and settlement are
+   market processes, and aligning the model to them removes a systematic half-year
+   offset against every AEMO comparator -- including the CO2EII series in item 8 and
+   the wholesale price validation.
+
+The two are not exclusive: demand could be bucketed in local time while market
+operations run on NEM time, which is what actually happens. That is the most faithful
+option and the most work.
+
+**Whichever is chosen, option 2 changes the published numbers**, so under
+`docs/versioning.md` this is a Class B change and belongs behind the calibration
+bundle, not on the frozen article calibration.
+

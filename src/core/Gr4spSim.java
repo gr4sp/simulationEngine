@@ -37,6 +37,32 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     public static String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres";
     public final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+    /**
+     * The timezone the model runs in. GR4SP is date-driven throughout -- half-hourly
+     * demand and solar series are bucketed into months and years, and the retail
+     * tariff updates in January -- and every one of those steps used the JVM default
+     * timezone, which is a property of the machine rather than of the model. The same
+     * code, the same database and the same seed therefore produced different results
+     * in different places: running the regression suite under UTC instead of Melbourne
+     * moves annual hydro production by about 0.14% and shifts wholesale price,
+     * emissions and renewable share with it.
+     *
+     * That made the published results dependent on where they were run, which is not
+     * a property a reproducible model can have. Pinning it here fixes the results to
+     * the timezone they were produced and reported in, so a reader anywhere obtains
+     * the numbers in the article.
+     *
+     * NOTE: Australia/Melbourne observes daylight saving, while the NEM settles in
+     * Australian Eastern Standard Time year-round (UTC+10, no DST). This constant
+     * preserves the published behaviour; whether the model should instead run on NEM
+     * market time is a separate question, recorded as roadmap item 12.
+     */
+    public static final String TIMEZONE = "Australia/Melbourne";
+
+    static {
+        TimeZone.setDefault(TimeZone.getTimeZone(TIMEZONE));
+    }
+
 
     //public Continuous2D layout;
 //    SocialNetworkInspector networkInspector = new SocialNetworkInspector();
