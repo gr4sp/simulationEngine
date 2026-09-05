@@ -78,16 +78,22 @@ jobs:
           for path in sorted(glob.glob("build/test-results/test/*.xml")):
               for case in ET.parse(path).getroot().iter("testcase"):
                   for bad in list(case.findall("failure")) + list(case.findall("error")):
-                      msg = (bad.get("message") or bad.text or "").strip().splitlines()
-                      rows.append((case.get("classname", "?"), case.get("name", "?"),
-                                   msg[0][:400] if msg else bad.tag))
+                      raw = (bad.get("message") or bad.text or "").strip()
+                      # Keep several lines, not just the first: an assertion like the
+                      # regression baseline's puts the useful detail (which cell
+                      # diverged, and by how much) on the lines after the summary.
+                      msg = "\n".join(raw.splitlines()[:12])[:1800] or bad.tag
+                      rows.append((case.get("classname", "?"), case.get("name", "?"), msg))
           if not rows:
               print("no failing test cases recorded")
           for cls, name, msg in rows:
               # ::error:: becomes a check-run annotation, which is readable on a
               # public repository without a token - so a failure can be diagnosed
-              # without downloading the log archive.
-              print(f"::error title={cls}.{name}::{msg}")
+              # without downloading the log archive. Newlines must be escaped as
+              # %0A or the workflow command is truncated at the first one.
+              esc = msg.replace("%", "%25").replace("\r", "").replace("\n", "%0A")
+              print(f"::error title={cls}.{name}::{esc}")
+              print(msg)
           summary = os.environ.get("GITHUB_STEP_SUMMARY")
           if summary:
               with open(summary, "a") as fh:
