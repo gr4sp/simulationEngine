@@ -705,7 +705,26 @@ last genuinely observed year is 2019, and the register carries one row more than
 has data for.
 
 **This needs checking against the original extraction, not against the database**,
-because the database preserves no provenance. Until it is settled, note that
+because the database preserves no provenance.
+
+**Partly settled, 5 September 2026** -- see
+[`experiments/validation/README.md`](experiments/validation/README.md), section
+*Provenance of the tariff data*. The comparator's source is a **submission to** the
+ACCC inquiry by the Victorian Electricity Distribution Businesses (30 June 2017,
+analysis by Oakley Greenwood), **not** the ACCC's own *Retail Electricity Pricing
+Inquiry: Final Report* of June 2018. Its Figure 1 covers 1995, 2001-2002 and
+2007-2017 only, which is exactly why the comparator has no 2003-2006 and nothing
+after 2017.
+
+The register has the opposite problem: **22 rows, 1999-2020, no gaps, but only
+1999-2002 and 2006-2016 are genuine.** 1999-2001 repeat the 1999 row verbatim;
+2003-2005 are a hand-built ramp, not an interpolation; 2017-2020 have no
+recoverable source, and 2017 and 2018 violate the shares-sum-to-one identity by
+-5.10 and +9.21 percentage points. The calendar-versus-financial-year question
+below is therefore moot for the constructed rows and live only for the genuine
+ones.
+
+Superseded note, kept for the record: until it was settled, it was noted that
 `historic_tariff_contribution` is attributed in the article to the ACCC's *Retail
 Electricity Pricing Inquiry: Final Report* of **June 2018**, which cannot be the
 source of the 2019 and 2020 rows â€” those must come from a later ACCC publication.
