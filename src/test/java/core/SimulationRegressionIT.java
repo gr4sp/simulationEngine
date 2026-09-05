@@ -13,8 +13,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -105,12 +108,17 @@ public class SimulationRegressionIT {
             onlyExpected.removeAll(Arrays.asList(actualHeader));
             List<String> onlyActual = new ArrayList<>(Arrays.asList(actualHeader));
             onlyActual.removeAll(Arrays.asList(header));
+            // Full names are far too long to read in a CI annotation, and most of the
+            // difference is usually one repeated kind of unit. Summarise by id and by
+            // fuel/year, then show a couple of whole names from each side as samples.
             fail("header column count differs: baseline " + header.length
                     + " vs produced " + actualHeader.length
-                    + "\n  missing from the produced run (" + onlyExpected.size() + "): "
-                    + onlyExpected
-                    + "\n  present only in the produced run (" + onlyActual.size() + "): "
-                    + onlyActual);
+                    + "\n  missing from the produced run (" + onlyExpected.size() + "): ids "
+                    + summariseIds(onlyExpected) + " | kinds " + summariseKinds(onlyExpected)
+                    + "\n  present only in the produced run (" + onlyActual.size() + "): ids "
+                    + summariseIds(onlyActual) + " | kinds " + summariseKinds(onlyActual)
+                    + "\n  sample baseline: " + sample(onlyExpected)
+                    + "\n  sample produced: " + sample(onlyActual));
         }
         for (int row = 0; row < expected.size() && mismatches.size() < 20; row++) {
             String[] e = expected.get(row).split(",", -1);
@@ -133,6 +141,46 @@ public class SimulationRegressionIT {
         }
         assertTrue(mismatches.isEmpty(),
                 () -> "simulation output diverged from golden baseline:\n" + String.join("\n", mismatches));
+    }
+
+    /** Leading ids only, e.g. "323-342, 347, 528" - column names are far too long to list. */
+    private static String summariseIds(List<String> names) {
+        List<Integer> ids = new ArrayList<>();
+        for (String n : names) {
+            String head = n.split(" - ", 2)[0].trim();
+            try {
+                ids.add(Integer.parseInt(head));
+            } catch (NumberFormatException ignored) {
+                // not an id-prefixed generator column; skipped from the id summary
+            }
+        }
+        Collections.sort(ids);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ids.size(); ) {
+            int j = i;
+            while (j + 1 < ids.size() && ids.get(j + 1) == ids.get(j) + 1) j++;
+            if (sb.length() > 0) sb.append(", ");
+            sb.append(ids.get(i));
+            if (j > i) sb.append('-').append(ids.get(j));
+            i = j + 1;
+        }
+        return sb.length() == 0 ? "(none)" : sb.toString();
+    }
+
+    /** Counts by "fuel startYear-endYear", which is what usually differs in bulk. */
+    private static String summariseKinds(List<String> names) {
+        Map<String, Integer> counts = new TreeMap<>();
+        for (String n : names) {
+            String[] p = n.split(" - ");
+            String key = p.length >= 7 ? p[1] + " " + p[5] + "-" + p[6] : "(unparsed)";
+            counts.merge(key, 1, Integer::sum);
+        }
+        return counts.isEmpty() ? "(none)" : counts.toString();
+    }
+
+    private static String sample(List<String> names) {
+        return names.isEmpty() ? "(none)"
+                : names.subList(0, Math.min(2, names.size())).toString();
     }
 
     private static Double tryParse(String s) {
