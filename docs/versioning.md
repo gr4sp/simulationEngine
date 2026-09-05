@@ -144,6 +144,15 @@ Adopting it as the versioning contract needs only a rule and one addition:
 A cheap third layer: run `validation_statistics.py` in CI and assert the table it prints
 is unchanged. It needs only numpy and pandas, no database, so it is nearly free.
 
+**This is not hypothetical.** Within a day of CI being given a database, this test caught
+a genuine reproducibility defect on its first run: simulation output depended on the
+machine's timezone, so the published numbers were obtainable only on a Melbourne-set
+clock (roadmap item 12). No amount of code review had found it in years, because every
+run that mattered happened in the same timezone. A cell-by-cell baseline compared across
+two environments found it immediately. That is the argument for the contract in one
+example — and a reminder that the enforcement only works if CI actually runs the
+database-backed tests, which before that change it did not.
+
 ### 4. Fork only at a stated threshold
 
 Decide the threshold now rather than discovering it: **fork when a Class C change makes
