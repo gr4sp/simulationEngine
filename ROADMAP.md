@@ -859,3 +859,157 @@ option and the most work.
 `docs/versioning.md` this is a Class B change and belongs behind the calibration
 bundle, not on the frozen article calibration.
 
+
+---
+
+## 13. Represent the contract arenas the NEM actually has
+
+**Status:** open. Raised 5 September 2026 while verifying the EMS article's OTC
+citation against the AER's *Wholesale electricity market performance report,
+December 2018*.
+
+### The distinction the article now draws, and the model does not
+
+The AER (Box 3.5, "Contract markets") is explicit that participants trade hedge
+products in **two distinct ways**, and that these differ in their rules rather than
+their purpose:
+
+| | Over the counter | Exchange traded |
+|---|---|---|
+| Mechanism | direct contracting between counterparties, often via a broker | anonymous order book on the ASX, novated to a clearing house |
+| Products | "more flexible and can be sculpted to suit the requirements of the counterparties" | "standardised to promote trading" |
+| Same instrument | swaps, contracts for difference | futures |
+| Transparency | parties and prices private; only AFMA voluntary survey aggregates | prices and volumes published, parties anonymous |
+
+Participants are **not only generators and retailers**: Box 3.5 names "financial
+intermediaries and speculators", who hold no physical position at all.
+
+**Power purchase agreements are a fourth thing again, and the AER does not list them
+as a hedge product.** They appear in the report attributing *trading rights* over a
+plant's output, and explaining how three retailers came to control roughly 40 per cent
+of new capacity since 2013--14 "either through direct build or by entering into power
+purchase agreements". A PPA is a long-horizon bilateral offtake tied to a named plant,
+and it typically precedes the asset. The AER's own framing is that "contract markets
+underpin investment signals in the national electricity market".
+
+Below all of this sit the arrangements for small non-scheduled generation: negotiated
+offtake with a retailer, feed-in tariffs for rooftop exports, or on-site consumption.
+
+### What the model has now
+
+`arenas` defines three rows for the Victorian case: `1 Bulk (OTC)`,
+`2 Retail household (Retail)`, `3 Spot (Spot)`. **`Arena.step()` acts on the Spot
+arena only** -- its whole body is inside `if (type.equalsIgnoreCase("Spot"))` -- so:
+
+- the **OTC arena is inert** and, per item 2, is populated with the wrong contracts;
+- there is **no exchange arena at all**, so the ASX side of the AER's split is absent;
+- **PPAs are not represented**, and new capacity arrives through exogenous nameplate
+  settings in the YAML instead of through any contracting decision;
+- the **feed-in-tariff arena is not applied** in the published runs.
+
+The article states these limits honestly (Section 3.2.3 and Section 6). It says
+utility-scale hedging is not represented, that the off-market treatment prices small
+non-scheduled output at the generator's minimum LCOE, and that an analyst could
+activate these arenas. **That claim is only true once `Arena.step()` dispatches on
+more than one type.**
+
+### Why it is worth doing
+
+1. **Hedging changes bidding.** A generator with a swap or cap over part of its output
+   faces a different exposure to the spot price than one without. Bids in GR4SP are
+   `BasePrice/CF` for every generator in every interval, so contract position cannot
+   influence behaviour. This is the mechanism most likely to matter for the wholesale
+   price series, which is the weakest of the validated indicators.
+2. **PPAs are an investment channel.** Item 5 wants actors to do more than own assets;
+   this is a concrete thing for them to do. It would let capacity be an outcome of
+   contracting instead of a configured input.
+3. **The arenas are the architecture's claim.** The paper's contribution is that
+   coordination arenas are explicit and swappable. Three arena types of which one runs
+   is thin evidence for that claim, and a reviewer with the code open can see it.
+
+### Sequencing
+
+Item 2 is the prerequisite: the OTC arena must step and read the right contracts
+before an exchange arena or a PPA arena is worth adding. Item 9.1 (actor--asset
+ownership over time) is the prerequisite for PPAs, since a PPA binds a named plant to
+a named offtaker.
+
+**This changes the published numbers**, so under `docs/versioning.md` it is a Class B
+change and belongs behind the calibration bundle, not on the frozen article
+calibration.
+
+---
+
+## 14. Emit sub-monthly prices, so the model can be compared on the market's own resolution
+
+**Status:** open. Identified 5 September 2026 while testing whether the AER's annual
+volume weighted average prices could extend the wholesale price validation.
+
+### What the code does now
+
+The spot arena clears at half-hourly resolution, but nothing sub-monthly survives into
+the output. `SaveData` writes `Primary Wholesale ($/MWh)` as a **monthly arithmetic
+mean**, and the annual figure is the mean of those months. The half-hourly clearing
+prices the arena computes are aggregated away as they are produced.
+
+### Why it matters, quantified
+
+The AER reports **annual volume weighted average prices** (*Wholesale electricity
+market performance report*, December 2018, figure 2.3), weighting each interval by
+demand. Rebuilding that from `total_demand_halfhour` for VIC1 and decomposing where
+the weighting actually acts:
+
+| Weighting applied | mean effect | max effect |
+|---|---|---|
+| **across** months | +0.23 $/MWh | 0.89 $/MWh |
+| **within** months | **+4.06 $/MWh** | **15.70 $/MWh** (2019) |
+
+Essentially the entire effect is **intra-month covariance between price and demand** --
+spikes landing in high-demand intervals. Production-weighting the simulated side moves
+it by at most 3.69 $/MWh, because a monthly mean has almost no structure left to weight.
+
+**So a demand weighted comparator carries information the model's output cannot
+contain, and comparing the two charges the model for it.** This is not hypothetical:
+OpenNEM's monthly "Volume Weighted Price" is weighted within each month, so the
+published validation already compares a within-month weighted observation against an
+unweighted monthly simulation. Against an unweighted observed mean over the same
+months the monthly RMSE falls from 35.22 to 31.71 and the bias from -7.43 to -4.03.
+
+This also bounds what the price indicator can ever demonstrate. Scarcity pricing,
+volatility and the value of firming are intra-month phenomena; a monthly mean cannot
+express any of them, so no amount of calibration will make the monthly row measure
+them.
+
+### What it should do
+
+In increasing order of effort:
+
+1. **Persist a within-period weighted price alongside the mean.** The arena already
+   computes each interval's clearing price and the demand it serves, so writing
+   `sum(price x demand) / sum(demand)` per month costs one accumulator and no new
+   data. That alone makes the model directly comparable to OpenNEM and to the AER on
+   their own definition, and closes the mismatch above.
+2. **Emit a price duration curve, or the intra-month distribution.** Percentiles, or
+   counts above the AER's reporting thresholds, would let the volatility indicators in
+   sections 4 and 5 of the AER report be used as comparators at all.
+3. **Emit the half-hourly series itself** for a selected window. Storage is the
+   objection rather than the computation; a single BAU run at half-hourly resolution
+   over 1998-2051 is large, which is presumably why it was aggregated in the first
+   place.
+
+Step 1 is cheap and is the prerequisite for treating any volume weighted series as a
+comparator. Steps 2 and 3 are what would let GR4SP speak to market performance
+questions rather than only to annual averages.
+
+### Relationship to the validation
+
+`experiments/validation/README.md`, section *Resolution: what a weighted comparator
+can and cannot ask of the model*, records the measurements above and why the
+extended-window comparison should use an **unweighted** observed mean until step 1
+exists. Note the interaction with item 12: five minute settlement makes the
+intra-period structure finer still, so if the dispatch interval is ever revisited the
+output resolution should be settled at the same time.
+
+**Step 1 does not change any published number** -- it adds an output column, so under
+`docs/versioning.md` it is a Class A change. Steps 2 and 3 are also additive. What
+*would* be Class B is switching the validation to compare against the new column.

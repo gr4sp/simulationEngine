@@ -98,6 +98,77 @@ its band, because the panel spans every year either source covers.
 The 2018 emissions comparator is not measured. It is the 2017 figure less
 11.8 Mt for the retirement of Hazelwood.
 
+## Resolution: what a weighted comparator can and cannot ask of the model
+
+The wholesale comparator is **volume weighted within each month** — that is what
+OpenNEM's "Volume Weighted Price (Historic)" is — while the simulated series is an
+unweighted monthly mean. The two are therefore not the same kind of quantity, and
+the size of that difference was measured on 5 September 2026 by rebuilding the
+observed price from `total_demand_halfhour` (VIC1, half-hourly, from 1999) three
+ways: unweighted, weighted by monthly demand, and weighted by half-hourly demand.
+
+| Weighting applied | mean effect | max effect |
+|---|---|---|
+| **across** months | +0.23 $/MWh | 0.89 $/MWh |
+| **within** months | **+4.06 $/MWh** | **15.70 $/MWh** (2019) |
+
+Almost the entire effect is **intra-month covariance between price and demand** —
+price spikes falling in high-demand intervals. Weighting *across* months barely
+matters.
+
+**The model cannot reproduce that, in principle.** It emits a monthly mean, which
+has no intra-month structure left to weight: production-weighting the simulated
+side moves it by at most 3.69 $/MWh against the observed side's 15.70. A weighted
+comparator therefore contains information the simulated series structurally cannot
+contain, and any comparison charges the model for it. Recorded as `ROADMAP.md`
+item 14, whose first step — persisting a within-month weighted price alongside the
+mean — is what would close the gap.
+
+Measured on the monthly row over the same months, against three observed
+conventions:
+
+| Monthly observed series | MAE | RMSE | Bias | NSE |
+|---|---|---|---|---|
+| OpenNEM volume weighted (tabled) | 24.89 | 35.22 | -7.43 | 0.15 |
+| demand weighted within month | 25.83 | 36.75 | -8.99 | 0.17 |
+| unweighted mean of half-hourly prices | 22.93 | 31.71 | -4.03 | 0.00 |
+
+> **NSE is not comparable across these rows.** It is normalised by the *comparator's*
+> own variance, and removing the intra-month spikes removes much of that variance, so
+> the unweighted row scores 0.00 despite the lowest RMSE and bias. Only MAE, RMSE and
+> Bias may be read across the three.
+
+### Consequence for extending the window
+
+There is no price comparator before 2005-04, but `total_demand_halfhour` reaches
+back to 1999-01-01 and its `price` column is **not read by the model** —
+`LoadData.java:483` selects it and `:495-497` logs it, but only `total_demand` is
+stored (`:504-505`) — so it is independent of the simulated price. Verified
+reproducible: restoring `backupDB/DB-2021-8-21.sql` into a separate database gives
+values identical to a working `gr4spdb` for every year 1999-2020, with identical
+period counts, because the refresh scripts append to this table rather than
+rewriting it.
+
+Extending on that basis should use the **unweighted** annual mean, for the reason
+above:
+
+| Annual, 2000-2020 | n | RMSE | Bias | NSE |
+|---|---|---|---|---|
+| AER-style demand weighted | 21 | 18.07 | -8.59 | 0.49 |
+| unweighted | 21 | **15.90** | **-4.15** | 0.51 |
+
+against 16 years, RMSE 18.33 and bias -6.83 on the tabled window. **This extension
+is not currently applied**; the table above is the case for it, not a description of
+what the script does.
+
+Comparing directly to the AER's figure 2.3 would stack three mismatches at once —
+demand weighted, financial year, and weighted against *native* demand (initial
+supply plus intermittent generation) rather than the operational demand this table
+holds. The rooftop share of Victorian generation is 0% until 2010 and 4.9% by 2020,
+so that last difference is the smallest of the three. The figure is better used as
+context — whether the model reproduces the spikes at 2000-01, 2006-07, 2012-13 and
+the 2016-18 climb — than as a source of statistics.
+
 ## Provenance of the tariff data
 
 Two different things are easily conflated, so they are separated here. The
