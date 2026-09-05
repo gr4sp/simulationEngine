@@ -12,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -94,6 +95,23 @@ public class SimulationRegressionIT {
 
         List<String> mismatches = new ArrayList<>();
         String[] header = expected.get(0).split(",", -1);
+
+        // When the column counts differ the per-cell diff below is useless - every
+        // row just reports the same count mismatch. The useful information is which
+        // columns appeared or vanished, since each is one generator in gen_register.
+        String[] actualHeader = actual.get(0).split(",", -1);
+        if (header.length != actualHeader.length) {
+            List<String> onlyExpected = new ArrayList<>(Arrays.asList(header));
+            onlyExpected.removeAll(Arrays.asList(actualHeader));
+            List<String> onlyActual = new ArrayList<>(Arrays.asList(actualHeader));
+            onlyActual.removeAll(Arrays.asList(header));
+            fail("header column count differs: baseline " + header.length
+                    + " vs produced " + actualHeader.length
+                    + "\n  missing from the produced run (" + onlyExpected.size() + "): "
+                    + onlyExpected
+                    + "\n  present only in the produced run (" + onlyActual.size() + "): "
+                    + onlyActual);
+        }
         for (int row = 0; row < expected.size() && mismatches.size() < 20; row++) {
             String[] e = expected.get(row).split(",", -1);
             String[] a = actual.get(row).split(",", -1);
