@@ -3,7 +3,8 @@
 These YAMLs are kept for the historical record only. The simulation engine can
 not load them: `Gr4spSim.simulParametres()` hardcodes `yamlFileName = "VIC"`,
 so only `VIC.yaml` (+ `VICfuture.yaml`) is ever read, and the published 2021
-scenario runs (JT / LCT / ST / BAU, Zenodo record 8320754) were parameterised
+scenario runs (JT / LCT / ST / BAU, Zenodo version 8320754 of concept DOI
+10.5281/zenodo.4667996) were parameterised
 in-memory through the EMA workbench pipeline (`experiments/connector.py`), not
 through per-scenario YAML files.
 

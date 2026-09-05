@@ -2,9 +2,16 @@
 
 These notebooks are kept for the record but are **no longer maintained**. They
 were retired on 2026-07-13 because each actively loads a result archive that was
-never deposited to Zenodo (record 8320754) — i.e. an old exploratory/test
+never deposited to Zenodo (concept DOI 10.5281/zenodo.4667996, which cites all
+versions) — i.e. an old exploratory/test
 simulation run, superseded by the final scenarios. They are therefore not
 reproducible from the public data and are not part of the active analysis set.
+
+One exception since 2026-08-30: the archive `ema_gr4sp_EET-3RegimeValidation`
+loads, the validation ensemble, was deposited in version
+[22172036](https://zenodo.org/records/22172036). That notebook's inputs are now
+public. It stays retired because its statistics are reproduced, with the
+comparator handling corrected, by `../../validation/validation_statistics.py`.
 
 They remain in git history and here in full; the archives they reference are
 still listed (marked `retire`) in `../reproducibility/archive_manifest.csv`.
