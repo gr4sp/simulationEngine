@@ -10,6 +10,11 @@ architecture already implies but the implementation does not yet deliver.
 Item 9 records the two links that were designed, and whose data and classes exist,
 but that were never wired up for time reasons. They are the first things to pick up.
 
+**Before landing any of these, see [`docs/versioning.md`](docs/versioning.md).** It
+classifies every entry below by whether it can change without moving the numbers the
+methods article reports, and proposes how the frozen article calibration and the
+updated model live in one codebase.
+
 ---
 
 ## 1. Report indicators at every level of the SPM nesting, not only at the root
