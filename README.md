@@ -82,6 +82,23 @@ Both scripts will prompt for your PostgreSQL password and handle everything auto
 
 The simulation runs the default scenario (`simulationSettings/VIC.yaml`). Results appear in `csv/` and `plots/` when complete.
 
+### Step 4 — Verify your installation
+
+One command checks the whole install at once — Java, the build, the database connection, and the model's own numerics:
+
+```powershell
+.\gradlew.bat test    # Windows
+./gradlew test        # Linux / macOS
+```
+
+A correct installation runs **43 tests across 10 classes, with none skipped**.
+
+**The count is the point.** The two database-backed classes (`LoadDataIT` and `SimulationRegressionIT`) skip themselves when PostgreSQL is unreachable, so a green run reporting *fewer* tests means the database is not connected — not that there was less to check. If you see skips, revisit the PostgreSQL trust configuration in Step 2.
+
+`SimulationRegressionIT` is the strongest check of the three: it runs a seeded simulation end to end and compares the year-summary output cell-by-cell against a reference committed to the repository. If it passes, your installation reproduces known-good numbers rather than merely running without crashing.
+
+The full HTML report is written to `build/reports/tests/test/index.html`.
+
 ---
 
 ## Run with Graphical UI

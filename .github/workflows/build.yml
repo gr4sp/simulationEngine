@@ -15,6 +15,28 @@ jobs:
 
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      PGHOST: localhost
+      PGUSER: postgres
+      # The suite a reader gets on a working install. LoadDataIT and
+      # SimulationRegressionIT skip themselves when no database is reachable, so
+      # without this floor a run that connected to nothing still reads as green.
+      MIN_TESTS: 43
+
+    services:
+      # GR4SP connects as jdbc:postgresql://localhost:5432/gr4spdb?user=postgres
+      # with no password (Gr4spSim.java:37), so the container must trust local
+      # connections exactly as the README asks a reader to configure locally.
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout repository
@@ -25,11 +47,48 @@ jobs:
           echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
           echo "$JAVA_HOME_17_X64/bin" >> $GITHUB_PATH
 
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client
+
+      - name: Restore the shipped database snapshot
+        run: |
+          createdb gr4spdb
+          # pg_restore exits non-zero on the harmless "extension adminpack is not
+          # available" notice from the 2021 dump; the data restores correctly.
+          # setup.ps1 / setup.sh treat it the same way.
+          pg_restore -d gr4spdb backupDB/DB-2021-8-21.sql || true
+          echo "Tables restored: $(psql -d gr4spdb -tAc "SELECT count(*) FROM information_schema.tables WHERE table_schema='public';")"
+          # Fail loudly if the snapshot did not actually land.
+          test "$(psql -d gr4spdb -tAc 'SELECT count(*) FROM generationassets;')" -gt 0
+
       - name: Make gradlew executable
         run: chmod +x gradlew
 
       - name: Build and run tests
-        run: ./gradlew test
+        run: ./gradlew build test
+
+      - name: Assert the suite actually ran
+        if: always()
+        run: |
+          shopt -s nullglob
+          reports=(build/test-results/test/*.xml)
+          if [ ${#reports[@]} -eq 0 ]; then
+            echo "::error::no JUnit reports were produced - the test worker did not run"
+            exit 1
+          fi
+          total=$(grep -ho 'tests="[0-9]*"' "${reports[@]}" | grep -o '[0-9]*' | paste -sd+ | bc)
+          skipped=$(grep -ho 'skipped="[0-9]*"' "${reports[@]}" | grep -o '[0-9]*' | paste -sd+ | bc)
+          echo "ran $total test(s), $skipped skipped, across ${#reports[@]} class(es)"
+          if [ "$total" -lt "$MIN_TESTS" ]; then
+            echo "::error::only $total tests ran, expected at least $MIN_TESTS"
+            exit 1
+          fi
+          if [ "$skipped" -ne 0 ]; then
+            echo "::error::$skipped test(s) skipped - the database-backed tests are meant to run here"
+            exit 1
+          fi
 
       - name: Upload test report on failure
         if: failure()
