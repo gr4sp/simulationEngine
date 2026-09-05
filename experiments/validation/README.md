@@ -42,8 +42,10 @@ statistics, and it is not reported here.
 Each indicator is compared over the span its comparator covers, and the spans
 differ. The OpenNEM extract begins 2005-04 and ends 2020-06, both partial years.
 The emissions series is annual from 1990. The tariff comparator is not
-contiguous: ACCC alone 2001-2009, both series 2010-2017, St Vincent de Paul
-alone 2018-2019, and nothing for 2003-2006.
+contiguous: Oakley Greenwood alone in 2001-2002 and 2007-2009, both series
+2010-2017, St Vincent de Paul alone 2018-2019, and neither for 2003-2006. See
+[Provenance of the tariff data](#provenance-of-the-tariff-data) for why those
+years are absent.
 
 No earlier comparator exists for price or renewable share. The database table
 `generation_consumption_historic` has a null price before 2005-04, and its
@@ -73,6 +75,107 @@ its band, because the panel spans every year either source covers.
 
 The 2018 emissions comparator is not measured. It is the 2017 figure less
 11.8 Mt for the retirement of Hazelwood.
+
+## Provenance of the tariff data
+
+Two different things are easily conflated, so they are separated here. The
+**comparator** is what the simulated tariff is measured against. The **register**
+is an input the simulated tariff is computed *from*. Neither was documented
+before; both were reconstructed and verified on 5 September 2026.
+
+### The comparator: `2001to2019_historicTariffs.csv`, column 2
+
+**This is not an ACCC publication.** It is a submission *to* the ACCC's inquiry:
+
+> *Submission to the ACCC inquiry into retail electricity supply and pricing*,
+> Victorian Electricity Distribution Businesses — AusNet Services, CitiPower,
+> Powercor, Jemena and United Energy — 30 June 2017. The cost-stack analysis was
+> commissioned from the consultants **Oakley Greenwood** (p. 5).
+> <https://www.accc.gov.au/system/files/Victorian%20Electricity%20Distribution%20Networks.pdf>
+
+The numbers come from its **Figure 1** (p. 6), captioned *"Composition (2016$) of
+the annual residential electricity bill in Victoria (4,000 kWh; no electric
+off-peak hot water), 1995, 2001 & 2002, and 2007 to 2017"*.
+
+Each CSV value is the figure's annual bill divided by 4,000 kWh, expressed in
+cents, and rescaled from 2016 to 2019 dollars by a single constant:
+
+```
+c/kWh (2019$) = bill(2016$) / 4000 * 100 * 1.0557
+```
+
+All thirteen values reproduce with a ratio between 1.0555 and 1.0559 — a spread
+of 0.031%, i.e. one deflator applied uniformly. For example 2017: $1,425 / 4000
+= 35.625 c/kWh, x 1.0557 = 37.61, which is the CSV value.
+
+**The gaps in the comparator are the report's own gaps.** The report has no
+2003-2006 and nothing after 2017, so those years are blank and
+`validation_statistics.py` drops them (`dropna`, line 80). Nothing is
+interpolated or carried forward. **1995 is the one year present in the report and
+deliberately not used.** The ACCC row's n=13 is therefore exactly the report's
+coverage less 1995.
+
+Two consequences worth stating in any write-up:
+
+- The series is a **whole-of-bill average, not a usage tariff**. Figure 1's bars
+  are the total annual bill — distribution, transmission, AMI metering, feed-in
+  tariffs, VEET, RET, carbon price, wholesale, retail margin **and GST** — over an
+  assumed 4,000 kWh. It amortises the fixed supply charge and includes GST, which
+  plausibly accounts for much of the 15 c/kWh gap against St Vincent de Paul.
+- `TARIFF_SOURCES` prints it as `ACCC (price review)`. That label is a shorthand
+  for the inquiry the submission was made to, not an attribution to the ACCC.
+
+### The register: `historic_tariff_contribution`
+
+Read by `LoadData.java:451` into `tariff_contribution_wholesale_register`, and
+used by `EndUserUnit.java:149-150` as the wholesale share `R_w` of the retail
+tariff. It has **22 rows, 1999-2020, with no gaps — but not every row is a
+measurement.**
+
+The seven component shares should sum to 1. That identity is the cleanest
+available fingerprint of which rows are real:
+
+| Years | Share sum | Reading |
+|---|---|---|
+| 1999-2002, 2006-2016 | 1.0000 (±0.01%) | genuine decompositions |
+| 2003, 2004, 2005 | 0.9968 (-0.32%) | constructed |
+| 2017 | **0.9490 (-5.10%)** | cannot be a decomposition |
+| 2018 | **1.0921 (+9.21%)** | cannot be a decomposition |
+| 2019, 2020 | 1.0028, 1.0016 | constructed |
+
+- **1999-2001** repeat the 1999 row verbatim in all seven columns: one
+  observation back-filled over three years.
+- **2003-2005 are not an interpolation.** Interpolating linearly between the 2002
+  and 2006 rows would give wholesale 0.2754, 0.3302, 0.3850; the actual values are
+  0.25, 0.27, 0.29. What is there instead is a hand-built ramp — wholesale rising
+  exactly +0.02/year, retail falling exactly -0.02/year to match, and every other
+  component frozen at a round constant (transmission 0.035, distribution 0.300,
+  GST and retail policies carried from 2002). It joins neither endpoint: 2002 to
+  2003 steps +0.029 and 2005 to 2006 steps +0.150.
+- **2017-2020 have no recoverable source.** They lie beyond Oakley Greenwood's
+  2017 end (2018-2020 entirely), no file in this repository carries them, and the
+  database preserves no provenance. The 2017 row is *within* the report's range
+  but does not match it — the submission's own 2017 breakdown (p. 3) is wholesale
+  23.6%, transmission 4.3%, distribution 25.4%, policy 12.1%, retail 25.5%, GST
+  9.1%, summing to exactly 100.0; the register's 2017 is 20.0 / 4.1 / 25.9 / 11.8
+  / 24.0 / 9.1, summing to 94.9.
+
+**The register fills precisely the years the comparator omits, and none of it is
+visible anywhere.** It is an input, not a plotted series, so no figure shows it.
+Nor could a gap show: `EndUserUnit.java:152-157` silently falls back to the YAML
+constant `wholesaleContribution.usage` (0.2837 in both `VIC.yaml:406` and
+`VICfuture.yaml:167`) for any year absent from the map, and lines 160-161 then
+clamp the result into [0.01, 1.0]. Neither substitution is logged.
+
+**The lag compounds this at the earliest comparison points.** The model reads the
+register at `year - 1` (`EndUserUnit.java:146`), so the simulated tariffs for 2001
+and 2002 — the two earliest years in the Oakley Greenwood comparison — are both
+computed from the back-filled 1999 value of 0.2089.
+
+This is the check that `ROADMAP.md` item 10 asks for, and it settles part of it:
+the register's later rows are constructed, so the question of whether its `year`
+labels are calendar or financial years is moot for 2003-2005 and 2017-2020, and
+live only for the genuine rows.
 
 ## Ensembles
 
