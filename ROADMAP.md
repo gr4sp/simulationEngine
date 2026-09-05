@@ -7,6 +7,9 @@ what it should do, and why, with file and line references to the behaviour as fo
 Items here are *not* defects unless marked as such. They are capabilities the
 architecture already implies but the implementation does not yet deliver.
 
+Item 9 records the two links that were designed, and whose data and classes exist,
+but that were never wired up for time reasons. They are the first things to pick up.
+
 ---
 
 ## 1. Report indicators at every level of the SPM nesting, not only at the root
@@ -163,3 +166,594 @@ Note that route 2 changes what the model can claim, not just how it is coded. Ph
 bilateral supply at small scale is already represented, through the off-market
 treatment (`Arena.java:607-609`, priced at BasePrice/MaxCF); what is missing is
 financial hedging at utility scale.
+
+---
+
+## 3. Solar never reaches the market: `solarSurplusCapacity` is declared but never assigned
+
+**Status:** open, **and this one is a defect.** Identified 3 September 2026 while
+checking the SPM claims for the EMS article.
+
+### What the code does now
+
+`Generator.solarSurplusCapacity` is declared (`src/core/Technical/Generator.java:39`)
+and read in two places, but **nothing ever writes to it.** The two lines that would
+compute it are commented out inside `computeAvailableSolarCapacity`:
+
+```java
+//solarSurplusCapacity = availableCapacity - (numUnits * consumption / 1440 );
+//if(solarSurplusCapacity < 0 ) solarSurplusCapacity = 0;
+```
+(`src/core/Technical/Generator.java:307-309`)
+
+There is no setter. The field therefore holds `0.0` for every generator for the whole
+run. Three consequences follow, none of them signalled at runtime:
+
+1. **Solar never bids.** `createBids` substitutes the surplus for solar's available
+   capacity, then skips any bid of zero capacity
+   (`src/core/Relationships/Arena.java:290-291`, `:296`). A semi-scheduled solar farm
+   flagged `inPrimaryMarket = true` still contributes no bid.
+2. **Solar contributes nothing to the off-market stream.** The off-market branch adds
+   `getSolarSurplusCapacity()`, that is zero, to `availableCapacityOffMarket` and to
+   the off-market price weighting (`src/core/Relationships/Arena.java:508-510`).
+3. **The whole of each solar generator's output is instead netted off demand as
+   self-consumption.** `consumptionSuppliedBySolar` accumulates the full half-hourly
+   capacity for any generator whose `fuelSourceDescriptor` is `Solar`
+   (`src/core/Relationships/Arena.java:497-500`), and that total is subtracted before
+   clearing (`:533`). The branch keys on **fuel type, not on market participation**,
+   so utility-scale solar above the 30 MW threshold is treated exactly like rooftop PV.
+
+The generation is still recorded (`Arena.java:503`) and still counts in the renewable
+share (`src/core/SaveData.java:753-754`, `:2055-2057`), so the effect is invisible in
+the RE indicator and shows up only in wholesale demand, dispatch and price.
+
+### Why it matters
+
+The model's account of distributed generation rests on a self-consumption/export
+split that is not actually computed. Every solar unit behaves as if 100 % of its
+output were consumed behind the meter, which understates the demand reaching the
+wholesale market and removes utility solar from price formation altogether. The
+effect on the 1998-2019 validation window is small, because Victoria's first
+large-scale solar farms date from about 2017, but it grows with every year of the
+forecast horizon and with any scenario that raises solar penetration.
+
+**It also means the documentation describes a design that does not run.** The EMS
+supplement states that "for rooftop solar, only the surplus after household
+self-consumption enters this calculation" (`supplement_ODD.tex:203`) and lists the
+variable in the entity table (`:120`). Both describe the intent.
+
+### What it should do
+
+1. **Restore the computation, and give it a real basis.** The commented-out line
+   divides monthly consumption by 1,440 half-hours, a flat profile. Self-consumption
+   depends on the coincidence of the household load shape with the solar profile, so
+   a half-hourly load shape, or at minimum a self-consumption fraction as a settings
+   parameter, would be a defensible replacement.
+2. **Separate the two branches by market participation, not fuel type.** Utility-scale
+   solar should bid its available capacity like any other semi-scheduled generator;
+   only behind-the-meter PV should be netted off demand.
+3. **Assert rather than fail silently.** A generator that reaches the bidding step
+   with zero available capacity, when its nameplate and capacity factor are both
+   positive, should log a warning.
+
+---
+
+## 4. No demand below the root SPM, so no local balancing, no islanding, and surplus is discarded
+
+**Status:** open. Identified 3 September 2026. Extends item 1, and should be planned
+with it.
+
+### What the code does now
+
+`Spm.computeIndicators` receives a single `consumption` argument and passes **the same
+value** to every SPM it recurses into (`src/core/Technical/Spm.java:273`, `:342`).
+What travels upward is an emissions intensity, each level scaled by its own
+`1/(1-losses)` factor. **No SPM below the root has any demand of its own**, so no SPM
+balances the generation it contains against the load it serves.
+
+The balancing that does happen is done once, in the Arena, over a flat list of
+generators gathered from every SPM (`src/core/Relationships/Arena.java:436-443`), and
+subtracted from system demand at `:533`.
+
+Surplus has nowhere to go. Two independent clamps discard it:
+
+```java
+//If non scheduled covered more than the demand, set the demand of the wholesale to 0
+if(totalDemandWholesale < 0.0 ) totalDemandWholesale = 0.0;
+```
+(`src/core/Relationships/Arena.java:538-539`)
+
+```java
+//If onsite Generation is greater than consumption, set consumption to 0
+//Because we have not created a market to sell the surplus to other SPMs
+if(consumption < 0) consumption = 0;
+```
+(`src/core/Social/EndUserUnit.java:236-240`)
+
+The second comment states the gap exactly. There is also no connectivity state
+anywhere: network assets carry a loss factor and nothing else, so there is no notion
+of a connection that could be opened.
+
+### Why it matters
+
+Three capabilities the architecture implies but does not deliver:
+
+1. **Islanded operation.** A microgrid or off-grid SPM cannot be disconnected and run
+   against its own load, because it has no own load and no connection state. The
+   `spm` table already defines the types that would need it (`4 off-grid + battery`,
+   `2/3 DER generation`), and none is instantiated.
+2. **Export between SPMs.** Local surplus is neither exported nor curtailed, it is
+   silently dropped. A neighbourhood that generates more than it consumes reports the
+   same result as one that generates exactly what it consumes.
+3. **Consistency between generation and demand placement.** Because demand is
+   exogenous and is never decomposed by SPM, the model cannot check that a generator
+   and the load it serves belong to the same place. Adding a generator whose demand
+   is not in the exogenous series silently reduces wholesale demand and raises the
+   renewable share, with nothing to flag it.
+
+### What it should do
+
+Route 2 of item 1, attaching consumption to SPMs, is the precondition for all three.
+On top of it:
+
+- give each SPM a balance step that nets its own generation against its own demand and
+  passes a signed residual to its parent, replacing the two clamps with an explicit
+  export or curtailment rule;
+- add a connection state to the SPM interface (`ConnectionPoint`) so an SPM can be
+  islanded, with unmet demand recorded locally rather than passed up;
+- add an initialisation check that every generator's SPM lies on a path to an SPM
+  carrying demand.
+
+Only the first is needed to make the current claims exact. The second is what would
+let GR4SP answer questions about local energy systems, which is the direction the
+`spm` table's unused types already anticipate.
+
+---
+
+## 5. Actors are loaded, then used for almost nothing
+
+**Status:** open, **and the disabled loaders are a defect.** Identified
+3 September 2026 while checking the EMS article's data-inputs section.
+
+### What the code does now
+
+`selectActors` loads the `actors` table filtered by region
+(`src/core/LoadData.java:1337-1338`), giving each actor a name, registration and
+change dates, registration number, role and business structure. For the Victorian
+case that is **486 of the 925 rows** in the table.
+
+Both relationship loaders are then commented out:
+
+```java
+//selectActorActorRelationships("actoractor93");
+//LoadData.selectActorAssetRelationships(this, "actorasset");
+```
+(`src/core/Gr4spSim.java:418`, `:420`)
+
+`selectActorAssetRelationships` is fully written (`src/core/LoadData.java:1386-1460`)
+and handles generation, network and SPM assets. The `actorasset` table holds **408
+rows**, almost all `OWN` at 100 %, against generation assets. **None of it is read.**
+
+The only actor-asset relationship that exists at runtime is created in code: each
+household `EndUserUnit` is given a `USE` relation to SPM 1
+(`src/core/Gr4spSim.java:375-380`).
+
+So the 486 loaded actors have no portfolios, no relationships to each other, and no
+behaviour. They are consumed in exactly one place, a count of how many are active at
+each step (`src/core/SaveData.java:648-655`). **Generator ownership survives only as
+the `owner_name` string attribute carried on the generator itself**, and it is
+generators, not actors, that bid.
+
+Two further faults visible in the data:
+
+- **`change_date` is a sentinel for anything still active.** The SECV row runs
+  `1921-01-10` to `2050-10-16`, so it counts as an active actor for the whole run,
+  decades after it was disaggregated.
+- **The region filter drops actors the analysis names.** Snowy Hydro, Origin and
+  several AGL entities are registered `NSW` in the table and are therefore not loaded
+  for a Victorian run, though they operate Victorian plant.
+
+### Why it matters
+
+Actors are one of the three elements of the socio-technical vocabulary the suite is
+built on, alongside SPMs and arenas. At present the actor layer is closer to a
+registry than a model: it can say how many organisations existed in a given year, and
+nothing about who owned what or who traded with whom. Any question about ownership
+concentration, market power, or the effect of privatisation on portfolios needs the
+loaders switched back on.
+
+### What it should do
+
+1. **Re-enable `selectActorAssetRelationships` against `actorasset` -- but not
+   before remapping its keys.** See the blocker below: the table's `actorid` column
+   does not reference the `actors` table the model loads. Once remapped, this makes
+   portfolios real and lets ownership be reported per actor.
+
+   ### BLOCKER: `actorasset.actorid` references `actors_old`, not `actors`
+
+   Checked 3 September 2026 against `backupDB/DB-2026-08-11.sql`. Of the 57 distinct
+   `actorid` values in `actorasset`, matching each row's own `actorname` against the
+   name the id resolves to:
+
+   | resolved against | matches | mismatches | id absent |
+   |---|---|---|---|
+   | `actors` (what the loader uses) | 13 | 43 | 1 |
+   | `actors_old` | **54** | 2 | 1 |
+
+   Examples of what the loader would do today:
+
+   | id | `actorasset.actorname` | `actors_old` (correct) | `actors` (what it would attach to) |
+   |---|---|---|---|
+   | 214 | Pacific Hydro Investments Pty Ltd | Pacific Hydro Investments Pty Ltd | National Power UK (Hazelwood Partner) |
+   | 215 | AGL Energy | AGL Energy | Pacific Corp USA (Hazelwood Partner) |
+   | 244 | Snowy Hydro Ltd | Snowy Hydro Ltd | ERM Power Retail Pty Ltd |
+   | 248 | SP AusNet | SP AusNet | LUMO ENERGY AUSTRALIA PTY LTD |
+
+   So enabling the loader unchanged would **silently attach Victorian generation and
+   network assets to the wrong organisations**, with no error raised: the loader
+   simply queries `actorasset WHERE actorid = <actors.id>` and takes what comes back.
+   `actorid` 0 (`TBA`, 24 rows) exists in neither table.
+
+   The fix is a data migration, not a code change: rebuild `actorasset` with
+   `actors` ids, matching on name against `actors_old` and resolving the two
+   mismatches and the `TBA` rows by hand. Add a foreign key afterwards so the two
+   tables cannot drift again. Note the actor--actor source
+   (`experiments/simulationData/ActorActorRel_V08.csv`) **is** keyed to the current
+   `actors` ids, so only the asset side needs migrating.
+
+   Two further facts worth knowing before the work is scoped:
+
+   - `actorasset` holds **160 Generation and 248 Network asset rows, and no SPM
+     rows.** Because `EndUserUnit.step` reacts only to relations whose asset is an
+     SPM (`src/core/Social/EndUserUnit.java:229-231`), loading the table changes no
+     model output today. It populates the object graph and nothing reads it.
+   - The table is a **public-regime dataset.** The SECV alone holds 129 of the 408
+     rows and SP AusNet a further 89. AGL Loy Yang, EnergyAustralia Pty Ltd,
+     EnergyAustralia Yallourn and AGL Electricity hold **zero rows each**, so the
+     private-regime portfolios are not in the data at all.
+2. **Decide what `actoractor93` is for, then either load it or remove it.** A
+   commented-out call to a table with a year in its name is the kind of thing that
+   reads as an implemented capability and is not one.
+3. **Replace the `change_date` sentinel** with a null, and test for null rather than
+   comparing against a date in 2050.
+4. **Filter actors by the assets they hold, not only by their registered region,** so
+   that an interstate-registered company operating Victorian plant is loaded.
+5. **Let actors bid.** This is the largest of the five and changes what the model can
+   claim: today a generator bids by rule from its own settings, and an actor holding a
+   portfolio would be the natural place for any strategic or portfolio-level behaviour.
+   The EMS article is explicit that bidding is non-strategic by design, so this is a
+   change of scope rather than a fix.
+
+---
+
+## 6. Scope limits carried from the EMS article
+
+**Status:** documented, not defects. These are deliberate simplifications recorded in
+Section 6 of the EMS article, collected here so that the roadmap holds the full set.
+Each would be a substantial piece of work and each changes what the suite can claim.
+
+| Limit | Where it lives now | What lifting it would need |
+|---|---|---|
+| **Networks are parameters.** Loss factors and access charges only, so no congestion, locational pricing or hosting-capacity limits | `Spm.computeNetworksLosses`; `networkassets` table | Network assets are already a class in the SPM structure, so a power-flow or transport model could attach there. Needs topology, which the `ConnectionPoint` class holds only nominally |
+| **No ancillary services.** FCAS is absent | -- | A further arena type with its own clearing rule, alongside the Spot arena |
+| **The market price cap is a static calibration value**, not the NEM's actual schedule | `VIC.yaml`, `marketPriceCap` per technology | A dated schedule read from settings, which is a small change with a real effect on scarcity-pricing questions |
+| **Demand is exogenous** and never responds to price | `monthly_consumption_register`, `total_demand_halfhour` | Demand response is the obvious first step and needs item 4's per-SPM demand first |
+| **Bidding is non-strategic.** Every bid is `BasePrice/CF` from settings, so the same inputs always give the same bid | `Generator.priceMWhLCOE` | See item 5.5. Note this is a design choice the article defends, not an oversight |
+| **The feed-in tariff arena is never constructed.** `Arena` supports a `fiTs` type, but the `arenas` table has no row of that type | `Arena.java:68-69`; `arenas` table, 3 rows | Data first: a feed-in tariff series, and a rule for which exports are remunerated. Pairs naturally with item 3 |
+| **The secondary spot market is implemented but not configured for Victoria.** It is a hypothetical arena, correctly described as such in the supplement | `Arena.java:76`, `:366-370`; `VIC.yaml:121-130` sets no `secondary` | Nothing to build. It is exercised by configuration alone |
+
+---
+
+## 7. Include an actor whose assets operate in the modelled market, whatever its region of registration
+
+**Status:** open. Raised by Angela, 3 September 2026.
+
+### What the code does now
+
+`selectActors` filters on the actor's own registered region:
+
+```java
+"SELECT ... FROM actors WHERE region = '" + data.settings.getAreaCode() + "';"
+```
+(`src/core/LoadData.java:1337-1338`)
+
+For the Victorian case that loads **486 of the 925 rows**. Region here is the
+region recorded against the organisation, not the region its plant operates in.
+
+### Why it matters
+
+Companies routinely register in one NEM region and operate generation in another.
+Of the 58 actors that hold rows in `actorasset`, **21 are dropped by the region
+filter**, and they are not marginal ones:
+
+| Actor | Registered | Victorian involvement |
+|---|---|---|
+| National Power UK, International Power Hazelwood, Great Energy Alliance | OTHER / NSW | Hazelwood partners |
+| Duke Energy Bairnsdale Operations | NSW | Bairnsdale |
+| Alinta DEBO, Alinta Energy Finance | NSW | Victorian plant and retail |
+| AGL Energy Services, AGL Energy Sales & Marketing | NSW | Victorian generation and retail |
+| Snowy Hydro Ltd | NSW | dispatches into Victoria |
+| Hydro-Electric Corporation (Tasmania) | TAS | Basslink counterparty |
+
+The EMS article names AGL, Origin, EnergyAustralia and Snowy Hydro as the companies
+that took the SECV's place. **Origin and Snowy Hydro are NSW-registered rows and a
+Victorian run does not load either.**
+
+### What it should do
+
+Select an actor if **either** its registered region is the modelled region **or** it
+holds a relationship to an asset located in it. Concretely, replace the single
+region predicate with a union: the current query, plus actors reachable through
+`actorasset` from assets whose own region matches. That requires item 5's key
+migration first, since the join is only sound once `actorasset` points at `actors`.
+
+Keep the registered region as a separate reported attribute. Where an organisation
+is registered is a real fact about it, and worth distinguishing from where it
+operates -- the distinction is itself part of the ownership story after
+privatisation, when interstate and overseas capital entered the Victorian system.
+
+---
+
+## 8. Newer AEMO source data and documentation now in the repository
+
+**Status:** available, not yet used. Added 3 September 2026.
+
+### CDEII results, 2011 to 2025
+
+`experiments/simulationData/` holds AEMO's published CO2EII summary results as
+`co2eii_summary_results_<year>.csv` for **2011--2025**, with 2014 split into
+two parts. The series is complete; no year is missing. Each file
+carries `CONTRACTYEAR, WEEKNO, SETTLEMENTDATE, REGIONID, TOTAL_SENT_OUT_ENERGY,
+TOTAL_EMISSIONS, CO2E_INTENSITY_INDEX`. Alongside them,
+`co2eii_available_generators.csv` gives per-DUID emission factors with their
+`CO2E_ENERGY_SOURCE` and `CO2E_DATA_SOURCE` (500 rows).
+
+Two uses, both worth taking:
+
+1. **Extend the validation window.** The EMS article validates GHGE to 2018 against
+   the Victorian Government series. AEMO's regional intensity index is an
+   independent second comparator on the same quantity, and it runs seven years
+   further. Note it is an intensity, so it compares against the SE's CDEII rather
+   than the emissions mass, and REGIONID must be filtered to VIC1.
+2. **Refresh the generator emission factors.** The model's factors come from the
+   `generationassets` table; `co2eii_available_generators.csv` carries AEMO's own
+   current values per DUID, which would let the seeded factors be checked against
+   the published ones rather than assumed.
+
+### AEMO documentation, cited by reference
+
+The following primary AEMO material was consulted on 3 September 2026 for unpacking
+the market rules the model encodes. These are third-party publications and are **not
+redistributed in this repository** -- they are `.gitignore`d under `docs/`, and are
+obtained from AEMO's website:
+
+- **NEM Generation Information, July 2026** (AEMO, *Energy Systems -> Electricity ->
+  NEM Forecasting and Planning -> Forecasting and Reliability -> NEM Generation
+  Information*) -- the commitment status definitions and the five project commitment
+  criteria (Land, Contracts, Planning, Finance, Construction), plus current unit-level
+  data. **This is the authority for the `unit_status` values the model filters on.**
+  Note the database uses the spelling `Publically Announced` and a status `Emerging`
+  that is **not** in AEMO's current set (Publicly Announced, Anticipated, Committed,
+  Committed*, In Commissioning, In Service, Announced Withdrawal). Worth reconciling.
+- **Generating Unit Expected Closure Year, July 2026** (AEMO, published alongside the
+  Generation Information workbook) -- current closure years, against which the model's
+  `expected_closure_date` and the brown-coal retirement shift can be checked.
+- **Guide to NEM Settlements Residue Auction Interface** (AEMO).
+- **CDEII Procedures version 4.1**, effective 9 August 2026 (AEMO) -- see item 11.
+
+Reading these against `Arena.java` and `VIC.yaml` is the cheapest available route to
+finding where the encoded rules have drifted from the current NER, and the closure
+workbook bears directly on the retirement scenarios.
+
+---
+
+## 9. The two deferred links: actor--asset over time, and SPM--demand at each scale
+
+**Status:** open, and these are the priority follow-ups. Recorded 3 September 2026,
+from Angela: the design work is done and the infrastructure is present in both cases,
+the connection was simply not made before the thesis and the EMS article were
+written. Neither is an oversight, and neither is a defect. They are unfinished
+wiring, and the article is entitled to describe the capability on that basis.
+
+### 9.1 Actor--asset: ownership, and ownership that changes
+
+**What exists.** The `actorasset` table (408 rows), the `ActorAssetRelationship`
+class, a fully written loader (`src/core/LoadData.java:1386-1460`) handling
+generation, network and SPM assets, and the relationship taxonomy in `actortype`.
+
+**What is missing, in the order it has to be done.**
+
+1. **The key migration.** `actorasset.actorid` points at `actors_old`, not `actors`.
+   This is the blocker in item 5 and nothing else can proceed until it is cleared.
+2. **Validity dates on the relation itself.** This is the one that matters for the
+   substantive question, because **assets do change hands**, and that is a fact about
+   the Victorian system rather than a modelling nuisance: the SECV's plant was broken
+   up and sold, Hazelwood passed through several consortia, Loy Yang A changed owner
+   more than once. The model cannot express any of it. `ActorAssetRelationship`
+   carries only `actor`, `type`, `percentage`, `asset`
+   (`src/core/Relationships/ActorAssetRelationship.java:10-13`), and the `actorasset`
+   table has **no date columns**. An asset therefore either has a relation or it does
+   not, for the whole run. The only time filtering available today acts on the *asset*
+   (generators are keyed by operational dates) and on the *actor*
+   (`registration_date` / `change_date`), never on the relation between them.
+
+   The fix is a `valid_from` / `valid_to` pair on both the table and the class, and a
+   lookup that resolves an asset's owner **at a given date**. That is what turns a
+   static ownership register into a representation of divestment, acquisition and
+   consolidation.
+3. **Actors that hold assets in the region but are registered elsewhere** -- item 7.
+
+**Where the analysis went instead.** The organisational side of this question was
+carried through the **Sectoral Network Analysis**, which works from the actor registry
+and the actor--actor strategic relationships (ownership, acquisition, merger,
+rebranding, management) in
+`experiments/simulationData/ActorActorRel_V08.csv`, processed with NetworkX outside
+the Java SE. That analysis reaches back to 1880 and traces the consolidation from
+hundreds of municipal undertakers to a single monopoly and then to privatised
+gentailers. **Note that this CSV is keyed to the current `actors` ids**, so the
+actor--actor side does not carry item 5's migration problem; only the asset side does.
+
+So the sector's organisational structure and its change over time *are* represented
+and analysed. What is not connected is the join from those organisations to the
+physical assets inside the SE, which is what would let ownership concentration be
+read against dispatch, emissions or price.
+
+### 9.2 SPM--demand: attaching consumption at each scale
+
+**What exists.** The recursive SPM structure, the recursive indicator functions, the
+`EndUserUnit` class with its own consumption, `maxHouseholdsPerConsumerUnit` as the
+lever that splits end users into multiple units, and the `spm` table's unused types
+(`2 DER generation`, `3 DER generation and battery`, `4 off-grid + battery`,
+`8 Industry`, `10/12 (+ battery)`).
+
+**What is missing.** Demand attaches only where an `EndUserUnit` sits, and in the
+Victorian configuration that is one unit on one SPM, because
+`simulationSettings/VIC.yaml:50` sets `maxHouseholdsPerConsumerUnit` to
+`2147483647`. Every SPM below the root therefore computes an intensity but no mass,
+cannot balance its own generation against its own load, and cannot be islanded.
+This is items 1 and 4, and 9.2 is the name for doing them together.
+
+**Why the two are one piece of work.** Both are the same shape: a relation that the
+schema and the classes already anticipate, that no run currently resolves. Doing 9.2
+first is the better order, because per-SPM demand is what makes per-actor ownership
+worth reading -- knowing who owns a feeder matters once the feeder reports its own
+consumption, emissions and renewable share.
+
+### What the EMS article says, and why that is defensible
+
+Section 3.2.2 describes the actor--asset relation as definable for any class of SPM
+asset, and Section 3.2.1 describes indicators as computable wherever an SPM is
+defined. Both are statements about the architecture, and both are true of it: the
+tables, the classes and the loader exist, and enabling them is configuration and data
+work rather than redesign. The article should not claim that the Victorian runs
+exercise either, and the wording should stay on the capability rather than the run.
+
+---
+
+## 10. The tariff update uses a half-year of prices and a lagged rate, and neither matches the comparator
+
+**Status:** open. Raised by Angela, 3 September 2026, while checking §4.4 of the EMS
+article. She proposed the diagnosis and the code confirms it.
+
+### What the code does now
+
+The retail tariff is set once a year, in January, and is held flat until the next
+January (`src/core/Social/EndUserUnit.java:140`). Two inputs go into it, and both are
+drawn from the *previous* calendar year:
+
+1. **The wholesale price** is the mean of the **last six monthly averages**
+   (`EndUserUnit.java:174-186`), so a January update reads **July to December of the
+   preceding year** and nothing else. January to June of that year never enters, and
+   neither does any month of the year the tariff applies to.
+2. **The wholesale contribution rate** `R_w` is read for `year = currentYear - 1`
+   (`EndUserUnit.java:146-151`), a deliberate one-year lag, because retailers set
+   tariffs from costs they have already observed.
+
+So the simulated tariff for calendar year *Y* is
+`mean(wholesale price, Jul–Dec of Y-1) / R_w[Y-1]`.
+
+The CPI conversion, by contrast, uses the year of the update itself
+(`EndUserUnit.java:164-165`), so it is contemporaneous while `R_w` is lagged.
+
+### Why it matters
+
+**The comparators are built on different periods.** The ACCC reports retail cost
+stacks by **financial year** (July to June); the St Vincent de Paul series reports
+**calendar-year** offers. The model's figure is a **second-half-of-the-previous-year**
+average. None of the three shares a period with the other two.
+
+The retail tariff is the weakest of the four validated indicators, and the two
+comparator sources disagree with each other by more than the simulation differs from
+either (EMS article, Table 4). **A timing-basis mismatch of six to twelve months is a
+credible contributor to that, and it has never been tested.** It is cheap to test:
+recompute the simulated tariff on a July-to-June basis and on a full-calendar-year
+basis, and see how the statistics move.
+
+### ⚠️ An open question about the year labels themselves
+
+`historic_tariff_contribution` is keyed by a bare `year` integer, 22 rows covering
+**1999 to 2020 with no gaps**, and the code treats that key as a **calendar year**.
+But the underlying ACCC data are financial-year figures. **It is not recorded anywhere
+whether the label is the financial year's start year or its end year**, so there may
+be a systematic six-month offset in `R_w` on top of the deliberate one-year lag.
+
+Angela's reading is that `2020` may have been entered to mean "the record is complete
+through December 2019" rather than "2020 is itself observed". If that is right, the
+last genuinely observed year is 2019, and the register carries one row more than it
+has data for.
+
+**This needs checking against the original extraction, not against the database**,
+because the database preserves no provenance. Until it is settled, note that
+`historic_tariff_contribution` is attributed in the article to the ACCC's *Retail
+Electricity Pricing Inquiry: Final Report* of **June 2018**, which cannot be the
+source of the 2019 and 2020 rows — those must come from a later ACCC publication.
+
+### What it should do
+
+1. **Record the provenance.** Add a `source` and a `period_start` / `period_end` to
+   the table, so a year label can never again be ambiguous between calendar and
+   financial years.
+2. **Make the averaging window a setting** rather than a hard-coded six, so the
+   July-to-June and calendar-year bases can be run and compared without a code change.
+3. **Align the CPI basis with the `R_w` basis**, or state deliberately why they
+   differ. At present one is contemporaneous and the other lagged, which is defensible
+   but undocumented outside the ODD.
+
+---
+
+## 11. Update the emissions accounting against CDEII Procedures version 4.1
+
+**Status:** open. Added 3 September 2026, after Angela asked for the current AEMO
+procedures to be cited alongside the version the model was built on.
+
+### What the model implements
+
+GR4SP's `CDEIII` is an extension of AEMO's Carbon Dioxide Equivalent Intensity Index,
+made under **clause 3.13.14(a) of the National Electricity Rules**. The two formulas
+the model builds on are AEMO's own, and they were checked against the source on
+3 September 2026:
+
+| AEMO | Formula | GR4SP |
+|---|---|---|
+| Formula 2 | `CDE_i = EF_i x E_i`, where `E` is **sent out** generation measured at the connection point, excluding the intra-regional loss factor | Equation 3 of the EMS article, verbatim |
+| Formula 4 | `CDEII = sum(CDE) / sum(E)` | Equation 4 of the EMS article, verbatim |
+
+The model then extends this recursively through the nested SPMs, which is the part
+that is GR4SP's own (`Spm.computeIndicators`).
+
+### What has changed since
+
+AEMO's published version history:
+
+| Version | Effective | Note |
+|---|---|---|
+| **4.1** | **9 August 2026** | Updated for the *National Electricity Amendment (Shortening the settlement cycle) Rule 2024 No. 22* |
+| 4.0 | 10 June 2019 | The version the model was built against |
+| 3.0 | 11 December 2014 | Updated the source of emission factor data |
+| 2.0 | 23 July 2013 | |
+| 1.0 | 2 December 2010 | First issue |
+
+⚠️ **There is no 2016 version.** If a locally held copy is dated 2016 it is a
+re-hosted copy of version 3.0 (December 2014), not a separate release.
+
+### What to do
+
+1. **Read version 4.1 against the implementation.** The settlement-cycle change is the
+   substantive one: the NEM moved to five-minute settlement on 1 October 2021, and the
+   model dispatches at 30 minutes. That is already declared as a scope limit in the
+   EMS article for the validation window, which closes before the change, but any run
+   extended past 2021 inherits the old interval.
+2. **Check the emission factor source.** Version 3.0 changed where the factors come
+   from, and the model's factors are seeded in `generationassets`. AEMO's current
+   per-DUID factors are already in the repository at
+   `experiments/simulationData/co2eii_available_generators.csv` (500 rows, with
+   `CO2E_ENERGY_SOURCE` and `CO2E_DATA_SOURCE`), so this is a comparison, not a
+   collection exercise. See item 8.
+3. **Consider the NEM region supplementary indices.** Section 4 of version 4.1
+   specifies a **per-region** intensity index, published daily per region with the
+   total energy and total emissions behind it. That is a closer comparator for a
+   Victorian model than the NEM-wide index, and it is the natural pairing with the
+   `co2eii_summary_results_<year>.csv` files already in `simulationData` (item 8).
+
+Both procedures versions are now cited in the EMS article (`AEMO2019_CDEII` for the
+version the model implements, `AEMOcdeii2026` for the current one).
