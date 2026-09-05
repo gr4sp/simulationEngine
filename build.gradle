@@ -55,6 +55,12 @@ test {
     if (System.getProperty('gr4sp.tz') != null) {
         systemProperty 'user.timezone', System.getProperty('gr4sp.tz')
     }
+    // Point the suite at a different input database, e.g. a clean restore of
+    // backupDB/DB-2021-8-21.sql, without touching a working gr4spdb:
+    //   ./gradlew test -Dgr4sp.db.url="jdbc:postgresql://localhost:5432/other?user=postgres"
+    if (System.getProperty('gr4sp.db.url') != null) {
+        systemProperty 'gr4sp.db.url', System.getProperty('gr4sp.db.url')
+    }
 }
 
 compileJava.options.encoding = 'UTF-8'
