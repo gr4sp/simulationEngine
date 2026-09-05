@@ -47,6 +47,28 @@ contiguous: Oakley Greenwood alone in 2001-2002 and 2007-2009, both series
 [Provenance of the tariff data](#provenance-of-the-tariff-data) for why those
 years are absent.
 
+**The annual wholesale row was computed over mismatched windows and has been
+corrected.** It read the simulated *annual* output column, which covers whole
+calendar years, against an observed side covering only the months the OpenNEM
+extract holds. Since the extract begins 2005-04 and ends 2020-06, two of the
+sixteen years compared different spans — 2020 severely, a full simulated year
+against six observed months, which put the simulated figure at 40.95 $/MWh where
+the comparable January-June average is 64.26. Both sides are now resampled from
+the same months. The other fourteen years are unchanged to the cent, because for
+a complete year the annual output column already equals the mean of its months.
+
+| Annual wholesale | MAE | RMSE | Bias | NSE |
+|---|---|---|---|---|
+| aligned to the comparator (tabled) | 14.08 | 18.33 | -6.83 | 0.50 |
+| full calendar year (published, superseded) | 15.16 | 19.19 | -8.67 | 0.45 |
+
+`wholesale_annual_windows()` prints both and the per-year shift, so the size of
+the change stays on the record, as `tariff_comparators` does for the retired
+tariff composite. **This is the one row in the table that deliberately departs
+from the published Section 5 figure.** It is also why
+`SimulationValidation.ipynb`, which resamples the monthly series, never
+reproduced the published annual number.
+
 No earlier comparator exists for price or renewable share. The database table
 `generation_consumption_historic` has a null price before 2005-04, and its
 pre-2005 per-fuel figures are a fixed-share reconstruction (wind is zero through

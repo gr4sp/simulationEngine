@@ -14,9 +14,17 @@ Usage
 Provenance
 ----------
 Mirrors ``experiments/notebookGr4sp/legacy/ema_gr4sp_EET-3RegimeValidation.ipynb``,
-which is the authoritative source for the published numbers. The other notebook,
-``SimulationValidation.ipynb``, derives annual wholesale by resampling the monthly
-series rather than reading the annual output column, and does not reproduce them.
+which is the authoritative source for the published numbers.
+
+One row deliberately departs from it. The annual wholesale figure read the
+simulated annual output column, covering whole calendar years, against an
+observed side covering only the months the OpenNEM extract holds (2005-04 to
+2020-06). Two of the sixteen years were therefore compared over different spans,
+2020 severely: a full simulated year against six observed months. Both sides are
+now resampled from the same months. ``wholesale_annual_windows()`` prints the
+superseded figure alongside, so the size of the change stays on the record. This
+is also why ``SimulationValidation.ipynb``, which resamples the monthly series,
+did not reproduce the published annual number.
 
 Two ensembles exist and are not interchangeable:
   * validation bands: gr4sp_SOBOLhypopast2021-Mar-03_includ_wholesale_month.tar.gz
@@ -113,9 +121,14 @@ def series(year, month, ghge, opennem, tariffs):
             monthly["Primary Wholesale ($/MWh)"].values,
             monthly["Volume Weighted Price (Historic) - $/MWh"].values,
             "2005-04 to 2020-06", "$/MWh"),
+        # Both sides are resampled from `monthly`, which is the inner join above, so
+        # each annual figure averages exactly the same months. Reading the simulated
+        # annual column instead compares a full calendar year against a partial one
+        # in 2005 (comparator starts in April) and 2020 (it ends in June); see
+        # wholesale_annual_windows() for the size of that.
         "Wholesale price (annual)": (
-            year["Primary Wholesale ($/MWh)"].iloc[7:23].values,
-            opennem["Volume Weighted Price (Historic) - $/MWh"].resample("YE").mean().values,
+            monthly["Primary Wholesale ($/MWh)"].resample("YE").mean().values,
+            monthly["Volume Weighted Price (Historic) - $/MWh"].resample("YE").mean().values,
             "2005-2020", "$/MWh"),
         "RE share (annual)": (
             year["Percentage Renewable Production"].iloc[7:23].values * 100.0,
@@ -163,6 +176,47 @@ def print_table(indicators):
         print(f"{name:30s}{period:22s}{result['n']:>5}{unit:>8}"
               f"{result['MAE']:>9.2f}{result['RMSE']:>9.2f}{result['Bias']:>+9.2f}"
               f"{result['NRMSE']:>8.1f}%{result['NSE']:>9.2f}")
+
+
+def wholesale_annual_windows(year, month, opennem):
+    """The annual wholesale row on both window conventions.
+
+    The published Section 5 figure read the simulated annual output column, which
+    covers whole calendar years, while the observed side covered only the months
+    the OpenNEM extract holds. The extract begins 2005-04 and ends 2020-06, so two
+    of the sixteen years were compared over different spans. 2020 is the severe
+    one: a full simulated year against six observed months.
+
+    The table now resamples both sides from the same months. This function keeps
+    the superseded figure on the record, as `tariff_comparators` does for the
+    retired tariff composite.
+    """
+    price = "Volume Weighted Price (Historic) - $/MWh"
+    monthly = pd.merge(opennem[price], month["Primary Wholesale ($/MWh)"],
+                       left_index=True, right_index=True)
+    observed = monthly[price].resample("YE").mean()
+    aligned = monthly["Primary Wholesale ($/MWh)"].resample("YE").mean()
+    published = pd.Series(year["Primary Wholesale ($/MWh)"].iloc[7:23].values,
+                          index=observed.index)
+    months = monthly["Primary Wholesale ($/MWh)"].resample("YE").count()
+
+    print("\nWholesale price, annual: window conventions")
+    print("-" * 68)
+    print(f"  {'year':>6}{'months':>8}{'observed':>11}{'simulated':>11}"
+          f"{'published':>11}{'shift':>8}")
+    for stamp in observed.index:
+        year_label, n = stamp.year, int(months.loc[stamp])
+        flag = "" if n == 12 else "  <- partial"
+        print(f"  {year_label:>6}{n:>8}{observed.loc[stamp]:>11.2f}"
+              f"{aligned.loc[stamp]:>11.2f}{published.loc[stamp]:>11.2f}"
+              f"{aligned.loc[stamp] - published.loc[stamp]:>+8.2f}{flag}")
+
+    print()
+    for label, simulated in (("aligned to the comparator (tabled)", aligned),
+                             ("full calendar year (published, superseded)", published)):
+        result = statistics(simulated.values, observed.values)
+        print(f"    {label:<44}MAE {result['MAE']:6.2f}  RMSE {result['RMSE']:6.2f}"
+              f"  Bias {result['Bias']:+6.2f}  NSE {result['NSE']:5.2f}")
 
 
 def tariff_comparators(year, tariffs):
@@ -342,6 +396,7 @@ def main():
     year, month, ghge, opennem, tariffs = load_inputs()
     indicators = series(year, month, ghge, opennem, tariffs)
     print_table(indicators)
+    wholesale_annual_windows(year, month, opennem)
     tariff_comparators(year, tariffs)
 
     if args.ensemble:
