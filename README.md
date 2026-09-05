@@ -198,12 +198,12 @@ conda activate gr4sp
 pip install -r experiments/notebookGr4sp/requirements.txt
 ```
 
-The notebooks analyse the results of EMA experiment runs, which are large `.tar.gz` archives that are not stored in git. The published run results are archived on [Zenodo record 8320754](https://zenodo.org/records/8320754) and can be downloaded with the fetch script:
+The notebooks analyse the results of EMA experiment runs, which are large `.tar.gz` archives that are not stored in git. The published run results are archived on Zenodo, split across versions [8320754](https://zenodo.org/records/8320754) (the 14 scenario archives) and [22172036](https://zenodo.org/records/22172036) (the validation ensemble). You can cite all versions by using the DOI [10.5281/zenodo.4667996](https://doi.org/10.5281/zenodo.4667996), which always resolves to the latest one. The fetch script merges both file lists, so one run gets them all:
 
 ```bash
 cd experiments/simulationData
 python fetch_results.py --list          # show what is available, download nothing
-python fetch_results.py                 # fetch the 14 result archives (~1.3 GB)
+python fetch_results.py                 # fetch the 15 result archives (~2.2 GB)
 python fetch_results.py --all           # also fetch the input CSV/XLSX files
 python fetch_results.py JT              # fetch only archives matching a substring
 ```
@@ -227,14 +227,18 @@ The script skips files already present, so it is safe to re-run. Fetching only t
 
 ## Data archives
 
-Two Zenodo records hold the data behind the published results.
+One Zenodo deposit holds the data behind the published results, under the concept DOI
+[10.5281/zenodo.4667996](https://doi.org/10.5281/zenodo.4667996). It always resolves to the latest one. Its versions do not
+carry the same files, and a Zenodo version does not inherit the previous one's, so the version matters when
+fetching rather than citing:
 
-| Archive | DOI | Contents |
+| Version | Record | Contents |
 |---|---|---|
-| GR4SP Victoria Electricity System | [10.5281/zenodo.4667997](https://doi.org/10.5281/zenodo.4667997) | The PostgreSQL input database that initialises the simulation engine — generation and network assets, actors, demand, tariffs, and the historical registers. |
-| GR4SP Suite: Additional Data and Simulation Results | [10.5281/zenodo.8320754](https://doi.org/10.5281/zenodo.8320754) | Additional input datasets, simulation outputs, and sensitivity and uncertainty analysis results. |
+| 1.0 | [4667997](https://zenodo.org/records/4667997) | The PostgreSQL input database that initialises the simulation engine — generation and network assets, actors, demand, tariffs, and the historical registers. |
+| 2.0 | [8320754](https://zenodo.org/records/8320754) | Additional input datasets, simulation outputs, and sensitivity and uncertainty analysis results — including the 14 scenario archives. |
+| 3.0 | [22172036](https://zenodo.org/records/22172036) | The validation ensemble, the pinned business-as-usual run behind Table 4, and the EET screening table. |
 
-`backupDB/` holds the database dumps the setup script restores from. The Zenodo record above is the archived, citable version of the input database.
+`backupDB/` holds the database dumps the setup script restores from. Version 1.0 above is the archived, citable version of the input database.
 
 ---
 

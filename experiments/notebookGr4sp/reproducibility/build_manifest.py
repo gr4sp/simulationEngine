@@ -2,10 +2,10 @@
 
 Scans every ../*.ipynb, records which result archives (load_results) and output
 files each notebook uses, cross-references them against the archives published
-on Zenodo (record 8320754), and writes archive_manifest.csv /
+on Zenodo (concept 4667996, versions 8320754 and 22172036), and writes archive_manifest.csv /
 notebook_outputs.csv next to this script.
 
-The *.tar.gz result archives are NOT committed to git (too large); the 14 final
+The *.tar.gz result archives are NOT committed to git (too large); the 15 final
 ones live on Zenodo and are pulled in by fetch_results.py. Archives a notebook
 loads that are NOT on Zenodo are legacy test runs kept on record here only.
 
@@ -18,9 +18,11 @@ here = os.path.dirname(os.path.abspath(__file__))
 nbdir = os.path.dirname(here)          # experiments/notebookGr4sp
 outdir = here
 
-# The 14 result archives published at https://zenodo.org/records/8320754 .
-# Keep in sync with the record (fetch_results.py enumerates it live).
-ZENODO_RECORD = "8320754"
+# The 15 result archives published under concept DOI 10.5281/zenodo.4667996.
+# They are split across two versions and neither holds them all: the 14 scenario
+# archives are in 8320754, the validation ensemble in 22172036. fetch_results.py
+# merges both file lists; keep this set in sync with what that lists.
+ZENODO_RECORD = "8320754, 22172036"
 ZENODO_ARCHIVES = {
     "gr4sp_BAU2021-Aug-03.tar.gz", "gr4sp_BAU2021-Aug-22.tar.gz",
     "gr4sp_BAU2021-Aug-29.tar.gz", "gr4sp_BAU2021-Aug-30.tar.gz",
@@ -29,6 +31,7 @@ ZENODO_ARCHIVES = {
     "gr4sp_LCT2021-Aug-24.tar.gz", "gr4sp_LCT2021-Sep-01.tar.gz",
     "gr4sp_SOBOL2021-Feb-03.tar.gz", "gr4sp_ST2021-Aug-31.tar.gz",
     "gr4sp_ST2021-Sep-01.tar.gz", "gr4sp_ST2021-Sep-04.tar.gz",
+    "gr4sp_SOBOLhypopast2021-Mar-03_includ_wholesale_month.tar.gz",
 }
 
 load_re = re.compile(r"load_results\s*\(\s*r?['\"]([^'\"]+\.tar\.gz)['\"]")
@@ -123,13 +126,13 @@ for fn, d in arch.items():
         "archive": fn,
         "scenario": scenario_of(fn),
         "date": dm.group(1) if dm else "",
-        "on_zenodo_8320754?": "yes" if on_zenodo else "no",
+        "on_zenodo?": "yes" if on_zenodo else "no",
         "status": status,
         "active_in": " | ".join(sorted(d["active"])) or "(none - only commented)",
         "n_active": len(d["active"]),
         "commented_in_count": len(d["commented"]),
     })
-arch_rows.sort(key=lambda r: (r["on_zenodo_8320754?"] == "no", r["scenario"], r["date"]))
+arch_rows.sort(key=lambda r: (r["on_zenodo?"] == "no", r["scenario"], r["date"]))
 
 with open(os.path.join(outdir, "archive_manifest.csv"), "w", newline="", encoding="utf-8") as f:
     w = csv.DictWriter(f, fieldnames=list(arch_rows[0].keys()))
@@ -138,7 +141,7 @@ with open(os.path.join(outdir, "notebook_outputs.csv"), "w", newline="", encodin
     w = csv.DictWriter(f, fieldnames=list(nb_rows[0].keys()))
     w.writeheader(); w.writerows(nb_rows)
 
-n_zen = sum(1 for r in arch_rows if r["on_zenodo_8320754?"] == "yes")
+n_zen = sum(1 for r in arch_rows if r["on_zenodo?"] == "yes")
 n_repro = sum(1 for r in nb_rows if r["reproducible_from_zenodo?"] == "yes")
 print(f"archives: {len(arch_rows)} unique ({n_zen} on Zenodo, {len(arch_rows) - n_zen} retire)")
 print(f"notebooks: {len(nb_rows)} ({n_repro} reproducible from Zenodo)")
