@@ -226,6 +226,10 @@ Reproducing the scenario ensembles from scratch is a much larger undertaking: th
 sampled scenarios run thousands of simulations and take hours. The published runs are on
 Zenodo (see [Data archives](#data-archives)) and are the practical starting point.
 
+GR4SP continues to be developed. [`docs/versioning.md`](docs/versioning.md) explains how
+the frozen article calibration is kept reproducible alongside the evolving model, and
+[`ROADMAP.md`](ROADMAP.md) records the improvements in progress.
+
 ---
 
 ## Analysing Results
