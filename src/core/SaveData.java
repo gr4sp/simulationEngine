@@ -1043,7 +1043,16 @@ public class SaveData implements Steppable, java.io.Serializable {
 	String slash = "\\";
 	if( System.getProperty("os.name").contains("Windows") == false )
 	    slash = "/";
-	
+
+        // Create plots/ on demand, as saveData does for csv/. Without this, a run
+        // in a tree where setup.ps1/setup.sh has not been run has no plots/ dir,
+        // the first createNewFile() below throws, and the single catch at the end
+        // swallows it - losing every plot while the run still exits successfully.
+        File plotsDir = new File(data.settings.folderOutput+""+slash+"plots");
+        if (!plotsDir.exists()) {
+            plotsDir.mkdirs();
+        }
+
         File fc = new File(data.settings.folderOutput+""+slash+"plots"+slash+"HouseholdConsumption" + data.outputID + ".png");
         File ft = new File(data.settings.folderOutput+""+slash+"plots"+slash+"HouseholdTariff" + data.outputID + ".png");
         File fw = new File(data.settings.folderOutput+""+slash+"plots"+slash+"PrimaryWholesalePrice" + data.outputID + ".png");

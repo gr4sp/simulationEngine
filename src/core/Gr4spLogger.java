@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -100,6 +101,15 @@ public class Gr4spLogger implements java.io.Serializable {
                 folderLogs += "\\logs\\";
             else
                 folderLogs += "/logs/";
+
+            // Create logs/ on demand. FileHandler throws if the directory is
+            // absent, which it is in any tree where setup.ps1/setup.sh has not
+            // been run. Only reachable when logLevel is not OFF, which is why
+            // the default settings never hit it.
+            File logsDir = new File(folderLogs);
+            if (!logsDir.exists()) {
+                logsDir.mkdirs();
+            }
 
             fileTxt = new FileHandler(folderLogs + "Logging" + outputID + ".txt");
             fileHTML = new FileHandler(folderLogs + "Logging" + outputID + ".html");

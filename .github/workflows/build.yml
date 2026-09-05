@@ -69,6 +69,33 @@ jobs:
       - name: Build and run tests
         run: ./gradlew build test
 
+      - name: Report which tests failed
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import glob, os, xml.etree.ElementTree as ET
+          rows = []
+          for path in sorted(glob.glob("build/test-results/test/*.xml")):
+              for case in ET.parse(path).getroot().iter("testcase"):
+                  for bad in list(case.findall("failure")) + list(case.findall("error")):
+                      msg = (bad.get("message") or bad.text or "").strip().splitlines()
+                      rows.append((case.get("classname", "?"), case.get("name", "?"),
+                                   msg[0][:400] if msg else bad.tag))
+          if not rows:
+              print("no failing test cases recorded")
+          for cls, name, msg in rows:
+              # ::error:: becomes a check-run annotation, which is readable on a
+              # public repository without a token - so a failure can be diagnosed
+              # without downloading the log archive.
+              print(f"::error title={cls}.{name}::{msg}")
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a") as fh:
+                  fh.write(f"### Failing tests: {len(rows)}\n\n")
+                  for cls, name, msg in rows:
+                      fh.write(f"- `{cls}.{name}` - {msg}\n")
+          PY
+
       - name: Assert the suite actually ran
         if: always()
         run: |
