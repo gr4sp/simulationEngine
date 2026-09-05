@@ -34,7 +34,14 @@ class MySecurityManager extends SecurityManager {
 
 public class Gr4spSim extends SimState implements java.io.Serializable {
     private static final long serialVersionUID = 1;
-    public static String url = "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres";
+    /**
+     * JDBC URL for the input database. Overridable with -Dgr4sp.db.url so a run can be
+     * pointed at a database other than the default gr4spdb -- used to regenerate and
+     * check the regression baseline against a clean restore of backupDB/, without
+     * disturbing a working gr4spdb that may carry refreshed data.
+     */
+    public static String url = System.getProperty("gr4sp.db.url",
+            "jdbc:postgresql://localhost:5432/gr4spdb?user=postgres");
     public final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     /**

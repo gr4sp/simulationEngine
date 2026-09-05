@@ -45,6 +45,8 @@ public class SimulationRegressionIT {
     private static final File BASELINE =
             new File("src/test/resources/regression/VICSimDataYearSummary_seed_42_to_2030.csv");
     private static final double REL_TOLERANCE = 1e-6;
+    /** "rows/max-year" of solar_installation_monthly in backupDB/DB-2021-8-21.sql. */
+    private static final String SHIPPED_DB_VINTAGE = "153/2019";
 
     private static boolean dbAvailable() {
         try {
@@ -60,10 +62,40 @@ public class SimulationRegressionIT {
     @TempDir
     Path tempOut;
 
+    /**
+     * The baseline is only meaningful against the database snapshot the repository
+     * ships. A gr4spdb refreshed by scripts/data/*.py carries later data - rooftop
+     * solar installs to 2025 rather than 2019, demand to 2026 rather than mid-2021 -
+     * which legitimately produces a different run. Without this check that shows up
+     * as an unreadable several-hundred-column diff instead of the real explanation.
+     */
+    private static String databaseVintage() {
+        String sql = "SELECT count(*) || '/' || max(year) FROM solar_installation_monthly";
+        try (Connection c = DriverManager.getConnection(Gr4spSim.url);
+             java.sql.Statement st = c.createStatement();
+             java.sql.ResultSet rs = st.executeQuery(sql)) {
+            return rs.next() ? rs.getString(1) : "unknown";
+        } catch (Exception e) {
+            return "unreadable (" + e.getMessage() + ")";
+        }
+    }
+
     @Test
     void shortSeededRunMatchesGoldenBaseline() throws Exception {
         Assumptions.assumeTrue(dbAvailable(),
                 "postgres gr4spdb not reachable - skipping simulation regression test");
+
+        String vintage = databaseVintage();
+        Assumptions.assumeTrue(SHIPPED_DB_VINTAGE.equals(vintage),
+                "the database behind " + Gr4spSim.url + " is not the shipped snapshot"
+                + " (solar_installation_monthly rows/max-year is " + vintage
+                + ", expected " + SHIPPED_DB_VINTAGE + ").\n"
+                + "The regression baseline corresponds to backupDB/DB-2021-8-21.sql. A gr4spdb"
+                + " refreshed with scripts/data/*.py holds later data and cannot reproduce it,"
+                + " so this check is skipped rather than reported as a failure.\n"
+                + "To run it, restore the snapshot into another database and point the suite at it:\n"
+                + "  createdb gr4spdb_ref && pg_restore -d gr4spdb_ref backupDB/DB-2021-8-21.sql\n"
+                + "  ./gradlew test -Dgr4sp.db.url=\"jdbc:postgresql://localhost:5432/gr4spdb_ref?user=postgres\"");
 
         Gr4spSim sim = new Gr4spSim(SEED);
         sim.setEndSimDate(new GregorianCalendar(END_YEAR, 0, 1).getTime());
