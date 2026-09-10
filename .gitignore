@@ -232,3 +232,7 @@ docs/*.docx
 
 # --- Scratch backups ---
 *.bak_*
+
+# Planning notes kept local (not published)
+ROADMAP.md
+docs/versioning.md

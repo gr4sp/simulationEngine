@@ -120,9 +120,8 @@ matters.
 has no intra-month structure left to weight: production-weighting the simulated
 side moves it by at most 3.69 $/MWh against the observed side's 15.70. A weighted
 comparator therefore contains information the simulated series structurally cannot
-contain, and any comparison charges the model for it. Recorded as `ROADMAP.md`
-item 14, whose first step — persisting a within-month weighted price alongside the
-mean — is what would close the gap.
+contain, and any comparison charges the model for it. Closing the gap would need a
+within-month weighted price persisted alongside the mean.
 
 Measured on the monthly row over the same months, against three observed
 conventions:
@@ -267,7 +266,8 @@ register at `year - 1` (`EndUserUnit.java:146`), so the simulated tariffs for 20
 and 2002 — the two earliest years in the Oakley Greenwood comparison — are both
 computed from the back-filled 1999 value of 0.2089.
 
-This is the check that `ROADMAP.md` item 10 asks for, and it settles part of it:
+This is the check the tariff averaging-window question asks for, and it settles part
+of it:
 the register's later rows are constructed, so the question of whether its `year`
 labels are calendar or financial years is moot for 2003-2005 and 2017-2020, and
 live only for the genuine rows.
