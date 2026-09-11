@@ -133,4 +133,3 @@ ok "Gr4spSim.class found"
 echo
 echo "Setup complete!"
 echo "Run the simulation with:  ./runGr4sp.sh"
-echo "Run with GUI:             ./runGr4spUI.sh"

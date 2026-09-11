@@ -1,9 +1,4 @@
-/*
-  Copyright 2006 by Sean Luke and George Mason University
-  Licensed under the Academic Free License version 3.0
-  See the file "LICENSE" for more information
-*/
-//using the sim.engine, sim.portrayal, sim.util, sim.field.network, sim.field.continuous from Mason to create the SPMs
+// Uses sim.engine from MASON to schedule the SPMs.
 
 package core.Technical;
 
@@ -12,14 +7,11 @@ import core.Gr4spSim;
 import core.Relationships.Arena;
 import core.Relationships.Bid;
 import sim.engine.*;
-import sim.portrayal.*;
 
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.util.*;
 
 
-public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.Serializable  {
+public class Spm implements Steppable, Asset, java.io.Serializable  {
     private static final long serialVersionUID = 1;
 
     private int id;
@@ -371,60 +363,6 @@ public class Spm extends SimplePortrayal2D implements Steppable, Asset, java.io.
 //    ArrayList<Generator> activeGensAllSPM = this.getActiveGensAllSPM(today);
 //    double emissionFactorAllGenerators = genData.computeGenEmissionIntensity(activeGensAllSPM);
 
-    private Color getColorForValue(int idSpm) {
-
-        switch (idSpm) {
-            case 1:
-                return Color.red;
-            case 2:
-                return Color.green;
-            case 3:
-                return Color.orange;
-            case 4:
-                return Color.blue;
-            case 5:
-                return Color.GRAY;
-            case 6:
-                return Color.LIGHT_GRAY;
-            case 7:
-                return Color.magenta;
-            case 8:
-                return Color.yellow;
-            case 9:
-                return Color.black;
-            case 10:
-                return Color.darkGray;
-            case 11:
-                return Color.cyan;
-            case 12:
-                return Color.pink;
-        }
-        return Color.white;
-    }
-
-    public void draw(Object object, Graphics2D graphics, DrawInfo2D info) {
-        double width = info.draw.width * this.diameter;
-        double height = info.draw.height * this.diameter;
-
-        Color c = new Color(getColorForValue(id).getRed(), getColorForValue(id).getGreen(), getColorForValue(id).getBlue(), 200);
-        graphics.setColor(c);
-
-        int x = (int) (info.draw.x - width / 2.0D);
-        int y = (int) (info.draw.y - height / 2.0D);
-        int w = (int) width;
-        int h = (int) height;
-        graphics.fillOval(x, y, w, h);
-
-
-    }
-
-    public boolean hitObject(Object object, DrawInfo2D range) {
-        double SLOP = 1.0D;
-        double width = range.draw.width * this.diameter;
-        double height = range.draw.height * this.diameter;
-        Ellipse2D.Double ellipse = new Ellipse2D.Double(range.draw.x - width / 2.0D - 1.0D, range.draw.y - height / 2.0D - 1.0D, width + 2.0D, height + 2.0D);
-        return ellipse.intersects(range.clip.x, range.clip.y, range.clip.width, range.clip.height);
-    }
 
     @Override
     public double diameter() {

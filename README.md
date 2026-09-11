@@ -108,22 +108,6 @@ The full HTML report is written to `build/reports/tests/test/index.html`.
 
 ---
 
-## Run with Graphical UI
-
-To watch the simulation progress with live plots:
-
-**Windows:**
-```
-.\runGr4spUI.bat
-```
-
-**Linux / macOS:**
-```bash
-./runGr4spUI.sh
-```
-
----
-
 ## Build from Source (VS Code)
 
 The project uses Gradle. No manual `javac` commands needed.

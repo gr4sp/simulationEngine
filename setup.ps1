@@ -132,4 +132,3 @@ Write-OK "Gr4spSim.class found"
 Write-Host ""
 Write-Host "Setup complete!" -ForegroundColor Green
 Write-Host "Run the simulation with:  .\runGr4sp.bat" -ForegroundColor Yellow
-Write-Host "Run with GUI:             .\runGr4spUI.bat" -ForegroundColor Yellow
