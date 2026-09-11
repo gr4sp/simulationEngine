@@ -334,3 +334,15 @@ and the software metadata in `CITATION.cff`.
 The version of the code that produces the article's results is marked by a git tag and
 an accompanying release; see [Reproducing the Article's Results](#reproducing-the-articles-results)
 for the three inputs that must be pinned together.
+
+---
+
+## Licence
+
+GR4SP's own code is released under the MIT licence ([`LICENSE.md`](LICENSE.md)).
+
+The repository also redistributes third-party components under their own terms — the
+MASON toolkit (Academic Free License 3.0), JFreeChart and JCommon (LGPL 2.1 or later),
+the EMA Workbench (BSD 3-Clause) and the remaining jars in `libraries/`. These are listed
+in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md), which also records what the LGPL
+components require of anyone redistributing GR4SP.

@@ -2,6 +2,12 @@ MIT License
 
 Copyright (c) 2022 GR4SP
 
+This licence covers GR4SP's own source code. The repository also redistributes
+third-party components — the MASON toolkit, JFreeChart and JCommon, the EMA
+Workbench and the other jars in `libraries/` — which remain under the terms set
+by their own authors. Those terms, including the LGPL conditions that apply to
+JFreeChart and JCommon, are listed in THIRD-PARTY-NOTICES.md.
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
