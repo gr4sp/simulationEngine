@@ -1181,6 +1181,81 @@ public class SaveData implements Steppable, java.io.Serializable {
         }
     }
 
+    /**
+     * Per-market and per-fuel average prices, written to their own CSV.
+     *
+     * These series are recomputed every simulated month in step(), but until now
+     * they only ever reached the PriceGenAvg chart -- so every run that did not
+     * save plots discarded them, and no run persisted them at all. They are
+     * written to a separate file rather than added to the monthly summary so that
+     * the existing columns, and the outputs the published results rest on, are
+     * untouched.
+     *
+     * PrimarySpot is deliberately absent: it is the same value as the monthly
+     * summary's "Primary Wholesale ($/MWh)" column, written from wholesaleSeries.
+     */
+    public void savePriceSeries(SimState simState, String folderName) {
+        Gr4spSim data = (Gr4spSim) simState;
+
+        // key -> column label, in the order PriceGenAvgSeries was populated
+        int[] keys = {1, -1, -2, -3, -4, -5, -6, -7, -8, -9};
+        String[] labels = {"Tariff_WA_AllMarkets ($/MWh)", "SecondarySpot ($/MWh)",
+                "OffSpot ($/MWh)", "RooftopPV ($/MWh)", "Coal ($/MWh)", "Water ($/MWh)",
+                "Wind ($/MWh)", "Gas ($/MWh)", "Solar ($/MWh)", "Battery ($/MWh)"};
+
+        try (Writer writerPrices = Files.newBufferedWriter(
+                Paths.get(folderName + "/" + data.yamlFileName + "SimDataMonthlyPrices"
+                        + data.outputID + ".csv"))) {
+
+            CSVWriter csvWriterPrices = new CSVWriter(writerPrices,
+                    CSVWriter.DEFAULT_SEPARATOR,
+                    CSVWriter.NO_QUOTE_CHARACTER,
+                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                    CSVWriter.DEFAULT_LINE_END);
+
+            ArrayList<String> header = new ArrayList<String>();
+            header.add("Date");
+            ArrayList<XYSeries> cols = new ArrayList<XYSeries>();
+            for (int k = 0; k < keys.length; k++) {
+                XYSeries series = PriceGenAvgSeries.get(keys[k]);
+                // secondary and off-spot exist only when those markets are configured
+                if (series == null) continue;
+                cols.add(series);
+                header.add(labels[k]);
+            }
+            csvWriterPrices.writeNext(header.toArray(new String[0]));
+
+            XYSeries spine = consumptionActorSeries.get(0);
+            Calendar c = Calendar.getInstance();
+            c.setTime(data.getStartSimDate());
+            SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");
+
+            for (int t = 0; t < spine.getItems().size(); t++) {
+                ArrayList<String> record = new ArrayList<String>();
+                record.add(dateToString.format(c.getTime()));
+                for (XYSeries series : cols) {
+                    // A series starts later than the spine when its market or fuel
+                    // only appears partway through the run. Left empty rather than
+                    // "-" so the column still parses as numeric, with the gap read
+                    // as NaN -- as is a fuel with no active generators that month,
+                    // whose average is 0/0.
+                    int shift = spine.getItemCount() - series.getItemCount();
+                    if (shift > t || (t - shift) >= series.getItemCount()) {
+                        record.add("");
+                    } else {
+                        record.add(Double.toString(
+                                ((XYDataItem) series.getItems().get(t - shift)).getYValue()));
+                    }
+                }
+                csvWriterPrices.writeNext(record.toArray(new String[0]));
+                c.add(Calendar.MONTH, 1);
+            }
+            csvWriterPrices.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
     public void saveData(SimState simState) {
         Gr4spSim data = (Gr4spSim) simState;
 
@@ -1196,6 +1271,9 @@ public class SaveData implements Steppable, java.io.Serializable {
             directory.mkdirs();
 
         }
+
+        // Prices are recomputed monthly but were never persisted; see savePriceSeries.
+        savePriceSeries(simState, folderName);
 
         try (
 
@@ -1806,6 +1884,9 @@ public class SaveData implements Steppable, java.io.Serializable {
             directory.mkdirs();
 
         }
+
+        // Prices are recomputed monthly but were never persisted; see savePriceSeries.
+        savePriceSeries(simState, folderName);
 
         try (
 

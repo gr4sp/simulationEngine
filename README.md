@@ -244,6 +244,23 @@ see [Reproducing the Article's Results](#reproducing-the-articles-results).
 
 ## Analysing Results
 
+### Plotting a single run
+
+A run writes its results as CSVs under `csv/<AREA>/`. To turn those into figures:
+
+```bash
+python experiments/plotting/plot_run.py csv/VIC
+```
+
+This writes PNGs to `csv/VIC/plots/`. Because it reads the CSVs rather than the
+simulation's memory, figures can be regenerated or restyled without re-running the model,
+and they show exactly the numbers the notebooks read. Add `--list` to see which files a
+run produced, `--out DIR` to choose where figures go, or `--seed N` when a directory holds
+several runs. The two per-generator figures need the extra CSVs that only a
+`reportGeneration: "full"` run writes; they are skipped with a note otherwise.
+
+### Notebooks
+
 Jupyter notebooks for scenario analysis, sensitivity analysis, and visualisation are in `experiments/notebookGr4sp/`. Open them in VS Code or JupyterLab.
 
 Install the notebook dependencies first:
