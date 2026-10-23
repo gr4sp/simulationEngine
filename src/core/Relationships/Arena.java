@@ -286,10 +286,10 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
             //only consider Scheduled (S)
             g.updateHistoricCapacityFactor(state);
+            //Solar in a market bids its whole half-hourly output, like any other generator.
+            //It used to bid getSolarSurplusCapacity(), which is never assigned (always 0),
+            //so solar farms in a market never bid (ROADMAP item 3).
             double availableCapacity = g.getAvailableCapacity();
-            if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
-                availableCapacity = g.getSolarSurplusCapacity();
-            }
 
             double dollarMWh = g.priceMWhLCOE();
             //Don't add bids of 0 capacity
@@ -478,6 +478,14 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                 //System.out.println(currentTime + " Demand: " + totalDemand);
 
+                //Recompute solar capacity every 30 min, before the bids, so that solar in a market
+                //bids this half-hour's output
+                for (Generator g : activeGens) {
+                    if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
+                        g.computeAvailableSolarCapacity(state, today, currentTime, currentMonth, consumption);
+                    }
+                }
+
                 createBids(state, currentTime, currentMonth, activeGens);
 
                 /**
@@ -492,11 +500,10 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 for (Generator g : activeGens) {
                     double capacity = g.getAvailableCapacity();
 
-                    //Add consumption supplied already by solar so it can be removed from the demand
-                    //Recompute capacity for solar every 30 min
-                    if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") ){
-                        g.computeAvailableSolarCapacity(state, today, currentTime, currentMonth, consumption);
-                        capacity = g.getAvailableCapacity();
+                    //Add consumption supplied already by solar outside the markets (rooftop PV and small
+                    //solar farms) so it can be removed from the demand. Solar in a market bids instead.
+                    if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar")
+                            && g.getInPrimaryMarket() == false && g.getInSecondaryMarket() == false ){
                         consumptionSuppliedBySolar += capacity; //- g.getSolarSurplusCapacity();
                     }
 
