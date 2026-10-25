@@ -236,3 +236,6 @@ docs/*.docx
 # Planning notes kept local (not published)
 ROADMAP.md
 docs/versioning.md
+
+# Claude Code local settings and worktrees (per machine, not published)
+.claude/
