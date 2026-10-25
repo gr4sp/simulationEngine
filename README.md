@@ -68,6 +68,14 @@ Both scripts will prompt for your PostgreSQL password and handle everything auto
 > sudo service postgresql restart
 > ```
 
+> **PostgreSQL must listen on port 5432**
+>
+> GR4SP and the setup scripts connect to `localhost:5432`. If another PostgreSQL server held that port when you installed, the Windows installer offers 5433 instead, and GR4SP then reaches the wrong server or none. Check which program owns the port (PowerShell):
+> ```powershell
+> Get-NetTCPConnection -LocalPort 5432 -State Listen | ForEach-Object { (Get-Process -Id $_.OwningProcess).Path }
+> ```
+> It should be `postgres.exe` under `C:\Program Files\PostgreSQL\18\`. If it is not, stop whatever holds 5432, set `port = 5432` in `C:\Program Files\PostgreSQL\18\data\postgresql.conf`, and run `Restart-Service postgresql-x64-18` in an Administrator PowerShell. Then run the setup script.
+
 ### Step 3 — Run the simulation
 
 **Windows:**
@@ -93,7 +101,7 @@ One command checks the whole install at once — Java, the build, the database c
 
 A correct fresh installation runs **43 tests across 10 classes, with none skipped**.
 
-**The count is the point.** The two database-backed classes (`LoadDataIT` and `SimulationRegressionIT`) skip themselves when PostgreSQL is unreachable, so a green run reporting *fewer* tests means the database is not connected — not that there was less to check. If you see skips, revisit the PostgreSQL trust configuration in Step 2.
+**The count is the point.** The two database-backed classes (`LoadDataIT` and `SimulationRegressionIT`) skip themselves when PostgreSQL is unreachable, so a green run reporting *fewer* tests means the database is not connected — not that there was less to check. If you see skips, revisit the PostgreSQL trust configuration and port in Step 2.
 
 `SimulationRegressionIT` is the strongest check of the three: it runs a seeded simulation end to end and compares the year-summary output cell-by-cell against a reference committed to the repository. If it passes, your installation reproduces known-good numbers rather than merely running without crashing.
 
