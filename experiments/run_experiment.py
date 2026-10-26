@@ -24,10 +24,14 @@ def build_plan(scenario, processes_override=None):
 
     from EMAworkbench.ema_workbench.em_framework.evaluators import (
         MC, LHS, FAST, FF, PFF, SOBOL, MORRIS)
+    from EMAworkbench.ema_workbench.em_framework.parameters import Scenario
     samplers = {'MC': MC, 'LHS': LHS, 'FAST': FAST, 'FF': FF,
                 'PFF': PFF, 'SOBOL': SOBOL, 'MORRIS': MORRIS}
 
-    kwargs = {'scenarios': rs['scenarios'], 'policies': rs['policies']}
+    # A scenario with no uncertainties (BAU) runs as one named scenario: EMA
+    # samples an empty design from a count, and refuses 0 scenarios with 0 policies.
+    scenarios = rs['scenarios'] if len(model.uncertainties) else [Scenario(scenario)]
+    kwargs = {'scenarios': scenarios, 'policies': rs['policies']}
     if rs.get('uncertainty_file'):
         kwargs['uncertainty_sampling'] = rs['uncertainty_file']
     elif rs.get('sampling'):

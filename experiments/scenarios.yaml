@@ -36,13 +36,12 @@ scenarios:
   BAU:
     model_type: afterBaseYear
     after_base_year_energy_efficiency_zero: true
-    uncertainties:
-    - name: energyEfficiency
-      type: categorical
-      categories:
-      - 0
-      - 1
+    # energyEfficiency is a constant, not an uncertainty: the connector applies 0
+    # (Central) after the base year and VIC.yaml sets Central before it, so a
+    # sampled 1 was recorded in experiments.csv but never used.
+    uncertainties: []
     constants:
+      energyEfficiency: 0
       consumption: 0
       annualCpi: 2.33
       annualInflation: 3.3
