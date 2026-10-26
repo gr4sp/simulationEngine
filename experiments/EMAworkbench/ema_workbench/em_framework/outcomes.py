@@ -4,6 +4,7 @@ Module for outcome classes
 '''
 import abc
 import collections
+import collections.abc
 import numbers
 import six
 
@@ -234,7 +235,7 @@ class ArrayOutcome(AbstractOutcome):
 
     def process(self, values):
         values = super(ArrayOutcome, self).process(values)
-        if not isinstance(values, collections.Iterable):
+        if not isinstance(values, collections.abc.Iterable):
             raise EMAError(
                 "outcome {} should be a collection".format(self.name))
         return values

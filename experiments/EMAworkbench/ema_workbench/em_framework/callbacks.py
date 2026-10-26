@@ -241,7 +241,12 @@ class DefaultCallback(AbstractCallback):
                     shape.insert(0, self.nr_experiments)
 
                     self.results[outcome] = np.empty(shape, dtype=a.dtype)
-                    self.results[outcome][:] = np.nan
+                    if np.issubdtype(a.dtype, np.integer) or np.issubdtype(a.dtype, np.bool_):
+                        # NumPy 2 refuses NaN in integer arrays; keep the dtype
+                        # (e.g. TIMEYear) and leave missing runs at 0.
+                        self.results[outcome][:] = 0
+                    else:
+                        self.results[outcome][:] = np.nan
                     self.results[outcome][case_id, ] = outcome_res
 
     def __call__(self, experiment, outcomes):

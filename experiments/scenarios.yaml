@@ -79,7 +79,7 @@ scenarios:
     run:
       n_processes: 1
       scenarios: 1
-      policies: 1
+      policies: 0
       sampling: null
       generate_only: false
       uncertainty_file: null

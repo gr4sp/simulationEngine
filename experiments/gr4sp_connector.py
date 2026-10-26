@@ -73,7 +73,11 @@ def startJVM():
     classpath = "-Djava.class.path=" + classpathSeparator.join(
         [gr4spPath + "/" + settings["gr4spClasses"]] + runtime_libs)
 
-    jpype.startJVM(jvmpath, classpath, "-Xmx8192M")  # 8GB
+    # Gr4spSim resolves simulationSettings/ and its csv/ output from the JVM's
+    # working directory, which must be the project root, not experiments/.
+    userDir = "-Duser.dir=" + os.path.abspath(gr4spPath)
+
+    jpype.startJVM(jvmpath, classpath, userDir, "-Xmx8192M")  # 8GB
 
 
 def shutdownJVM():
@@ -394,7 +398,7 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
 
 
     except java.lang.Exception as ex:
-        print("Exception: " + ex)
+        print("Exception: " + str(ex))
 
     return getResults(outputID, experimentId)
 
@@ -528,6 +532,6 @@ def runGr4spAfterBaseYear(experimentId, annualCpi, annualInflation, consumption,
 
 
     except java.lang.Exception as ex:
-        print("Exception: " + ex)
+        print("Exception: " + str(ex))
 
     return getResults(outputID, experimentId)
