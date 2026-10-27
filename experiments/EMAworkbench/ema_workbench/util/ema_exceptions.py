@@ -16,9 +16,13 @@ __all__ = ['EMAError',
            'EMAParallelError']
 
 
-class EMAError(BaseException):
+class EMAError(Exception):
     '''
     Base EMA error
+
+    An Exception, not a BaseException: multiprocessing.Pool catches only
+    Exception, so a BaseException from a failed run killed its worker and
+    left the parallel evaluator waiting for that result forever.
     '''
 
     def __init__(self, *args):
