@@ -41,6 +41,11 @@ def _after_base_year_ee_zero():
     return _ABY_EE_ZERO_CACHE[scenario]
 # ---------------------------------------------------------------------------
 
+def _resume():
+    """True when GR4SP_RESUME=1: reuse CSVs a failed run already wrote."""
+    return os.environ.get('GR4SP_RESUME', '') == '1'
+
+
 def startJVM():
     with open('settingsExperiments.json') as f:
         settings = json.load(f)
@@ -210,8 +215,9 @@ def runGr4sp(experimentId, annualCpi, annualInflation, consumption, energyEffici
         gr4spPath = os.getcwd() + slash + ".."
         csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
 
-        #If CSV doesn't exist, then run the simulation. This is usefule to resume failed EMA runs
-        if os.path.isfile(csvFileName) is False:
+        # Reuse an existing CSV only when resuming a failed run (GR4SP_RESUME=1): the
+        # file is named by experiment number alone, so it may belong to another run.
+        if not (_resume() and os.path.isfile(csvFileName)):
 
             gr4sp = jpype.JClass("core.Gr4spSim")
             # to identify each csv created in the simulation with an unique experiment number, instead of using seed = randint(0, 100000), we use the experiment number
@@ -437,8 +443,9 @@ def runGr4spAfterBaseYear(experimentId, annualCpi, annualInflation, consumption,
         gr4spPath = os.getcwd() + slash + ".."
         csvFileName = '{0}{1}csv{1}VIC{1}VICSimDataMonthlySummary{2}.csv'.format(gr4spPath, slash, outputID)
 
-        #If CSV doesn't exist, then run the simulation. This is usefule to resume failed EMA runs
-        if os.path.isfile(csvFileName) is False:
+        # Reuse an existing CSV only when resuming a failed run (GR4SP_RESUME=1): the
+        # file is named by experiment number alone, so it may belong to another run.
+        if not (_resume() and os.path.isfile(csvFileName)):
 
             gr4sp = jpype.JClass("core.Gr4spSim")
             # to identify each csv created in the simulation with an unique experiment number, instead of using seed = randint(0, 100000), we use the experiment number
