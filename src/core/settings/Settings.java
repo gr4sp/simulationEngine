@@ -73,6 +73,9 @@ class SolarEfficiency implements java.io.Serializable {
 class GeneratorSettings implements java.io.Serializable {
     public double basePriceMWh;
     public double marketPriceCap;
+    //Offer price in the spot market at short-run marginal cost, $/MWh. Negative (the default) keeps the
+    //LCOE rule, basePriceMWh / historic capacity factor (ROADMAP item 3)
+    public double srmcMWh = -1;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -201,6 +204,7 @@ public class Settings implements java.io.Serializable {
     public void applyInflationToAllGenBasePrice( double inflation ){
         for (Map.Entry<String, GeneratorSettings> e : generators.entrySet()) {
             e.getValue().basePriceMWh *= inflation;
+            e.getValue().srmcMWh *= inflation;
         }
     }
 
@@ -220,6 +224,10 @@ public class Settings implements java.io.Serializable {
 
     public double getBasePriceMWh(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).basePriceMWh;
+    }
+
+    public double getSrmcMWh(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).srmcMWh;
     }
 
     public double getMarketPriceCap(String fuelType, String techType) {

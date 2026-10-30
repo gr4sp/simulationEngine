@@ -41,6 +41,8 @@ public class Generator implements java.io.Serializable, Asset {
     //LCOE Price Parameters
     public double basePriceMWh;
     public double marketPriceCap;
+    //Offer at short-run marginal cost instead of the LCOE rule when non-negative
+    public double srmcMWh;
 
     //Price Evolution
     private double historicCapacityFactor;
@@ -141,6 +143,7 @@ public class Generator implements java.io.Serializable, Asset {
         //Load Settings specified through YAML settings file
         basePriceMWh = settings.getBasePriceMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
         marketPriceCap = settings.getMarketPriceCap(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        srmcMWh = settings.getSrmcMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
 
         minCapacityFactor = settings.getMinCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         maxCapacityFactor = settings.getMaxCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
@@ -256,6 +259,13 @@ public class Generator implements java.io.Serializable, Asset {
         return result;
     }
 
+    //Price offered in the spot market. Generators with a short-run marginal cost set (variable renewables)
+    //offer at it; the rest use the LCOE rule. Off-market prices still use priceMWhLCOE()
+    public double offerPriceMWh() {
+        if (srmcMWh >= 0) return srmcMWh;
+        return priceMWhLCOE();
+    }
+
     public double getSolarSurplusCapacity() { return solarSurplusCapacity; }
 
     //$/MWH
@@ -362,7 +372,7 @@ public class Generator implements java.io.Serializable, Asset {
     public void setBidsInSpot(int bidsInSpot, double availableCapacity) {
         this.bidsInSpot = bidsInSpot;
         //potentialRevenue += (availableCapacity * (priceMinMWh/maxCapacityFactor) ) / 2.0;
-        potentialRevenue += (availableCapacity * priceMWhLCOE()) / 2.0;
+        potentialRevenue += (availableCapacity * offerPriceMWh()) / 2.0;
 
     }
 
@@ -492,6 +502,14 @@ public class Generator implements java.io.Serializable, Asset {
 
     public void setMarketPriceCap(double marketPriceCap) {
         this.marketPriceCap = marketPriceCap;
+    }
+
+    public double getSrmcMWh() {
+        return srmcMWh;
+    }
+
+    public void setSrmcMWh(double srmcMWh) {
+        this.srmcMWh = srmcMWh;
     }
 
     public double getBasePriceMWh() {

@@ -291,7 +291,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
             //so solar farms in a market never bid (ROADMAP item 3).
             double availableCapacity = g.getAvailableCapacity();
 
-            double dollarMWh = g.priceMWhLCOE();
+            double dollarMWh = g.offerPriceMWh();
             //Don't add bids of 0 capacity
             if(availableCapacity != 0) {
                 if (g.getInPrimaryMarket()) {
@@ -331,6 +331,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                 g.setBasePriceMWh(g.getBasePriceMWh() * inflation);
                 g.setMarketPriceCap(g.getMarketPriceCap() * inflation);
+                g.setSrmcMWh(g.getSrmcMWh() * inflation);
 
             }
         }
