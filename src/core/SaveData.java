@@ -780,7 +780,10 @@ public class SaveData implements Steppable, java.io.Serializable {
                             numGas ++;
                         }
 
-                        if (gens.elementAt(i).getTechTypeDescriptor().equals("Solar PV - Fixed")) {
+                        //All utility solar (fixed, single-axis tracking, TBA), not only "Solar PV - Fixed".
+                        //Rooftop PV is counted separately above.
+                        if (gens.elementAt(i).getfuelSourceDescriptor().equals("Solar")
+                                && !gens.elementAt(i).getTechTypeDescriptor().equals("Solar - Rooftop")) {
                             MWhSolar += gens.get(i).getMonthlyGeneratedMWh();
                             PriceAvgSolar += gens.get(i).priceMWhLCOE();
                             numSolar ++;
