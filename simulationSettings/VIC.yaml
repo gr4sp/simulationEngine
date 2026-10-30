@@ -89,7 +89,9 @@ forecast:
   #improves capacity factors of renewable technologies by adding a constant factor every year (not compounded)
   # Works only for Wind, added to cap factor [0,0.5], and Solar by increasing the solarEfficiency  [0.7,1])
 
-  technologicalImprovement: 0.01
+  # 0 up to the base year: from 1999 it raised historical wind farms to CF 0.49 and solar efficiency by
+  # 0.01/yr (R3, 30 Oct 2026, docs/r3_offer_tests_30oct). VICfuture.yaml keeps 0.01 after the base year.
+  technologicalImprovement: 0.0
 
   # Learning curve for solar and wind technologies.
   # Improve price LCOE (compounded) according to learning curve.
@@ -247,9 +249,9 @@ generators:
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.47
-    maxCapacityFactor: 0.85
-    # BROWN COAL summer CF equalised to annual for now (TODO: set the right % - divergent value was 0.9)
-    maxCapacityFactorSummer: 0.85
+    # Availability (nameplate x this, every half-hour): 0.90, the record implies ~0.89 for 2006-2018 (was 0.85; R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    maxCapacityFactor: 0.90
+    maxCapacityFactorSummer: 0.90
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -306,10 +308,13 @@ generators:
     # also from CSRIO report from 2018 on Generation Costs
     basePriceMWh: 10.45 #option 2:6.27
     marketPriceCap: 8000
+    # Spot offer at short-run marginal cost instead of the LCOE rule (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    srmcMWh: 0
     # Capacity Factor
     minCapacityFactor: 0.28
-    maxCapacityFactor: 0.4 # in LCOE report this is truncated at 50% assuming improvements in technology and costs
-    maxCapacityFactorSummer: 0.4   # equalised to annual for now (TODO: was 0.43)
+    # 0.30 tracks observed wind output year by year with the SRMC offer (was 0.4; LCOE report truncates at 50%)
+    maxCapacityFactor: 0.30
+    maxCapacityFactorSummer: 0.30
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -326,8 +331,9 @@ generators:
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.03
-    maxCapacityFactor: 0.3
-    maxCapacityFactorSummer: 0.3
+    # 0.20: hydro output matches the record at ~0.18 (2006-2019 mean 2,551 GWh/yr); was 0.3 (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    maxCapacityFactor: 0.20
+    maxCapacityFactorSummer: 0.20
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -343,6 +349,8 @@ generators:
     #LCOE Price Parameters
     basePriceMWh: 7.05 #6.71 #option 2:7.05
     marketPriceCap: 8000 #250
+    # Spot offer at short-run marginal cost instead of the LCOE rule (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    srmcMWh: 0
     # Capacity Factor
     minCapacityFactor: 0.12
     maxCapacityFactor: 0.26 #0.26
@@ -379,6 +387,9 @@ generators:
     #LCOE Price Parameters
     basePriceMWh: 23.57 #option 2: 42.43
     marketPriceCap: 8000
+    # Spot offer at 1.2 x last month's mean spot price. The LCOE rule with minCapacityFactor 0.01 offered up to
+    # ~2,350 $/MWh and set most of the 2019 price (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    storageOfferFactor: 1.2
     # Capacity Factor for simplicity but in storage systems is better referred as usage factor, as it is based on gross
     # generation rather than net generation. This tech uses more energy than the energy it stored (resulting always
     # in negative net generation)
