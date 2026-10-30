@@ -3,6 +3,10 @@ package core.Relationships;
 import core.Gr4spSim;
 import core.Technical.Generator;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -20,6 +24,13 @@ public class SpotMarket implements java.io.Serializable{
 
     private ArrayList<Bid> bidders;
     private ArrayList<Bid> successfulBids;
+
+    //Diagnostic, off by default: -Dgr4sp.priceSetterLog=<csv> writes the bid that sets the price every half-hour,
+    //for the years in -Dgr4sp.priceSetterLog.from / .to (inclusive)
+    private static PrintWriter priceSetterLog;
+    private static final String PRICE_SETTER_LOG = System.getProperty("gr4sp.priceSetterLog");
+    private static final int PRICE_SETTER_FROM = Integer.getInteger("gr4sp.priceSetterLog.from", 0);
+    private static final int PRICE_SETTER_TO = Integer.getInteger("gr4sp.priceSetterLog.to", 9999);
 
     public SpotMarket(String name) {
         this.marketPrice = 0;
@@ -177,6 +188,9 @@ public class SpotMarket implements java.io.Serializable{
             }
         }
 
+        if (PRICE_SETTER_LOG != null && currentYear >= PRICE_SETTER_FROM && currentYear <= PRICE_SETTER_TO)
+            logPriceSetter(currentTime);
+
         /**
          * Communicate successful Bid to each Generator to update future price
          */
@@ -187,6 +201,31 @@ public class SpotMarket implements java.io.Serializable{
             g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + mwhGenerated );
             g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + mwhGenerated );
             g.setHistoricRevenue( g.getHistoricRevenue() + (mwhGenerated * b.dollarMWh) );
+        }
+    }
+
+    private synchronized void logPriceSetter(Date currentTime) {
+        try {
+            if (priceSetterLog == null) {
+                priceSetterLog = new PrintWriter(new FileWriter(PRICE_SETTER_LOG));
+                priceSetterLog.println("time,market,demand,unmet,price,fuel,tech,dispatch,name,offer,historicCF,basePrice,minCF,maxCF");
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> priceSetterLog.close()));
+            }
+            String fuel = "", tech = "", dispatch = "", gname = "";
+            double offer = 0, hcf = 0, base = 0, minCF = 0, maxCF = 0;
+            if (successfulBids.size() > 0) {
+                Bid last = successfulBids.get(successfulBids.size() - 1);
+                Generator g = (Generator) last.asset;
+                fuel = g.getFuelSourceDescriptor(); tech = g.getTechTypeDescriptor();
+                dispatch = g.getDispatchTypeDescriptor(); gname = g.getName().replace(",", " ");
+                offer = last.dollarMWh; hcf = g.getHistoricCapacityFactor(); base = g.getBasePriceMWh();
+                minCF = g.minCapacityFactor; maxCF = g.maxCapacityFactor;
+            }
+            priceSetterLog.println(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(currentTime) + "," + name + ","
+                    + demand + "," + unmetDemand + "," + marketPrice + "," + fuel + "," + tech + "," + dispatch + ","
+                    + gname + "," + offer + "," + hcf + "," + base + "," + minCF + "," + maxCF);
+        } catch (IOException e) {
+            System.err.println("Cannot write price setter log: " + e);
         }
     }
 
