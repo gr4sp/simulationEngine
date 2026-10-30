@@ -449,10 +449,13 @@ public class Arena implements Steppable,  java.io.Serializable  {
              * */
 
 
+            //The primary spot still holds last month's mean price here; storage offers relative to it
+            double lastMonthPricePrimarySpot = primarySpot != null ? primarySpot.getMarketPrice() : 0;
             for (Generator g : activeGens) {
                 if(g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") == false) {
                     g.computeAvailableCapacity(state, today, today, currentMonth);
                 }
+                g.setReferencePriceMWh(lastMonthPricePrimarySpot);
             }
 
             double consumption = data.getMonthly_consumption_register().get(today);

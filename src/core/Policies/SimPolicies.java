@@ -89,6 +89,7 @@ public class SimPolicies implements java.io.Serializable, Steppable {
 
                     g.setBasePriceMWh( newBasePrice );
                     g.setSrmcMWh( data.settingsAfterBaseYear.getSrmcMWh(g.getFuelSourceDescriptor(), g.getTechTypeDescriptor()) );
+                    g.setStorageOfferFactor( data.settingsAfterBaseYear.getStorageOfferFactor(g.getFuelSourceDescriptor(), g.getTechTypeDescriptor()) );
 
                     g.setMaxCapacity( g.getMaxCapacity() * data.settingsAfterBaseYear.getNameplateCapacityChange(g.getFuelSourceDescriptor(), g.getTechTypeDescriptor()) );
 
@@ -226,6 +227,7 @@ public class SimPolicies implements java.io.Serializable, Steppable {
                     gen.setBasePriceMWh(data.settingsAfterBaseYear.getBasePriceMWh(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
                     gen.setMarketPriceCap(data.settingsAfterBaseYear.getMarketPriceCap(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
                     gen.setSrmcMWh(data.settingsAfterBaseYear.getSrmcMWh(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
+                    gen.setStorageOfferFactor(data.settingsAfterBaseYear.getStorageOfferFactor(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
 
                     gen.setMaxCapacity(gen.getMaxCapacity() * data.settingsAfterBaseYear.getNameplateCapacityChange(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
 

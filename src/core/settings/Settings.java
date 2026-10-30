@@ -76,6 +76,9 @@ class GeneratorSettings implements java.io.Serializable {
     //Offer price in the spot market at short-run marginal cost, $/MWh. Negative (the default) keeps the
     //LCOE rule, basePriceMWh / historic capacity factor (ROADMAP item 3)
     public double srmcMWh = -1;
+    //Storage offer: this factor times the previous month's mean primary spot price. Negative (the default)
+    //keeps the LCOE rule, which prices a rarely used battery at basePriceMWh / minCapacityFactor
+    public double storageOfferFactor = -1;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -228,6 +231,10 @@ public class Settings implements java.io.Serializable {
 
     public double getSrmcMWh(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).srmcMWh;
+    }
+
+    public double getStorageOfferFactor(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).storageOfferFactor;
     }
 
     public double getMarketPriceCap(String fuelType, String techType) {
