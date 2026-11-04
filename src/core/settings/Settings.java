@@ -182,6 +182,8 @@ public class Settings implements java.io.Serializable {
     public String generatorCorrections;
     //Optional CSV in simulationSettings with monthly net exports (month,netExportsMWh,source), added to wholesale demand
     public String netExportsFile;
+    //Optional CSV (month,slot,deviationMW,source): the half-hourly shape added to each month's mean net exports
+    public String netExportsShapeFile;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
@@ -523,6 +525,8 @@ public class Settings implements java.io.Serializable {
     public String getGeneratorCorrections() { return generatorCorrections; }
 
     public String getNetExportsFile() { return netExportsFile; }
+
+    public String getNetExportsShapeFile() { return netExportsShapeFile; }
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 

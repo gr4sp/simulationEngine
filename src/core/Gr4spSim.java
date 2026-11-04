@@ -162,6 +162,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private Date reportFromDate;
     //Net exports by month (yyyy-MM) as a flat MW rate over the month; empty without the netExportsFile setting
     private Map<String, Double> netExportsMW = new HashMap<>();
+    //Deviation from the monthly mean by calendar month (1-12) and half-hour of day (0-47), MW
+    private double[][] netExportsShapeMW;
     //Fuel price by year for each fuelPriceFile, carbon price by month, and station name prefixes -> portfolio
     private Map<String, TreeMap<Integer, Double>> fuelPrices = new HashMap<>();
     private Map<String, Double> carbonPriceTonne = new HashMap<>();
@@ -304,6 +306,14 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     String[] f = line.split(",", 3);
                     double hours = java.time.YearMonth.parse(f[0]).lengthOfMonth() * 24.0;
                     netExportsMW.put(f[0], Double.parseDouble(f[1]) / hours);
+                }
+            }
+            if (settings.getNetExportsShapeFile() != null) {
+                netExportsShapeMW = new double[13][48];
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getNetExportsShapeFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    String[] f = line.split(",", 4);
+                    netExportsShapeMW[Integer.parseInt(f[0])][Integer.parseInt(f[1])] = Double.parseDouble(f[2]);
                 }
             }
             if (settings.getCarbonPriceFile() != null) {
@@ -672,7 +682,12 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //MW of net exports to add to wholesale demand in this half-hour (0 for months the file does not cover)
     public double getNetExportsMW(Date time) {
         if (netExportsMW.isEmpty()) return 0.0;
-        return netExportsMW.getOrDefault(new SimpleDateFormat("yyyy-MM").format(time), 0.0);
+        Double monthly = netExportsMW.get(new SimpleDateFormat("yyyy-MM").format(time));
+        if (monthly == null) return 0.0;
+        if (netExportsShapeMW == null) return monthly;
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
+        return monthly + netExportsShapeMW[c.get(Calendar.MONTH) + 1][c.get(Calendar.HOUR_OF_DAY) * 2 + c.get(Calendar.MINUTE) / 30];
     }
 
     //Months before reportFrom run as spin-up and are left out of the output CSVs
