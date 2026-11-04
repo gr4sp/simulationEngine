@@ -119,23 +119,23 @@ generators:
     nameplateCapacityChange: 1.0
 
   Brown Coal:
-    outageDays: 10
-    forcedOutageRate: 0.08
-    availabilityFactor: 1.0
+    outageHours: 94
+    forcedOutageRate: 0.0551 
+    availabilityFactor: 0.980 
     mustRunPriceMWh: 0
     mustRunShare: 0.6
-    fuelPriceGJ: 0.6
-    variableOMMWh: 3
+    fuelPriceGJ: 0.638 
+    variableOMMWh: 4.265 
     heatRateGJperMWh: 13.0
     #LCOE Price Parameters
     basePriceMWh: 4.75 # option 2: 14.25
     nameplateCapacityChange: 1.0
 
   Gas Pipeline Turbine - OCGT:
-    outageDays: 3
-    forcedOutageRate: 0.05
+    outageHours: 9
+    forcedOutageRate: 0.0242 
     fuelPriceFile: fuel_price_gas_VIC.csv
-    variableOMMWh: 7
+    variableOMMWh: 10.663 
     heatRateGJperMWh: 12.0
     availabilityFactor: 1.0 
     #LCOE Price Parameters
@@ -143,6 +143,8 @@ generators:
     nameplateCapacityChange: 1.0
 
   Gas Pipeline Turbine - CCGT:
+    outageHours: 41
+    forcedOutageRate: 0.0253
     fuelPriceFile: fuel_price_gas_VIC.csv
     variableOMMWh: 4
     heatRateGJperMWh: 7.5
@@ -160,10 +162,12 @@ generators:
     nameplateCapacityChange: 1.0
 
   Water:
+    outageHours: 27
+    forcedOutageRate: 0.0252
     storageOfferFactor: 1.0
     peakOnly: true
     dailyEnergyLimit: true
-    availabilityFactor: 0.9
+    availabilityFactor: 1.0 
     #LCOE Price Parameters
     basePriceMWh: 2.06 #option 2: 5.06
     nameplateCapacityChange: 1.0

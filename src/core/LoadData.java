@@ -1656,6 +1656,7 @@ public class LoadData implements java.io.Serializable {
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
         }
+        for (Generator g : gens) data.applyGeneratorParameters(g);
         return gens;
     }
 

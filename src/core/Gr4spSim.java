@@ -169,6 +169,9 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private Map<String, Double> carbonPriceTonne = new HashMap<>();
     private List<String[]> portfolios = new ArrayList<>();
     private Map<String, String> portfolioOf = new HashMap<>();
+    //Station parameter overrides (name prefix, parameter, value) and the consumer price index by year
+    private List<String[]> generatorParameters = new ArrayList<>();
+    private TreeMap<Integer, Double> cpi = new TreeMap<>();
 
     //Policies used for the simulation
     private SimPolicies policies;
@@ -330,6 +333,22 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     if (line.isBlank() || line.startsWith("#")) continue;
                     String[] f = line.split(",", 3);
                     portfolios.add(new String[]{f[0].trim(), f[1].trim()});
+                }
+            }
+            if (settings.getGeneratorParametersFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getGeneratorParametersFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 4);
+                    generatorParameters.add(new String[]{f[0].trim(), f[1].trim(), f[2].trim()});
+                }
+            }
+            if (settings.getCpiFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getCpiFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    cpi.put(Integer.parseInt(f[0].trim()), Double.parseDouble(f[1].trim()));
                 }
             }
             for (String fuelFile : settings.getFuelPriceFiles()) {
@@ -656,6 +675,34 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public Date getBaseYearForecastDate() {
         return baseYearForecastDate;
+    }
+
+    //CPI(year) / CPI(costPriceYear): turns real cost settings into the year's dollars (1 without cpiFile)
+    public double getCostFactor(int year) {
+        if (cpi.isEmpty() || settings.getCostPriceYear() <= 0) return 1.0;
+        return cpiAt(year) / cpiAt(settings.getCostPriceYear());
+    }
+
+    private double cpiAt(int year) {
+        Map.Entry<Integer, Double> e = cpi.floorEntry(year);
+        return (e != null ? e : cpi.firstEntry()).getValue();
+    }
+
+    //Apply the station parameters whose name prefix matches (later rows win)
+    public void applyGeneratorParameters(Generator g) {
+        for (String[] p : generatorParameters) {
+            if (!g.getName().startsWith(p[0])) continue;
+            double v = Double.parseDouble(p[2]);
+            switch (p[1]) {
+                case "heatRateGJperMWh": g.heatRateGJperMWh = v; break;
+                case "variableOMMWh": g.variableOMMWh = v; break;
+                case "fuelPriceGJ": g.fuelPriceGJ = v; break;
+                case "forcedOutageRate": g.forcedOutageRate = v; break;
+                case "outageHours": g.outageHours = v; break;
+                case "availabilityFactor": g.availabilityFactor = v; break;
+                default: throw new IllegalArgumentException("Unknown generator parameter " + p[1]);
+            }
+        }
     }
 
     //Fuel price in $/GJ for a year: the file's value, or its nearest year outside the range it covers

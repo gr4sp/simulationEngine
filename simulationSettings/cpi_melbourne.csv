@@ -1,0 +1,25 @@
+year,index,source
+# Melbourne CPI, all groups, annual (ABS 6401.0 Table 7), used to turn real 2020 cost settings into each year's dollars
+1998,67.97,ABS 6401.0 Melbourne all groups
+1999,68.97,ABS 6401.0 Melbourne all groups
+2000,72.22,ABS 6401.0 Melbourne all groups
+2001,75.35,ABS 6401.0 Melbourne all groups
+2002,77.65,ABS 6401.0 Melbourne all groups
+2003,79.90,ABS 6401.0 Melbourne all groups
+2004,81.50,ABS 6401.0 Melbourne all groups
+2005,83.47,ABS 6401.0 Melbourne all groups
+2006,86.17,ABS 6401.0 Melbourne all groups
+2007,88.22,ABS 6401.0 Melbourne all groups
+2008,91.92,ABS 6401.0 Melbourne all groups
+2009,93.22,ABS 6401.0 Melbourne all groups
+2010,96.05,ABS 6401.0 Melbourne all groups
+2011,99.35,ABS 6401.0 Melbourne all groups
+2012,100.97,ABS 6401.0 Melbourne all groups
+2013,103.45,ABS 6401.0 Melbourne all groups
+2014,105.90,ABS 6401.0 Melbourne all groups
+2015,107.35,ABS 6401.0 Melbourne all groups
+2016,108.95,ABS 6401.0 Melbourne all groups
+2017,111.42,ABS 6401.0 Melbourne all groups
+2018,113.92,ABS 6401.0 Melbourne all groups
+2019,115.70,ABS 6401.0 Melbourne all groups
+2020,117.15,ABS 6401.0 Melbourne all groups

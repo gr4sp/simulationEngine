@@ -69,11 +69,14 @@ public class Generator implements java.io.Serializable, Asset {
     public double mustRunPriceMWh;
     public boolean peakOnly;
     public double forcedOutageRate;
-    public double outageDays;
+    public double outageHours;
     private double carbonPriceTonne;
     private int priceYear;
-    private long outageDay = Long.MIN_VALUE;
-    private long outUntilDay = Long.MIN_VALUE;
+    private long outageSlot = Long.MIN_VALUE;
+    private long outUntilSlot = Long.MIN_VALUE;
+    //This month's fuel price ($/GJ) and the factor that turns real cost settings into this year's dollars
+    private double currentFuelPriceGJ;
+    private double costFactor = 1.0;
 
     //Price Evolution
     private double historicCapacityFactor;
@@ -187,7 +190,7 @@ public class Generator implements java.io.Serializable, Asset {
         mustRunPriceMWh = settings.getMustRunPriceMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
         peakOnly = settings.getPeakOnly(this.fuelSourceDescriptor, this.techTypeDescriptor);
         forcedOutageRate = settings.getForcedOutageRate(this.fuelSourceDescriptor, this.techTypeDescriptor);
-        outageDays = settings.getOutageDays(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        outageHours = settings.getOutageHours(this.fuelSourceDescriptor, this.techTypeDescriptor);
         priceYear = this.startYear;
         if (roundTripEfficiency > 0) {
             if (storageCapacity <= 0)
@@ -317,7 +320,7 @@ public class Generator implements java.io.Serializable, Asset {
         if (isArbitrageStorage()) return 0.0;
         if (srmcMWh >= 0) return srmcMWh;
         if (heatRateGJperMWh > 0)
-            return heatRateGJperMWh * fuelPriceGJ + variableOMMWh + getEmissionsFactor(priceYear) * carbonPriceTonne;
+            return heatRateGJperMWh * currentFuelPriceGJ + variableOMMWh * costFactor + getEmissionsFactor(priceYear) * carbonPriceTonne;
         if (storageOfferFactor >= 0 && referencePriceMWh > 0) return storageOfferFactor * referencePriceMWh;
         return priceMWhLCOE();
     }
@@ -384,7 +387,7 @@ public class Generator implements java.io.Serializable, Asset {
 
     //MW offered in this half-hour: the available capacity, or what is left of today's energy if energy-limited
     public double offerCapacity(Date currentTime) {
-        if (forcedOutageRate > 0 && dayOf(currentTime) < outUntilDay) return 0.0;
+        if (forcedOutageRate > 0 && slotIndex(currentTime) < outUntilSlot) return 0.0;
         if (isArbitrageStorage())
             return dischargeSlot[slotOf(currentTime)] ? Math.min(maxCapacity, stateOfChargeMWh * 2.0) : 0.0;
         if (!dailyEnergyLimit) return availableCapacity;
@@ -412,27 +415,34 @@ public class Generator implements java.io.Serializable, Asset {
         return Math.floorDiv(t + java.util.TimeZone.getDefault().getOffset(t), 86400000L);
     }
 
-    //Once a day: a unit in service breaks down with the probability that gives forcedOutageRate in the long run,
-    //and stays out for an exponentially distributed number of days (mean outageDays)
+    private static long slotIndex(Date time) {
+        long t = time.getTime();
+        return Math.floorDiv(t + java.util.TimeZone.getDefault().getOffset(t), 1800000L);
+    }
+
+    //Each half-hour: a unit in service breaks down with the probability that gives forcedOutageRate in the long run,
+    //and stays out for an exponentially distributed time (mean outageHours, at least one half-hour)
     public void updateOutage(Date currentTime, ec.util.MersenneTwisterFast random) {
         if (forcedOutageRate <= 0) return;
-        long day = dayOf(currentTime);
-        if (day == outageDay) return;
-        outageDay = day;
-        if (day < outUntilDay) return;
-        double p = forcedOutageRate / ((1.0 - forcedOutageRate) * outageDays);
+        long slot = slotIndex(currentTime);
+        if (slot == outageSlot) return;
+        outageSlot = slot;
+        if (slot < outUntilSlot) return;
+        double meanSlots = outageHours * 2.0;
+        double p = forcedOutageRate / ((1.0 - forcedOutageRate) * meanSlots);
         if (random.nextDouble() < p)
-            outUntilDay = day + Math.max(1L, Math.round(-Math.log(1.0 - random.nextDouble()) * outageDays));
+            outUntilSlot = slot + Math.max(1L, Math.round(-Math.log(1.0 - random.nextDouble()) * meanSlots));
     }
 
     public boolean isOut(Date currentTime) {
-        return forcedOutageRate > 0 && dayOf(currentTime) < outUntilDay;
+        return forcedOutageRate > 0 && slotIndex(currentTime) < outUntilSlot;
     }
 
-    public void setFuelAndCarbon(double fuelPriceGJ, double carbonPriceTonne, int year) {
-        this.fuelPriceGJ = fuelPriceGJ;
+    public void setFuelAndCarbon(double fuelPriceGJ, double carbonPriceTonne, int year, double costFactor) {
+        this.currentFuelPriceGJ = fuelPriceGJ;
         this.carbonPriceTonne = carbonPriceTonne;
         this.priceYear = year;
+        this.costFactor = costFactor;
     }
 
     private static int slotOf(Date time) {

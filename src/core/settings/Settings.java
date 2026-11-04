@@ -102,9 +102,9 @@ class GeneratorSettings implements java.io.Serializable {
     public double mustRunPriceMWh = 0;
     //Energy-limited plant offers its daily energy only in the day's highest-demand half-hours (hydro water value)
     public boolean peakOnly = false;
-    //Breakdowns (c): long-run share of time a unit is out, and the mean length of an outage in days
+    //Breakdowns (c): long-run share of time a unit is fully out, and the mean time to repair in hours
     public double forcedOutageRate = 0;
-    public double outageDays = 7;
+    public double outageHours = 168;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -195,6 +195,13 @@ public class Settings implements java.io.Serializable {
     public double withholdingPriceMWh = 0;
     public double withholdingMinPortfolioShare = 0;
     public String portfolioFile;
+    //Optional CSV (name_prefix,parameter,value,source) of station parameters that override the generator-type settings:
+    //heatRateGJperMWh, variableOMMWh, fuelPriceGJ, forcedOutageRate, outageHours, availabilityFactor
+    public String generatorParametersFile;
+    //Variable O&M and constant fuel prices are in real dollars of costPriceYear; cpiFile (year,index,source) turns them
+    //into each year's dollars (nearest year outside its range). Unset: costs are used as given
+    public String cpiFile;
+    public int costPriceYear = 0;
 
 
     /*
@@ -312,7 +319,7 @@ public class Settings implements java.io.Serializable {
 
     public double getForcedOutageRate(String f, String t) { return getGenSettings(f, t).forcedOutageRate; }
 
-    public double getOutageDays(String f, String t) { return getGenSettings(f, t).outageDays; }
+    public double getOutageHours(String f, String t) { return getGenSettings(f, t).outageHours; }
 
     //Every fuelPriceFile named in the generator settings
     public java.util.Set<String> getFuelPriceFiles() {
@@ -531,6 +538,12 @@ public class Settings implements java.io.Serializable {
     public String getCarbonPriceFile() { return carbonPriceFile; }
 
     public String getPortfolioFile() { return portfolioFile; }
+
+    public String getGeneratorParametersFile() { return generatorParametersFile; }
+
+    public String getCpiFile() { return cpiFile; }
+
+    public int getCostPriceYear() { return costPriceYear; }
 
     public double getWithholdingMargin() { return withholdingMargin; }
 

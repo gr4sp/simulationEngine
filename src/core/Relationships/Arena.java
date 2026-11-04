@@ -479,8 +479,9 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 }
                 g.setReferencePriceMWh(lastMonthPricePrimarySpot);
                 if (g.heatRateGJperMWh > 0)
-                    g.setFuelAndCarbon(g.fuelPriceFile != null ? data.getFuelPriceGJ(g.fuelPriceFile, currentYear) : g.fuelPriceGJ,
-                            data.getCarbonPriceTonne(today), currentYear);
+                    g.setFuelAndCarbon(g.fuelPriceFile != null ? data.getFuelPriceGJ(g.fuelPriceFile, currentYear)
+                                    : g.fuelPriceGJ * data.getCostFactor(currentYear),
+                            data.getCarbonPriceTonne(today), currentYear, data.getCostFactor(currentYear));
             }
 
             double consumption = data.getMonthly_consumption_register().get(today);

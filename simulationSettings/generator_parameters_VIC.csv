@@ -1,0 +1,35 @@
+name_prefix,parameter,value,source
+# Station values that override the generator-type settings in VIC.yaml (setting generatorParametersFile).
+# IASR = AEMO 2020 Inputs, Assumptions and Scenarios Workbook v2.1 (sheets Heat rates, Variable OPEX, Coal and Biomass
+# price; real 2020 dollars), based on GHD (2018) Cost and Technical Parameter Review for AEMO. Heat rates sent-out, HHV.
+# ACIL = ACIL Tasman (2009) Fuel resource, new entry and generation costs in the NEM, Table 16, for stations closed
+# before 2020 (not in the IASR). For stations in both, ACIL heat rates are 7-9% above the IASR.
+Loy Yang A,heatRateGJperMWh,12.162,IASR Heat rates
+Loy Yang A,variableOMMWh,4.265,IASR Variable OPEX
+Loy Yang A,fuelPriceGJ,0.638,IASR Coal and Biomass price (WoodMackenzie 2019)
+Loy Yang B,heatRateGJperMWh,12.544,IASR Heat rates
+Loy Yang B,variableOMMWh,4.265,IASR Variable OPEX
+Loy Yang B,fuelPriceGJ,0.638,IASR Coal and Biomass price (WoodMackenzie 2019)
+Yallourn,heatRateGJperMWh,13.900,IASR Heat rates
+Yallourn,variableOMMWh,4.265,IASR Variable OPEX
+Yallourn,fuelPriceGJ,0.638,IASR Coal and Biomass price (WoodMackenzie 2019)
+Hazelwood,heatRateGJperMWh,16.36,ACIL Table 16 (closed 2017; not in IASR)
+Hazelwood,variableOMMWh,4.265,IASR Variable OPEX for Victorian brown coal
+Hazelwood,fuelPriceGJ,0.638,IASR Latrobe Valley brown coal price
+Angelsea,heatRateGJperMWh,13.24,ACIL Table 16 Anglesea (closed 2015; not in IASR; database spelling)
+Angelsea,variableOMMWh,4.265,IASR Variable OPEX for Victorian brown coal
+Angelsea,fuelPriceGJ,0.638,IASR brown coal price (ACIL gives 0.40 $/GJ marginal for Anglesea)
+Morwell Power Station,heatRateGJperMWh,15.00,ACIL Table 16 Energy Brix (closed 2014; not in IASR)
+Morwell Power Station,variableOMMWh,4.265,IASR Variable OPEX for Victorian brown coal
+Morwell Power Station,fuelPriceGJ,0.638,IASR Latrobe Valley brown coal price
+Somerton,heatRateGJperMWh,14.876,IASR Heat rates
+Bairnsdale,heatRateGJperMWh,10.496,IASR Heat rates
+Jeeralang A,heatRateGJperMWh,15.254,IASR Heat rates
+Jeeralang B,heatRateGJperMWh,15.254,IASR Heat rates
+Laverton North,heatRateGJperMWh,11.502,IASR Heat rates
+Mortlake,heatRateGJperMWh,11.146,IASR Heat rates
+Valley Power,heatRateGJperMWh,14.876,IASR Heat rates
+Newport,heatRateGJperMWh,10.286,IASR Heat rates (gas-powered steam turbine)
+Newport,forcedOutageRate,0.0519,IASR Generator Reliability Settings: gas-powered steam turbine full outage
+Newport,outageHours,163,IASR Generator Reliability Settings: gas-powered steam turbine mean time to repair
+Newport,availabilityFactor,0.989,IASR partial outages as a constant derating: 1 - 8.95% x 12.52%
