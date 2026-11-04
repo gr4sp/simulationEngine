@@ -60,6 +60,20 @@ public class Generator implements java.io.Serializable, Asset {
     private long planDay = Long.MIN_VALUE;
     private final boolean[] chargeSlot = new boolean[48];
     private final boolean[] dischargeSlot = new boolean[48];
+    //Short-run cost offer, price bands, peak-only energy and breakdowns (see GeneratorSettings)
+    public double heatRateGJperMWh;
+    public double variableOMMWh;
+    public String fuelPriceFile;
+    public double fuelPriceGJ;
+    public double mustRunShare;
+    public double mustRunPriceMWh;
+    public boolean peakOnly;
+    public double forcedOutageRate;
+    public double outageDays;
+    private double carbonPriceTonne;
+    private int priceYear;
+    private long outageDay = Long.MIN_VALUE;
+    private long outUntilDay = Long.MIN_VALUE;
 
     //Price Evolution
     private double historicCapacityFactor;
@@ -165,6 +179,16 @@ public class Generator implements java.io.Serializable, Asset {
         availabilityFactor = settings.getAvailabilityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         dailyEnergyLimit = settings.getDailyEnergyLimit(this.fuelSourceDescriptor, this.techTypeDescriptor);
         roundTripEfficiency = settings.getRoundTripEfficiency(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        heatRateGJperMWh = settings.getHeatRateGJperMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        variableOMMWh = settings.getVariableOMMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        fuelPriceFile = settings.getFuelPriceFile(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        fuelPriceGJ = settings.getFuelPriceGJ(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        mustRunShare = settings.getMustRunShare(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        mustRunPriceMWh = settings.getMustRunPriceMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        peakOnly = settings.getPeakOnly(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        forcedOutageRate = settings.getForcedOutageRate(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        outageDays = settings.getOutageDays(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        priceYear = this.startYear;
         if (roundTripEfficiency > 0) {
             if (storageCapacity <= 0)
                 storageCapacity = maxCapacity * settings.getStorageHours(this.fuelSourceDescriptor, this.techTypeDescriptor);
@@ -249,7 +273,8 @@ public class Generator implements java.io.Serializable, Asset {
             historicCapacityFactor = historicRevenue / potentialRevenue;
             historicCapacityFactor = (double) Math.round(historicCapacityFactor * 100000d) / 100000d;
 
-            if (historicCapacityFactor > 1.0) {
+            //Only the LCOE offer uses this factor; other offer rules can push it above 1 without effect
+            if (historicCapacityFactor > 1.0 && srmcMWh < 0 && heatRateGJperMWh <= 0 && !isArbitrageStorage()) {
                 System.out.printf("Capacity Factor greater than 1: " + historicCapacityFactor);
             }
 
@@ -291,6 +316,8 @@ public class Generator implements java.io.Serializable, Asset {
     public double offerPriceMWh() {
         if (isArbitrageStorage()) return 0.0;
         if (srmcMWh >= 0) return srmcMWh;
+        if (heatRateGJperMWh > 0)
+            return heatRateGJperMWh * fuelPriceGJ + variableOMMWh + getEmissionsFactor(priceYear) * carbonPriceTonne;
         if (storageOfferFactor >= 0 && referencePriceMWh > 0) return storageOfferFactor * referencePriceMWh;
         return priceMWhLCOE();
     }
@@ -357,6 +384,7 @@ public class Generator implements java.io.Serializable, Asset {
 
     //MW offered in this half-hour: the available capacity, or what is left of today's energy if energy-limited
     public double offerCapacity(Date currentTime) {
+        if (forcedOutageRate > 0 && dayOf(currentTime) < outUntilDay) return 0.0;
         if (isArbitrageStorage())
             return dischargeSlot[slotOf(currentTime)] ? Math.min(maxCapacity, stateOfChargeMWh * 2.0) : 0.0;
         if (!dailyEnergyLimit) return availableCapacity;
@@ -366,12 +394,45 @@ public class Generator implements java.io.Serializable, Asset {
             energyDay = day;
             energyTodayMWh = 0.0;
         }
+        if (peakOnly && !dischargeSlot[slotOf(currentTime)]) return 0.0;
         double remainingMWh = cfCapacity * 24.0 - energyTodayMWh;
         return Math.max(0.0, Math.min(availableCapacity, remainingMWh * 2.0));
     }
 
     public boolean isArbitrageStorage() {
         return roundTripEfficiency > 0;
+    }
+
+    public boolean plansDay() {
+        return isArbitrageStorage() || (peakOnly && dailyEnergyLimit);
+    }
+
+    private static long dayOf(Date time) {
+        long t = time.getTime();
+        return Math.floorDiv(t + java.util.TimeZone.getDefault().getOffset(t), 86400000L);
+    }
+
+    //Once a day: a unit in service breaks down with the probability that gives forcedOutageRate in the long run,
+    //and stays out for an exponentially distributed number of days (mean outageDays)
+    public void updateOutage(Date currentTime, ec.util.MersenneTwisterFast random) {
+        if (forcedOutageRate <= 0) return;
+        long day = dayOf(currentTime);
+        if (day == outageDay) return;
+        outageDay = day;
+        if (day < outUntilDay) return;
+        double p = forcedOutageRate / ((1.0 - forcedOutageRate) * outageDays);
+        if (random.nextDouble() < p)
+            outUntilDay = day + Math.max(1L, Math.round(-Math.log(1.0 - random.nextDouble()) * outageDays));
+    }
+
+    public boolean isOut(Date currentTime) {
+        return forcedOutageRate > 0 && dayOf(currentTime) < outUntilDay;
+    }
+
+    public void setFuelAndCarbon(double fuelPriceGJ, double carbonPriceTonne, int year) {
+        this.fuelPriceGJ = fuelPriceGJ;
+        this.carbonPriceTonne = carbonPriceTonne;
+        this.priceYear = year;
     }
 
     private static int slotOf(Date time) {
@@ -402,11 +463,14 @@ public class Generator implements java.io.Serializable, Asset {
         Integer[] order = new Integer[48];
         for (int i = 0; i < 48; i++) order[i] = i;
         java.util.Arrays.sort(order, (a, b) -> Double.compare(demand[a], demand[b]));
-        int discharging = (int) Math.ceil(storageCapacity / (maxCapacity * 0.5));
-        int charging = (int) Math.ceil(storageCapacity / (maxCapacity * 0.5 * roundTripEfficiency));
+        double energy = isArbitrageStorage() ? storageCapacity : cfCapacity * 24.0;
+        double power = isArbitrageStorage() ? maxCapacity : availableCapacity;
+        int discharging = power > 0 ? (int) Math.ceil(energy / (power * 0.5)) : 0;
+        int charging = isArbitrageStorage() ? (int) Math.ceil(storageCapacity / (maxCapacity * 0.5 * roundTripEfficiency)) : 0;
         java.util.Arrays.fill(chargeSlot, false);
         java.util.Arrays.fill(dischargeSlot, false);
-        for (int k = 0; k < Math.min(discharging, 24); k++) dischargeSlot[order[47 - k]] = true;
+        int maxDischarging = isArbitrageStorage() ? 24 : 48;
+        for (int k = 0; k < Math.min(discharging, maxDischarging); k++) dischargeSlot[order[47 - k]] = true;
         for (int k = 0; k < Math.min(charging, 24); k++) chargeSlot[order[k]] = true;
     }
 

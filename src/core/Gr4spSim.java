@@ -162,6 +162,11 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private Date reportFromDate;
     //Net exports by month (yyyy-MM) as a flat MW rate over the month; empty without the netExportsFile setting
     private Map<String, Double> netExportsMW = new HashMap<>();
+    //Fuel price by year for each fuelPriceFile, carbon price by month, and station name prefixes -> portfolio
+    private Map<String, TreeMap<Integer, Double>> fuelPrices = new HashMap<>();
+    private Map<String, Double> carbonPriceTonne = new HashMap<>();
+    private List<String[]> portfolios = new ArrayList<>();
+    private Map<String, String> portfolioOf = new HashMap<>();
 
     //Policies used for the simulation
     private SimPolicies policies;
@@ -300,6 +305,32 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     double hours = java.time.YearMonth.parse(f[0]).lengthOfMonth() * 24.0;
                     netExportsMW.put(f[0], Double.parseDouble(f[1]) / hours);
                 }
+            }
+            if (settings.getCarbonPriceFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getCarbonPriceFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    carbonPriceTonne.put(f[0].trim(), Double.parseDouble(f[1].trim()));
+                }
+            }
+            if (settings.getPortfolioFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getPortfolioFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    portfolios.add(new String[]{f[0].trim(), f[1].trim()});
+                }
+            }
+            for (String fuelFile : settings.getFuelPriceFiles()) {
+                TreeMap<Integer, Double> series = new TreeMap<>();
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(fuelFile));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    series.put(Integer.parseInt(f[0].trim()), Double.parseDouble(f[1].trim()));
+                }
+                fuelPrices.put(fuelFile, series);
             }
 
 
@@ -615,6 +646,27 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public Date getBaseYearForecastDate() {
         return baseYearForecastDate;
+    }
+
+    //Fuel price in $/GJ for a year: the file's value, or its nearest year outside the range it covers
+    public double getFuelPriceGJ(String file, int year) {
+        TreeMap<Integer, Double> series = fuelPrices.get(file);
+        Map.Entry<Integer, Double> e = series.floorEntry(year);
+        return (e != null ? e : series.firstEntry()).getValue();
+    }
+
+    //Carbon price in $/t CO2-e for the month of this date (0 outside the file)
+    public double getCarbonPriceTonne(Date time) {
+        if (carbonPriceTonne.isEmpty()) return 0.0;
+        return carbonPriceTonne.getOrDefault(new SimpleDateFormat("yyyy-MM").format(time), 0.0);
+    }
+
+    //Portfolio of a station: the first name prefix in portfolioFile that matches, otherwise the station itself
+    public String getPortfolio(String stationName) {
+        return portfolioOf.computeIfAbsent(stationName, n -> {
+            for (String[] p : portfolios) if (n.startsWith(p[0])) return p[1];
+            return n;
+        });
     }
 
     //MW of net exports to add to wholesale demand in this half-hour (0 for months the file does not cover)

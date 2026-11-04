@@ -1,0 +1,19 @@
+name_prefix,portfolio,source
+# Station name prefixes (generationassets.site_name) grouped into owner portfolios for the withholding rule.
+# One portfolio per station group over 1999-2019; ownership changed within the period (database owner_name holds the
+# histories), so this is an approximation stated in the model description.
+Loy Yang A,AGL (Loy Yang A; AGL Hydro; Somerton),Loy Yang Power; AGL full owner from 2012
+Bogong,AGL (Loy Yang A; AGL Hydro; Somerton),Southern Hydro; AGL from 2005
+McKay Creek,AGL (Loy Yang A; AGL Hydro; Somerton),Southern Hydro; AGL from 2005
+West Kiewa,AGL (Loy Yang A; AGL Hydro; Somerton),Southern Hydro; AGL from 2005
+Eildon,AGL (Loy Yang A; AGL Hydro; Somerton),Southern Hydro; AGL from 2005
+Dartmouth,AGL (Loy Yang A; AGL Hydro; Somerton),Southern Hydro; AGL from 2005
+Somerton,AGL (Loy Yang A; AGL Hydro; Somerton),AGL
+Hazelwood,International Power / Engie (Hazelwood; Loy Yang B),International Power from 1996; Engie
+Loy Yang B,International Power / Engie (Hazelwood; Loy Yang B),Edison Mission; International Power (IPM) from 2004; Engie
+Yallourn,EnergyAustralia (Yallourn),Yallourn Energy; TRUenergy; EnergyAustralia
+Jeeralang,Ecogen (Jeeralang; Newport),Ecogen Energy; EnergyAustralia from 2018
+Newport,Ecogen (Jeeralang; Newport),Ecogen Energy; EnergyAustralia from 2018
+Valley Power,Snowy Hydro (Valley Power; Laverton North),Snowy Hydro
+Laverton North,Snowy Hydro (Valley Power; Laverton North),Snowy Hydro
+Mortlake,Origin (Mortlake),Origin Energy

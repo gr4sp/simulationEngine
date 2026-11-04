@@ -91,6 +91,20 @@ class GeneratorSettings implements java.io.Serializable {
     public double roundTripEfficiency = -1;
     //Storage duration in hours, used when the database gives no energy capacity
     public double storageHours = 1;
+    //Short-run cost offer (a): heat rate x fuel price + variable O&M + emission factor x carbon price, when heatRate > 0.
+    //The fuel price comes from fuelPriceFile (year,priceGJ,source in simulationSettings) or the constant fuelPriceGJ
+    public double heatRateGJperMWh = -1;
+    public double variableOMMWh = 0;
+    public String fuelPriceFile;
+    public double fuelPriceGJ = 0;
+    //Price bands (b): this share of the offered capacity is offered at mustRunPriceMWh (inflexible plant), the rest at the offer
+    public double mustRunShare = 0;
+    public double mustRunPriceMWh = 0;
+    //Energy-limited plant offers its daily energy only in the day's highest-demand half-hours (hydro water value)
+    public boolean peakOnly = false;
+    //Breakdowns (c): long-run share of time a unit is out, and the mean length of an outage in days
+    public double forcedOutageRate = 0;
+    public double outageDays = 7;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -168,6 +182,17 @@ public class Settings implements java.io.Serializable {
     public String generatorCorrections;
     //Optional CSV in simulationSettings with monthly net exports (month,netExportsMWh,source), added to wholesale demand
     public String netExportsFile;
+    //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
+    public String carbonPriceFile;
+    //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
+    //demand), each portfolio holding at least withholdingMinPortfolioShare of the offered capacity reprices
+    //withholdingShare of its dispatchable bids to withholdingPriceMWh. Negative margin (the default) turns it off.
+    //Stations map to portfolios through portfolioFile (name_prefix,portfolio,source); unmapped stations stand alone
+    public double withholdingMargin = -1;
+    public double withholdingShare = 0;
+    public double withholdingPriceMWh = 0;
+    public double withholdingMinPortfolioShare = 0;
+    public String portfolioFile;
 
 
     /*
@@ -267,6 +292,31 @@ public class Settings implements java.io.Serializable {
 
     public double getStorageHours(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).storageHours;
+    }
+
+    public double getHeatRateGJperMWh(String f, String t) { return getGenSettings(f, t).heatRateGJperMWh; }
+
+    public double getVariableOMMWh(String f, String t) { return getGenSettings(f, t).variableOMMWh; }
+
+    public String getFuelPriceFile(String f, String t) { return getGenSettings(f, t).fuelPriceFile; }
+
+    public double getFuelPriceGJ(String f, String t) { return getGenSettings(f, t).fuelPriceGJ; }
+
+    public double getMustRunShare(String f, String t) { return getGenSettings(f, t).mustRunShare; }
+
+    public double getMustRunPriceMWh(String f, String t) { return getGenSettings(f, t).mustRunPriceMWh; }
+
+    public boolean getPeakOnly(String f, String t) { return getGenSettings(f, t).peakOnly; }
+
+    public double getForcedOutageRate(String f, String t) { return getGenSettings(f, t).forcedOutageRate; }
+
+    public double getOutageDays(String f, String t) { return getGenSettings(f, t).outageDays; }
+
+    //Every fuelPriceFile named in the generator settings
+    public java.util.Set<String> getFuelPriceFiles() {
+        java.util.Set<String> files = new java.util.HashSet<>();
+        for (GeneratorSettings gs : generators.values()) if (gs.fuelPriceFile != null) files.add(gs.fuelPriceFile);
+        return files;
     }
 
     public double getMarketPriceCap(String fuelType, String techType) {
@@ -473,6 +523,18 @@ public class Settings implements java.io.Serializable {
     public String getGeneratorCorrections() { return generatorCorrections; }
 
     public String getNetExportsFile() { return netExportsFile; }
+
+    public String getCarbonPriceFile() { return carbonPriceFile; }
+
+    public String getPortfolioFile() { return portfolioFile; }
+
+    public double getWithholdingMargin() { return withholdingMargin; }
+
+    public double getWithholdingShare() { return withholdingShare; }
+
+    public double getWithholdingPriceMWh() { return withholdingPriceMWh; }
+
+    public double getWithholdingMinPortfolioShare() { return withholdingMinPortfolioShare; }
 
     public double getForecastTechnologicalImprovement() { return forecast.technologicalImprovement; }
 

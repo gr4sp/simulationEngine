@@ -294,20 +294,42 @@ public class Arena implements Steppable,  java.io.Serializable  {
             double dollarMWh = g.offerPriceMWh();
             //Don't add bids of 0 capacity
             if(availableCapacity != 0) {
-                if (g.getInPrimaryMarket()) {
-                    Bid b = new Bid(null, g, dollarMWh, availableCapacity);
-                    this.primarySpot.addBidder(b);
-                    g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity);
-                } else {
-                    if (g.getInSecondaryMarket()) {
-                        Bid b = new Bid(null, g, dollarMWh, availableCapacity);
-                        this.secondarySpot.addBidder(b);
-                        g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity);
+                SpotMarket spot = g.getInPrimaryMarket() ? this.primarySpot : (g.getInSecondaryMarket() ? this.secondarySpot : null);
+                if (spot != null) {
+                    //Inflexible plant offers a must-run share at a low price and the rest at its offer (price bands)
+                    if (g.mustRunShare > 0) {
+                        spot.addBidder(new Bid(null, g, g.mustRunPriceMWh, availableCapacity * g.mustRunShare));
+                        spot.addBidder(new Bid(null, g, dollarMWh, availableCapacity * (1.0 - g.mustRunShare)));
+                    } else {
+                        spot.addBidder(new Bid(null, g, dollarMWh, availableCapacity));
                     }
+                    g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity);
                 }
             }
         }
 
+    }
+
+    //Strategic withholding: when the offered capacity exceeds demand by less than the margin, each large portfolio
+    //reprices a share of its dispatchable bids to a high price (economic withholding, AER 2024 p. 77)
+    private void applyWithholding(Gr4spSim data, double demand) {
+        ArrayList<Bid> bids = this.primarySpot.getBidders();
+        double offered = 0;
+        for (Bid b : bids) offered += b.capacity;
+        if (demand <= 0 || (offered - demand) / demand >= data.settings.getWithholdingMargin()) return;
+        HashMap<String, Double> portfolioCapacity = new HashMap<>();
+        for (Bid b : bids) portfolioCapacity.merge(data.getPortfolio(((Generator) b.asset).getName()), b.capacity, Double::sum);
+        double price = data.settings.getWithholdingPriceMWh();
+        for (Bid b : new ArrayList<>(bids)) {
+            Generator g = (Generator) b.asset;
+            String fuel = g.getFuelSourceDescriptor();
+            if (fuel.equalsIgnoreCase("Wind") || fuel.equalsIgnoreCase("Solar") || fuel.equalsIgnoreCase("Battery")) continue;
+            if (b.dollarMWh >= price) continue;
+            if (portfolioCapacity.get(data.getPortfolio(g.getName())) / offered < data.settings.getWithholdingMinPortfolioShare()) continue;
+            double withheld = b.capacity * data.settings.getWithholdingShare();
+            b.capacity -= withheld;
+            bids.add(new Bid(null, g, price, withheld));
+        }
     }
 
     private void applyInflation(SimState state, int currentYear) {
@@ -456,6 +478,9 @@ public class Arena implements Steppable,  java.io.Serializable  {
                     g.computeAvailableCapacity(state, today, today, currentMonth);
                 }
                 g.setReferencePriceMWh(lastMonthPricePrimarySpot);
+                if (g.heatRateGJperMWh > 0)
+                    g.setFuelAndCarbon(g.fuelPriceFile != null ? data.getFuelPriceGJ(g.fuelPriceFile, currentYear) : g.fuelPriceGJ,
+                            data.getCarbonPriceTonne(today), currentYear);
             }
 
             double consumption = data.getMonthly_consumption_register().get(today);
@@ -491,7 +516,8 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 }
 
                 for (Generator g : activeGens) {
-                    if (g.isArbitrageStorage()) g.planStorageDay(currentTime, data.getHalfhour_demand_register());
+                    g.updateOutage(currentTime, data.random);
+                    if (g.plansDay()) g.planStorageDay(currentTime, data.getHalfhour_demand_register());
                 }
 
                 createBids(state, currentTime, currentMonth, activeGens);
@@ -594,6 +620,8 @@ public class Arena implements Steppable,  java.io.Serializable  {
                 for (Generator g : activeGens) {
                     if (g.isArbitrageStorage() && g.getInPrimaryMarket()) totalDemandWholesale += g.chargeThisHalfHour(currentTime);
                 }
+
+                if (data.settings.getWithholdingMargin() >= 0) applyWithholding(data, totalDemandWholesale);
 
                 this.primarySpot.computeMarketPrice(totalDemandWholesale, data, currentTime, currentYear);
 

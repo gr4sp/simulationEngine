@@ -61,6 +61,8 @@ public class SpotMarket implements java.io.Serializable{
 
     public ArrayList<Bid> getSuccessfulBids() { return successfulBids; }
 
+    public ArrayList<Bid> getBidders() { return bidders; }
+
     public double getEmissionsIntensity() { return emissionsIntensity; }
 
     public double getMarketPrice() {
