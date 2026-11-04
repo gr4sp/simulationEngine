@@ -46,6 +46,14 @@ public class Generator implements java.io.Serializable, Asset {
     //Storage offers storageOfferFactor x referencePriceMWh (previous month's mean spot price) when non-negative
     public double storageOfferFactor;
     private double referencePriceMWh;
+    //Power offered each half-hour as a share of nameplate when non-negative; otherwise nameplate x capacity factor
+    public double availabilityFactor;
+    //At most cfCapacity x 24 h of energy a day (hydro)
+    public boolean dailyEnergyLimit;
+    //Nameplate x this month's capacity factor, MW
+    private double cfCapacity;
+    private double energyTodayMWh;
+    private long energyDay = Long.MIN_VALUE;
 
     //Price Evolution
     private double historicCapacityFactor;
@@ -148,6 +156,8 @@ public class Generator implements java.io.Serializable, Asset {
         marketPriceCap = settings.getMarketPriceCap(this.fuelSourceDescriptor, this.techTypeDescriptor);
         srmcMWh = settings.getSrmcMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
         storageOfferFactor = settings.getStorageOfferFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        availabilityFactor = settings.getAvailabilityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        dailyEnergyLimit = settings.getDailyEnergyLimit(this.fuelSourceDescriptor, this.techTypeDescriptor);
 
         minCapacityFactor = settings.getMinCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         maxCapacityFactor = settings.getMaxCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
@@ -328,7 +338,25 @@ public class Generator implements java.io.Serializable, Asset {
     }
     public void computeAvailableCapacity(SimState state, Date today, Date currentTime, int currentMonth) {
             double capacityFactor = getCapacityFactor(currentMonth);
-            availableCapacity = this.getMaxCapacity() * capacityFactor;
+            cfCapacity = this.getMaxCapacity() * capacityFactor;
+            availableCapacity = availabilityFactor >= 0 ? this.getMaxCapacity() * availabilityFactor : cfCapacity;
+    }
+
+    //MW offered in this half-hour: the available capacity, or what is left of today's energy if energy-limited
+    public double offerCapacity(Date currentTime) {
+        if (!dailyEnergyLimit) return availableCapacity;
+        long t = currentTime.getTime();
+        long day = Math.floorDiv(t + java.util.TimeZone.getDefault().getOffset(t), 86400000L);
+        if (day != energyDay) {
+            energyDay = day;
+            energyTodayMWh = 0.0;
+        }
+        double remainingMWh = cfCapacity * 24.0 - energyTodayMWh;
+        return Math.max(0.0, Math.min(availableCapacity, remainingMWh * 2.0));
+    }
+
+    public void addEnergyToday(double mwh) {
+        energyTodayMWh += mwh;
     }
 
     @Override
@@ -378,7 +406,9 @@ public class Generator implements java.io.Serializable, Asset {
     public void setBidsInSpot(int bidsInSpot, double availableCapacity) {
         this.bidsInSpot = bidsInSpot;
         //potentialRevenue += (availableCapacity * (priceMinMWh/maxCapacityFactor) ) / 2.0;
-        potentialRevenue += (availableCapacity * offerPriceMWh()) / 2.0;
+        //With an availability factor the price feedback still measures use against nameplate x capacity factor
+        double potentialCapacity = availabilityFactor >= 0 ? Math.min(availableCapacity, cfCapacity) : availableCapacity;
+        potentialRevenue += (potentialCapacity * offerPriceMWh()) / 2.0;
 
     }
 

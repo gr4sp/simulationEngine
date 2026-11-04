@@ -81,6 +81,11 @@ class GeneratorSettings implements java.io.Serializable {
     //Storage offer: this factor times the previous month's mean primary spot price. Negative (the default)
     //keeps the LCOE rule, which prices a rarely used battery at basePriceMWh / minCapacityFactor
     public double storageOfferFactor = -1;
+    //Share of nameplate capacity offered in each half-hour. Negative (the default) offers nameplate x the capacity
+    //factor, so maxCapacityFactor limits power as well as energy. Read from the base settings only, like the capacity factors
+    public double availabilityFactor = -1;
+    //Energy-limited plant (hydro): at most nameplate x capacity factor x 24 h a day, offered as long as it lasts
+    public boolean dailyEnergyLimit = false;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -237,6 +242,14 @@ public class Settings implements java.io.Serializable {
 
     public double getStorageOfferFactor(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).storageOfferFactor;
+    }
+
+    public double getAvailabilityFactor(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).availabilityFactor;
+    }
+
+    public boolean getDailyEnergyLimit(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).dailyEnergyLimit;
     }
 
     public double getMarketPriceCap(String fuelType, String techType) {

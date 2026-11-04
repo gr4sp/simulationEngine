@@ -199,6 +199,7 @@ public class SpotMarket implements java.io.Serializable{
             double mwhGenerated = b.capacity / 2.0; //30min
 
             g.setMonthlyGeneratedMWh( g.getMonthlyGeneratedMWh() + mwhGenerated );
+            g.addEnergyToday(mwhGenerated);
             g.setHistoricGeneratedMWh( g.getHistoricGeneratedMWh() + mwhGenerated );
             g.setHistoricRevenue( g.getHistoricRevenue() + (mwhGenerated * b.dollarMWh) );
         }

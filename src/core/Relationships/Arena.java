@@ -289,7 +289,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
             //Solar in a market bids its whole half-hourly output, like any other generator.
             //It used to bid getSolarSurplusCapacity(), which is never assigned (always 0),
             //so solar farms in a market never bid (ROADMAP item 3).
-            double availableCapacity = g.getAvailableCapacity();
+            double availableCapacity = g.offerCapacity(currentTime);
 
             double dollarMWh = g.offerPriceMWh();
             //Don't add bids of 0 capacity
