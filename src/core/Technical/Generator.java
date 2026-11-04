@@ -277,7 +277,7 @@ public class Generator implements java.io.Serializable, Asset {
             historicCapacityFactor = (double) Math.round(historicCapacityFactor * 100000d) / 100000d;
 
             //Only the LCOE offer uses this factor; other offer rules can push it above 1 without effect
-            if (historicCapacityFactor > 1.0 && srmcMWh < 0 && heatRateGJperMWh <= 0 && !isArbitrageStorage()) {
+            if (historicCapacityFactor > 1.0 && usesLcoeOffer()) {
                 System.out.printf("Capacity Factor greater than 1: " + historicCapacityFactor);
             }
 
@@ -404,6 +404,11 @@ public class Generator implements java.io.Serializable, Asset {
 
     public boolean isArbitrageStorage() {
         return roundTripEfficiency > 0;
+    }
+
+    //True when the spot offer comes from the LCOE rule (no short-run cost, fuel cost or storage rule set)
+    public boolean usesLcoeOffer() {
+        return !isArbitrageStorage() && srmcMWh < 0 && heatRateGJperMWh <= 0 && !(storageOfferFactor >= 0 && referencePriceMWh > 0);
     }
 
     public boolean plansDay() {

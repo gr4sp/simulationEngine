@@ -379,7 +379,7 @@ public class LoadData implements java.io.Serializable {
                 " FROM tariffshistoric WHERE" +
                 " casestudy_area_code SIMILAR TO '" + areaCode + "%' " +
                 " AND date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
+                " AND date >= '" + startDate + "' ORDER BY date;";
 
         //If areaCode is at state scale, do not filter tariffs by smaller areacodes, take all tariffs available
         //Agent will select a tariff according to simulation policy. For more details See SimulParameters()
@@ -387,7 +387,7 @@ public class LoadData implements java.io.Serializable {
             sql = "SELECT id, casestudy_area, casestudy_area_code, date, organisation_tariff_name, average_dckwh" +
                     " FROM tariffshistoric WHERE" +
                     " date <= '" + endDate + "'" +
-                    " AND date >= '" + startDate + "';";
+                    " AND date >= '" + startDate + "' ORDER BY date;";
 
 
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -484,7 +484,7 @@ public class LoadData implements java.io.Serializable {
         String sql = "SELECT settlement_date, total_demand, price" +
                 " FROM  total_demand_halfhour WHERE " +
                 " settlement_date <= '" + endDate + "'" +
-                " AND settlement_date >= '" + startDate + "';";
+                " AND settlement_date >= '" + startDate + "' ORDER BY settlement_date, total_demand, price;";
 
         try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
@@ -709,7 +709,7 @@ public class LoadData implements java.io.Serializable {
          * */
         String sql = "SELECT year, all_household_types" +
                 " FROM  household_forecast_victoria WHERE " +
-                " region = '" + data.settings.getAreaCode() + "';";
+                " region = '" + data.settings.getAreaCode() + "' ORDER BY year, all_household_types;";
 
 
         ArrayList< Map.Entry<Integer,Integer> > forecast = new ArrayList<>();
@@ -1026,7 +1026,7 @@ public class LoadData implements java.io.Serializable {
         String sql = "SELECT date, total_consumption_gwh, hydro_gwh" +
                 " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
+                " AND date >= '" + startDate + "' ORDER BY date;";
 
         try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
@@ -1086,7 +1086,7 @@ public class LoadData implements java.io.Serializable {
         sql = "SELECT date, domesticconsumers" +
                 " FROM  domestic_consumers WHERE " +
                 " date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
+                " AND date >= '" + startDate + "' ORDER BY date;";
 
 
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -1220,7 +1220,7 @@ public class LoadData implements java.io.Serializable {
                 "imports_gwh, exports_dollargwh, exports_gwh" +
                 " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
+                " AND date >= '" + startDate + "' ORDER BY date;";
 
 
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -1256,7 +1256,7 @@ public class LoadData implements java.io.Serializable {
     public static void selectHalfHourSolarExposure(Gr4spSim data) {
 
         String sql = "SELECT time , ghi" +
-                " FROM solar_ghi;";
+                " FROM solar_ghi ORDER BY time, ghi;";
 
         //Loading Solar Exposure data
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -1288,7 +1288,7 @@ public class LoadData implements java.io.Serializable {
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
         String sql = "SELECT year, month, number_installations, aggregated_capacity_kw, system_capacity" +
-                " FROM solar_installation_monthly;";
+                " FROM solar_installation_monthly ORDER BY year, month, system_capacity, number_installations, aggregated_capacity_kw;";
 
         //Loading Solar installation data
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -1335,7 +1335,7 @@ public class LoadData implements java.io.Serializable {
 
 
         String sql = "SELECT id, name, registration_date, change_date, reg_number, region, role, business_structure"  +
-                " FROM  actors  WHERE region = '" + data.settings.getAreaCode() + "';";
+                " FROM  actors  WHERE region = '" + data.settings.getAreaCode() + "' ORDER BY id;";
 
         try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
@@ -1389,7 +1389,7 @@ public class LoadData implements java.io.Serializable {
             Actor actor = entry.getValue();
 
             String sql = "SELECT actorid, assetid, reltype, assettype, percentage" +
-                    " FROM " + tableName + " WHERE actorid = " + actor.getId();
+                    " FROM " + tableName + " WHERE actorid = " + actor.getId() + " ORDER BY assetid, reltype, assettype, percentage";
 
 
             try (Connection conn = DriverManager.getConnection(data.url);
@@ -1511,6 +1511,9 @@ public class LoadData implements java.io.Serializable {
         if (data.settingsAfterBaseYear.getIncludePublicallyAnnouncedGen() == false){
             sql += "AND unit_status != 'Publically Announced'";
         }
+
+        //A fixed row order keeps runs reproducible when several read the table at once (synchronised scans)
+        sql += " ORDER BY asset_id";
 
         ArrayList<Generator> gens = new ArrayList<Generator>();
         Map<Integer, Map<String, String>> corrections = readGeneratorCorrections(data);
