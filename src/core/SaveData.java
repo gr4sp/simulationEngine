@@ -789,7 +789,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                             numSolar ++;
                         }
 
-                        if (gens.elementAt(i).getTechTypeDescriptor().equals("Battery")) {
+                        if (gens.elementAt(i).getfuelSourceDescriptor().equals("Battery")) {
                             MWhBattery += gens.get(i).getMonthlyGeneratedMWh();
                             PriceAvgBattery += gens.get(i).priceMWhLCOE();
                             numBattery ++;
@@ -2150,7 +2150,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                     MWhSolSpotAgg = spsolaggitem.getYValue();
                     MWhBatSpotAgg = spbataggitem.getYValue();
 
-                    MWhRenewable = MWhRoofSpotAgg + MWhWaterSpotAgg + MWhWindSpotAgg + MWhSolSpotAgg + MWhBatSpotAgg;
+                    //Storage only returns energy it took from the grid, so it is not a renewable source
+                    MWhRenewable = MWhRoofSpotAgg + MWhWaterSpotAgg + MWhWindSpotAgg + MWhSolSpotAgg;
                     MWhFossil = MWhCoalSpotAgg + MWhGasSpotAgg;
                     percentageRenwewable = MWhRenewable / (MWhRenewable + MWhFossil);
 
