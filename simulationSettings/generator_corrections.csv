@@ -1,8 +1,8 @@
 asset_id,action,value,source
 # Corrections to the generationassets table of DB-2021-8-21, applied at load time (setting generatorCorrections in VIC.yaml).
 # action: exclude | start | close (yyyy-MM-dd). R3, approved by Angela 4 Nov 2026.
-122,exclude,,Murray 1 (950 MW) is in the NSW region of the NEM (the Snowy region before 2008); the Victorian record (OpenNEM VIC1) excludes it
-127,exclude,,Murray 2 (552 MW): as Murray 1
+122,start,2008-07-01,Murray 1 (950 MW) was in the Snowy region until its abolition; since 1 July 2008 all its output is allocated to VIC1 (OpenElectricity MURRAY)
+127,start,2008-07-01,Murray 2 (552 MW): as Murray 1
 243,start,2002-01-01,Somerton opened in 2002 (OpenElectricity AGLSOM; Wikipedia; GEM); the database had 2013
 191,start,2012-01-01,Mortlake unit 1 first dispatched in January 2012 and was completed in August 2012 (Wikipedia; esdnews); the database had 2010
 192,start,2012-01-01,Mortlake unit 2: as unit 1

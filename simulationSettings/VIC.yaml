@@ -7,6 +7,15 @@ folderOutput: "auto"
 # "full": generates all csv data ~8MB, and all the plots 2.5MB per simulation
 # "light": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB
 reportGeneration: "light"
+# R3 merit order (4 Nov 2026, docs/r3_offer_tests_30oct): coal and gas offer at short-run cost (heatRateGJperMWh x fuel
+# price + variableOMMWh + emission factor x carbon price), coal offers a must-run share at 0 $/MWh, hydro offers its daily
+# energy in peak half-hours at last month's mean price, coal and gas units break down at random (forcedOutageRate), and
+# storage buys low and sells high. The heat rates, variable O&M and brown coal price are indicative values awaiting a
+# cited source. Net exports are already in the demand, which is calibrated to total generation
+# (generation_consumption_historic), so netExportsFile stays unset. Withholding (withholdingMargin) is off: the model is
+# a cost-based competitive benchmark.
+carbonPriceFile: carbon_price_AU.csv
+generatorCorrections: generator_corrections.csv
 
 #ON:
 #OFF: no logging at all
@@ -249,6 +258,14 @@ generators:
     nameplateCapacityChange: 1.0
 
   Brown Coal:
+    outageDays: 10
+    forcedOutageRate: 0.08
+    availabilityFactor: 1.0
+    mustRunPriceMWh: 0
+    mustRunShare: 0.6
+    fuelPriceGJ: 0.6
+    variableOMMWh: 3
+    heatRateGJperMWh: 13.0
     #LCOE Price Parameters
     basePriceMWh: 4.75 # option 2: 14.25
     marketPriceCap: 8000
@@ -272,6 +289,12 @@ generators:
     nameplateCapacityChange: 1.0
 
   Gas Pipeline Turbine - OCGT:
+    outageDays: 3
+    forcedOutageRate: 0.05
+    fuelPriceFile: fuel_price_gas_VIC.csv
+    variableOMMWh: 7
+    heatRateGJperMWh: 12.0
+    availabilityFactor: 1.0 
     #LCOE Price Parameters
     basePriceMWh: 7.9  #option 2: 5.06
     marketPriceCap: 8000
@@ -290,6 +313,10 @@ generators:
     nameplateCapacityChange: 1.0
 
   Gas Pipeline Turbine - CCGT:
+    fuelPriceFile: fuel_price_gas_VIC.csv
+    variableOMMWh: 4
+    heatRateGJperMWh: 7.5
+    availabilityFactor: 0.9
     #LCOE Price Parameters
     basePriceMWh: 16.41 # option 2:13.95
     marketPriceCap: 8000
@@ -331,6 +358,10 @@ generators:
     nameplateCapacityChange: 1.0
 
   Water:
+    storageOfferFactor: 1.0
+    peakOnly: true
+    dailyEnergyLimit: true
+    availabilityFactor: 0.9
     #LCOE Price Parameters
     basePriceMWh: 2.06 #option 2:5.06
     marketPriceCap: 8000
@@ -389,6 +420,7 @@ generators:
 
     # LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11
   Battery:
+    roundTripEfficiency: 0.85
     #LCOE Price Parameters
     basePriceMWh: 23.57 #option 2: 42.43
     marketPriceCap: 8000
