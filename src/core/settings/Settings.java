@@ -10,6 +10,8 @@ class SimulationDatesSettings implements java.io.Serializable {
     public String startDate;
     public String endDate;
     public String startDateSpotMarket;
+    // Optional: first date written to the output CSVs. Earlier months still run as spin-up.
+    public String reportFrom;
 
 }
 
@@ -307,6 +309,10 @@ public class Settings implements java.io.Serializable {
 
     public String getStartDateSpotMarket() {
         return simulationDates.startDateSpotMarket;
+    }
+
+    public String getReportFrom() {
+        return simulationDates.reportFrom;
     }
 
     /**

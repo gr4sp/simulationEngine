@@ -26,6 +26,11 @@ simulationDates:
   # Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before
   startDateSpotMarket: 1999-01-01
 
+  # Optional: first month written to the output CSVs (yyyy-MM-dd). The run still starts at startDate and
+  # the months before reportFrom act as spin-up, so generator histories and adoption are in place.
+  # A year summary is written from the year that contains reportFrom. Leave it out to write the whole run.
+  #reportFrom: 2019-01-01
+
 population:
   # Max number of Dwellings represented in a single ConsumerUnit, attached to a SPM
   # It is a measure to control aggregation of dwellings per SPM

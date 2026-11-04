@@ -1250,7 +1250,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                                 ((XYDataItem) series.getItems().get(t - shift)).getYValue()));
                     }
                 }
-                csvWriterPrices.writeNext(record.toArray(new String[0]));
+                if (data.isReported(c.getTime()))
+                    csvWriterPrices.writeNext(record.toArray(new String[0]));
                 c.add(Calendar.MONTH, 1);
             }
             csvWriterPrices.close();
@@ -1544,7 +1545,9 @@ public class SaveData implements Steppable, java.io.Serializable {
                     SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");
 
                     //First series starts from beginning simulation, the rest follows a consumtionUnit, which has a creationDate
-                    if (i == 0) {
+                    if (!data.isReported(c.getTime())) {
+                        // spin-up month: nothing written
+                    } else if (i == 0) {
                         String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions / consumers),
                                 Double.toString(consumers), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg), Double.toString(numActors),
                                 Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
@@ -1752,6 +1755,8 @@ public class SaveData implements Steppable, java.io.Serializable {
             Arrays.sort(years, Collections.reverseOrder());
             for (int i = years.length - 1; i >= 0; i--) {
                 String year = (String) years[i];
+                if (!data.isReportedYear(year))
+                    continue;
                 ArrayList<Double> yearDataGHG = datasetGHGsummary.get(year);
                 ArrayList<Double> yearDataPrice = datasetPriceSummary.get(year);
                 ArrayList<Double> yearDataWholesale = datasetWholesaleSummary.get(year);
@@ -2176,7 +2181,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                         Double.toString(MWhCoalSpotAgg), Double.toString(MWhWaterSpotAgg), Double.toString(MWhWindSpotAgg), Double.toString(MWhGasSpotAgg),
                         Double.toString(MWhSolSpotAgg), Double.toString(MWhBatSpotAgg), Double.toString(numActors), Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
                         Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay)};
-                csvWriterMonthly.writeNext(record);
+                if (data.isReported(c.getTime()))
+                    csvWriterMonthly.writeNext(record);
 
                 /***
                  * Generators Production Data
@@ -2390,6 +2396,8 @@ public class SaveData implements Steppable, java.io.Serializable {
             Arrays.sort(years, Collections.reverseOrder());
             for (int i = years.length - 1; i >= 0; i--) {
                 String year = (String) years[i];
+                if (!data.isReportedYear(year))
+                    continue;
                 ArrayList<Double> yearDataGHG = datasetGHGsummary.get(year);
                 ArrayList<Double> yearDataPrice = datasetPriceSummary.get(year);
                 ArrayList<Double> yearDataWholesale = datasetWholesaleSummary.get(year);

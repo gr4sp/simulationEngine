@@ -158,6 +158,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private Date endSimDate;
     private Date startSpotMarketDate;
     private Date baseYearForecastDate;
+    //First date written to the outputs; null writes the whole run
+    private Date reportFromDate;
 
     //Policies used for the simulation
     private SimPolicies policies;
@@ -288,6 +290,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
             this.startSpotMarketDate = stringToDate.parse(settings.getStartDateSpotMarket());
             this.baseYearForecastDate = stringToDate.parse(settings.getBaseYearConsumptionForecast() + "-01-01");
+            this.reportFromDate = settings.getReportFrom() == null ? null : stringToDate.parse(settings.getReportFrom());
 
 
 
@@ -602,6 +605,16 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public Date getBaseYearForecastDate() {
         return baseYearForecastDate;
+    }
+
+    //Months before reportFrom run as spin-up and are left out of the output CSVs
+    public boolean isReported(Date date) {
+        return reportFromDate == null || !date.before(reportFromDate);
+    }
+
+    //A year is reported from the year that contains reportFrom
+    public boolean isReportedYear(String year) {
+        return reportFromDate == null || Integer.parseInt(year) >= reportFromDate.getYear() + 1900;
     }
 
 
