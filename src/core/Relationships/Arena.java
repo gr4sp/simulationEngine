@@ -490,6 +490,10 @@ public class Arena implements Steppable,  java.io.Serializable  {
                     }
                 }
 
+                for (Generator g : activeGens) {
+                    if (g.isArbitrageStorage()) g.planStorageDay(currentTime, data.getHalfhour_demand_register());
+                }
+
                 createBids(state, currentTime, currentMonth, activeGens);
 
                 /**
@@ -581,6 +585,14 @@ public class Arena implements Steppable,  java.io.Serializable  {
                             totalDemandResidential -= this.secondarySpot.getUnmetDemand();
                         }
                     }
+                }
+
+                //Generators here also meet Victoria's net exports (setting netExportsFile; 0 without it)
+                totalDemandWholesale = Math.max(0.0, totalDemandWholesale + data.getNetExportsMW(currentTime));
+
+                //Storage that buys low and sells high charges in its planned half-hours, adding to demand
+                for (Generator g : activeGens) {
+                    if (g.isArbitrageStorage() && g.getInPrimaryMarket()) totalDemandWholesale += g.chargeThisHalfHour(currentTime);
                 }
 
                 this.primarySpot.computeMarketPrice(totalDemandWholesale, data, currentTime, currentYear);

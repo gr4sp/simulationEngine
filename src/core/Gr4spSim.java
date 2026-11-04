@@ -160,6 +160,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private Date baseYearForecastDate;
     //First date written to the outputs; null writes the whole run
     private Date reportFromDate;
+    //Net exports by month (yyyy-MM) as a flat MW rate over the month; empty without the netExportsFile setting
+    private Map<String, Double> netExportsMW = new HashMap<>();
 
     //Policies used for the simulation
     private SimPolicies policies;
@@ -291,6 +293,14 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             this.startSpotMarketDate = stringToDate.parse(settings.getStartDateSpotMarket());
             this.baseYearForecastDate = stringToDate.parse(settings.getBaseYearConsumptionForecast() + "-01-01");
             this.reportFromDate = settings.getReportFrom() == null ? null : stringToDate.parse(settings.getReportFrom());
+            if (settings.getNetExportsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getNetExportsFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    String[] f = line.split(",", 3);
+                    double hours = java.time.YearMonth.parse(f[0]).lengthOfMonth() * 24.0;
+                    netExportsMW.put(f[0], Double.parseDouble(f[1]) / hours);
+                }
+            }
 
 
 
@@ -302,7 +312,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             // for example, 0.01 represents 1% per month, around 12% a year
             policies.setEndConsumerTariffs(settings.getEndConsumerTariff());
 
-        } catch (ParseException | com.esotericsoftware.yamlbeans.YamlException | java.io.FileNotFoundException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Problems reading the YAML settings in "
                     + Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings")
@@ -605,6 +615,12 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public Date getBaseYearForecastDate() {
         return baseYearForecastDate;
+    }
+
+    //MW of net exports to add to wholesale demand in this half-hour (0 for months the file does not cover)
+    public double getNetExportsMW(Date time) {
+        if (netExportsMW.isEmpty()) return 0.0;
+        return netExportsMW.getOrDefault(new SimpleDateFormat("yyyy-MM").format(time), 0.0);
     }
 
     //Months before reportFrom run as spin-up and are left out of the output CSVs

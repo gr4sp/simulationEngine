@@ -1,0 +1,13 @@
+asset_id,action,value,source
+# Corrections to the generationassets table of DB-2021-8-21, applied at load time (setting generatorCorrections in VIC.yaml).
+# action: exclude | start | close (yyyy-MM-dd). R3, approved by Angela 4 Nov 2026.
+122,exclude,,Murray 1 (950 MW) is in the NSW region of the NEM (the Snowy region before 2008); the Victorian record (OpenNEM VIC1) excludes it
+127,exclude,,Murray 2 (552 MW): as Murray 1
+243,start,2002-01-01,Somerton opened in 2002 (OpenElectricity AGLSOM; Wikipedia; GEM); the database had 2013
+191,start,2012-01-01,Mortlake unit 1 first dispatched in January 2012 and was completed in August 2012 (Wikipedia; esdnews); the database had 2010
+192,start,2012-01-01,Mortlake unit 2: as unit 1
+# 'Upgrade' rows whose closure_date (2041/2046) kept them running beside the row that replaced them. The model retires a
+# unit on closure_date, so each closes when its replacement starts (inferred from the overlap; expected_closure_date agrees).
+113,close,2001-06-20,Dartmouth 158 MW row; the 185 MW row (asset 236) replaces it from 2001-06-20. The station opened in 1981 (AGL)
+114,close,2009-10-05,McKay Creek 150 MW row; Bogong / Mackay (assets 187-188) replace it from 2009-10-05
+94,close,1996-01-01,Eildon 3-4 (32 MW); expected_closure_date 1996-01-01, replaced by the Eildon 60 MW units (assets 157 and 159) in 1996

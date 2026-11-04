@@ -86,6 +86,11 @@ class GeneratorSettings implements java.io.Serializable {
     public double availabilityFactor = -1;
     //Energy-limited plant (hydro): at most nameplate x capacity factor x 24 h a day, offered as long as it lasts
     public boolean dailyEnergyLimit = false;
+    //Storage that buys low and sells high each day when positive: the share of stored energy returned on discharge.
+    //Negative (the default) keeps the storage offer rules above
+    public double roundTripEfficiency = -1;
+    //Storage duration in hours, used when the database gives no energy capacity
+    public double storageHours = 1;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -159,6 +164,10 @@ public class Settings implements java.io.Serializable {
     public Map<String, GeneratorSettings> generators;
     public Map<String, TariffSettings> tariffs;
     public ForecastSetting forecast;
+    //Optional CSV in simulationSettings with corrections to the generationassets table (see LoadData.readGeneratorCorrections)
+    public String generatorCorrections;
+    //Optional CSV in simulationSettings with monthly net exports (month,netExportsMWh,source), added to wholesale demand
+    public String netExportsFile;
 
 
     /*
@@ -250,6 +259,14 @@ public class Settings implements java.io.Serializable {
 
     public boolean getDailyEnergyLimit(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).dailyEnergyLimit;
+    }
+
+    public double getRoundTripEfficiency(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).roundTripEfficiency;
+    }
+
+    public double getStorageHours(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).storageHours;
     }
 
     public double getMarketPriceCap(String fuelType, String techType) {
@@ -452,6 +469,10 @@ public class Settings implements java.io.Serializable {
     public String getRooftopPVForecast() { return forecast.rooftopPV;  }
 
     public int getForecastGeneratorRetirement() { return forecast.generatorRetirement; }
+
+    public String getGeneratorCorrections() { return generatorCorrections; }
+
+    public String getNetExportsFile() { return netExportsFile; }
 
     public double getForecastTechnologicalImprovement() { return forecast.technologicalImprovement; }
 

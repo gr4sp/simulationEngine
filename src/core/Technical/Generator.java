@@ -54,6 +54,12 @@ public class Generator implements java.io.Serializable, Asset {
     private double cfCapacity;
     private double energyTodayMWh;
     private long energyDay = Long.MIN_VALUE;
+    //Daily buy-low, sell-high storage (roundTripEfficiency > 0): state of charge and today's plan by half-hour
+    public double roundTripEfficiency;
+    private double stateOfChargeMWh;
+    private long planDay = Long.MIN_VALUE;
+    private final boolean[] chargeSlot = new boolean[48];
+    private final boolean[] dischargeSlot = new boolean[48];
 
     //Price Evolution
     private double historicCapacityFactor;
@@ -158,6 +164,12 @@ public class Generator implements java.io.Serializable, Asset {
         storageOfferFactor = settings.getStorageOfferFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         availabilityFactor = settings.getAvailabilityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         dailyEnergyLimit = settings.getDailyEnergyLimit(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        roundTripEfficiency = settings.getRoundTripEfficiency(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        if (roundTripEfficiency > 0) {
+            if (storageCapacity <= 0)
+                storageCapacity = maxCapacity * settings.getStorageHours(this.fuelSourceDescriptor, this.techTypeDescriptor);
+            stateOfChargeMWh = storageCapacity / 2.0;
+        }
 
         minCapacityFactor = settings.getMinCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
         maxCapacityFactor = settings.getMaxCapacityFactor(this.fuelSourceDescriptor, this.techTypeDescriptor);
@@ -277,6 +289,7 @@ public class Generator implements java.io.Serializable, Asset {
     //offer at it; storage with a storageOfferFactor offers at a markup on the previous month's mean price
     //(LCOE rule until there is one); the rest use the LCOE rule. Off-market prices still use priceMWhLCOE()
     public double offerPriceMWh() {
+        if (isArbitrageStorage()) return 0.0;
         if (srmcMWh >= 0) return srmcMWh;
         if (storageOfferFactor >= 0 && referencePriceMWh > 0) return storageOfferFactor * referencePriceMWh;
         return priceMWhLCOE();
@@ -344,6 +357,8 @@ public class Generator implements java.io.Serializable, Asset {
 
     //MW offered in this half-hour: the available capacity, or what is left of today's energy if energy-limited
     public double offerCapacity(Date currentTime) {
+        if (isArbitrageStorage())
+            return dischargeSlot[slotOf(currentTime)] ? Math.min(maxCapacity, stateOfChargeMWh * 2.0) : 0.0;
         if (!dailyEnergyLimit) return availableCapacity;
         long t = currentTime.getTime();
         long day = Math.floorDiv(t + java.util.TimeZone.getDefault().getOffset(t), 86400000L);
@@ -355,7 +370,60 @@ public class Generator implements java.io.Serializable, Asset {
         return Math.max(0.0, Math.min(availableCapacity, remainingMWh * 2.0));
     }
 
+    public boolean isArbitrageStorage() {
+        return roundTripEfficiency > 0;
+    }
+
+    private static int slotOf(Date time) {
+        long t = time.getTime();
+        return (int) (Math.floorMod(t + java.util.TimeZone.getDefault().getOffset(t), 86400000L) / 1800000L);
+    }
+
+    //Plan the day once, from its half-hourly demand: discharge in the highest-demand half-hours that a full store
+    //can supply, charge in the lowest-demand ones that refill it after losses. Missing half-hours count as the day's mean
+    public void planStorageDay(Date currentTime, java.util.Map<Date, Double> demandRegister) {
+        long t = currentTime.getTime();
+        long day = Math.floorDiv(t + java.util.TimeZone.getDefault().getOffset(t), 86400000L);
+        if (day == planDay) return;
+        planDay = day;
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentTime);
+        c.add(Calendar.MINUTE, -30 * slotOf(currentTime));
+        double[] demand = new double[48];
+        boolean[] known = new boolean[48];
+        double sum = 0;
+        int n = 0;
+        for (int i = 0; i < 48; i++) {
+            Double d = demandRegister.get(c.getTime());
+            if (d != null) { demand[i] = d; known[i] = true; sum += d; n++; }
+            c.add(Calendar.MINUTE, 30);
+        }
+        for (int i = 0; i < 48; i++) if (!known[i]) demand[i] = n > 0 ? sum / n : 0.0;
+        Integer[] order = new Integer[48];
+        for (int i = 0; i < 48; i++) order[i] = i;
+        java.util.Arrays.sort(order, (a, b) -> Double.compare(demand[a], demand[b]));
+        int discharging = (int) Math.ceil(storageCapacity / (maxCapacity * 0.5));
+        int charging = (int) Math.ceil(storageCapacity / (maxCapacity * 0.5 * roundTripEfficiency));
+        java.util.Arrays.fill(chargeSlot, false);
+        java.util.Arrays.fill(dischargeSlot, false);
+        for (int k = 0; k < Math.min(discharging, 24); k++) dischargeSlot[order[47 - k]] = true;
+        for (int k = 0; k < Math.min(charging, 24); k++) chargeSlot[order[k]] = true;
+    }
+
+    //MW drawn from the grid to charge in this half-hour (losses applied on the way in); 0 outside charge slots
+    public double chargeThisHalfHour(Date currentTime) {
+        if (!chargeSlot[slotOf(currentTime)]) return 0.0;
+        double mw = Math.max(0.0, Math.min(maxCapacity, (storageCapacity - stateOfChargeMWh) / roundTripEfficiency * 2.0));
+        stateOfChargeMWh += mw / 2.0 * roundTripEfficiency;
+        return mw;
+    }
+
+    public double getStateOfChargeMWh() {
+        return stateOfChargeMWh;
+    }
+
     public void addEnergyToday(double mwh) {
+        if (isArbitrageStorage()) stateOfChargeMWh = Math.max(0.0, stateOfChargeMWh - mwh);
         energyTodayMWh += mwh;
     }
 
@@ -568,9 +636,10 @@ public class Generator implements java.io.Serializable, Asset {
         return marketPriceCap;
     }
 
-    public Boolean getInPrimaryMarket() { return inPrimaryMarket; }
+    //Storage that buys low and sells high trades in the primary market whatever its size (announced batteries are rolled out in small parts)
+    public Boolean getInPrimaryMarket() { return isArbitrageStorage() ? Boolean.TRUE : inPrimaryMarket; }
 
-    public Boolean getInSecondaryMarket() { return inSecondaryMarket; }
+    public Boolean getInSecondaryMarket() { return isArbitrageStorage() ? Boolean.FALSE : inSecondaryMarket; }
 
     public void setInPrimaryMarket( boolean v ) { inPrimaryMarket = v; }
 

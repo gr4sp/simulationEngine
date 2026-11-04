@@ -1470,6 +1470,29 @@ public class LoadData implements java.io.Serializable {
     /**
      * select all rows in the Generation Technologies table
      */
+    /**
+     * Corrections to the generationassets table, read from the CSV named by the generatorCorrections setting
+     * (simulationSettings folder): asset_id,action,value,source with action exclude, start or close (yyyy-MM-dd).
+     * The database snapshot stays as shipped; the corrections and their sources are versioned with the settings.
+     */
+    static Map<Integer, Map<String, String>> readGeneratorCorrections(Gr4spSim data) {
+        Map<Integer, Map<String, String>> corrections = new HashMap<>();
+        String name = data.settings.getGeneratorCorrections();
+        if (name == null) return corrections;
+        java.nio.file.Path file = java.nio.file.Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings").resolve(name);
+        try {
+            List<String> lines = java.nio.file.Files.readAllLines(file);
+            for (String line : lines.subList(1, lines.size())) {
+                if (line.isBlank() || line.startsWith("#")) continue;
+                String[] f = line.split(",", 4);
+                corrections.computeIfAbsent(Integer.parseInt(f[0].trim()), k -> new HashMap<>()).put(f[1].trim(), f[2].trim());
+            }
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Cannot read generator corrections " + file, e);
+        }
+        return corrections;
+    }
+
     public static ArrayList<Generator> selectGenTech(Gr4spSim data, String min_nameplate_capacity, String max_nameplate_capacity) {
 
 
@@ -1490,6 +1513,7 @@ public class LoadData implements java.io.Serializable {
         }
 
         ArrayList<Generator> gens = new ArrayList<Generator>();
+        Map<Integer, Map<String, String>> corrections = readGeneratorCorrections(data);
         try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -1516,8 +1540,19 @@ public class LoadData implements java.io.Serializable {
 
                 );*/
 
+                Map<String, String> correction = corrections.getOrDefault(rs.getInt("asset_id"), Collections.emptyMap());
+                if (correction.containsKey("exclude")) continue;
+                Date startDateDB = rs.getDate("full_commercial_use_date");
+                Date closureDate = rs.getDate("closure_date");
+                try {
+                    if (correction.containsKey("start")) startDateDB = DateToString.parse(correction.get("start"));
+                    if (correction.containsKey("close")) closureDate = DateToString.parse(correction.get("close"));
+                } catch (ParseException e) {
+                    throw new RuntimeException("Bad date in generator corrections for asset " + rs.getInt("asset_id"), e);
+                }
+
                 //Shift forecast for Coal generators retirement
-                Date expectedEndDate = rs.getDate("expected_closure_date");
+                Date expectedEndDate = correction.containsKey("close") ? closureDate : rs.getDate("expected_closure_date");
                 Calendar cEndDate = Calendar.getInstance();
                 if(expectedEndDate != null && rs.getString("fuel_type").equals("Brown Coal")){
                     cEndDate.setTime(expectedEndDate);
@@ -1537,7 +1572,7 @@ public class LoadData implements java.io.Serializable {
 
                         Calendar cStartDate = Calendar.getInstance();
                         try {
-                            Date startDate = DateToString.parse(rs.getString("full_commercial_use_date"));
+                            Date startDate = DateToString.parse(DateToString.format(startDateDB));
                             cStartDate.setTime(startDate);
                         } catch (ParseException e) {
                             System.err.println("Cannot parse Start Date: " + e.toString());
@@ -1559,7 +1594,7 @@ public class LoadData implements java.io.Serializable {
                                 rs.getString("dispatch_type"),
                                 cStartDate.getTime(),
                                 expectedEndDate,
-                                rs.getDate("closure_date"),
+                                closureDate,
                                 rs.getString("duid"),
                                 rs.getInt("no_units"),
                                 rs.getFloat("storage_capacity_mwh"),
@@ -1591,9 +1626,9 @@ public class LoadData implements java.io.Serializable {
                             rs.getString("fuel_type"),
                             nameplateCapacity,
                             rs.getString("dispatch_type"),
-                            rs.getDate("full_commercial_use_date"),
+                            startDateDB,
                             expectedEndDate,
-                            rs.getDate("closure_date"),
+                            closureDate,
                             rs.getString("duid"),
                             rs.getInt("no_units"),
                             rs.getFloat("storage_capacity_mwh"),
