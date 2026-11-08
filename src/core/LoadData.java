@@ -974,11 +974,35 @@ public class LoadData implements java.io.Serializable {
                 //Date printDate = c.getTime();
                 //double TotalDemandGwhCorrected = 0.0;
 
+                //shapeDemandUplift: add the month's gap to total generation as a flat MW amount plus the net-export
+                //shape (centred on the half-hours with data), so the monthly energy matches as with the factor
+                boolean shaped = data.settings.getShapeDemandUplift();
+                double upliftMW = 0.0, meanShapeMW = 0.0;
+                if (shaped) {
+                    Calendar s = (Calendar) c.clone();
+                    int n = 0;
+                    double shapeSum = 0.0;
+                    while (currentMonth == s.get(Calendar.MONTH)) {
+                        if (data.getHalfhour_demand_register().containsKey(s.getTime())) {
+                            n++;
+                            shapeSum += data.getNetExportsShapeMW(s.getTime());
+                        }
+                        s.add(Calendar.MINUTE, 30);
+                    }
+                    if (n > 0) {
+                        upliftMW = (TotalConsumptionGWh - TotalDemandGWh) * 2000.0 / n;
+                        meanShapeMW = shapeSum / n;
+                    }
+                }
+
                 while( currentMonth == c.get(Calendar.MONTH) ){
                     currentDate = c.getTime();
                     //Calibrate Demand Half Hour
                     if(data.getHalfhour_demand_register().containsKey(currentDate)) {
-                        double demand = data.getHalfhour_demand_register().get(currentDate) * calibrationDemand;
+                        double demand = shaped
+                                ? Math.max(0.0, data.getHalfhour_demand_register().get(currentDate) + upliftMW
+                                        + data.getNetExportsShapeMW(currentDate) - meanShapeMW)
+                                : data.getHalfhour_demand_register().get(currentDate) * calibrationDemand;
                         //TotalDemandGwhCorrected+=demand;
                         data.getHalfhour_demand_register().put(currentDate, demand );
                     }

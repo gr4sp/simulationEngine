@@ -184,6 +184,13 @@ public class Settings implements java.io.Serializable {
     public String netExportsFile;
     //Optional CSV (month,slot,deviationMW,source): the half-hourly shape added to each month's mean net exports
     public String netExportsShapeFile;
+    //When true (needs netExportsShapeFile, not netExportsFile): the monthly calibration of half-hourly demand to total
+    //generation adds the month's difference as a flat MW amount plus the net-export shape, instead of scaling every
+    //half-hour by the same factor. Monthly energy is unchanged; exports no longer grow with the demand peak
+    public boolean shapeDemandUplift = false;
+    //When true, a generator row with several units (no_units > 1, e.g. Murray 1 with 10) breaks down unit by unit,
+    //each with the fuel's forcedOutageRate and outageHours, instead of the whole row going out at once
+    public boolean outagesPerUnit = false;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
@@ -534,6 +541,10 @@ public class Settings implements java.io.Serializable {
     public String getNetExportsFile() { return netExportsFile; }
 
     public String getNetExportsShapeFile() { return netExportsShapeFile; }
+
+    public boolean getShapeDemandUplift() { return shapeDemandUplift; }
+
+    public boolean getOutagesPerUnit() { return outagesPerUnit; }
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 

@@ -319,6 +319,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     netExportsShapeMW[Integer.parseInt(f[0])][Integer.parseInt(f[1])] = Double.parseDouble(f[2]);
                 }
             }
+            if (settings.getShapeDemandUplift() && (netExportsShapeMW == null || settings.getNetExportsFile() != null))
+                throw new IllegalArgumentException("shapeDemandUplift needs netExportsShapeFile and no netExportsFile (exports are already in the calibrated demand)");
             if (settings.getCarbonPriceFile() != null) {
                 List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getCarbonPriceFile()));
                 for (String line : lines.subList(1, lines.size())) {
@@ -731,10 +733,17 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         if (netExportsMW.isEmpty()) return 0.0;
         Double monthly = netExportsMW.get(new SimpleDateFormat("yyyy-MM").format(time));
         if (monthly == null) return 0.0;
-        if (netExportsShapeMW == null) return monthly;
+        return monthly + getNetExportsShapeMW(time);
+    }
+
+    //Net-export shape (deviation from the month's mean, MW) for the half-hour ending at time; 0 without the file.
+    //Model times are period ends (AEMO SETTLEMENTDATE); the shape file is indexed by interval start
+    public double getNetExportsShapeMW(Date time) {
+        if (netExportsShapeMW == null) return 0.0;
         Calendar c = Calendar.getInstance();
         c.setTime(time);
-        return monthly + netExportsShapeMW[c.get(Calendar.MONTH) + 1][c.get(Calendar.HOUR_OF_DAY) * 2 + c.get(Calendar.MINUTE) / 30];
+        c.add(Calendar.MINUTE, -30);
+        return netExportsShapeMW[c.get(Calendar.MONTH) + 1][c.get(Calendar.HOUR_OF_DAY) * 2 + c.get(Calendar.MINUTE) / 30];
     }
 
     //Months before reportFrom run as spin-up and are left out of the output CSVs

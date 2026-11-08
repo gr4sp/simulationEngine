@@ -74,6 +74,8 @@ public class Generator implements java.io.Serializable, Asset {
     private int priceYear;
     private long outageSlot = Long.MIN_VALUE;
     private long outUntilSlot = Long.MIN_VALUE;
+    //outagesPerUnit: one outage clock per unit of a multi-unit row (null when the row breaks down as one block)
+    private long[] unitOutUntilSlot;
     //This month's fuel price ($/GJ) and the factor that turns real cost settings into this year's dollars
     private double currentFuelPriceGJ;
     private double costFactor = 1.0;
@@ -191,6 +193,10 @@ public class Generator implements java.io.Serializable, Asset {
         peakOnly = settings.getPeakOnly(this.fuelSourceDescriptor, this.techTypeDescriptor);
         forcedOutageRate = settings.getForcedOutageRate(this.fuelSourceDescriptor, this.techTypeDescriptor);
         outageHours = settings.getOutageHours(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        if (settings.getOutagesPerUnit() && numUnits > 1) {
+            unitOutUntilSlot = new long[numUnits];
+            java.util.Arrays.fill(unitOutUntilSlot, Long.MIN_VALUE);
+        }
         priceYear = this.startYear;
         if (roundTripEfficiency > 0) {
             if (storageCapacity <= 0)
@@ -388,9 +394,11 @@ public class Generator implements java.io.Serializable, Asset {
     //MW offered in this half-hour: the available capacity, or what is left of today's energy if energy-limited
     public double offerCapacity(Date currentTime) {
         if (forcedOutageRate > 0 && slotIndex(currentTime) < outUntilSlot) return 0.0;
+        double inService = unitsInServiceShare(currentTime);
+        if (inService <= 0.0) return 0.0;
         if (isArbitrageStorage())
-            return dischargeSlot[slotOf(currentTime)] ? Math.min(maxCapacity, stateOfChargeMWh * 2.0) : 0.0;
-        if (!dailyEnergyLimit) return availableCapacity;
+            return dischargeSlot[slotOf(currentTime)] ? Math.min(maxCapacity * inService, stateOfChargeMWh * 2.0) : 0.0;
+        if (!dailyEnergyLimit) return availableCapacity * inService;
         long t = currentTime.getTime();
         long day = Math.floorDiv(t + java.util.TimeZone.getDefault().getOffset(t), 86400000L);
         if (day != energyDay) {
@@ -399,7 +407,16 @@ public class Generator implements java.io.Serializable, Asset {
         }
         if (peakOnly && !dischargeSlot[slotOf(currentTime)]) return 0.0;
         double remainingMWh = cfCapacity * 24.0 - energyTodayMWh;
-        return Math.max(0.0, Math.min(availableCapacity, remainingMWh * 2.0));
+        return Math.max(0.0, Math.min(availableCapacity * inService, remainingMWh * 2.0));
+    }
+
+    //Share of the row's units not on outage (1 unless outagesPerUnit applies to this row)
+    private double unitsInServiceShare(Date currentTime) {
+        if (unitOutUntilSlot == null || forcedOutageRate <= 0) return 1.0;
+        long slot = slotIndex(currentTime);
+        int out = 0;
+        for (long u : unitOutUntilSlot) if (slot < u) out++;
+        return 1.0 - (double) out / unitOutUntilSlot.length;
     }
 
     public boolean isArbitrageStorage() {
@@ -432,14 +449,21 @@ public class Generator implements java.io.Serializable, Asset {
         long slot = slotIndex(currentTime);
         if (slot == outageSlot) return;
         outageSlot = slot;
-        if (slot < outUntilSlot) return;
         double meanSlots = outageHours * 2.0;
         double p = forcedOutageRate / ((1.0 - forcedOutageRate) * meanSlots);
+        if (unitOutUntilSlot != null) {
+            for (int u = 0; u < unitOutUntilSlot.length; u++)
+                if (slot >= unitOutUntilSlot[u] && random.nextDouble() < p)
+                    unitOutUntilSlot[u] = slot + Math.max(1L, Math.round(-Math.log(1.0 - random.nextDouble()) * meanSlots));
+            return;
+        }
+        if (slot < outUntilSlot) return;
         if (random.nextDouble() < p)
             outUntilSlot = slot + Math.max(1L, Math.round(-Math.log(1.0 - random.nextDouble()) * meanSlots));
     }
 
     public boolean isOut(Date currentTime) {
+        if (unitOutUntilSlot != null) return forcedOutageRate > 0 && unitsInServiceShare(currentTime) <= 0.0;
         return forcedOutageRate > 0 && slotIndex(currentTime) < outUntilSlot;
     }
 
