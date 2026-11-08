@@ -68,6 +68,10 @@ public class Generator implements java.io.Serializable, Asset {
     public double mustRunShare;
     public double mustRunPriceMWh;
     public boolean peakOnly;
+    //monthlyEnergyFromRecord: this month's energy budget (MWh, -1 = none), the month's bounds and the current half-hour
+    public boolean monthlyEnergyFromRecord;
+    private double monthlyBudgetMWh = -1.0;
+    private long monthStartMs, monthEndMs, currentTimeMs;
     public double forcedOutageRate;
     public double outageHours;
     private double carbonPriceTonne;
@@ -191,6 +195,7 @@ public class Generator implements java.io.Serializable, Asset {
         mustRunShare = settings.getMustRunShare(this.fuelSourceDescriptor, this.techTypeDescriptor);
         mustRunPriceMWh = settings.getMustRunPriceMWh(this.fuelSourceDescriptor, this.techTypeDescriptor);
         peakOnly = settings.getPeakOnly(this.fuelSourceDescriptor, this.techTypeDescriptor);
+        monthlyEnergyFromRecord = settings.getMonthlyEnergyFromRecord(this.fuelSourceDescriptor, this.techTypeDescriptor);
         forcedOutageRate = settings.getForcedOutageRate(this.fuelSourceDescriptor, this.techTypeDescriptor);
         outageHours = settings.getOutageHours(this.fuelSourceDescriptor, this.techTypeDescriptor);
         if (settings.getOutagesPerUnit() && numUnits > 1) {
@@ -327,7 +332,15 @@ public class Generator implements java.io.Serializable, Asset {
         if (srmcMWh >= 0) return srmcMWh;
         if (heatRateGJperMWh > 0)
             return heatRateGJperMWh * currentFuelPriceGJ + variableOMMWh * costFactor + getEmissionsFactor(priceYear) * carbonPriceTonne;
-        if (storageOfferFactor >= 0 && referencePriceMWh > 0) return storageOfferFactor * referencePriceMWh;
+        if (storageOfferFactor >= 0 && referencePriceMWh > 0) {
+            if (usesMonthlyBudget() && monthlyBudgetMWh > 0) {
+                //water value: dearer when the water left is scarcer than the time left in the month, cheaper when plentiful
+                double timeLeft = Math.max(0.0, (double) (monthEndMs - currentTimeMs) / (monthEndMs - monthStartMs));
+                double waterLeft = Math.max(1e-3, (monthlyBudgetMWh - getMonthlyGeneratedMWh()) / monthlyBudgetMWh);
+                return Math.min(marketPriceCap, storageOfferFactor * referencePriceMWh * timeLeft / waterLeft);
+            }
+            return storageOfferFactor * referencePriceMWh;
+        }
         return priceMWhLCOE();
     }
 
@@ -398,6 +411,8 @@ public class Generator implements java.io.Serializable, Asset {
         if (inService <= 0.0) return 0.0;
         if (isArbitrageStorage())
             return dischargeSlot[slotOf(currentTime)] ? Math.min(maxCapacity * inService, stateOfChargeMWh * 2.0) : 0.0;
+        if (usesMonthlyBudget())
+            return Math.max(0.0, Math.min(availableCapacity * inService, (monthlyBudgetMWh - getMonthlyGeneratedMWh()) * 2.0));
         if (!dailyEnergyLimit) return availableCapacity * inService;
         long t = currentTime.getTime();
         long day = Math.floorDiv(t + java.util.TimeZone.getDefault().getOffset(t), 86400000L);
@@ -429,7 +444,22 @@ public class Generator implements java.io.Serializable, Asset {
     }
 
     public boolean plansDay() {
-        return isArbitrageStorage() || (peakOnly && dailyEnergyLimit);
+        return isArbitrageStorage() || (peakOnly && dailyEnergyLimit && !usesMonthlyBudget());
+    }
+
+    //True in months where monthlyEnergyFromRecord has a recorded budget
+    public boolean usesMonthlyBudget() {
+        return monthlyEnergyFromRecord && monthlyBudgetMWh >= 0;
+    }
+
+    public void setMonthlyBudget(double budgetMWh, Date monthStart, Date monthEnd) {
+        monthlyBudgetMWh = budgetMWh;
+        monthStartMs = monthStart.getTime();
+        monthEndMs = monthEnd.getTime();
+    }
+
+    public void setCurrentTime(Date currentTime) {
+        currentTimeMs = currentTime.getTime();
     }
 
     private static long dayOf(Date time) {

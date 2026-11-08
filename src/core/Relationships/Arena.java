@@ -484,6 +484,25 @@ public class Arena implements Steppable,  java.io.Serializable  {
                             data.getCarbonPriceTonne(today), currentYear, data.getCostFactor(currentYear));
             }
 
+            //monthlyEnergyFromRecord: this month's recorded hydro energy, less what the small off-market hydro
+            //produces, is shared among the market hydro generators by capacity (no record: budget -1, old rule)
+            {
+                double budgetCapacity = 0.0, offMarketMWh = 0.0;
+                double hours = (nextMonth.getTime() - today.getTime()) / 3600000.0;
+                for (Generator g : activeGens) {
+                    if (!g.getFuelSourceDescriptor().equalsIgnoreCase("Water")) continue;
+                    if (g.monthlyEnergyFromRecord && g.getInPrimaryMarket()) budgetCapacity += g.getMaxCapacity();
+                    else if (!g.getInPrimaryMarket() && !g.getInSecondaryMarket()) offMarketMWh += g.getAvailableCapacity() * hours;
+                }
+                Double recordGWh = data.getMonthly_renewable_historic_register().get(today);
+                for (Generator g : activeGens) {
+                    if (!g.monthlyEnergyFromRecord || !g.getInPrimaryMarket()) continue;
+                    double budget = (recordGWh == null || budgetCapacity <= 0) ? -1.0
+                            : Math.max(0.0, recordGWh * 1000.0 - offMarketMWh) * g.getMaxCapacity() / budgetCapacity;
+                    g.setMonthlyBudget(budget, today, nextMonth);
+                }
+            }
+
             double consumption = data.getMonthly_consumption_register().get(today);
 
             double monthDemand = 0.0;
@@ -518,6 +537,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
 
                 for (Generator g : activeGens) {
                     g.updateOutage(currentTime, data.random);
+                    if (g.monthlyEnergyFromRecord) g.setCurrentTime(currentTime);
                     if (g.plansDay()) g.planStorageDay(currentTime, data.getHalfhour_demand_register());
                 }
 

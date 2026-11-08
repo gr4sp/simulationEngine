@@ -102,6 +102,11 @@ class GeneratorSettings implements java.io.Serializable {
     public double mustRunPriceMWh = 0;
     //Energy-limited plant offers its daily energy only in the day's highest-demand half-hours (hydro water value)
     public boolean peakOnly = false;
+    //Hydro: each month's energy is the recorded hydro generation (generation_consumption_historic.hydro_gwh), shared
+    //by capacity; the plant offers it at a water value, storageOfferFactor x last month's mean price, scaled by the
+    //share of the month left over the share of the energy left, so when it runs comes from the merit order.
+    //Replaces peakOnly and dailyEnergyLimit; months without a record keep them
+    public boolean monthlyEnergyFromRecord = false;
     //Breakdowns (c): long-run share of time a unit is fully out, and the mean time to repair in hours
     public double forcedOutageRate = 0;
     public double outageHours = 168;
@@ -323,6 +328,8 @@ public class Settings implements java.io.Serializable {
     public double getMustRunPriceMWh(String f, String t) { return getGenSettings(f, t).mustRunPriceMWh; }
 
     public boolean getPeakOnly(String f, String t) { return getGenSettings(f, t).peakOnly; }
+
+    public boolean getMonthlyEnergyFromRecord(String f, String t) { return getGenSettings(f, t).monthlyEnergyFromRecord; }
 
     public double getForcedOutageRate(String f, String t) { return getGenSettings(f, t).forcedOutageRate; }
 
