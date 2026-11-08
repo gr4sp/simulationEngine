@@ -1,3 +1,4 @@
+outagesPerUnit: true
 population:
 
   # !!!!!These changes apply from baseYear onward (2019)
@@ -162,6 +163,7 @@ generators:
     nameplateCapacityChange: 1.0
 
   Water:
+    monthlyEnergyFromRecord: true # recorded monthly hydro energy, water-value offers; peakOnly/dailyEnergyLimit only for months without a record
     outageHours: 27
     forcedOutageRate: 0.0252
     storageOfferFactor: 1.0

@@ -21,6 +21,11 @@ generatorCorrections: generator_corrections.csv
 generatorParametersFile: generator_parameters_VIC.csv
 cpiFile: cpi_melbourne.csv
 costPriceYear: 2020
+# R3 shortfall repair (8 Nov 2026): the demand uplift to total generation follows the 2015-20 net-export shape,
+# multi-unit rows break down unit by unit, and hydro gets each month's recorded energy (an input, not a validation result).
+shapeDemandUplift: true
+netExportsShapeFile: net_exports_shape_VIC.csv
+outagesPerUnit: true
 
 #ON:
 #OFF: no logging at all
@@ -365,6 +370,7 @@ generators:
     nameplateCapacityChange: 1.0
 
   Water:
+    monthlyEnergyFromRecord: true # recorded monthly hydro energy, water-value offers; peakOnly/dailyEnergyLimit only for months without a record
     outageHours: 27
     forcedOutageRate: 0.0252
     storageOfferFactor: 1.0
