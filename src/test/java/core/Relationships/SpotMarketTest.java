@@ -132,6 +132,43 @@ public class SpotMarketTest {
     }
 
     @Test
+    void importBlocksFillShortfallCheapestFirstAndSetPrice() {
+        SpotMarket market = new SpotMarket("test");
+        market.addBidder(bid(50, 100));
+        java.util.List<SpotMarket.ImportOffer> offers = new ArrayList<>();
+        offers.add(new SpotMarket.ImportOffer("dear", 120, 300));
+        offers.add(new SpotMarket.ImportOffer("cheap", 30, 150));
+        market.setImportOffers(offers);
+
+        // 100 MW regional + 150 MW cheap import + 50 MW of the dear block
+        market.computeMarketPrice(300.0, sim, date(2005, 6, 1), 2005);
+        assertEquals(200, market.getImportedMW(), EPS);
+        assertEquals(0, market.getUnmetDemand(), EPS);
+        assertEquals(120, market.getMarketPrice(), EPS);
+
+        // A cheap import alone does not price below the dispatched regional offer
+        market.clearBidders();
+        market.addBidder(bid(50, 100));
+        market.computeMarketPrice(200.0, sim, date(2005, 6, 1), 2005);
+        assertEquals(100, market.getImportedMW(), EPS);
+        assertEquals(50, market.getMarketPrice(), EPS);
+    }
+
+    @Test
+    void shortfallBeyondImportsKeepsMarkupWithoutPriceCapFile() {
+        SpotMarket market = new SpotMarket("test");
+        market.addBidder(bid(50, 100));
+        java.util.List<SpotMarket.ImportOffer> offers = new ArrayList<>();
+        offers.add(new SpotMarket.ImportOffer("link", 80, 100));
+        market.setImportOffers(offers);
+
+        market.computeMarketPrice(500.0, sim, date(2005, 6, 1), 2005);
+        assertEquals(100, market.getImportedMW(), EPS);
+        assertEquals(300, market.getUnmetDemand(), EPS);
+        assertEquals(80 * (1.0 + sim.settings.getImportPriceFactor()), market.getMarketPrice(), EPS);
+    }
+
+    @Test
     void emissionIntensityIsCapacityWeightedAverage() {
         SpotMarket market = new SpotMarket("test");
         Bid a = bid(10, 100);

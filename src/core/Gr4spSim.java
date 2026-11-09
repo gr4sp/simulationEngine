@@ -172,6 +172,10 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //Station parameter overrides (name prefix, parameter, value) and the consumer price index by year
     private List<String[]> generatorParameters = new ArrayList<>();
     private TreeMap<Integer, Double> cpi = new TreeMap<>();
+    //Interconnector import blocks (link,from,to,importMW,heatRate,fuel,VOM,emissions,waterValueFactor,lossFactor)
+    //and the market price cap by start date (yyyy-MM-dd); both empty unless set
+    private List<String[]> interconnectors = new ArrayList<>();
+    private TreeMap<String, Double> shortfallPriceMWh = new TreeMap<>();
 
     //Policies used for the simulation
     private SimPolicies policies;
@@ -362,6 +366,34 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     series.put(Integer.parseInt(f[0].trim()), Double.parseDouble(f[1].trim()));
                 }
                 fuelPrices.put(fuelFile, series);
+            }
+            if (settings.getInterconnectorFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getInterconnectorFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 11);
+                    String fuel = f[5].trim();
+                    if (!fuel.isEmpty() && !fuel.matches("[-0-9.eE+]+") && !fuelPrices.containsKey(fuel)) {
+                        TreeMap<Integer, Double> series = new TreeMap<>();
+                        List<String> fl = Files.readAllLines(settingsFolder.resolve(fuel));
+                        for (String l : fl.subList(1, fl.size())) {
+                            if (l.isBlank() || l.startsWith("#")) continue;
+                            String[] g = l.split(",", 3);
+                            series.put(Integer.parseInt(g[0].trim()), Double.parseDouble(g[1].trim()));
+                        }
+                        fuelPrices.put(fuel, series);
+                    }
+                    interconnectors.add(new String[]{f[0].trim(), f[1].trim(), f[2].trim(), f[3].trim(), f[4].trim(),
+                            fuel, f[6].trim(), f[7].trim(), f[8].trim(), f[9].trim()});
+                }
+            }
+            if (settings.getShortfallPriceFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getShortfallPriceFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    shortfallPriceMWh.put(f[0].trim(), Double.parseDouble(f[1].trim()));
+                }
             }
 
 
@@ -712,6 +744,38 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         TreeMap<Integer, Double> series = fuelPrices.get(file);
         Map.Entry<Integer, Double> e = series.floorEntry(year);
         return (e != null ? e : series.firstEntry()).getValue();
+    }
+
+    public boolean hasInterconnectors() { return !interconnectors.isEmpty(); }
+
+    //Import blocks open on this date, each offering at the neighbour's short-run cost or a water value (see
+    //Settings.interconnectorFile). lastMonthPriceMWh is last month's mean primary price
+    public List<core.Relationships.SpotMarket.ImportOffer> getImportOffers(Date day, int year, double lastMonthPriceMWh) {
+        List<core.Relationships.SpotMarket.ImportOffer> offers = new ArrayList<>();
+        String d = new SimpleDateFormat("yyyy-MM-dd").format(day);
+        double costFactor = getCostFactor(year), carbon = getCarbonPriceTonne(day);
+        for (String[] r : interconnectors) {
+            if (d.compareTo(r[1]) < 0 || (!r[2].isEmpty() && d.compareTo(r[2]) > 0)) continue;
+            double mw = Double.parseDouble(r[3]);
+            double waterValue = r[8].isEmpty() ? -1 : Double.parseDouble(r[8]);
+            double loss = r[9].isEmpty() ? 1.0 : Double.parseDouble(r[9]);
+            double price;
+            if (waterValue >= 0) price = waterValue * lastMonthPriceMWh;
+            else {
+                double fuel = r[5].isEmpty() ? 0.0 : r[5].matches("[-0-9.eE+]+")
+                        ? Double.parseDouble(r[5]) * costFactor : getFuelPriceGJ(r[5], year);
+                price = Double.parseDouble(r[4]) * fuel + Double.parseDouble(r[6]) * costFactor
+                        + Double.parseDouble(r[7]) * carbon;
+            }
+            offers.add(new core.Relationships.SpotMarket.ImportOffer(r[0], price * loss, mw));
+        }
+        return offers;
+    }
+
+    //Market price cap on this date, or -1 without shortfallPriceFile (or before its first row)
+    public double getShortfallPriceMWh(Date time) {
+        Map.Entry<String, Double> e = shortfallPriceMWh.floorEntry(new SimpleDateFormat("yyyy-MM-dd").format(time));
+        return e == null ? -1.0 : e.getValue();
     }
 
     //Carbon price in $/t CO2-e for the month of this date (0 outside the file)

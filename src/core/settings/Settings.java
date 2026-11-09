@@ -214,6 +214,17 @@ public class Settings implements java.io.Serializable {
     //into each year's dollars (nearest year outside its range). Unset: costs are used as given
     public String cpiFile;
     public int costPriceYear = 0;
+    //Imports (step 4): optional CSV of interconnector import blocks, one row per link and period
+    //(link,from,to,importMW,heatRateGJperMWh,fuel,variableOMMWh,emissionsTperMWh,waterValueFactor,lossFactor,source).
+    //When the region's own offers fall short, the blocks fill the gap cheapest first and the price is the dearer of the
+    //last regional offer and the last import block. A block offers at the neighbour's short-run cost
+    //(heat rate x fuel + VOM + emissions x carbon; fuel is a fuelPriceFile name or a constant in costPriceYear dollars)
+    //or, with waterValueFactor >= 0, at waterValueFactor x last month's mean primary price; times lossFactor.
+    //Unset: shortfalls keep the old rule (last offer x (1 + importPriceFactor)), unlimited in volume
+    public String interconnectorFile;
+    //Optional CSV (from,priceMWh,source): market price cap from each date on. When set, demand left unmet after the
+    //imports is priced at the cap instead of the importPriceFactor rule
+    public String shortfallPriceFile;
 
 
     /*
@@ -562,6 +573,10 @@ public class Settings implements java.io.Serializable {
     public String getCpiFile() { return cpiFile; }
 
     public int getCostPriceYear() { return costPriceYear; }
+
+    public String getInterconnectorFile() { return interconnectorFile; }
+
+    public String getShortfallPriceFile() { return shortfallPriceFile; }
 
     public double getWithholdingMargin() { return withholdingMargin; }
 

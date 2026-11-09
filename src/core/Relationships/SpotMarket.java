@@ -25,6 +25,23 @@ public class SpotMarket implements java.io.Serializable{
     private ArrayList<Bid> bidders;
     private ArrayList<Bid> successfulBids;
 
+    //An interconnector import block: it fills a shortfall after all regional offers (see Settings.interconnectorFile)
+    public static class ImportOffer implements java.io.Serializable, Comparable<ImportOffer> {
+        public final String link;
+        public final double priceMWh;
+        public final double mw;
+        public ImportOffer(String link, double priceMWh, double mw) { this.link = link; this.priceMWh = priceMWh; this.mw = mw; }
+        @Override
+        public int compareTo(ImportOffer o) { return Double.compare(priceMWh, o.priceMWh); }
+    }
+    //Import blocks open this month, cheapest first. importRule is set on the market that receives them (the primary);
+    //without it a shortfall keeps the old rule
+    private ArrayList<ImportOffer> importOffers = new ArrayList<>();
+    private boolean importRule = false;
+    //MW imported in the last half-hour, and the link of the last block used ("" if none)
+    private double importedMW;
+    private String importSetter = "";
+
     //Diagnostic, off by default: -Dgr4sp.priceSetterLog=<csv> writes the bid that sets the price every half-hour,
     //for the years in -Dgr4sp.priceSetterLog.from / .to (inclusive)
     private static PrintWriter priceSetterLog;
@@ -71,6 +88,14 @@ public class SpotMarket implements java.io.Serializable{
 
     public double getUnmetDemand() {
         return unmetDemand;
+    }
+
+    public double getImportedMW() { return importedMW; }
+
+    public void setImportOffers(java.util.List<ImportOffer> offers) {
+        importOffers = new ArrayList<>(offers);
+        Collections.sort(importOffers);
+        importRule = true;
     }
 
     public void clearBidders(){
@@ -126,6 +151,8 @@ public class SpotMarket implements java.io.Serializable{
 
         this.demand = demand;
         this.unmetDemand = 0;
+        this.importedMW = 0;
+        this.importSetter = "";
 
         //Reset MarketPrice
         marketPrice=0;
@@ -168,7 +195,29 @@ public class SpotMarket implements java.io.Serializable{
 
         }
 
-        if(Math.ceil(offered) < Math.floor(demand) ) {
+        //Imports: fill the gap from the interconnector blocks, cheapest first; regional bids already dispatched are paid
+        //at least their offer, so the price is the dearer of the last regional offer and the last block used
+        if (importRule && Math.ceil(offered) < Math.floor(demand)) {
+            for (ImportOffer io : importOffers) {
+                double gap = demand - offered - importedMW;
+                if (gap <= 0) break;
+                double take = Math.min(gap, io.mw);
+                if (take <= 0) continue;
+                importedMW += take;
+                importSetter = io.link;
+                marketPrice = Math.max(marketPrice, io.priceMWh);
+            }
+            double shortfallPrice = data.getShortfallPriceMWh(currentTime);
+            if (Math.ceil(offered + importedMW) < Math.floor(demand)) {
+                unmetDemand = demand - offered - importedMW;
+                if (shortfallPrice >= 0) { marketPrice = shortfallPrice; importSetter = "unserved"; }
+                else if (currentYear < data.settings.getBaseYearConsumptionForecast())
+                    marketPrice *= 1.0 + data.settings.getImportPriceFactor();
+                else
+                    marketPrice *= 1.0 + data.settingsAfterBaseYear.getImportPriceFactor();
+            }
+        }
+        else if(Math.ceil(offered) < Math.floor(demand) ) {
             /* The median contribution from imports in the historic wholesale has been 29%
             * The import price varies significantly over the historic period analysed in OpenNem.
             * In the first years of analysis a pattern of more expensive import price in summer is evident.
@@ -191,7 +240,7 @@ public class SpotMarket implements java.io.Serializable{
         }
 
         if (PRICE_SETTER_LOG != null && currentYear >= PRICE_SETTER_FROM && currentYear <= PRICE_SETTER_TO)
-            logPriceSetter(currentTime);
+            logPriceSetter(currentTime, data.hasInterconnectors() || data.settings.getShortfallPriceFile() != null);
 
         /**
          * Communicate successful Bid to each Generator to update future price
@@ -207,11 +256,12 @@ public class SpotMarket implements java.io.Serializable{
         }
     }
 
-    private synchronized void logPriceSetter(Date currentTime) {
+    private synchronized void logPriceSetter(Date currentTime, boolean importColumns) {
         try {
             if (priceSetterLog == null) {
                 priceSetterLog = new PrintWriter(new FileWriter(PRICE_SETTER_LOG));
-                priceSetterLog.println("time,market,demand,unmet,price,fuel,tech,dispatch,name,offer,historicCF,basePrice,minCF,maxCF");
+                priceSetterLog.println("time,market,demand,unmet,price,fuel,tech,dispatch,name,offer,historicCF,basePrice,minCF,maxCF"
+                        + (importColumns ? ",importMW,importSetter" : ""));
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> priceSetterLog.close()));
             }
             String fuel = "", tech = "", dispatch = "", gname = "";
@@ -226,7 +276,8 @@ public class SpotMarket implements java.io.Serializable{
             }
             priceSetterLog.println(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(currentTime) + "," + name + ","
                     + demand + "," + unmetDemand + "," + marketPrice + "," + fuel + "," + tech + "," + dispatch + ","
-                    + gname + "," + offer + "," + hcf + "," + base + "," + minCF + "," + maxCF);
+                    + gname + "," + offer + "," + hcf + "," + base + "," + minCF + "," + maxCF
+                    + (importColumns ? "," + importedMW + "," + importSetter : ""));
         } catch (IOException e) {
             System.err.println("Cannot write price setter log: " + e);
         }

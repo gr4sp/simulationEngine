@@ -1,0 +1,16 @@
+link,from,to,importMW,heatRateGJperMWh,fuel,variableOMMWh,emissionsTperMWh,waterValueFactor,lossFactor,source
+# Import blocks into Victoria (setting interconnectorFile). importMW = import capability at Victorian peak demand.
+# Peak capability 2015-2020: median of AEMO's dispatch import limit (MMSDM DISPATCHINTERCONNECTORRES, intervention 0)
+# in the top 5% Victorian demand half-hours of each year (scripts/data/interconnector_limits_vic.py): VIC-NSW 260-450, Heywood 380-500, Murraylink 30-140,
+# Basslink 375-450 MW (149 in 2016, cable fault); consistent with AEMO 2020 IASR 'Interconnector Capability' worst case at peak (400/650 (500 in
+# operation)/200/478). Earlier years hold the 2015-2020 values back to each link's start (assumption).
+# Costs: IASR 2020 v2.1 (real 2020 $, costPriceYear): Vales Point B heat rate 9.68 GJ/MWh, coal 3.27 $/GJ (2020-21),
+# VOM 4.27, 0.908 t/MWh; Torrens Island B heat rate 10.71, VOM 10.66, gas at the Victorian DWGM series (proxy for
+# SA gas, assumption), 0.0514 t/GJ x 10.71 = 0.55 t/MWh (natural-gas combustion factor; the IASR sheet's 1.05 is not used).
+# Hydro neighbours (Snowy, Tasmania) offer at a water value: waterValueFactor x last month's mean Victorian price.
+VIC-Snowy,1999-01-01,2008-06-30,1100,,,,,1.0,1.0,pre-July-2008 Snowy region held Murray; AER $5000 report 26 Jan 2006: flows from Snowy cut from ~1600 to 1100 MW at peak
+VIC-NSW,2008-07-01,,400,9.68,3.27,4.27,0.908,,1.0,MMSDM peak median 260-450 MW; IASR 400; NSW black coal (Vales Point B) short-run cost
+Heywood,1999-01-01,2016-12-31,400,10.71,fuel_price_gas_VIC.csv,10.66,0.55,,1.0,MMSDM peak median 2015-16 378-420 MW (before the 2016 upgrade); SA gas steam (Torrens Island B)
+Heywood,2017-01-01,,500,10.71,fuel_price_gas_VIC.csv,10.66,0.55,,1.0,MMSDM peak median 2017-19 500 MW; IASR 500 in operation
+Murraylink,2002-10-01,,80,10.71,fuel_price_gas_VIC.csv,10.66,0.55,,1.0,MMSDM peak median 30-140 MW; start date assumption (commissioned 2002)
+Basslink,2006-04-29,,400,,,,,1.0,1.0,MMSDM peak median 375-450 MW (2016 cable fault excluded); Tasmanian hydro at a water value

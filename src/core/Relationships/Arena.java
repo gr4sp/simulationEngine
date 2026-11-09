@@ -484,6 +484,10 @@ public class Arena implements Steppable,  java.io.Serializable  {
                             data.getCarbonPriceTonne(today), currentYear, data.getCostFactor(currentYear));
             }
 
+            //Imports (interconnectorFile / shortfallPriceFile): this month's import blocks for the primary market
+            if (primarySpot != null && (data.hasInterconnectors() || data.settings.getShortfallPriceFile() != null))
+                primarySpot.setImportOffers(data.getImportOffers(today, currentYear, lastMonthPricePrimarySpot));
+
             //monthlyEnergyFromRecord: this month's recorded hydro energy, less what the small off-market hydro
             //produces, is shared among the market hydro generators by capacity (no record: budget -1, old rule)
             {
