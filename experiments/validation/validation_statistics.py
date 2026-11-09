@@ -10,21 +10,23 @@ Usage
     python validation_statistics.py                    # table only
     python validation_statistics.py --figures OUTDIR   # table + RMSE-band figures
     python validation_statistics.py --ensemble PATH    # add ensemble diagnostics
+    python validation_statistics.py --run RUN_DIR      # a run folder instead of the pinned BAU
+                                                       # (RUN_DIR/csv/VIC/VICSim*Summary_seed_*.csv)
 
 Provenance
 ----------
 Mirrors ``experiments/notebookGr4sp/legacy/ema_gr4sp_EET-3RegimeValidation.ipynb``,
 which is the authoritative source for the published numbers.
 
-One row deliberately departs from it. The annual wholesale figure read the
-simulated annual output column, covering whole calendar years, against an
-observed side covering only the months the OpenNEM extract holds (2005-04 to
-2020-06). Two of the sixteen years were therefore compared over different spans,
-2020 severely: a full simulated year against six observed months. Both sides are
-now resampled from the same months. ``wholesale_annual_windows()`` prints the
-superseded figure alongside, so the size of the change stays on the record. This
-is also why ``SimulationValidation.ipynb``, which resamples the monthly series,
-did not reproduce the published annual number.
+Wholesale price comparator (request R2, Nov 2026): AEMO's aggregated price and
+demand data for VIC1, the monthly demand-weighted price sum(RRP x TOTALDEMAND) /
+sum(TOTALDEMAND), each half-hour in the month it starts, January 1999 to June
+2020 (``aemo_VIC1_monthly_vwp_199812_202006.csv``, built by
+``scripts/data/aemo_vic1_monthly_price.py`` from the raw AEMO files). It replaces
+the OpenNEM extract (April 2005 on), which agrees with it over 2005-2020
+(correlation 0.999). The annual row resamples both sides from the same months;
+``wholesale_annual_windows()`` prints it next to the simulated annual output
+column, so the two routes can be compared.
 
 Two ensembles exist and are not interchangeable:
   * validation bands: gr4sp_SOBOLhypopast2021-Mar-03_includ_wholesale_month.tar.gz
@@ -58,12 +60,20 @@ GENERATION = RENEWABLE + ["Battery (Discharging) - GWh", "Gas (OCGT) - GWh",
 TARIFF_SOURCES = ("St Vincent de Paul", "Oakley Greenwood")
 
 
-def load_inputs():
-    """Return the pinned BAU outputs and the four historical comparators."""
-    year = pd.read_csv(os.path.join(DATA, "VICSimDataYearSummary_bau19982051.csv"),
-                       index_col="Time (Year)")
-    month = pd.read_csv(os.path.join(DATA, "VICSimDataMonthlySummary_bau19982051.csv"),
-                        index_col="Time (Month)")
+PRICE_FIRST, PRICE_LAST = "1999-01-01", "2020-06-01"
+
+
+def load_inputs(run=None):
+    """Return the model outputs (pinned BAU, or the run folder `run`) and four comparators."""
+    if run is None:
+        year_file = os.path.join(DATA, "VICSimDataYearSummary_bau19982051.csv")
+        month_file = os.path.join(DATA, "VICSimDataMonthlySummary_bau19982051.csv")
+    else:
+        import glob
+        year_file = glob.glob(os.path.join(run, "csv", "VIC", "VICSimDataYearSummary_seed_*.csv"))[0]
+        month_file = glob.glob(os.path.join(run, "csv", "VIC", "VICSimDataMonthlySummary_seed_*.csv"))[0]
+    year = pd.read_csv(year_file, index_col="Time (Year)")
+    month = pd.read_csv(month_file, index_col="Time (Month)")
     month.index = pd.to_datetime(month.index)
     ghge = pd.read_csv(os.path.join(DATA, "19902018_historic_emissions_Vic.csv"),
                        index_col="Time (Year)")
@@ -73,6 +83,19 @@ def load_inputs():
     tariffs = pd.read_csv(os.path.join(DATA, "2001to2019_historicTariffs.csv"),
                           index_col="Time (Year)")
     return year, month, ghge, opennem, tariffs
+
+
+def load_price_comparator():
+    """AEMO VIC1 monthly demand-weighted price, January 1999 to June 2020."""
+    aemo = pd.read_csv(os.path.join(DATA, "aemo_VIC1_monthly_vwp_199812_202006.csv"),
+                       index_col="m", parse_dates=["m"])
+    return aemo.loc[PRICE_FIRST:PRICE_LAST, "vwp"].rename("observed")
+
+
+def monthly_prices(month):
+    """Simulated and observed monthly price on the months both cover."""
+    return pd.merge(month["Primary Wholesale ($/MWh)"].rename("simulated"),
+                    load_price_comparator(), left_index=True, right_index=True)
 
 
 def renewable_share(opennem):
@@ -115,23 +138,18 @@ def series(year, month, ghge, opennem, tariffs):
     ghge_total = (year["GHG Emissions (tCO2-e) per household"]
                   * year["Number of Domestic Consumers (households)"] / 1e6 / 0.3)
     ghge_observed = ghge[ghge.index > 1997]["Hist_GHGE_MtCO2e"].values
-    monthly = pd.merge(opennem["Volume Weighted Price (Historic) - $/MWh"],
-                       month["Primary Wholesale ($/MWh)"],
-                       left_index=True, right_index=True)
+    monthly = monthly_prices(month)
     return {
         "Wholesale price (monthly)": (
-            monthly["Primary Wholesale ($/MWh)"].values,
-            monthly["Volume Weighted Price (Historic) - $/MWh"].values,
-            "2005-04 to 2020-06", "$/MWh"),
-        # Both sides are resampled from `monthly`, which is the inner join above, so
-        # each annual figure averages exactly the same months. Reading the simulated
-        # annual column instead compares a full calendar year against a partial one
-        # in 2005 (comparator starts in April) and 2020 (it ends in June); see
-        # wholesale_annual_windows() for the size of that.
+            monthly.simulated.values, monthly.observed.values,
+            "1999-01 to 2020-06", "$/MWh"),
+        # Both sides are resampled from `monthly`, so each annual figure averages
+        # exactly the same months (2020: January to June). wholesale_annual_windows()
+        # compares this with the simulated annual output column.
         "Wholesale price (annual)": (
-            monthly["Primary Wholesale ($/MWh)"].resample("YE").mean().values,
-            monthly["Volume Weighted Price (Historic) - $/MWh"].resample("YE").mean().values,
-            "2005-2020", "$/MWh"),
+            monthly.simulated.resample("YE").mean().values,
+            monthly.observed.resample("YE").mean().values,
+            "1999-2020", "$/MWh"),
         "RE share (annual)": (
             year["Percentage Renewable Production"].iloc[7:23].values * 100.0,
             renewable_share(opennem).values,
@@ -180,45 +198,52 @@ def print_table(indicators):
               f"{result['NRMSE']:>8.1f}%{result['NSE']:>9.2f}")
 
 
-def wholesale_annual_windows(year, month, opennem):
-    """The annual wholesale row on both window conventions.
+def wholesale_annual_windows(year, month):
+    """The annual wholesale row by two routes, and the monthly RMSE-band coverage.
 
-    The published Section 5 figure read the simulated annual output column, which
-    covers whole calendar years, while the observed side covered only the months
-    the OpenNEM extract holds. The extract begins 2005-04 and ends 2020-06, so two
-    of the sixteen years were compared over different spans. 2020 is the severe
-    one: a full simulated year against six observed months.
-
-    The table now resamples both sides from the same months. This function keeps
-    the superseded figure on the record, as `tariff_comparators` does for the
-    retired tariff composite.
+    Tabled: both sides resampled from the monthly series over the same months.
+    Alternative: the simulated annual output column, which covers whole calendar
+    years, against the same observed annual means (differs only in 2020, where the
+    comparator ends in June).
     """
-    price = "Volume Weighted Price (Historic) - $/MWh"
-    monthly = pd.merge(opennem[price], month["Primary Wholesale ($/MWh)"],
-                       left_index=True, right_index=True)
-    observed = monthly[price].resample("YE").mean()
-    aligned = monthly["Primary Wholesale ($/MWh)"].resample("YE").mean()
-    published = pd.Series(year["Primary Wholesale ($/MWh)"].iloc[7:23].values,
-                          index=observed.index)
-    months = monthly["Primary Wholesale ($/MWh)"].resample("YE").count()
+    monthly = monthly_prices(month)
+    observed = monthly.observed.resample("YE").mean()
+    resampled = monthly.simulated.resample("YE").mean()
+    output = pd.Series(year["Primary Wholesale ($/MWh)"].reindex(observed.index.year).values,
+                       index=observed.index)
+    months = monthly.simulated.resample("YE").count()
 
-    print("\nWholesale price, annual: window conventions")
+    print("\nWholesale price, annual: monthly series resampled vs annual output column")
     print("-" * 68)
-    print(f"  {'year':>6}{'months':>8}{'observed':>11}{'simulated':>11}"
-          f"{'published':>11}{'shift':>8}")
+    print(f"  {'year':>6}{'months':>8}{'observed':>11}{'resampled':>11}"
+          f"{'annual col':>11}{'diff':>8}")
     for stamp in observed.index:
-        year_label, n = stamp.year, int(months.loc[stamp])
+        n = int(months.loc[stamp])
         flag = "" if n == 12 else "  <- partial"
-        print(f"  {year_label:>6}{n:>8}{observed.loc[stamp]:>11.2f}"
-              f"{aligned.loc[stamp]:>11.2f}{published.loc[stamp]:>11.2f}"
-              f"{aligned.loc[stamp] - published.loc[stamp]:>+8.2f}{flag}")
-
+        print(f"  {stamp.year:>6}{n:>8}{observed.loc[stamp]:>11.2f}"
+              f"{resampled.loc[stamp]:>11.2f}{output.loc[stamp]:>11.2f}"
+              f"{output.loc[stamp] - resampled.loc[stamp]:>+8.2f}{flag}")
     print()
-    for label, simulated in (("aligned to the comparator (tabled)", aligned),
-                             ("full calendar year (published, superseded)", published)):
+    for label, simulated in (("monthly series resampled (tabled)", resampled),
+                             ("annual output column", output)):
         result = statistics(simulated.values, observed.values)
-        print(f"    {label:<44}MAE {result['MAE']:6.2f}  RMSE {result['RMSE']:6.2f}"
-              f"  Bias {result['Bias']:+6.2f}  NSE {result['NSE']:5.2f}")
+        print(f"    {label:<36}MAE {result['MAE']:6.2f}  RMSE {result['RMSE']:6.2f}"
+              f"  Bias {result['Bias']:+6.2f}  NRMSE {result['NRMSE']:5.1f}%  NSE {result['NSE']:5.2f}")
+
+    # Cross-check: the simulated monthly price is a time-weighted mean of half-hours, so also compare it with the
+    # observed time-weighted mean (column `mean`), which carries no price-demand covariance (README, Resolution)
+    aemo = pd.read_csv(os.path.join(DATA, "aemo_VIC1_monthly_vwp_199812_202006.csv"),
+                       index_col="m", parse_dates=["m"]).loc[monthly.index, "mean"]
+    for label, obs in (("demand weighted (tabled)", monthly.observed), ("time weighted (cross-check)", aemo)):
+        r = statistics(monthly.simulated.values, obs.values)
+        print(f"  Monthly vs AEMO {label:<28}MAE {r['MAE']:6.2f}  RMSE {r['RMSE']:6.2f}"
+              f"  Bias {r['Bias']:+6.2f}  NSE {r['NSE']:5.2f} (not comparable across rows)")
+
+    rmse = statistics(monthly.simulated.values, monthly.observed.values)["RMSE"]
+    error = (monthly.observed - monthly.simulated).abs()
+    print(f"\n  Monthly price: observed within 1 RMSE of the simulation in "
+          f"{100 * (error <= rmse).mean():.0f}% of months, within 2 RMSE in "
+          f"{100 * (error <= 2 * rmse).mean():.0f}%")
 
 
 def tariff_comparators(year, tariffs):
@@ -362,9 +387,7 @@ def make_figures(indicators, year, opennem, month, tariffs, outdir):
           extra=[tariffs.iloc[:, 0].values, tariffs.iloc[:, 1].values])
 
     simulated, observed, _, _ = indicators["Wholesale price (monthly)"]
-    dates = pd.merge(opennem["Volume Weighted Price (Historic) - $/MWh"],
-                     month["Primary Wholesale ($/MWh)"],
-                     left_index=True, right_index=True).index
+    dates = monthly_prices(month).index
     rmse = statistics(simulated, observed)["RMSE"]
     plt.figure(figsize=(18, 10))
     plt.plot(dates, simulated, color="r", lw=2,
@@ -393,12 +416,14 @@ def main():
                         help="write the four RMSE-band figures to this directory")
     parser.add_argument("--ensemble", metavar="PATH",
                         help="validation ensemble archive, for band diagnostics")
+    parser.add_argument("--run", metavar="RUN_DIR",
+                        help="model run folder to validate instead of the pinned BAU")
     args = parser.parse_args()
 
-    year, month, ghge, opennem, tariffs = load_inputs()
+    year, month, ghge, opennem, tariffs = load_inputs(args.run)
     indicators = series(year, month, ghge, opennem, tariffs)
     print_table(indicators)
-    wholesale_annual_windows(year, month, opennem)
+    wholesale_annual_windows(year, month)
     tariff_comparators(year, tariffs)
 
     if args.ensemble:

@@ -17,7 +17,7 @@ plain CSVs.
 
 | Indicator | Comparator | Source file |
 |---|---|---|
-| Wholesale price (monthly, annual) | OpenNEM volume-weighted price | `2005_2020_OpenNemDataV1.csv` |
+| Wholesale price (monthly, annual) | AEMO VIC1 demand-weighted monthly price, 1999-01 to 2020-06 (request R2) | `aemo_VIC1_monthly_vwp_199812_202006.csv` (built by `scripts/data/aemo_vic1_monthly_price.py` from AEMO's aggregated price and demand files) |
 | Renewable energy share | OpenNEM per-fuel generation | `2005_2020_OpenNemDataV1.csv` |
 | Retail tariffs | Oakley Greenwood, and St Vincent de Paul, each on its own window | `2001to2019_historicTariffs.csv` |
 | GHGE | Victorian Government inventory | `19902018_historic_emissions_Vic.csv` |
@@ -40,12 +40,19 @@ statistics, and it is not reported here.
 ## Windows
 
 Each indicator is compared over the span its comparator covers, and the spans
-differ. The OpenNEM extract begins 2005-04 and ends 2020-06, both partial years.
+differ. The price comparator covers 1999-01 to 2020-06 (AEMO, since Nov 2026); the OpenNEM extract, still used
+for the renewable share, begins 2005-04 and ends 2020-06, both partial years.
 The emissions series is annual from 1990. The tariff comparator is not
 contiguous: Oakley Greenwood alone in 2001-2002 and 2007-2009, both series
 2010-2017, St Vincent de Paul alone 2018-2019, and neither for 2003-2006. See
 [Provenance of the tariff data](#provenance-of-the-tariff-data) for why those
 years are absent.
+
+**Update, Nov 2026 (R2):** the price rows now use the AEMO series from January 1999. The annual row still
+resamples both sides from the same months; `wholesale_annual_windows()` prints it next to the simulated annual
+output column, which agrees to the cent for 1999-2019 and differs only in 2020 (full year 40.95 against the
+January-June 64.26): pinned BAU, annual NSE 0.56 resampled vs 0.48 from the annual column. The history below
+refers to the earlier OpenNEM comparator.
 
 **The annual wholesale row was computed over mismatched windows and has been
 corrected.** It read the simulated *annual* output column, which covers whole
@@ -159,6 +166,11 @@ above:
 against 16 years, RMSE 18.33 and bias -6.83 on the tabled window. **This extension
 is not currently applied**; the table above is the case for it, not a description of
 what the script does.
+
+**Update, Nov 2026:** the extension is now applied (request R2), with the demand-weighted price that the article
+uses (Angela, option G8 a). `wholesale_annual_windows()` also prints the monthly statistics against AEMO's
+time-weighted mean, so the cost of the weighting stays visible (pinned BAU: RMSE 32.62 demand weighted, 28.37 time
+weighted; bias -7.72 and -3.67).
 
 Comparing directly to the AER's figure 2.3 would stack three mismatches at once —
 demand weighted, financial year, and weighted against *native* demand (initial
