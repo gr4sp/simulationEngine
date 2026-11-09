@@ -155,17 +155,21 @@ public class SpotMarketTest {
     }
 
     @Test
-    void shortfallBeyondImportsKeepsMarkupWithoutPriceCapFile() {
+    void shortfallBeyondImportsIsPricedAtCapOrMarkup() {
         SpotMarket market = new SpotMarket("test");
         market.addBidder(bid(50, 100));
         java.util.List<SpotMarket.ImportOffer> offers = new ArrayList<>();
         offers.add(new SpotMarket.ImportOffer("link", 80, 100));
         market.setImportOffers(offers);
 
-        market.computeMarketPrice(500.0, sim, date(2005, 6, 1), 2005);
+        Date t = date(2005, 6, 1);
+        market.computeMarketPrice(500.0, sim, t, 2005);
         assertEquals(100, market.getImportedMW(), EPS);
         assertEquals(300, market.getUnmetDemand(), EPS);
-        assertEquals(80 * (1.0 + sim.settings.getImportPriceFactor()), market.getMarketPrice(), EPS);
+        // With shortfallPriceFile (VIC.yaml base case) the market price cap; without it the old import mark-up
+        double cap = sim.getShortfallPriceMWh(t);
+        double expected = cap >= 0 ? cap : 80 * (1.0 + sim.settings.getImportPriceFactor());
+        assertEquals(expected, market.getMarketPrice(), EPS);
     }
 
     @Test

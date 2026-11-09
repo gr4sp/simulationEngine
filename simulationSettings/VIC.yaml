@@ -26,6 +26,11 @@ costPriceYear: 2020
 shapeDemandUplift: true
 netExportsShapeFile: net_exports_shape_VIC.csv
 outagesPerUnit: true
+# R3 step 4 (9 Nov 2026): shortfalls are met by interconnector imports up to each link's peak import capability,
+# offered at the neighbour's short-run cost or a water value; demand left unmet is priced at the market price cap.
+# Read from this file only and applied in every year (VICfuture.yaml needs no copy).
+interconnectorFile: interconnectors_VIC.csv
+shortfallPriceFile: market_price_cap_NEM.csv
 
 #ON:
 #OFF: no logging at all
