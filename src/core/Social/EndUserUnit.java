@@ -143,7 +143,9 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
 
                 c.setTime(today);
                 c.set(Calendar.MONTH, 0);
-                int year = c.get(Calendar.YEAR)-1;
+                //Register row for the January update of year Y: Y - tariffContributionLag (1 = previous year's row, the
+                //original rule; 0 = the row of the bills in force in year Y)
+                int year = c.get(Calendar.YEAR) - data.settings.getTariffContributionLag();
 
                 //If wholesale contribution is given by historic data (DB table historic_tariff_contribution)
                 if( data.getTariff_contribution_wholesale_register().containsKey(year) ) {

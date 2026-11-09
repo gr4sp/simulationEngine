@@ -31,6 +31,10 @@ outagesPerUnit: true
 # Read from this file only and applied in every year (VICfuture.yaml needs no copy).
 interconnectorFile: interconnectors_VIC.csv
 shortfallPriceFile: market_price_cap_NEM.csv
+# R3 step 3 (9 Nov 2026): the wholesale share of the tariff (R_w) comes from sourced rows (Oakley Greenwood 2014/2017,
+# AEMC price trends; 1999-2000 constructed), one row per calendar year of bills, used without a lag by the January update.
+tariffContributionFile: tariff_contribution_VIC.csv
+tariffContributionLag: 0
 
 #ON:
 #OFF: no logging at all

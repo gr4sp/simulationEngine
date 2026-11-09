@@ -188,6 +188,9 @@ public class Settings implements java.io.Serializable {
     //Optional CSV in simulationSettings (year,wholesale,status,source): rows replace the wholesale share of the tariff
     //(R_w) read from the historic_tariff_contribution table (see LoadData, tariff contribution)
     public String tariffContributionFile;
+    //Years between the January tariff update and the register row it uses: 1 (default) = the previous year's row,
+    //0 = the row of the bills in force that year (rows are calendar years of bills)
+    public int tariffContributionLag = 1;
     //Optional CSV in simulationSettings with monthly net exports (month,netExportsMWh,source), added to wholesale demand
     public String netExportsFile;
     //Optional CSV (month,slot,deviationMW,source): the half-hourly shape added to each month's mean net exports
@@ -560,6 +563,8 @@ public class Settings implements java.io.Serializable {
     public String getGeneratorCorrections() { return generatorCorrections; }
 
     public String getTariffContributionFile() { return tariffContributionFile; }
+
+    public int getTariffContributionLag() { return tariffContributionLag; }
 
     public String getNetExportsFile() { return netExportsFile; }
 
