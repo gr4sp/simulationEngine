@@ -470,6 +470,22 @@ public class LoadData implements java.io.Serializable {
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
         }
+
+        //Optional CSV (year,wholesale,status,source) whose rows replace the database register's wholesale share
+        String overrideFile = data.settings.getTariffContributionFile();
+        if (overrideFile != null) {
+            try {
+                java.util.List<String> lines = java.nio.file.Files.readAllLines(
+                        java.nio.file.Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings").resolve(overrideFile));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    data.getTariff_contribution_wholesale_register().put(Integer.parseInt(f[0].trim()), Float.parseFloat(f[1].trim()));
+                }
+            } catch (java.io.IOException e) {
+                throw new RuntimeException("Cannot read tariffContributionFile " + overrideFile, e);
+            }
+        }
     }
 
 

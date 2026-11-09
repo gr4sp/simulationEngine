@@ -49,6 +49,7 @@ CSV inputs, and keep DB-2021-8-21 as the frozen reference.
 | `portfolios_VIC.csv` | `portfolioFile` (withholding scenario only; off in the base case) | Stations grouped into owner portfolios | Ownership histories, per row | by hand |
 | `interconnectors_VIC.csv` | `interconnectorFile` | Import capability per link at VIC peak demand, and the neighbour's offer (short-run cost or water value) | AEMO MMSDM DISPATCHINTERCONNECTORRES 2015-2020 (median limit in the top 5% demand half-hours); AER $5000 report 26 Jan 2006 (VIC-Snowy before July 2008); IASR 2020 (neighbour costs) | `scripts/data/interconnector_limits_vic.py` |
 | `market_price_cap_NEM.csv` | `shortfallPriceFile` | Market price cap by effective date | AEMO MMS MARKET_PRICE_THRESHOLDS (MMSDM 2020-12) | by hand from the table |
+| `tariff_contribution_VIC.csv` | `tariffContributionFile` (opt-in, not yet in the base case) | Wholesale share of the residential bill (R_w), 1999-2020, each row marked source / constructed / unknown; replaces `historic_tariff_contribution` | Oakley Greenwood 2017 Table 3 (2001-2002, 2007-2017); AEMC Residential electricity price trends 2018-2020 (2018-2020); 1999-2000 and 2003-2006 without source | by hand |
 
 ## 3. YAML parameters
 
@@ -82,7 +83,8 @@ Only part of `VIC.yaml` cites its sources in comments today (the IASR cost and o
 - `VIC.yaml`: add a source comment to each per-fuel value (base prices, emissions factors, capacity factors).
 - `domestic_consumers`: name the original source.
 - `historic_inflation`: replace the secondary source with ABS 6401.0 (as `cpi_melbourne.csv` already does).
-- `historic_tariff_contribution`: document the constructed years (R3 step 3).
+- `historic_tariff_contribution`: sources found for 2001-2002, 2007-2020 (`tariff_contribution_VIC.csv`); 1999-2000
+  and 2003-2006 still without a source (the 2014 Oakley Greenwood edition, an APH submission, may cover 2003-2006).
 - `interconnectors_VIC.csv`: limits before 2015 and the Murraylink start date are assumptions; SA gas uses the
   Victorian gas price.
 - IASR emissions sheet values for SA gas stations are implausible (about 1 t/MWh) and are not used.

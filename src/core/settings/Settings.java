@@ -185,6 +185,9 @@ public class Settings implements java.io.Serializable {
     public ForecastSetting forecast;
     //Optional CSV in simulationSettings with corrections to the generationassets table (see LoadData.readGeneratorCorrections)
     public String generatorCorrections;
+    //Optional CSV in simulationSettings (year,wholesale,status,source): rows replace the wholesale share of the tariff
+    //(R_w) read from the historic_tariff_contribution table (see LoadData, tariff contribution)
+    public String tariffContributionFile;
     //Optional CSV in simulationSettings with monthly net exports (month,netExportsMWh,source), added to wholesale demand
     public String netExportsFile;
     //Optional CSV (month,slot,deviationMW,source): the half-hourly shape added to each month's mean net exports
@@ -555,6 +558,8 @@ public class Settings implements java.io.Serializable {
     public int getForecastGeneratorRetirement() { return forecast.generatorRetirement; }
 
     public String getGeneratorCorrections() { return generatorCorrections; }
+
+    public String getTariffContributionFile() { return tariffContributionFile; }
 
     public String getNetExportsFile() { return netExportsFile; }
 
