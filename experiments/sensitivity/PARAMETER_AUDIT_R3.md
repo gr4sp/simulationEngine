@@ -89,3 +89,46 @@ What changes against the table above, for this design:
 - Not traced yet, left to the pilot (mu* ~ 0 or not): whether the price-change parameters reach any generator after the
   base year (new generators from the announced list may fall on the LCOE rule), and whether `importPriceFactor` still
   never acts (the import rule and shortfall price are read from VIC.yaml in all years).
+
+## Morris pilot, after-base-year design (12 Nov 2026)
+
+700 runs (20 trajectories x 35, seed 42, base case `25d3619`: capacity path and additive tariff), indices from 2019;
+`results/morris_aby_comparison.md` and `results/morris_aby_mu_star_median.csv` (normalised median mu*). Thesis
+screening: `simulationData/eet_aby.csv` (ranks by mu*, ranked parameters only).
+
+**Inactive parameters.** Eleven parameters have normalised mu* < 0.01 in every output: the seven
+`priceChangePercentage*`, `learningCurve`, `annualInflation`, `wholesaleTariffContribution` (exactly 0) and
+`nameplateCapacityChangeBattery`. That confirms the audit for the price-change parameters, `learningCurve` and the wholesale
+share. The battery is new to the list: the capacity path tops batteries up to the ISP path, so a sampled change makes no
+difference (expected in the capacity-path note above). `importPriceFactor` acts only on the tariff (0.011).
+`nameplateCapacityChangeCcgt` is also near 0 (at most 0.02).
+The price-change parameters, `learningCurve` and `importPriceFactor` are exactly 0 for the spot price but small and nonzero
+for the tariff. After the base year the tariff's wholesale input (`Arena.getWholesalePrice`, 218-239) is the
+demand-weighted mix of the spot price and the off-market price, and the off-market price still uses LCOE base prices.
+
+**Rankings do not agree** with the thesis's in any of the four outputs (rule: rho >= 0.8 and >= 4 of the top 5 shared):
+
+| Output | rho (all thesis-ranked) | rho (inactive dropped) | top 5 shared |
+|---|---|---|---|
+| Wholesale price | 0.07 | 0.17 | 2 |
+| Tariff | 0.05 | 0.07 | 1 |
+| GHGE | 0.64 | 0.46 | 4 |
+| Renewable share | 0.52 | 0.29 | 3 |
+
+The shifts, by parameter:
+- `generationRolloutPeriod` was in the thesis's top three for every output. It now has mu* 0.01-0.03, consistent with the
+  capacity path binding.
+- `annualInflation`, `importPriceFactor` and `wholesaleTariffContribution` led the thesis's tariff and price rankings and are
+  now inactive.
+- `nameplateCapacityChangeBrownCoal` still leads price and tariff.
+- `nameplateCapacityChangeWind` is in the top two for every output.
+- `semiScheduleGenSpotMarket` stays high for GHGE and renewables.
+- New in the top five: `technologicalImprovement` (unranked in the thesis), `nameplateCapacityChangeOcgt` (price and tariff),
+  `generatorRetirement` (price) and `annualCpi` (tariff, through the CPI-indexed components).
+- GHGE is the only output whose leaders mostly carry over (`domesticConsumptionPercentage` is first in both).
+
+**Conclusion for the rerun.** The thesis's after-base-year screening and Sobol rankings cannot be carried over to the
+repaired model. A rerun should drop the 11 inactive parameters and treat the capacity-path parameters as additions above
+the ISP path. It should also add the repaired model's own inputs listed above (heat rates, fuel and carbon prices,
+must-run, water value, availabilities). The pilot is a 20-trajectory screen on one seed. Rankings within the middle of the
+list are not resolved; the leaders and the zeros are.
