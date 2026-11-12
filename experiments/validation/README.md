@@ -284,6 +284,38 @@ the register's later rows are constructed, so the question of whether its `year`
 labels are calendar or financial years is moot for 2003-2005 and 2017-2020, and
 live only for the genuine rows.
 
+### Since 12 Nov 2026: the additive tariff (`tariffComponentsFile`)
+
+The base case no longer divides the simulated wholesale price by R_w. The tariff is
+`(simulated wholesale + network + environmental + retail) x (1 + GST)`, with the three non-wholesale components taken
+from the same Oakley Greenwood tables (2001-2017) and from AEMC price trends (2018-2020, forecasts to 2022/23, then
+held in real terms) - `simulationSettings/tariff_components_VIC.csv`, built by `scripts/data/tariff_components_vic.py`.
+The AEMC years are moved to the Oakley Greenwood basis: in the 2017 overlap the two differ by 5.98 c/kWh (real 2019,
+excl. GST) in the non-wholesale part, almost all in retail, because Oakley Greenwood averages undiscounted market offers
+and AEMC prices a representative, cheaper offer. Without that adjustment the tariff steps down in 2018 for no
+physical reason (`--basis published` writes the unadjusted variant). The R_w register above is kept, unused, for the
+comparison.
+
+Why: dividing by R_w multiplies any wholesale error by 1/R_w (3-8 here), so the tariff swung between 6 and 31 c/kWh
+before 2020 and fell to 1.5-4.7 c/kWh after it. The additive rule passes wholesale errors through one for one.
+
+Seed 42, same fleet (12 Nov 2026):
+
+| Tariff row | R_w rule | Additive (base case) |
+|---|---|---|
+| vs Oakley Greenwood, 2001-02 and 2007-17 (n=13): MAE / bias / NSE / r | 16.51 / -16.51 / -9.19 / 0.58 | 4.14 / -4.14 / 0.29 / 0.93 |
+| vs St Vincent de Paul, 2010-19 (n=10): MAE / bias / NSE / r | 6.17 / -3.53 / -20.53 / 0.26 | 10.66 / +10.66 / -48.13 / 0.24 |
+
+**What the Oakley Greenwood row now tests.** The non-wholesale components come from the comparator itself, so that
+row is a test of the simulated wholesale component only: simulated minus recorded tariff is (simulated minus recorded
+wholesale component) x 1.1. Its bias (-4.14 c/kWh) is the cost-based wholesale price running below the recorded
+wholesale cost (the price row's bias), not a tariff error. It should be reported with that caveat, or replaced by a
+direct comparison of the simulated wholesale component with the recorded one (`wholesale_recorded` in the register).
+The St Vincent de Paul series measures a different quantity (about 15 c/kWh below Oakley Greenwood, see above), so the
+additive tariff, on the Oakley Greenwood basis, sits above it; the R_w rule's smaller bias there came with r = 0.26.
+2007 is the one year the components misfit: Oakley Greenwood's 2007 split (wholesale $402, retail $54) gives a
+retail component of 1.43 c/kWh, and the additive tariff is 15.1 against 23.4 recorded.
+
 ## Ensembles
 
 Two exist and are not interchangeable.

@@ -35,6 +35,14 @@ shortfallPriceFile: market_price_cap_NEM.csv
 # AEMC price trends; 1999-2000 constructed), one row per calendar year of bills, used without a lag by the January update.
 tariffContributionFile: tariff_contribution_VIC.csv
 tariffContributionLag: 0
+# Forward period (12 Nov 2026): additive tariff for the whole run, (simulated wholesale + network + environmental +
+# retail) x (1 + GST), replacing wholesale / R_w (R_w above is then unused). Components from Oakley Greenwood 2014/2017
+# and AEMC price trends 2018-2020 (forecasts to 2022/23, then held in real terms), AEMC years on the Oakley Greenwood
+# basis (scripts/data/tariff_components_vic.py). The 2019/20 information set: no later data.
+tariffComponentsFile: tariff_components_VIC.csv
+# Forward period (12 Nov 2026): utility wind, solar, battery and gas follow the AEMO 2020 ISP Central DP1 path to
+# FY2042, then hold (scripts/data/capacity_path_isp2020.py). Closures stay the database's, which agree with the ISP's.
+capacityPathFile: capacity_path_VIC.csv
 
 #ON:
 #OFF: no logging at all

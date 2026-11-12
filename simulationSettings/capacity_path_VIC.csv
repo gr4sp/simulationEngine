@@ -1,0 +1,89 @@
+# Victorian utility capacity path (MW on 1 July of fy_end - 1); built by scripts/data/capacity_path_isp2020.py
+fy_end,fuel_type,technology_type,dispatch_type,fuel_bucket_summary,capacity_mw,storage_hours,source
+2022,Battery,Storage - Battery,S,Battery Storage,93.4,2.0,AEMO 2020 ISP Central DP1
+2023,Battery,Storage - Battery,S,Battery Storage,94.3,2.0,AEMO 2020 ISP Central DP1
+2024,Battery,Storage - Battery,S,Battery Storage,95.4,2.0,AEMO 2020 ISP Central DP1
+2025,Battery,Storage - Battery,S,Battery Storage,106.6,2.0,AEMO 2020 ISP Central DP1
+2026,Battery,Storage - Battery,S,Battery Storage,120.0,2.0,AEMO 2020 ISP Central DP1
+2027,Battery,Storage - Battery,S,Battery Storage,134.6,2.0,AEMO 2020 ISP Central DP1
+2028,Battery,Storage - Battery,S,Battery Storage,150.7,2.0,AEMO 2020 ISP Central DP1
+2029,Battery,Storage - Battery,S,Battery Storage,167.5,2.0,AEMO 2020 ISP Central DP1
+2030,Battery,Storage - Battery,S,Battery Storage,203.2,2.0,AEMO 2020 ISP Central DP1
+2031,Battery,Storage - Battery,S,Battery Storage,214.3,2.0,AEMO 2020 ISP Central DP1
+2032,Battery,Storage - Battery,S,Battery Storage,227.1,2.0,AEMO 2020 ISP Central DP1
+2033,Battery,Storage - Battery,S,Battery Storage,246.3,2.0,AEMO 2020 ISP Central DP1
+2034,Battery,Storage - Battery,S,Battery Storage,207.4,2.0,AEMO 2020 ISP Central DP1
+2035,Battery,Storage - Battery,S,Battery Storage,332.5,2.0,AEMO 2020 ISP Central DP1
+2036,Battery,Storage - Battery,S,Battery Storage,375.3,2.0,AEMO 2020 ISP Central DP1
+2037,Battery,Storage - Battery,S,Battery Storage,398.3,2.0,AEMO 2020 ISP Central DP1
+2038,Battery,Storage - Battery,S,Battery Storage,424.0,2.0,AEMO 2020 ISP Central DP1
+2039,Battery,Storage - Battery,S,Battery Storage,453.2,2.0,AEMO 2020 ISP Central DP1
+2040,Battery,Storage - Battery,S,Battery Storage,486.0,2.0,AEMO 2020 ISP Central DP1
+2041,Battery,Storage - Battery,S,Battery Storage,505.5,2.0,AEMO 2020 ISP Central DP1
+2042,Battery,Storage - Battery,S,Battery Storage,2100.8,2.0,AEMO 2020 ISP Central DP1
+2021,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2022,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2023,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2024,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2025,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2026,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2027,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2028,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2029,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2030,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2031,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2032,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2033,Gas Pipeline,Turbine - OCGT,S,OCGT,2400.0,0.0,AEMO 2020 ISP Central DP1
+2034,Gas Pipeline,Turbine - OCGT,S,OCGT,2230.0,0.0,AEMO 2020 ISP Central DP1
+2035,Gas Pipeline,Turbine - OCGT,S,OCGT,2230.0,0.0,AEMO 2020 ISP Central DP1
+2036,Gas Pipeline,Turbine - OCGT,S,OCGT,2230.0,0.0,AEMO 2020 ISP Central DP1
+2037,Gas Pipeline,Turbine - OCGT,S,OCGT,2230.0,0.0,AEMO 2020 ISP Central DP1
+2038,Gas Pipeline,Turbine - OCGT,S,OCGT,2230.0,0.0,AEMO 2020 ISP Central DP1
+2039,Gas Pipeline,Turbine - OCGT,S,OCGT,2230.0,0.0,AEMO 2020 ISP Central DP1
+2040,Gas Pipeline,Turbine - OCGT,S,OCGT,1290.0,0.0,AEMO 2020 ISP Central DP1
+2041,Gas Pipeline,Turbine - OCGT,S,OCGT,1290.0,0.0,AEMO 2020 ISP Central DP1
+2042,Gas Pipeline,Turbine - OCGT,S,OCGT,1290.0,0.0,AEMO 2020 ISP Central DP1
+2021,Solar,Solar PV - Single axis tracking,SS,Solar,964.5,0.0,AEMO 2020 ISP Central DP1
+2022,Solar,Solar PV - Single axis tracking,SS,Solar,964.5,0.0,AEMO 2020 ISP Central DP1
+2023,Solar,Solar PV - Single axis tracking,SS,Solar,964.5,0.0,AEMO 2020 ISP Central DP1
+2024,Solar,Solar PV - Single axis tracking,SS,Solar,964.5,0.0,AEMO 2020 ISP Central DP1
+2025,Solar,Solar PV - Single axis tracking,SS,Solar,1064.5,0.0,AEMO 2020 ISP Central DP1
+2026,Solar,Solar PV - Single axis tracking,SS,Solar,1224.5,0.0,AEMO 2020 ISP Central DP1
+2027,Solar,Solar PV - Single axis tracking,SS,Solar,1384.5,0.0,AEMO 2020 ISP Central DP1
+2028,Solar,Solar PV - Single axis tracking,SS,Solar,1544.5,0.0,AEMO 2020 ISP Central DP1
+2029,Solar,Solar PV - Single axis tracking,SS,Solar,1704.5,0.0,AEMO 2020 ISP Central DP1
+2030,Solar,Solar PV - Single axis tracking,SS,Solar,1864.5,0.0,AEMO 2020 ISP Central DP1
+2031,Solar,Solar PV - Single axis tracking,SS,Solar,1864.5,0.0,AEMO 2020 ISP Central DP1
+2032,Solar,Solar PV - Single axis tracking,SS,Solar,1864.5,0.0,AEMO 2020 ISP Central DP1
+2033,Solar,Solar PV - Single axis tracking,SS,Solar,1864.5,0.0,AEMO 2020 ISP Central DP1
+2034,Solar,Solar PV - Single axis tracking,SS,Solar,1864.5,0.0,AEMO 2020 ISP Central DP1
+2035,Solar,Solar PV - Single axis tracking,SS,Solar,1864.5,0.0,AEMO 2020 ISP Central DP1
+2036,Solar,Solar PV - Single axis tracking,SS,Solar,2679.6,0.0,AEMO 2020 ISP Central DP1
+2037,Solar,Solar PV - Single axis tracking,SS,Solar,2679.6,0.0,AEMO 2020 ISP Central DP1
+2038,Solar,Solar PV - Single axis tracking,SS,Solar,2959.6,0.0,AEMO 2020 ISP Central DP1
+2039,Solar,Solar PV - Single axis tracking,SS,Solar,2959.6,0.0,AEMO 2020 ISP Central DP1
+2040,Solar,Solar PV - Single axis tracking,SS,Solar,2959.6,0.0,AEMO 2020 ISP Central DP1
+2041,Solar,Solar PV - Single axis tracking,SS,Solar,2959.6,0.0,AEMO 2020 ISP Central DP1
+2042,Solar,Solar PV - Single axis tracking,SS,Solar,2959.6,0.0,AEMO 2020 ISP Central DP1
+2021,Wind,Wind Turbine - Onshore,SS,Wind,3976.7,0.0,AEMO 2020 ISP Central DP1
+2022,Wind,Wind Turbine - Onshore,SS,Wind,3976.7,0.0,AEMO 2020 ISP Central DP1
+2023,Wind,Wind Turbine - Onshore,SS,Wind,4336.9,0.0,AEMO 2020 ISP Central DP1
+2024,Wind,Wind Turbine - Onshore,SS,Wind,4336.9,0.0,AEMO 2020 ISP Central DP1
+2025,Wind,Wind Turbine - Onshore,SS,Wind,4336.9,0.0,AEMO 2020 ISP Central DP1
+2026,Wind,Wind Turbine - Onshore,SS,Wind,4556.7,0.0,AEMO 2020 ISP Central DP1
+2027,Wind,Wind Turbine - Onshore,SS,Wind,5036.7,0.0,AEMO 2020 ISP Central DP1
+2028,Wind,Wind Turbine - Onshore,SS,Wind,5516.7,0.0,AEMO 2020 ISP Central DP1
+2029,Wind,Wind Turbine - Onshore,SS,Wind,5996.7,0.0,AEMO 2020 ISP Central DP1
+2030,Wind,Wind Turbine - Onshore,SS,Wind,6476.7,0.0,AEMO 2020 ISP Central DP1
+2031,Wind,Wind Turbine - Onshore,SS,Wind,6476.7,0.0,AEMO 2020 ISP Central DP1
+2032,Wind,Wind Turbine - Onshore,SS,Wind,6476.7,0.0,AEMO 2020 ISP Central DP1
+2033,Wind,Wind Turbine - Onshore,SS,Wind,6476.7,0.0,AEMO 2020 ISP Central DP1
+2034,Wind,Wind Turbine - Onshore,SS,Wind,6424.2,0.0,AEMO 2020 ISP Central DP1
+2035,Wind,Wind Turbine - Onshore,SS,Wind,6424.2,0.0,AEMO 2020 ISP Central DP1
+2036,Wind,Wind Turbine - Onshore,SS,Wind,6424.2,0.0,AEMO 2020 ISP Central DP1
+2037,Wind,Wind Turbine - Onshore,SS,Wind,6424.2,0.0,AEMO 2020 ISP Central DP1
+2038,Wind,Wind Turbine - Onshore,SS,Wind,6357.0,0.0,AEMO 2020 ISP Central DP1
+2039,Wind,Wind Turbine - Onshore,SS,Wind,5937.0,0.0,AEMO 2020 ISP Central DP1
+2040,Wind,Wind Turbine - Onshore,SS,Wind,5915.5,0.0,AEMO 2020 ISP Central DP1
+2041,Wind,Wind Turbine - Onshore,SS,Wind,6056.7,0.0,AEMO 2020 ISP Central DP1
+2042,Wind,Wind Turbine - Onshore,SS,Wind,6056.7,0.0,AEMO 2020 ISP Central DP1

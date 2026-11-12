@@ -1533,6 +1533,71 @@ public class LoadData implements java.io.Serializable {
         return corrections;
     }
 
+    /**
+     * Capacity path (opt-in capacityPathFile, e.g. capacity_path_VIC.csv from the AEMO 2020 ISP): for each fuel in the
+     * file and each year from its first row to the end of the run, if the large generators in service on 1 July of
+     * (fy_end - 1) add up to less than the path's capacity for that fuel, a generic unit with the difference starts that
+     * day and runs to the end of the simulation. After the file's last year its last capacity holds, so retirements are
+     * replaced. Capacity is never removed. Generic units take the row's technology, dispatch type and fuel bucket, so the
+     * fuel's generator parameters (offer rule, availability) apply as to any other unit; storage gets capacity x hours.
+     */
+    public static void addCapacityPath(Gr4spSim data, ArrayList<Generator> gens) {
+        String name = data.settings.getCapacityPathFile();
+        if (name == null) return;
+        java.nio.file.Path file = java.nio.file.Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings").resolve(name);
+        //fuel -> (fy_end -> row fields)
+        Map<String, TreeMap<Integer, String[]>> path = new LinkedHashMap<>();
+        try {
+            List<String> lines = java.nio.file.Files.readAllLines(file);
+            boolean header = true;
+            for (String line : lines) {
+                if (line.isBlank() || line.startsWith("#")) continue;
+                if (header) { header = false; continue; }
+                String[] f = line.split(",", 8);
+                path.computeIfAbsent(f[1].trim(), k -> new TreeMap<>()).put(Integer.parseInt(f[0].trim()), f);
+            }
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Cannot read capacity path " + file, e);
+        }
+        Calendar end = Calendar.getInstance();
+        end.setTime(data.getEndSimDate());
+        int lastYear = end.get(Calendar.YEAR);
+        int fuelIndex = 0;
+        ArrayList<Generator> added = new ArrayList<>();
+        for (Map.Entry<String, TreeMap<Integer, String[]>> e : path.entrySet()) {
+            String fuel = e.getKey();
+            TreeMap<Integer, String[]> rows = e.getValue();
+            fuelIndex++;
+            for (int fy = rows.firstKey(); fy <= lastYear; fy++) {
+                String[] r = rows.floorEntry(fy).getValue();
+                double target = Double.parseDouble(r[5].trim());
+                Calendar c = Calendar.getInstance();
+                c.clear();
+                c.set(fy - 1, Calendar.JULY, 1);
+                Date day = c.getTime();
+                double inService = 0.0;
+                for (Generator g : gens) {
+                    if (!g.getFuelSourceDescriptor().equalsIgnoreCase(fuel)) continue;
+                    if (!g.getStart().after(day) && g.getEnd() != null && g.getEnd().after(day)) inService += g.getMaxCapacity();
+                }
+                double deficit = target - inService;
+                if (deficit < 1.0) continue;
+                double hours = Double.parseDouble(r[6].trim());
+                int idGen = 900000000 + fuelIndex * 10000 + fy;
+                Generator gen = new Generator(idGen, data.settings.getAreaCode(), "Capacity path",
+                        "Capacity path " + fuel + " FY" + fy, "Capacity path", r[2].trim(), fuel, deficit, r[3].trim(),
+                        day, data.getEndSimDate(), null, "PATH" + idGen, 1, deficit * hours, r[4].trim(),
+                        "Capacity path", data.settings);
+                data.getGen_register().computeIfAbsent(idGen, k -> new Vector<>()).add(gen);
+                data.setNumGenerators(data.getNumGenerators() + 1);
+                gens.add(gen);
+                added.add(gen);
+            }
+        }
+        for (Generator g : added) data.applyGeneratorParameters(g);
+        data.LOGGER.info("Capacity path " + name + ": " + added.size() + " generic units added");
+    }
+
     public static ArrayList<Generator> selectGenTech(Gr4spSim data, String min_nameplate_capacity, String max_nameplate_capacity) {
 
 
@@ -1904,6 +1969,7 @@ public class LoadData implements java.io.Serializable {
                 switch (idSpmActor) {
                     case 9: //ID for Generators connected at the large gen unit SPM (generators with minimum 30 MW inclusive)
                         gens = LoadData.selectGenTech(data, "30", "100000");
+                        LoadData.addCapacityPath(data, gens);
                         break;
                     case 5: //ID for Generators connected at the Distribution SPM. Generators with minimum 100KW inclusive and max 30 MW non inclusive.
                         gens = LoadData.selectGenTech(data, "0.1", "30");

@@ -172,6 +172,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //Station parameter overrides (name prefix, parameter, value) and the consumer price index by year
     private List<String[]> generatorParameters = new ArrayList<>();
     private TreeMap<Integer, Double> cpi = new TreeMap<>();
+    //Additive tariff components by calendar year of bills: {network, environmental, retail, gst_rate} (tariffComponentsFile)
+    private TreeMap<Integer, double[]> tariffComponents = new TreeMap<>();
     //Interconnector import blocks (link,from,to,importMW,heatRate,fuel,VOM,emissions,waterValueFactor,lossFactor)
     //and the market price cap by start date (yyyy-MM-dd); both empty unless set
     private List<String[]> interconnectors = new ArrayList<>();
@@ -347,6 +349,15 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     if (line.isBlank() || line.startsWith("#")) continue;
                     String[] f = line.split(",", 4);
                     generatorParameters.add(new String[]{f[0].trim(), f[1].trim(), f[2].trim()});
+                }
+            }
+            if (settings.getTariffComponentsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getTariffComponentsFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 6);
+                    tariffComponents.put(Integer.parseInt(f[0].trim()), new double[]{Double.parseDouble(f[1].trim()),
+                            Double.parseDouble(f[2].trim()), Double.parseDouble(f[3].trim()), Double.parseDouble(f[4].trim())});
                 }
             }
             if (settings.getCpiFile() != null) {
@@ -858,6 +869,14 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     }
 
     public HashMap<Date, Float> getCpi_conversion() { return cpi_conversion; }
+
+    public boolean hasTariffComponents() { return !tariffComponents.isEmpty(); }
+
+    //Row of the bills of `year`; years after the last row hold it, years before the first take the first
+    public double[] getTariffComponents(int year) {
+        Map.Entry<Integer, double[]> e = tariffComponents.floorEntry(year);
+        return (e != null ? e : tariffComponents.firstEntry()).getValue();
+    }
 
     public HashMap<Integer, Float> getAnnual_inflation() { return annual_inflation; }
 

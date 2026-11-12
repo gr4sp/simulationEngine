@@ -187,7 +187,13 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 }
                 avgWholesalePrice /= nmonths;
 
-                this.currentTariff = (float) avgWholesalePrice / wholesalePriceComponent;
+                if (data.hasTariffComponents()) {
+                    //Additive tariff: simulated wholesale plus the recorded network, environmental and retail
+                    //components (real January-2019 c/kWh excl. GST), plus GST
+                    double[] k = data.getTariffComponents(year);
+                    this.currentTariff = (float) ((avgWholesalePrice + k[0] + k[1] + k[2]) * (1.0 + k[3]));
+                } else
+                    this.currentTariff = (float) avgWholesalePrice / wholesalePriceComponent;
 
 
             }

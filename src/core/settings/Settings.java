@@ -185,12 +185,19 @@ public class Settings implements java.io.Serializable {
     public ForecastSetting forecast;
     //Optional CSV in simulationSettings with corrections to the generationassets table (see LoadData.readGeneratorCorrections)
     public String generatorCorrections;
+    //Optional CSV in simulationSettings with a capacity path by fuel (fy_end,fuel_type,...,capacity_mw,storage_hours,source):
+    //generic units top each fuel up to the path (see LoadData.addCapacityPath); null = generationassets only
+    public String capacityPathFile;
     //Optional CSV in simulationSettings (year,wholesale,status,source): rows replace the wholesale share of the tariff
     //(R_w) read from the historic_tariff_contribution table (see LoadData, tariff contribution)
     public String tariffContributionFile;
     //Years between the January tariff update and the register row it uses: 1 (default) = the previous year's row,
     //0 = the row of the bills in force that year (rows are calendar years of bills)
     public int tariffContributionLag = 1;
+    //Optional CSV in simulationSettings (year,network,environmental,retail,gst_rate,...; real January-2019 c/kWh excl.
+    //GST): when set, the tariff is additive, (simulated wholesale + network + environmental + retail) x (1 + gst_rate),
+    //instead of simulated wholesale / R_w. Row year - tariffContributionLag; years after the last row hold it.
+    public String tariffComponentsFile;
     //Optional CSV in simulationSettings with monthly net exports (month,netExportsMWh,source), added to wholesale demand
     public String netExportsFile;
     //Optional CSV (month,slot,deviationMW,source): the half-hourly shape added to each month's mean net exports
@@ -562,9 +569,13 @@ public class Settings implements java.io.Serializable {
 
     public String getGeneratorCorrections() { return generatorCorrections; }
 
+    public String getCapacityPathFile() { return capacityPathFile; }
+
     public String getTariffContributionFile() { return tariffContributionFile; }
 
     public int getTariffContributionLag() { return tariffContributionLag; }
+
+    public String getTariffComponentsFile() { return tariffComponentsFile; }
 
     public String getNetExportsFile() { return netExportsFile; }
 
