@@ -1534,12 +1534,33 @@ public class LoadData implements java.io.Serializable {
     }
 
     /**
+     * Commissioning date of a project planned for {@code planned}, shifted by the commissioning delay
+     * (settingsAfterBaseYear forecast.commissioningDelay, whole months). Only projects planned after the base year move,
+     * and an earlier date (negative delay) stops at the base year, or at {@code floor} when that is later.
+     */
+    static Date commissioningDate(Gr4spSim data, Date planned, Date floor) {
+        int months = data.settingsAfterBaseYear == null ? 0 : data.settingsAfterBaseYear.getForecastCommissioningDelayMonths();
+        Date base = data.getBaseYearForecastDate();
+        if (months == 0 || planned == null || base == null || !planned.after(base)) return planned;
+        Calendar c = Calendar.getInstance();
+        c.setTime(planned);
+        c.add(Calendar.MONTH, months);
+        Date min = (floor != null && floor.after(base)) ? floor : base;
+        return c.getTime().before(min) ? min : c.getTime();
+    }
+
+    static Date commissioningDate(Gr4spSim data, Date planned) {
+        return commissioningDate(data, planned, null);
+    }
+
+    /**
      * Capacity path (opt-in capacityPathFile, e.g. capacity_path_VIC.csv from the AEMO 2020 ISP): for each fuel in the
      * file and each year from its first row to the end of the run, if the large generators in service on 1 July of
      * (fy_end - 1) add up to less than the path's capacity for that fuel, a generic unit with the difference starts that
      * day and runs to the end of the simulation. After the file's last year its last capacity holds, so retirements are
      * replaced. Capacity is never removed. Generic units take the row's technology, dispatch type and fuel bucket, so the
      * fuel's generator parameters (offer rule, availability) apply as to any other unit; storage gets capacity x hours.
+     * Each step is sized on its planned date (by the planned start of every unit) and arrives commissioningDelay later.
      */
     public static void addCapacityPath(Gr4spSim data, ArrayList<Generator> gens) {
         String name = data.settings.getCapacityPathFile();
@@ -1568,26 +1589,34 @@ public class LoadData implements java.io.Serializable {
             String fuel = e.getKey();
             TreeMap<Integer, String[]> rows = e.getValue();
             fuelIndex++;
+            Calendar c0 = Calendar.getInstance();
+            c0.clear();
+            c0.set(rows.firstKey() - 1, Calendar.JULY, 1);
+            Date firstDay = c0.getTime();
             for (int fy = rows.firstKey(); fy <= lastYear; fy++) {
                 String[] r = rows.floorEntry(fy).getValue();
                 double target = Double.parseDouble(r[5].trim());
                 Calendar c = Calendar.getInstance();
                 c.clear();
                 c.set(fy - 1, Calendar.JULY, 1);
+                //The step is sized on its planned date (capacity planned to be in service then) and arrives after the
+                //commissioning delay, never before the path's first day
                 Date day = c.getTime();
+                Date arrival = commissioningDate(data, day, firstDay);
                 double inService = 0.0;
                 for (Generator g : gens) {
                     if (!g.getFuelSourceDescriptor().equalsIgnoreCase(fuel)) continue;
-                    if (!g.getStart().after(day) && g.getEnd() != null && g.getEnd().after(day)) inService += g.getMaxCapacity();
+                    if (!g.getPlannedStart().after(day) && g.getEnd() != null && g.getEnd().after(day)) inService += g.getMaxCapacity();
                 }
                 double deficit = target - inService;
-                if (deficit < 1.0) continue;
+                if (deficit < 1.0 || arrival.after(data.getEndSimDate())) continue;
                 double hours = Double.parseDouble(r[6].trim());
                 int idGen = 900000000 + fuelIndex * 10000 + fy;
                 Generator gen = new Generator(idGen, data.settings.getAreaCode(), "Capacity path",
                         "Capacity path " + fuel + " FY" + fy, "Capacity path", r[2].trim(), fuel, deficit, r[3].trim(),
-                        day, data.getEndSimDate(), null, "PATH" + idGen, 1, deficit * hours, r[4].trim(),
+                        arrival, data.getEndSimDate(), null, "PATH" + idGen, 1, deficit * hours, r[4].trim(),
                         "Capacity path", data.settings);
+                gen.setPlannedStart(day);
                 data.getGen_register().computeIfAbsent(idGen, k -> new Vector<>()).add(gen);
                 data.setNumGenerators(data.getNumGenerators() + 1);
                 gens.add(gen);
@@ -1686,6 +1715,9 @@ public class LoadData implements java.io.Serializable {
                             System.err.println("Cannot parse Start Date: " + e.toString());
                         }
                         cStartDate.add(Calendar.YEAR, year);
+                        //Planned date of this tranche, and the date it arrives after the commissioning delay
+                        Date plannedStart = cStartDate.getTime();
+                        cStartDate.setTime(commissioningDate(data, plannedStart));
 
 
                         int idGen = (rs.getInt("asset_id") *1000) +year;
@@ -1720,6 +1752,7 @@ public class LoadData implements java.io.Serializable {
                         data.setNumGenerators(data.getNumGenerators() + 1);
 
                         //Add gen to ArrayList<Generator>. This will be used in the constructor of SPM
+                        gen.setPlannedStart(plannedStart);
                         gens.add(gen);
                     }
                 }

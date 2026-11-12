@@ -1,0 +1,71 @@
+asset_id,site_name,fuel,mw,db_status,expected,status_2025,actual,date_source,outcome,slip_months,note
+276,Lal Lal Wind Energy Facility - Yendon end,Wind,144.4,Committed,2019-12-01,In Service,2021-01-01,full commercial use date,built,13.0,"Lal Lal Yendon end, renamed 12 Nov 2019"
+282,Yatpool Solar Farm,Solar,94.0,Committed,2019-12-01,In Service,2022-01-21,"change log, in service",built,25.7,both Yatpool rows in service 21 Jan 2022 (change log)
+201,Murra Warra Wind Farm - stage 1,Wind,225.7,Committed,2020-01-01,In Service,2021-09-01,full commercial use date,built,20.0,
+275,Lal Lal Wind Energy Facility - Elaine end,Wind,83.6,Committed,2020-02-01,In Service,2020-12-01,full commercial use date,built,10.0,"Lal Lal Elaine end, renamed 12 Nov 2019"
+277,Bulgana Green Power Hub - BESS,Battery,20.0,Committed,2020-02-08,In Service,2021-11-01,full commercial use date,built,20.8,
+297,Stockyard Hill Wind Farm,Wind,531.93,Committed,2020-05-01,In Service,2022-05-01,full commercial use date,built,24.0,
+295,Moorabool Wind Farm,Wind,320.32,Committed,2020-06-01,In Service,2022-07-01,full commercial use date,built,25.0,
+301,Cherry Tree Wind Farm,Wind,57.6,Committed,2020-06-01,In Service,2020-07-01,full commercial use date,built,1.0,
+305,Dundonnell Wind Farm,Wind,336.0,Committed,2020-07-01,In Service,2022-06-01,full commercial use date,built,23.0,
+278,Bulgana Green Power Hub - Wind Farm,Wind,204.4,Committed,2021-01-08,In Service,2021-11-01,full commercial use date,built,9.8,
+317,Winton Asset Co. Pty Ltd as Trustee of the Winton Asset Trust,Solar,85.0,Committed,2021-03-01,In Service,2022-06-15,"change log, in service",built,15.5,database site name is the owner (Winton Asset Co.)
+283,Yatpool Solar Farm,Solar,44.0,Committed,2021-03-01,In Service,2022-01-21,"change log, in service",built,10.7,as 282
+280,Kiamal Solar Farm - Stage 1,Solar,200.0,Committed*,2020-03-08,In Service,2022-01-01,full commercial use date,built,21.8,
+281,Cohuna Solar Farm,Solar,31.103,Committed*,2020-04-01,In Commissioning,,,in_progress,,"In Service Jul 2023, back to In Commissioning Oct 2024"
+293,Berrybank Wind Farm,Wind,180.6,Emerging,2020-03-01,In Service,2021-04-01,full commercial use date,built,13.0,stage 1
+303,Carwarp Solar Farm - Stage I,Solar,100.0,Emerging,2020-06-12,Publicly Announced,,,announced,,
+308,Mortlake South Wind Farm,Wind,157.5,Emerging,2020-08-04,In Service,2023-05-01,full commercial use date,built,32.9,
+331,Kiamal Solar Farm - Stage 2,Solar,149.96,Emerging,2022-01-01,,,,dropped,,Kiamal stage 2 no longer listed (only a Kiamal BESS)
+100,Mt Gellibrand Wind Farm,Wind,69.3,In Commissioning,2018-08-01,In Service,2018-07-01,full commercial use date,built,-1.0,
+154,Crowlands Wind Farm,Wind,79.95,In Commissioning,2020-01-01,In Service,2020-11-12,"change log, in service",built,10.4,
+285,Gannawarra Energy Storage System,Battery,25.33,In Commissioning,2020-01-01,In Service,,,built,,commissioning from Jan 2019; no in-service date recorded
+284,Congupna Solar Farm,Solar,68.0,Publically Announced,2020-01-01,,,,dropped,,no longer listed
+288,Wangaratta Solar Farm,Solar,22.0,Publically Announced,2020-01-01,,,,dropped,,removed 15 Apr 2025 (out-of-date non-scheduled project)
+289,Nowingi Solar Storage - Storage,Battery,80.0,Publically Announced,2020-01-02,Publicly Announced,,,announced,,
+290,Murra Warra Solar Farm,Solar,200.0,Publically Announced,2020-01-06,,,,dropped,,no longer listed
+291,Prairie,Solar,250.0,Publically Announced,2020-01-06,Publicly Announced,2027-10-01,full commercial use date,announced,92.8,
+292,Nhill Wind Farm,Wind,7.2,Publically Announced,2020-02-06,In Service,2021-10-01,full commercial use date,built,19.8,renamed Diapur 15 Oct 2021
+294,Berrybank Wind Farm,Wind,151.2,Publically Announced,2020-03-01,In Service,2022-08-01,full commercial use date,built,29.0,stage 2
+296,Mortlake,Gas Pipeline,200.0,Publically Announced,2020-04-01,Publicly Announced,,,announced,,third OCGT unit
+298,Glenrowan Sun Farm,Solar,110.0,Publically Announced,2020-05-12,In Service,2021-04-01,full commercial use date,built,10.6,Glenrowan West Sun Farm in the change log
+302,Carisbrook Solar Farm,Solar,90.0,Publically Announced,2020-06-12,,,,dropped,,discontinued 31 Oct 2024
+304,AusNet Services Deakin University Victoria Geelong PV Plant,Solar,7.25,Publically Announced,2020-07-01,,,,dropped,,removed 15 Apr 2025
+306,Naring Solar Farm,Solar,60.0,Publically Announced,2020-07-01,,,,dropped,,no longer listed
+307,Shepparton Solar Farm,Solar,100.0,Publically Announced,2020-08-01,,,,dropped,,discontinued 22 Jul 2022
+279,Ouyen Solar Farm,Solar,10.0,Publically Announced,2020-10-08,,,,dropped,,no longer listed
+313,Glenrowan Solar Farm,Solar,102.0,Publically Announced,2021-01-01,In Service,2024-02-01,full commercial use date,built,37.0,
+309,Alberton Wind Farm,Wind,122.4,Publically Announced,2021-01-01,Publicly Announced,,,announced,,
+310,Ben More,Wind,90.0,Publically Announced,2021-01-01,,,,dropped,,discontinued 15 Jun 2022
+311,Ferguson Wind Farm,Wind,9.0,Publically Announced,2021-01-01,In Service,2021-04-01,full commercial use date,built,3.0,
+312,Girgarre Solar Farm,Solar,118.0,Publically Announced,2021-01-01,In Commissioning,2025-03-01,full commercial use date,in_progress,50.0,
+314,Horsham Solar Farm,Solar,130.0,Publically Announced,2021-01-01,Committed,2026-12-01,full commercial use date,in_progress,71.0,
+315,Warracknabeal Wind Farm,Wind,49.995,Publically Announced,2021-01-01,Publicly Announced,,,announced,,
+316,Willatook,Wind,284.988,Publically Announced,2021-01-01,Publicly Announced,,,announced,,
+318,Wunghnu Solar Farm,Solar,102.0,Publically Announced,2021-01-01,In Commissioning,2025-03-01,full commercial use date,in_progress,50.0,
+319,Mount Fyans,Wind,399.5,Publically Announced,2021-01-05,Publicly Announced,,,announced,,
+320,Murra Warra Wind Farm - stage 2,Wind,209.0,Publically Announced,2021-01-08,In Service,2022-10-01,full commercial use date,built,20.8,
+321,Kerang Solar Farm,Solar,37.1,Publically Announced,2021-01-25,,,,dropped,,no longer listed (a Kerang BESS and hybrid are)
+322,Mallee Solar Farm,Solar,250.0,Publically Announced,2021-02-02,,,,dropped,,discontinued 15 Jun 2022
+323,Mildura Power Station,Solar,9.6,Publically Announced,2021-04-01,Publicly Announced,,,announced,,
+324,Tarrone Wind Farm,Wind,0.0,Publically Announced,2021-06-01,,,,dropped,,0 MW in the database; no longer listed
+325,Carwarp Solar Farm - Stage II,Solar,200.0,Publically Announced,2021-06-03,Publicly Announced,,,announced,,
+326,Star of The South,Wind,2000.0,Publically Announced,2021-06-06,Publicly Announced,2032-03-01,full commercial use date,announced,128.8,
+327,GV Community Energy,Solar,12.0,Publically Announced,2021-07-01,,,,dropped,,removed 15 Apr 2025
+328,Ryan Corner Wind Farm,Wind,235.2,Publically Announced,2021-07-08,In Commissioning,2024-10-01,full commercial use date,in_progress,38.8,
+329,Nowingi Solar Storage - Solar,Solar,250.0,Publically Announced,2021-07-12,Publicly Announced,,,announced,,
+245,Inverleigh Solar Farm,Solar,22.0,Publically Announced,2021-09-15,Publicly Announced,,,announced,,
+330,Golden Plains Wind Farm,Wind,950.08,Publically Announced,2022-01-01,In Commissioning,2025-12-01,full commercial use date,in_progress,47.0,East stage (762 MW); West (557 MW) committed for Feb 2027
+332,Port Phillip Heads Tidal Energy Project,Water,34.0,Publically Announced,2022-01-01,,,,dropped,,no longer listed
+333,Tarrone GT,Gas Pipeline,550.0,Publically Announced,2022-01-01,Publicly Announced,,,announced,,
+334,Hawkesdale Wind Farm,Wind,109.2,Publically Announced,2022-02-01,In Service,2024-10-01,full commercial use date,built,32.0,
+335,Woolsthorpe Wind Farm,Wind,73.0,Publically Announced,2022-02-02,Anticipated,2027-01-01,full commercial use date,in_progress,59.0,
+336,Rifle Butts Wind Farm,Wind,40.0,Publically Announced,2022-02-03,Publicly Announced,,,announced,,
+337,Moira Solar Farm,Solar,80.0,Publically Announced,2022-04-01,,,,duplicate,,renamed Wunghnu Solar Farm 18 Jul 2019; the database has both
+338,Berrimal Wind Farm,Wind,72.0,Publically Announced,2022-06-06,,,,dropped,,discontinued 15 Apr 2025
+339,Darlington Wind Farm,Wind,0.0,Publically Announced,2022-10-10,Publicly Announced,,,announced,,0 MW in the database
+341,Inverleigh Wind Farm,Wind,84.8,Publically Announced,2024-01-01,Anticipated,,,in_progress,,
+340,Hexham,Wind,700.0,Publically Announced,2024-01-01,Publicly Announced,,,announced,,
+342,Inverliegh Wind Farm Storage,Battery,12.0,Publically Announced,2024-01-01,,,,dropped,,no longer listed
+344,Penshurst,Wind,198.052,Publically Announced - cancelled?,2024-01-01,,,,dropped,,discontinued 31 Oct 2022
+343,Naroghid,Wind,50.0,Publically Announced - cancelled?,2024-01-01,,,,dropped,,discontinued 15 Apr 2025

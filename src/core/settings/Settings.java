@@ -165,6 +165,9 @@ class ForecastSetting implements java.io.Serializable {
     public double technologicalImprovement;
     public double learningCurve;
     public int generationRolloutPeriod;
+    //Years (fractions allowed, applied in whole months) by which projects due after the base year are commissioned
+    //later than planned (> 0) or earlier (< 0): pipeline projects of generationassets and the capacity path's additions
+    public double commissioningDelay;
     public double solarInstallCapacity;
     public double importPriceFactor;
 
@@ -612,6 +615,9 @@ public class Settings implements java.io.Serializable {
     public double getLearningCurve() { return forecast.learningCurve; }
 
     public int getForecastGenerationRolloutPeriod() { return forecast.generationRolloutPeriod; }
+    public int getForecastCommissioningDelayMonths() { return (int) Math.round(forecast.commissioningDelay * 12.0); }
+    public double getForecastCommissioningDelay() { return forecast.commissioningDelay; }
+    public void setForecastCommissioningDelay(double years) { forecast.commissioningDelay = years; }
 
     public double getForecastSolarInstallCapacity() { return forecast.solarInstallCapacity; }
 

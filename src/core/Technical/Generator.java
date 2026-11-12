@@ -114,6 +114,8 @@ public class Generator implements java.io.Serializable, Asset {
 
     //Start and end of operations
     private Date start;
+    //Date the project was planned to start; differs from start when commissioningDelay moves it (null = start)
+    private Date plannedStart;
     private int startYear;
     private Date end;
 
@@ -647,6 +649,14 @@ public class Generator implements java.io.Serializable, Asset {
 
     public Date getStart() {
         return start;
+    }
+
+    public Date getPlannedStart() {
+        return plannedStart != null ? plannedStart : start;
+    }
+
+    public void setPlannedStart(Date plannedStart) {
+        this.plannedStart = plannedStart;
     }
 
     public Date getEnd() {

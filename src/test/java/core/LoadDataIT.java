@@ -116,6 +116,54 @@ public class LoadDataIT {
         }
     }
 
+    /** Start date of the first generator with this name in a list, or null. */
+    private static java.util.Date startOf(ArrayList<Generator> gens, String name) {
+        for (Generator g : gens) if (name.equals(g.getName())) return g.getStart();
+        return null;
+    }
+
+    @Test
+    void commissioningDelayShiftsPipelineAndCapacityPath() {
+        java.text.SimpleDateFormat f = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        double saved = sim.settingsAfterBaseYear.getForecastCommissioningDelay();
+        try {
+            sim.settingsAfterBaseYear.setForecastCommissioningDelay(0.0);
+            ArrayList<Generator> onTime = LoadData.selectGenTech(sim, "30", "100000");
+            LoadData.addCapacityPath(sim, onTime);
+            sim.settingsAfterBaseYear.setForecastCommissioningDelay(1.5);
+            ArrayList<Generator> late = LoadData.selectGenTech(sim, "30", "100000");
+            LoadData.addCapacityPath(sim, late);
+            sim.settingsAfterBaseYear.setForecastCommissioningDelay(-2.0);
+            ArrayList<Generator> early = LoadData.selectGenTech(sim, "30", "100000");
+            LoadData.addCapacityPath(sim, early);
+
+            // Committed project due 1 May 2020 (after the base year): moves 18 months; earlier stops at the base year
+            assertEquals("2020-05-01", f.format(startOf(onTime, "Stockyard Hill Wind Farm")));
+            assertEquals("2021-11-01", f.format(startOf(late, "Stockyard Hill Wind Farm")));
+            assertEquals("2019-01-01", f.format(startOf(early, "Stockyard Hill Wind Farm")));
+            // Project due before the base year does not move
+            assertEquals(f.format(startOf(onTime, "Mt Gellibrand Wind Farm")), f.format(startOf(late, "Mt Gellibrand Wind Farm")));
+            // Existing plant does not move
+            assertEquals(f.format(startOf(onTime, "Loy Yang A Power Station")), f.format(startOf(late, "Loy Yang A Power Station")));
+            // Capacity path step planned for 1 July 2026 (FY2027 wind): 18 months later, or 2 years earlier
+            assertEquals("2026-07-01", f.format(startOf(onTime, "Capacity path Wind FY2027")));
+            assertEquals("2028-01-01", f.format(startOf(late, "Capacity path Wind FY2027")));
+            assertEquals("2024-07-01", f.format(startOf(early, "Capacity path Wind FY2027")));
+            // The plan's sizes do not change with the delay, only the arrival dates
+            for (Generator g : onTime)
+                if (g.getName().startsWith("Capacity path") && g.getName().endsWith("FY2027"))
+                    for (Generator h : late)
+                        if (h.getName().equals(g.getName()))
+                            assertEquals(g.getMaxCapacity(), h.getMaxCapacity(), 1e-6, g.getName());
+            // Earlier steps never move before the path's first day (1 July 2020)
+            for (Generator g : early)
+                if (g.getName().startsWith("Capacity path"))
+                    assertFalse(g.getStart().before(java.sql.Date.valueOf("2020-07-01")), g.getName());
+        } finally {
+            sim.settingsAfterBaseYear.setForecastCommissioningDelay(saved);
+        }
+    }
+
     @Test
     void selectNetworkReturnsAssetsWithSaneLosses() {
         for (String subname : new String[]{"distribution", "transmission"}) {

@@ -1,0 +1,11 @@
+fuel,fy_end,installed_mw,isp2020_path_mw,path_fy_matching_installed
+Wind,2021,1804,3977,
+Wind,2022,2324,3977,
+Wind,2023,3937,4337,
+Wind,2024,4413,4337,2025.0
+Wind,2025,4413,4337,2025.0
+Solar,2021,458,964,
+Solar,2022,590,964,
+Solar,2023,969,964,2024.0
+Solar,2024,969,964,2024.0
+Solar,2025,1095,1064,2025.0
