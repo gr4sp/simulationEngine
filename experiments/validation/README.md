@@ -303,7 +303,7 @@ Seed 42, same fleet (12 Nov 2026):
 
 | Tariff row | R_w rule | Additive (base case) |
 |---|---|---|
-| vs Oakley Greenwood, 2001-02 and 2007-17 (n=13): MAE / bias / NSE / r | 16.51 / -16.51 / -9.19 / 0.58 | 4.14 / -4.14 / 0.29 / 0.93 |
+| vs Oakley Greenwood, 2001-02 and 2007-17 (n=13): MAE / bias / NSE / r | 16.51 / -16.51 / -9.19 / 0.58 | 3.61 / -3.61 / 0.46 / 0.95 (2007 retail as published: 4.14 / -4.14 / 0.29 / 0.93) |
 | vs St Vincent de Paul, 2010-19 (n=10): MAE / bias / NSE / r | 6.17 / -3.53 / -20.53 / 0.26 | 10.66 / +10.66 / -48.13 / 0.24 |
 
 **What the Oakley Greenwood row now tests.** The non-wholesale components come from the comparator itself, so that
@@ -314,7 +314,11 @@ direct comparison of the simulated wholesale component with the recorded one (`w
 The St Vincent de Paul series measures a different quantity (about 15 c/kWh below Oakley Greenwood, see above), so the
 additive tariff, on the Oakley Greenwood basis, sits above it; the R_w rule's smaller bias there came with r = 0.26.
 2007 is the one year the components misfit: Oakley Greenwood's 2007 split (wholesale $402, retail $54) gives a
-retail component of 1.43 c/kWh, and the additive tariff is 15.1 against 23.4 recorded.
+retail component of 1.43 c/kWh (the residual, squeezed by the drought year's recorded wholesale), and the additive
+tariff was 15.1 against 23.4 recorded. Since 12 Nov (Angela) the 2007 retail component is interpolated between 2006 and
+2008 (7.67 c/kWh, status `constructed` in the register); the 2007 tariff is 22.0 c/kWh and nothing else in the run
+changes (prices and generation identical, seeds 42/7/99). For 2007 the Oakley Greenwood row is then no longer a pure
+wholesale test, since its retail component is no longer the comparator's own.
 
 ## Ensembles
 

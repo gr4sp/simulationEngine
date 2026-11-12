@@ -34,6 +34,8 @@ Sources (all files in Sandbox/papers/GR4SPArticle_ERSS/data/)
 
 Years with no source
     1999-2000: 2001 carried back (as the R_w register does); GST 0 in 1999, 0.05 in 2000 (GST from 1 July 2000).
+    2007 retail: interpolated between 2006 and 2008 (OG17's residual retail is squeezed to $54/yr by the drought
+    year's recorded wholesale); status "constructed".
     After 2023 the model holds the last row (2023 = 2022/23) constant in real terms: the 2019/20 information set.
 
 Real dollars: real 2016$/2014$ and nominal year-Y values are moved to 2019$ with the Melbourne CPI
@@ -166,6 +168,14 @@ for y, vals in OG14.items():
     rows[y] = og_row(y, vals, 2014, "OG14 Table 2 (2014$)")
 for y, (keys, label) in AEMC_YEARS.items():
     rows[y] = aemc_row(y, keys, label)
+# 2007 retail: OG17 records $54/yr (other years $300-420) because the drought year's recorded wholesale ($402) squeezed
+# the residual retail line. Paired with a simulated wholesale it would drop the tariff by ~7 c/kWh, so the retail line
+# is interpolated between 2006 and 2008 (Angela, 12 Nov 2026); the recorded wholesale and bill columns stay as published.
+r07 = rows[2007]
+r07["retail_recorded"] = r07["retail"]
+r07["retail"] = (rows[2006]["retail"] + rows[2008]["retail"]) / 2.0
+r07["status"] = "constructed"
+r07["source"] += f"; retail interpolated 2006-2008 (OG17 residual {r07['retail_recorded']:.3f}, squeezed by the 2007 wholesale)"
 for y, gst in ((1999, 0.0), (2000, 0.05)):
     r = dict(rows[2001])
     r.update(year=y, gst_rate=gst, status="constructed",
