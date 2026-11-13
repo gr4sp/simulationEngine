@@ -108,7 +108,16 @@ Two checks were made:
   script. Without that de-duplication, the first pass over-stated rooftop energy 2.7 times.
 - The reference series is AEMO's demand with the rooftop energy left out of the uplift.
 
-Proposed repair, not applied: build underlying demand by adding back the *recorded* rooftop fleet's output at its own
+**Applied 13 Nov 2026** (switches `solarShapeInDemand` and `forecastFromCalibratedDemand`, both on in `VIC.yaml`).
+Before the monthly calibration, each historic half-hour gets back the output of the off-market solar fleet as `Arena`
+computes it. Rooftop PV is rebuilt from the installation register, the way `SimPolicies` creates it, and small solar
+farms come from the SPMs. Check, seed 42, 2019: model market demand minus AEMO demand minus the net-export shape now
+varies by 13 MW across the day (782 MW before; midday −231 vs night +450 MW before, +219 both now). Minimum demand is
+3,210 MW (AEMO 3,058; 2,255 before). The `solar_ghi` midnight rows are cleaned first (audit F2). The forward period
+had the same problem and more: it grew AEMO's operational demand, which lacks rooftop, non-scheduled output and
+exports, so 2021 demand was 10 % low. It now grows the calibrated base year.
+
+Original proposal: build underlying demand by adding back the *recorded* rooftop fleet's output at its own
 half-hourly shape. That fleet is the APVI capacity x GHI x efficiency. Calibrate only the remaining gap flat, and
 leave the Arena subtracting the *simulated* fleet. With recorded adoption the two cancel exactly. With endogenous
 adoption (step 3) the difference is the effect of the simulated adoption, which is what the experiment needs. The

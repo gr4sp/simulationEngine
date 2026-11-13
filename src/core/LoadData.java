@@ -530,7 +530,9 @@ public class LoadData implements java.io.Serializable {
     }
 
     //Select Consumption
-    public static void createDemandForecast(Gr4spSim data) {
+    //fromDate null: write every forecast year (original). Otherwise rewrite only half-hours from fromDate, from the
+    //register as it now stands (the calibrated base year)
+    public static void createDemandForecast(Gr4spSim data, Date fromDate) {
 
         //Set Base Date
         Date baseDate = null;
@@ -593,7 +595,8 @@ public class LoadData implements java.io.Serializable {
                     c.add(Calendar.DAY_OF_MONTH, -1);
                     Date yesterdayDate = c.getTime();
                     double yesterdayMw = data.getHalfhour_demand_register().get(yesterdayDate);
-                    data.getHalfhour_demand_register().put(baseDate, yesterdayMw );
+                    if (fromDate == null || !baseDate.before(fromDate))
+                        data.getHalfhour_demand_register().put(baseDate, yesterdayMw );
                     c.add(Calendar.DAY_OF_MONTH, 1);
                 }
                 else {
@@ -604,7 +607,8 @@ public class LoadData implements java.io.Serializable {
                     fc.add(Calendar.YEAR, 1);
                     Date forecastedDate = fc.getTime();
 
-                    data.getHalfhour_demand_register().put(forecastedDate, forecastedMw);
+                    if (fromDate == null || !forecastedDate.before(fromDate))
+                        data.getHalfhour_demand_register().put(forecastedDate, forecastedMw);
                 }
 
                 //Set the month for the forecast
@@ -1105,19 +1109,23 @@ public class LoadData implements java.io.Serializable {
          * Create Consumption Forecast
          * */
 
-        createDemandForecast(data);
+        createDemandForecast(data, null);
+
+        //With solarShapeInDemand or forecastFromCalibratedDemand the calibration and the steps that depend on it run at
+        //the end of loading (finishDemandCalibration), once the generators exist
+        boolean deferred = deferredDemandCalibration(data);
 
         /**
          * Calibrate historic 30min Spot Demand to match consumption
          * */
 
-        calibrate30minHistoricDemandFromConsumption(data);
+        if (!deferred) calibrate30minHistoricDemandFromConsumption(data);
 
         /**
          * Create Consumption Forecast from 30min Spot Demand Forecast
          * */
 
-        createForecastConsumptionFromDemand(data);
+        if (!deferred) createForecastConsumptionFromDemand(data);
 
 
         /**
@@ -1199,10 +1207,114 @@ public class LoadData implements java.io.Serializable {
             data.getMonthly_domestic_consumers_register().put(entry.getKey(), entry.getValue());
         }
 
-        /**
-         * Update Total Consumption with monthly domestic consumers
-         * and Percentage of domestic usage
-         * */
+        if (!deferred) convertConsumptionToPerHousehold(data);
+    }
+
+    static boolean deferredDemandCalibration(Gr4spSim data) {
+        return data.settings.getSolarShapeInDemand() || data.settings.getForecastFromCalibratedDemand();
+    }
+
+    /**
+     * Deferred end of selectConsumption (solarShapeInDemand / forecastFromCalibratedDemand), called by Gr4spSim.start()
+     * after generateHouseholds (the SPMs and their generators exist then): add back the off-market solar fleet's output at
+     * its shape, calibrate the half-hourly demand to total generation, grow the forward period from the calibrated base
+     * year, then derive the monthly consumption.
+     */
+    public static void finishDemandCalibration(Gr4spSim data) {
+        if (!deferredDemandCalibration(data)) return;
+        if (data.settings.getSolarShapeInDemand()) addOffMarketSolarToHistoricDemand(data);
+        calibrate30minHistoricDemandFromConsumption(data);
+        if (data.settings.getForecastFromCalibratedDemand()) {
+            try {
+                createDemandForecast(data, new SimpleDateFormat("yyyy-MM-dd").parse(data.settings.getStartDemandForecast()));
+            } catch (ParseException e) {
+                data.LOGGER.warning(e.toString());
+            }
+        }
+        createForecastConsumptionFromDemand(data);
+        convertConsumptionToPerHousehold(data);
+    }
+
+    /**
+     * AEMO's half-hourly total demand is net of rooftop PV and small solar farms. For every historic half-hour of the
+     * calibration window, add back the output of the off-market solar generators active that month, computed as Arena
+     * computes it (Generator.solarOutputMW, same generators via the SPMs; rooftop PV rebuilt from the installation
+     * register as SimPolicies creates it), so Arena's subtraction cancels it while the fleet is the recorded one.
+     */
+    static void addOffMarketSolarToHistoricDemand(Gr4spSim data) {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        Date from, to;
+        try {
+            from = f.parse(data.settings.getStartDateSpotMarket());
+            to = f.parse(data.settings.getStartDemandForecast());
+        } catch (ParseException e) {
+            data.LOGGER.warning(e.toString());
+            return;
+        }
+        if (to.after(data.getEndSimDate())) to = data.getEndSimDate();
+        HashMap<Date, Double> register = data.getHalfhour_demand_register();
+        //Off-market solar generators active in each month (Arena: active on the month's first day, not in a market)
+        HashMap<Date, ArrayList<Generator>> byMonth = new HashMap<>();
+        HashMap<Date, ArrayList<Double>> rooftopFleet = new HashMap<>();
+        Vector<Spm> subdistribution = data.getSpm_register().get(6);
+        int rooftopSpms = subdistribution == null ? 0 : subdistribution.size();
+        double rooftopEfficiency = data.settings.getSolarEfficiency("Solar", "Solar - Rooftop");
+        Calendar c = Calendar.getInstance();
+        for (Map.Entry<Date, Double> e : new ArrayList<>(register.entrySet())) {
+            Date t = e.getKey();
+            if (t.before(from) || !t.before(to)) continue;
+            c.setTime(t);
+            c.set(Calendar.DAY_OF_MONTH, 1);
+            c.set(Calendar.HOUR_OF_DAY, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            Date month = c.getTime();
+            ArrayList<Generator> solar = byMonth.computeIfAbsent(month, m -> {
+                ArrayList<Generator> active = new ArrayList<>();
+                for (Vector<Spm> spms : data.getSpm_register().values())
+                    for (Spm s : spms) s.getActiveGensThisSPM(m, active);
+                ArrayList<Generator> out = new ArrayList<>();
+                for (Generator g : active)
+                    if (g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") && !g.getInPrimaryMarket() && !g.getInSecondaryMarket())
+                        out.add(g);
+                return out;
+            });
+            double mw = 0.0;
+            for (Generator g : solar) mw += g.solarOutputMW(data, t);
+            //Rooftop PV: SimPolicies creates its generators during the run, so they are not in the SPMs yet; rebuild the
+            //recorded fleet from the same installation register
+            float exposure = data.getHalfhour_solar_exposure().containsKey(t) ? data.getHalfhour_solar_exposure().get(t) : 0f;
+            for (double capPerSpm : rooftopFleet.computeIfAbsent(month, m -> rooftopCapacitiesPerSpm(data, m)))
+                mw += rooftopSpms * Generator.getSolarGeneration(exposure, (float) capPerSpm * (float) 1000.0, rooftopEfficiency) / (float) 1000.0;
+            register.put(t, e.getValue() + mw);
+        }
+    }
+
+    //Capacity per subdistribution SPM of each rooftop PV generator SimPolicies has created and not retired by `month`
+    //(one generator per SPM and installation month, the month's aggregated capacity split equally, 30-year life)
+    private static ArrayList<Double> rooftopCapacitiesPerSpm(Gr4spSim data, Date month) {
+        ArrayList<Double> caps = new ArrayList<>();
+        Vector<Spm> spms = data.getSpm_register().get(6);
+        if (spms == null || spms.isEmpty()) return caps;
+        Calendar c = Calendar.getInstance();
+        for (Map.Entry<Date, Integer> e : data.getSolar_aggregated_kw().entrySet()) {
+            Date start = e.getKey();
+            if (start.after(month) || !data.getSolar_number_installs().containsKey(start)) continue;
+            c.setTime(start);
+            c.add(Calendar.YEAR, 30);
+            if (!c.getTime().after(month)) continue;
+            float solarCapacityAgg = e.getValue() / (float) 1000.0;
+            caps.add((double) solarCapacityAgg / (double) spms.size());
+        }
+        return caps;
+    }
+
+    /**
+     * Update Total Consumption with monthly domestic consumers and Percentage of domestic usage
+     */
+    static void convertConsumptionToPerHousehold(Gr4spSim data) {
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
         //Set Base Date
         Date baseDate = null;

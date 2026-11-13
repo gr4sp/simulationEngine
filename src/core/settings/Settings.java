@@ -212,6 +212,15 @@ public class Settings implements java.io.Serializable {
     //When true, a generator row with several units (no_units > 1, e.g. Murray 1 with 10) breaks down unit by unit,
     //each with the fuel's forcedOutageRate and outageHours, instead of the whole row going out at once
     public boolean outagesPerUnit = false;
+    //When true: before the monthly calibration, the output of the off-market solar fleet (rooftop PV and small solar
+    //farms, as Arena computes it) is added back to each historic half-hour at its own shape, so the calibration spreads
+    //only the remaining gap. AEMO's total demand is net of that fleet; without this its energy came back flat and Arena
+    //took it out again at its shape, so midday demand was taken out twice (N21)
+    public boolean solarShapeInDemand = false;
+    //When true: the half-hourly demand after the forecast start is grown from the calibrated base-year profile (total
+    //generation incl. exports, rooftop and non-scheduled output) instead of AEMO's operational demand, which lacks them
+    //while Arena still subtracts off-market and rooftop output (forward demand fell about 10 % in 2021)
+    public boolean forecastFromCalibratedDemand = false;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
@@ -587,6 +596,10 @@ public class Settings implements java.io.Serializable {
     public boolean getShapeDemandUplift() { return shapeDemandUplift; }
 
     public boolean getOutagesPerUnit() { return outagesPerUnit; }
+
+    public boolean getSolarShapeInDemand() { return solarShapeInDemand; }
+
+    public boolean getForecastFromCalibratedDemand() { return forecastFromCalibratedDemand; }
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 

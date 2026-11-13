@@ -1033,6 +1033,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         loadData();
         generateHouseholds();
+        //Deferred demand calibration (solarShapeInDemand / forecastFromCalibratedDemand) needs the SPMs created above
+        LoadData.finishDemandCalibration(this);
 
         saveData.plotSeries(this);
         this.schedule.scheduleRepeating(policies);

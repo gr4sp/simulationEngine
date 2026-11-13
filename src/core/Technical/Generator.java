@@ -375,24 +375,7 @@ public class Generator implements java.io.Serializable, Asset {
 
         //Solar doesn't use capacity factor, but instead uses the available solar exposure by month
         if (currentTime != null) {
-            double dollarMWh = 0;
-
-            //get Generation in KWh
-            float solarExposure = (float) 0.0;
-            if (data.getHalfhour_solar_exposure().containsKey(currentTime)) {
-                //get Generation in KWh
-                solarExposure = data.getHalfhour_solar_exposure().get(currentTime);
-            }
-//            else {
-//                System.out.println("\t\t\t" + currentTime + " For some reason this key is lost, use last available value ");
-//            }
-
-
-            //generation in KWh given sun
-            double halfHourGeneration = getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0, this.solarEfficiency);
-
-            //Solar capacity is the same as half hour generation in this case. MWh each half hour will be capacity in MW
-            availableCapacity = halfHourGeneration / (float) 1000.0;
+            availableCapacity = solarOutputMW(data, currentTime);
 
             //Solar suplus as a function of generation and number of units consuming - (30days * 48 halfhour/day = 1440 approx equals half hours in month)
 //            solarSurplusCapacity = availableCapacity - (numUnits * consumption / 1440 );
@@ -400,6 +383,21 @@ public class Generator implements java.io.Serializable, Asset {
 
         }
     }
+
+    //Solar output (MW) in the half-hour at currentTime from the irradiance register (0 when the time is missing). Also used
+    //by LoadData.addOffMarketSolarToHistoricDemand, so the add-back equals what Arena subtracts
+    public double solarOutputMW(Gr4spSim data, Date currentTime) {
+        //get Generation in KWh
+        float solarExposure = (float) 0.0;
+        if (data.getHalfhour_solar_exposure().containsKey(currentTime)) {
+            solarExposure = data.getHalfhour_solar_exposure().get(currentTime);
+        }
+        //generation in KWh given sun
+        double halfHourGeneration = getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0, this.solarEfficiency);
+        //Solar capacity is the same as half hour generation in this case. MWh each half hour will be capacity in MW
+        return halfHourGeneration / (float) 1000.0;
+    }
+
     public void computeAvailableCapacity(SimState state, Date today, Date currentTime, int currentMonth) {
             double capacityFactor = getCapacityFactor(currentMonth);
             cfCapacity = this.getMaxCapacity() * capacityFactor;

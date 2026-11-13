@@ -26,6 +26,12 @@ costPriceYear: 2020
 shapeDemandUplift: true
 netExportsShapeFile: net_exports_shape_VIC.csv
 outagesPerUnit: true
+# N21 (13 Nov 2026): AEMO's half-hourly demand is net of rooftop PV and small solar; their recorded output is added back
+# at its own shape before the calibration, so Arena's subtraction no longer takes midday demand out twice.
+solarShapeInDemand: true
+# Forward period (13 Nov 2026): demand after the forecast start grows the calibrated base-year profile (total generation),
+# not AEMO's operational demand, which lacks exports, non-scheduled and rooftop output (2021 demand was 10 % low).
+forecastFromCalibratedDemand: true
 # R3 step 4 (9 Nov 2026): shortfalls are met by interconnector imports up to each link's peak import capability,
 # offered at the neighbour's short-run cost or a water value; demand left unmet is priced at the market price cap.
 # Read from this file only and applied in every year (VICfuture.yaml needs no copy).
