@@ -32,6 +32,20 @@ solarShapeInDemand: true
 # Forward period (13 Nov 2026): demand after the forecast start grows the calibrated base-year profile (total generation),
 # not AEMO's operational demand, which lacks exports, non-scheduled and rooftop output (2021 demand was 10 % low).
 forecastFromCalibratedDemand: true
+# N23 (14 Nov 2026): rooftop PV was 10 % below the record. Three causes, each repaired:
+# (1) the installation register (APVI) stops in September 2019; the CER postcode record replaces it for 2011-2019
+#     (scripts/data/cer_solar_vic_csv.py; 2011-2018 agree within 0.5 %, 2019 adds 191 MW);
+# (2) missing solar_ghi half-hours gave no output; they are filled from the same half-hour on nearby days (always on);
+# (3) the yield formula's de-rating factors (CEC design guidelines, Issue 6.0, 2012, s. 8.1) apply to the irradiation on
+#     the tilted array, not to horizontal irradiance: rooftop arrays face north at 16 degrees, the Australian mean tilt
+#     (Killinger, Lingfors and Saint-Drenan 2018, Solar Energy 173). Solar farms keep the horizontal irradiance.
+solarInstallationsFile: solar_installation_cer_VIC.csv
+rooftopArrayTilt: 16
+rooftopArrayAzimuth: 0
+# Forward rooftop fleet: the ISP energy path (x 1.25, LoadData) divided by the model's own yield per kW, from the
+# recorded 2019 fleet and replacing 30-year-old systems; before, energy increments were converted at a 20 % capacity
+# factor from 2021 (the model's yield is about 14 %), and nothing was added in 2020
+rooftopForecastFromModelYield: true
 # R3 step 4 (9 Nov 2026): shortfalls are met by interconnector imports up to each link's peak import capability,
 # offered at the neighbour's short-run cost or a water value; demand left unmet is priced at the market price cap.
 # Read from this file only and applied in every year (VICfuture.yaml needs no copy).

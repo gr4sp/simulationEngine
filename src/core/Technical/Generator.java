@@ -386,11 +386,16 @@ public class Generator implements java.io.Serializable, Asset {
 
     //Solar output (MW) in the half-hour at currentTime from the irradiance register (0 when the time is missing). Also used
     //by LoadData.addOffMarketSolarToHistoricDemand, so the add-back equals what Arena subtracts
+    public boolean isRooftop() { return "Solar - Rooftop".equals(techTypeDescriptor); }
+
     public double solarOutputMW(Gr4spSim data, Date currentTime) {
         //get Generation in KWh
         float solarExposure = (float) 0.0;
-        if (data.getHalfhour_solar_exposure().containsKey(currentTime)) {
-            solarExposure = data.getHalfhour_solar_exposure().get(currentTime);
+        if (isRooftop()) {
+            //N23: rooftop arrays get the irradiance on their plane when rooftopArrayTilt is set
+            solarExposure = data.getRooftopExposure(currentTime);
+        } else {
+            solarExposure = data.getSolarExposure(currentTime);
         }
         //generation in KWh given sun
         double halfHourGeneration = getSolarGeneration(solarExposure, (float) this.getMaxCapacity() * (float) 1000.0, this.solarEfficiency);

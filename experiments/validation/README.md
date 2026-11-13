@@ -365,6 +365,51 @@ What moved, and why:
   the record. The gap is part of the market-power mark-up the base case leaves out (cost-based competitive benchmark).
 - **Minimum demand** in 2019 is now 3,210 MW against AEMO's 3,058 (2,255 before).
 
+## N23: rooftop PV output (14 Nov 2026)
+
+After the audit repairs rooftop PV was 10 % below the record (`generation_consumption_historic`, an AEMO/APVI
+estimate). Three causes, measured one at a time on seed 42 (rooftop GWh against the record, 2011-2019 mean bias):
+
+| Step | What | 2019 GWh (record 2,185) | Mean bias 2011-2019 |
+|---|---|---|---|
+| Before | | 1,893 | -9.6 % |
+| a | Missing irradiance half-hours filled (445 in 2019, gave no output) | 1,976 | -8.5 % |
+| b | + the CER installation record for 2011-2019: the APVI table stops in September 2019 and misses 191 MW of 2019's 461 MW; 2011-2018 agree within 0.5 % | 2,028 | -8.1 % |
+| c | + irradiance on the tilted array for rooftop PV: the Clean Energy Council formula whose de-rating factors the model uses applies them to the irradiation on the array (CEC design guidelines, Issue 6.0, 2012, s. 8.1), not to horizontal irradiance; arrays face north at 16 degrees, the Australian mean (Killinger et al. 2018) | 2,208 | -0.3 % |
+| d | + forward fleet from the ISP energy path at the model's own yield (no effect before 2020) | 2,208 | -0.3 % |
+
+Year by year after step c: -6.2 % (2011), +0.7 % (2013), +0.8 % (2015), -3.9 % (2016), +6.2 % (2017), +2.7 % (2018),
++1.0 % (2019). The remaining scatter follows the single irradiance station (Melbourne Airport): the record's yield per
+kW of the CER fleet is steady at 1,140-1,210 kWh a year, while the station's filled annual irradiance ranges from 1,458 to
+1,590 kWh/m2 (2011-2019, -5 % to +4 % around its mean).
+Sensitivity of step c: a fleet with a quarter of its arrays facing east and a quarter west at 20 degrees would receive
+3.1 % more than a horizontal surface, instead of 8.6 %.
+
+Step d changes the forward period only. The ISP gives rooftop PV as energy (raised by 25 % in `LoadData`, an unsourced
+adjustment listed in `ASSUMPTIONS.md` A1); the old code turned each year's increment into capacity at a 20 % capacity
+factor from 2021, while the model's yield is about 14 %, and added nothing between September 2019 and 2021.
+
+Mean of seeds 42/7/99:
+
+| | After the audit repairs (`063649e`) | After N23 |
+|---|---|---|
+| Rooftop PV bias 2007-2019 | -9.7 % | +0.9 % |
+| Gas bias | +3.7 % | +2.0 % |
+| Utility solar bias 2018-19 | +7.2 % | +11.6 % |
+| Price NSE, time-weighted | 0.29 | 0.24 |
+| Price 1999-2019, $/MWh | 30.7 | 30.3 |
+| Price 2019, $/MWh (record 124.4) | 69.3 | 64.6 |
+| Renewable share 2019 | 19.9 % | 20.6 % |
+| Price 2030, $/MWh | 15.1 | 14.1 |
+| Tariff 2019 / 2030, c/kWh | 31.3 / 24.3 | 31.1 / 24.1 |
+| Unmet energy 2050, TWh | 10.8 | 9.5 |
+| Rooftop PV 2030, TWh (seed 42) | 3.1 | 4.7 |
+
+Sanity suite, seed 42 (`checks.py`): all pass; gas burned vs AER +5.1 %, RE share NSE 0.87, GHG NSE 0.64. Minimum demand
+2019: 3,174 MW (AEMO 3,058). More rooftop output lowers midday demand, so prices fall further below the record and the
+price fit drops. Utility solar gains from the filled half-hours; it keeps the horizontal irradiance, and the farms'
+mounting (fixed or tracking) was not checked, so its bias is left open.
+
 ## Ensembles
 
 Two exist and are not interchangeable.

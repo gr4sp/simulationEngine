@@ -660,8 +660,71 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
+    /**
+     * N23 (14 Nov 2026), rooftopForecastFromModelYield. The ISP gives rooftop PV as energy (GWh a year). The original
+     * forecast turned each year's energy increment into capacity at a 20 % capacity factor and started in 2021, so the
+     * fleet grew by about two thirds of the ISP's energy path (the model's own rooftop yield is about 14 %), nothing was
+     * added between the last recorded month and 2021, and systems that reached 30 years were not replaced.
+     * Here the fleet in service at the end of each forecast year is the ISP energy divided by the model's own yield of
+     * one kW in the base year (its irradiance, tilt and efficiency; forward years repeat the base year's irradiance), so
+     * the model's rooftop energy follows the ISP path. Each year adds, in twelve equal monthly steps, what the fleet
+     * still in service (installed in the 29 years before) lacks; years before the ISP's first are left as recorded.
+     */
+    static void createSolarInstallationForecastFromYield(Gr4spSim data) {
+        HashMap<Integer, Float> isp = data.getAnnual_forecast_rooftopPv_register();
+        if (isp.isEmpty()) return;
+        int baseYear = data.settings.getBaseYearConsumptionForecast();
+        double efficiency = data.settings.getSolarEfficiency("Solar", "Solar - Rooftop");
+        Calendar c = Calendar.getInstance();
+        double yieldKwhPerKw = 0.0;
+        for (Date t : data.getHalfhour_solar_exposure().keySet()) {
+            c.setTime(t);
+            if (c.get(Calendar.YEAR) == baseYear) yieldKwhPerKw += data.getRooftopExposure(t) * 0.5 * efficiency;
+        }
+        if (yieldKwhPerKw <= 0) {
+            data.LOGGER.warning("rooftopForecastFromModelYield: no irradiance in the base year " + baseYear);
+            return;
+        }
+        TreeMap<Integer, Double> kwByYear = new TreeMap<>();
+        for (Map.Entry<Date, Integer> e : data.getSolar_aggregated_kw().entrySet()) {
+            c.setTime(e.getKey());
+            kwByYear.merge(c.get(Calendar.YEAR), (double) e.getValue(), Double::sum);
+        }
+        int lastRecorded = kwByYear.isEmpty() ? baseYear : kwByYear.lastKey();
+        int lastIsp = Collections.max(isp.keySet());
+        float systemKw = (float) data.settings.getForecastSolarInstallCapacity();
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        for (int y = lastRecorded + 1; y <= lastIsp; y++) {
+            if (!isp.containsKey(y)) continue;
+            double targetKw = isp.get(y) * 1.0e6 / yieldKwhPerKw;
+            double inService = 0.0;
+            for (Map.Entry<Integer, Double> e : kwByYear.entrySet())
+                if (e.getKey() > y - 30 && e.getKey() < y) inService += e.getValue();
+            double add = Math.max(0.0, targetKw - inService);
+            kwByYear.put(y, add);
+            int monthlyKw = (int) Math.round(add / 12.0);
+            for (int month = 1; month <= 12; month++) {
+                try {
+                    Date d = f.parse(y + "-" + month + "-01");
+                    data.getSolar_aggregated_kw().put(d, monthlyKw);
+                    data.getSolar_number_installs().put(d, (int) (monthlyKw / systemKw));
+                    data.getSolar_system_capacity_kw().put(d, systemKw);
+                } catch (ParseException e) {
+                    data.LOGGER.warning(e.toString());
+                }
+            }
+            data.LOGGER.info("rooftop forecast " + y + ": target " + Math.round(targetKw / 1000) + " MW, in service "
+                    + Math.round(inService / 1000) + " MW, added " + Math.round(add / 1000) + " MW (yield "
+                    + Math.round(yieldKwhPerKw) + " kWh/kW)");
+        }
+    }
+
     //Increase solar capacity from forecast, dividing the increased amount of KW across 12 months every year
     public static void createSolarInstallationForecast(Gr4spSim data) {
+        if (data.settings.getRooftopForecastFromModelYield()) {
+            createSolarInstallationForecastFromYield(data);
+            return;
+        }
 
         //Set Base Date
         Date baseDate = null;
@@ -1284,7 +1347,7 @@ public class LoadData implements java.io.Serializable {
             for (Generator g : solar) mw += g.solarOutputMW(data, t);
             //Rooftop PV: SimPolicies creates its generators during the run, so they are not in the SPMs yet; rebuild the
             //recorded fleet from the same installation register
-            float exposure = data.getHalfhour_solar_exposure().containsKey(t) ? data.getHalfhour_solar_exposure().get(t) : 0f;
+            float exposure = data.getRooftopExposure(t);   //as Generator.solarOutputMW gives rooftop PV
             for (double capPerSpm : rooftopFleet.computeIfAbsent(month, m -> rooftopCapacitiesPerSpm(data, m)))
                 mw += rooftopSpms * Generator.getSolarGeneration(exposure, (float) capPerSpm * (float) 1000.0, rooftopEfficiency) / (float) 1000.0;
             register.put(t, e.getValue() + mw);
@@ -1436,6 +1499,53 @@ public class LoadData implements java.io.Serializable {
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
         }
+        fillSolarExposureGaps(data);
+    }
+
+    /**
+     * N23 (14 Nov 2026): half-hours missing from solar_ghi (445 in 2019, 4 % of that year's irradiance) gave solar PV no
+     * output. Each missing daylight half-hour (05:00-20:30) between the first and last record takes the mean of the same
+     * half-hour on the three days either side that have a value (recorded values only), or 0 when none has.
+     */
+    static void fillSolarExposureGaps(Gr4spSim data) {
+        HashMap<Date, Float> m = data.getHalfhour_solar_exposure();
+        if (m.isEmpty()) return;
+        Date first = Collections.min(m.keySet()), last = Collections.max(m.keySet());
+        Calendar day = Calendar.getInstance();
+        day.setTime(first);
+        day.set(Calendar.HOUR_OF_DAY, 0);
+        day.set(Calendar.MINUTE, 0);
+        day.set(Calendar.SECOND, 0);
+        day.set(Calendar.MILLISECOND, 0);
+        HashMap<Date, Float> fills = new HashMap<>();
+        while (!day.getTime().after(last)) {
+            for (int slot = 10; slot < 42; slot++) {
+                Date t = slotTime(day, 0, slot);
+                if (t.before(first) || t.after(last) || m.containsKey(t)) continue;
+                double sum = 0.0;
+                int n = 0;
+                for (int k = 1; k <= 3; k++)
+                    for (int offset : new int[]{-k, k}) {
+                        Float v = m.get(slotTime(day, offset, slot));
+                        if (v != null) {
+                            sum += v;
+                            n++;
+                        }
+                    }
+                fills.put(t, n > 0 ? (float) (sum / n) : 0f);
+            }
+            day.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        m.putAll(fills);
+        data.LOGGER.info("solar_ghi: filled " + fills.size() + " missing daylight half-hours");
+    }
+
+    private static Date slotTime(Calendar day, int dayOffset, int slot) {
+        Calendar c = (Calendar) day.clone();
+        c.add(Calendar.DAY_OF_MONTH, dayOffset);
+        c.set(Calendar.HOUR_OF_DAY, slot / 2);
+        c.set(Calendar.MINUTE, slot % 2 * 30);
+        return c.getTime();
     }
 
     public static void selectSolarInstallation(Gr4spSim data) {
@@ -1480,6 +1590,18 @@ public class LoadData implements java.io.Serializable {
             }
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
+        }
+        //N23: months listed in solarInstallationsFile (CER, 2011-2019) replace the database's (APVI, which stops in
+        //September 2019)
+        for (double[] r : data.getSolarInstallationsOverride()) {
+            try {
+                Date date = stringToDate.parse((int) r[0] + "-" + (int) r[1] + "-1");
+                data.getSolar_number_installs().put(date, (int) r[2]);
+                data.getSolar_aggregated_kw().put(date, (int) r[3]);
+                data.getSolar_system_capacity_kw().put(date, (float) r[4]);
+            } catch (ParseException e) {
+                data.LOGGER.warning(e.toString());
+            }
         }
     }
 

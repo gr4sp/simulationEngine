@@ -122,6 +122,13 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     //Solar Exposure in KWh/m^2 30min mean
     HashMap<Date, Float> halfhour_solar_exposure;
+    //N23: irradiance on the rooftop array plane (null: rooftop PV uses the horizontal irradiance), with a one-entry
+    //cache, since every rooftop generator asks for the same half-hour in turn
+    RooftopIrradiance rooftopIrradiance;
+    private Date rooftopExposureTime;
+    private float rooftopExposureValue;
+    //N23: rooftop installations from solarInstallationsFile (year, month, installations, kW; system capacity kW)
+    List<double[]> solarInstallationsOverride = new ArrayList<>();
 
     // Solar installation in kw per month in Australia
     HashMap<Date, Integer> solar_number_installs;
@@ -343,6 +350,18 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     portfolios.add(new String[]{f[0].trim(), f[1].trim()});
                 }
             }
+            if (settings.getSolarInstallationsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getSolarInstallationsFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 6);
+                    solarInstallationsOverride.add(new double[]{Double.parseDouble(f[0].trim()), Double.parseDouble(f[1].trim()),
+                            Double.parseDouble(f[2].trim()), Double.parseDouble(f[3].trim()), Double.parseDouble(f[4].trim())});
+                }
+            }
+            if (settings.getRooftopArrayTilt() > 0)
+                rooftopIrradiance = new RooftopIrradiance(settings.getSolarStationLatitude(), settings.getSolarStationLongitude(),
+                        settings.getRooftopArrayTilt(), settings.getRooftopArrayAzimuth(), 0.2, 10.0);
             if (settings.getGeneratorParametersFile() != null) {
                 List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getGeneratorParametersFile()));
                 for (String line : lines.subList(1, lines.size())) {
@@ -913,6 +932,28 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     public HashMap<Date, Float> getHalfhour_solar_exposure() {
         return halfhour_solar_exposure;
     }
+
+    //Irradiance (kW/m2) a rooftop array receives in the half-hour stamped t: on its plane when rooftopArrayTilt is set,
+    //the horizontal irradiance otherwise; 0 where the register has no value
+    public float getRooftopExposure(Date t) {
+        float ghi = getSolarExposure(t);
+        if (rooftopIrradiance == null || ghi <= 0f) return ghi;
+        if (rooftopExposureTime == null || t.getTime() != rooftopExposureTime.getTime()) {
+            rooftopExposureValue = (float) rooftopIrradiance.planeOfArray(ghi, t);
+            rooftopExposureTime = new Date(t.getTime());
+        }
+        return rooftopExposureValue;
+    }
+
+    //Horizontal irradiance (kW/m2) of the half-hour stamped t, 0 where the register has none. The key is looked up as a
+    //java.util.Date: the register holds java.sql.Timestamp keys (database rows) and Date keys (filled and forecast
+    //half-hours), and Timestamp.equals(Date) is false, so a Timestamp argument would miss the Date keys
+    public float getSolarExposure(Date t) {
+        Float v = halfhour_solar_exposure.get(t.getClass() == Date.class ? t : new Date(t.getTime()));
+        return v == null ? 0f : v;
+    }
+
+    public List<double[]> getSolarInstallationsOverride() { return solarInstallationsOverride; }
 
     public HashMap<Date, Integer> getSolar_aggregated_kw() {
         return solar_aggregated_kw;

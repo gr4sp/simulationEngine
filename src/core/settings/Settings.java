@@ -221,6 +221,20 @@ public class Settings implements java.io.Serializable {
     //generation incl. exports, rooftop and non-scheduled output) instead of AEMO's operational demand, which lacks them
     //while Arena still subtracts off-market and rooftop output (forward demand fell about 10 % in 2021)
     public boolean forecastFromCalibratedDemand = false;
+    //N23 (14 Nov 2026). Optional CSV in simulationSettings (year,month,number_installations,aggregated_capacity_kw,
+    //system_capacity,source): rooftop PV installations that replace the database's for the months it lists
+    public String solarInstallationsFile;
+    //Tilt of rooftop arrays in degrees (0: rooftop PV gets the horizontal irradiance, as before) and their azimuth from
+    //north, clockwise. With a tilt, rooftop PV gets the irradiance on its plane (RooftopIrradiance); solar farms keep GHI
+    public double rooftopArrayTilt = 0;
+    public double rooftopArrayAzimuth = 0;
+    //Position of the irradiance station of solar_ghi (Melbourne Airport, BoM 086282), for the sun's position
+    public double solarStationLatitude = -37.67;
+    public double solarStationLongitude = 144.83;
+    //When true: the forward rooftop fleet follows the ISP rooftop energy path with the model's own yield per kW (base
+    //year irradiance, tilt and efficiency), counting from the recorded fleet and replacing systems that reach 30 years,
+    //instead of converting each year's energy increment at a 20 % capacity factor from 2021
+    public boolean rooftopForecastFromModelYield = false;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
@@ -600,6 +614,18 @@ public class Settings implements java.io.Serializable {
     public boolean getSolarShapeInDemand() { return solarShapeInDemand; }
 
     public boolean getForecastFromCalibratedDemand() { return forecastFromCalibratedDemand; }
+
+    public String getSolarInstallationsFile() { return solarInstallationsFile; }
+
+    public double getRooftopArrayTilt() { return rooftopArrayTilt; }
+
+    public double getRooftopArrayAzimuth() { return rooftopArrayAzimuth; }
+
+    public double getSolarStationLatitude() { return solarStationLatitude; }
+
+    public double getSolarStationLongitude() { return solarStationLongitude; }
+
+    public boolean getRooftopForecastFromModelYield() { return rooftopForecastFromModelYield; }
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 
