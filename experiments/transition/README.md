@@ -8,6 +8,12 @@ generic capacity and the knob does nothing (ABY Morris pilot, `experiments/sensi
 0.01-0.03). The path is a plan, and a plan assumes projects arrive on time; a delay should act on it, not be filled in
 by it. This folder holds the calibration of a commissioning delay `d` and the scenarios built on it.
 
+**Scope (Angela, 13 Nov 2026).** This material is for the later future transition scenarios and policy-mixes
+article, not the ERSS article. The ERSS article covers the past (1999-2019) on the information available in 2020
+(ISP 2020, the 2019 closure dates in the database). The post-2020 facts below (Yallourn and Loy Yang A agreements,
+Eraring extensions, slippage measured with AEMO's 2025 file) are recorded as considerations and limitations of that
+analysis. `d` stays 0 in the base case; the closure rule of section 3 (tracker N19) is deferred to that article.
+
 ## 1. How late did Victoria's 2019 pipeline arrive?
 
 `scripts/data/commissioning_slippage_vic.py` follows every Victorian project in the model's pipeline
