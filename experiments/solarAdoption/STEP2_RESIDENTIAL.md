@@ -30,8 +30,9 @@ Only the household outputs change; every market, price and tariff column is iden
 | 2030 | 0.225 | 3,557 (4,734) | | 2.15 (2.86) |
 | 2050 | 0.172 | 2,623 (4,566) | | 0.35 (0.61) |
 
-The HECS 2012 (5.4-6.0 MWh a year) and the network data (about 6.0 MWh per household in 2012) bracket the new 2012
-value. The model's households are slightly more numerous than AES's, so its use per household sits 2-5 % below AES's.
+The new 2012 value (5.36 MWh) is just below the HECS 2012 range (5.4-6.0 MWh a year) and the network data (about 6.0 MWh
+per household in 2012); the old one (7.86) was far above all three sources. Per household the model sits 0-4 % below
+AES (calendar against financial years, and the model's own household count).
 The forward share falls to 0.17 by 2050 because AEMO's residential grid demand falls (rooftop PV, efficiency) while
 the total grows with electric vehicles and business load.
 
