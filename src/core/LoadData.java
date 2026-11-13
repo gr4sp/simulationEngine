@@ -214,7 +214,7 @@ public class LoadData implements java.io.Serializable {
 
                 // solar pv installations has been higher than predicted
                 //Increase rooftopPV by 25% to concile the latest info in pv-map. ISP used solar forecast from CSRIO model and real data on
-                gwh *= 1.25;
+                gwh *= data.settings.getRooftopForecastUplift();   //N29: 1.25 in the thesis, 1.0 in the base case
                 float rooftopPvGwh = gwh;
 
                 if(data.settingsAfterBaseYear.getRooftopPVForecast().equals("both") == true){
@@ -529,6 +529,14 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
+    //N29: a calendar-year value from a financial-year register: FY Y (July Y-1 to June Y) and FY Y+1 each cover half of
+    //calendar year Y; the register's last year is held
+    static float calendarFromFinancial(HashMap<Integer, Float> fy, int year) {
+        Float a = fy.get(year), b = fy.get(year + 1);
+        if (a == null) return b == null ? 0f : b;
+        return b == null ? a : (a + b) / 2f;
+    }
+
     //Select Consumption
     //fromDate null: write every forecast year (original). Otherwise rewrite only half-hours from fromDate, from the
     //register as it now stands (the calibrated base year)
@@ -558,6 +566,11 @@ public class LoadData implements java.io.Serializable {
         while (baseYear < endYear) {
             float baseConsumption = data.getAnnual_forecast_consumption_register().get(baseYear);
             float nextConsumption = data.getAnnual_forecast_consumption_register().get(baseYear + 1);
+            if (data.settings.getForecastFinancialYears()) {
+                //N29: calendar year Y = mean of FY Y and FY Y+1 (the last FY is held)
+                baseConsumption = calendarFromFinancial(data.getAnnual_forecast_consumption_register(), baseYear);
+                nextConsumption = calendarFromFinancial(data.getAnnual_forecast_consumption_register(), baseYear + 1);
+            }
             float percentageChange = (nextConsumption-baseConsumption) / baseConsumption;
 
             //Leap year day
@@ -694,9 +707,13 @@ public class LoadData implements java.io.Serializable {
         int lastIsp = Collections.max(isp.keySet());
         float systemKw = (float) data.settings.getForecastSolarInstallCapacity();
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        boolean fy = data.settings.getForecastFinancialYears();
         for (int y = lastRecorded + 1; y <= lastIsp; y++) {
-            if (!isp.containsKey(y)) continue;
-            double targetKw = isp.get(y) * 1.0e6 / yieldKwhPerKw;
+            //the fleet in service at the end of calendar year y: calendar-year reading, FY y's energy; financial-year
+            //reading (N29), FY y+1's energy, as FY y+1 is centred on 1 January y+1 (the last FY is held)
+            Integer key = fy ? (isp.containsKey(y + 1) ? y + 1 : (isp.containsKey(y) ? y : null)) : (isp.containsKey(y) ? y : null);
+            if (key == null) continue;
+            double targetKw = isp.get(key) * 1.0e6 / yieldKwhPerKw;
             double inService = 0.0;
             for (Map.Entry<Integer, Double> e : kwByYear.entrySet())
                 if (e.getKey() > y - 30 && e.getKey() < y) inService += e.getValue();
@@ -1042,7 +1059,8 @@ public class LoadData implements java.io.Serializable {
 
                 //save demand data. From MW 30min -> GWh
                 double TotalDemandGWh = TotalMw / 2000;
-                double TotalConsumptionGWh = data.getMonthly_consumption_register().get(dateConsumption);
+                double TotalConsumptionGWh = data.getMonthly_consumption_register().get(dateConsumption)
+                        + unrecordedOffMarketGWh(data, dateConsumption);   //N28 (0 unless demandRecordFuels is set)
                 double calibrationDemand = TotalConsumptionGWh / TotalDemandGWh;
 
                 //Calibrate Demand of for the past month
@@ -1352,6 +1370,41 @@ public class LoadData implements java.io.Serializable {
                 mw += rooftopSpms * Generator.getSolarGeneration(exposure, (float) capPerSpm * (float) 1000.0, rooftopEfficiency) / (float) 1000.0;
             register.put(t, e.getValue() + mw);
         }
+    }
+
+    /**
+     * N28 (14 Nov 2026): energy (GWh) in the month starting `monthStart` of the off-market units whose fuel type is not
+     * in the recorded monthly total (setting demandRecordFuels): landfill gas, biogas, gas engines, diesel. The total the
+     * demand is calibrated to (OpenElectricity fuel techs) leaves them out, while Arena subtracts their output from the
+     * demand; adding it to the month's target keeps the market demand as recorded. Off-market units run at capacity x
+     * the month's capacity factor in every half-hour (Generator.computeAvailableCapacity, Arena); solar is handled by
+     * addOffMarketSolarToHistoricDemand. Needs the generators, so it acts in finishDemandCalibration only.
+     */
+    static double unrecordedOffMarketGWh(Gr4spSim data, Date monthStart) {
+        String fuels = data.settings.getDemandRecordFuels();
+        Vector<Spm> any = data.getSpm_register().get(6);
+        if (fuels == null || fuels.isBlank() || any == null || any.isEmpty()) return 0.0;
+        Set<String> recorded = new HashSet<>();
+        for (String f : fuels.split(";")) recorded.add(f.trim());
+        ArrayList<Generator> active = new ArrayList<>();
+        for (Vector<Spm> spms : data.getSpm_register().values())
+            for (Spm s : spms) s.getActiveGensThisSPM(monthStart, active);
+        Calendar c = Calendar.getInstance();
+        c.setTime(monthStart);
+        int month = c.get(Calendar.MONTH);
+        double mw = 0.0;
+        for (Generator g : active) {
+            if (g.getInPrimaryMarket() || g.getInSecondaryMarket() || g.getFuelSourceDescriptor().equalsIgnoreCase("Solar")) continue;
+            String fuel = g.getFuelSourceDescriptor();
+            if (recorded.contains(fuel) || recorded.contains(fuel + " " + g.getTechTypeDescriptor())) continue;
+            mw += g.getMaxCapacity() * g.getCapacityFactor(month + 1);
+        }
+        int halfHours = 0;
+        while (c.get(Calendar.MONTH) == month) {
+            if (data.getHalfhour_demand_register().containsKey(c.getTime())) halfHours++;
+            c.add(Calendar.MINUTE, 30);
+        }
+        return mw * halfHours / 2000.0;
     }
 
     //Capacity per subdistribution SPM of each rooftop PV generator SimPolicies has created and not retired by `month`

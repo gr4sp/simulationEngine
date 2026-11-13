@@ -46,6 +46,18 @@ rooftopArrayAzimuth: 0
 # recorded 2019 fleet and replacing 30-year-old systems; before, energy increments were converted at a 20 % capacity
 # factor from 2021 (the model's yield is about 14 %), and nothing was added in 2020
 rooftopForecastFromModelYield: true
+# N29 (14 Nov 2026, your decision): no uplift on AEMO's 2019 rooftop forecast (its FY2020 value, 2,485 GWh, is within 2 %
+# of the recorded FY2020 output, 2,439 GWh; the thesis's x 1.25 reflected installations seen after 2020), and the
+# ISP/ESOO registers read as financial years: calendar year Y = mean of FY Y and FY Y+1 for demand growth; the rooftop
+# fleet on 1 January Y follows FY Y's energy.
+rooftopForecastUplift: 1.0
+forecastFinancialYears: true
+# N28 (14 Nov 2026): fuel types in the monthly total the demand is calibrated to (OpenElectricity fuel techs of
+# scripts/data/fetch_openelectricity.py; solar is handled by solarShapeInDemand). Off-market units of other types
+# (landfill gas, biogas, gas engines, diesel) are left out of that total: their output is added to the monthly target,
+# so subtracting it in the market no longer removes demand the record never had. Non-scheduled wind and hydro are taken
+# as recorded (OpenElectricity counts registered non-scheduled units).
+demandRecordFuels: "Brown Coal; Water; Wind; Battery; Gas Pipeline Turbine - OCGT; Gas Pipeline Turbine - Steam Sub Critical"
 # R3 step 4 (9 Nov 2026): shortfalls are met by interconnector imports up to each link's peak import capability,
 # offered at the neighbour's short-run cost or a water value; demand left unmet is priced at the market price cap.
 # Read from this file only and applied in every year (VICfuture.yaml needs no copy).

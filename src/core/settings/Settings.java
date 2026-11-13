@@ -235,6 +235,18 @@ public class Settings implements java.io.Serializable {
     //year irradiance, tilt and efficiency), counting from the recorded fleet and replacing systems that reach 30 years,
     //instead of converting each year's energy increment at a 20 % capacity factor from 2021
     public boolean rooftopForecastFromModelYield = false;
+    //N29 (14 Nov 2026): factor on AEMO's rooftop PV forecast (isp_annual_consumption). The thesis code raised it by 25 %
+    //"to reconcile the latest info in pv-map"; AEMO's FY2020 value is within 2 % of the recorded FY2020 output
+    public double rooftopForecastUplift = 1.25;
+    //N29: the ISP/ESOO annual registers (consumption, rooftop PV) are financial years (FY Y = July Y-1 to June Y, centred
+    //on 1 January Y). When true, calendar year Y is the mean of FY Y and FY Y+1 for the demand growth, and the rooftop
+    //fleet in service on 1 January Y follows FY Y's energy. False: the registers are read as calendar years
+    public boolean forecastFinancialYears = false;
+    //N28: fuel types (fuel, or fuel and technology joined by a space, separated by ";") whose output is in the monthly
+    //total the half-hourly demand is calibrated to (total_consumption_gwh, OpenElectricity fuel techs). Off-market units
+    //of other types (landfill gas, biogas, gas engines, diesel) are not: their output is added to the monthly target,
+    //so Arena's subtraction leaves the market demand as recorded. Unset: every off-market unit is taken as recorded
+    public String demandRecordFuels;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
@@ -626,6 +638,12 @@ public class Settings implements java.io.Serializable {
     public double getSolarStationLongitude() { return solarStationLongitude; }
 
     public boolean getRooftopForecastFromModelYield() { return rooftopForecastFromModelYield; }
+
+    public double getRooftopForecastUplift() { return rooftopForecastUplift; }
+
+    public boolean getForecastFinancialYears() { return forecastFinancialYears; }
+
+    public String getDemandRecordFuels() { return demandRecordFuels; }
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 

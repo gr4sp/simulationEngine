@@ -57,7 +57,7 @@ no effect.
 | Tariff share | `tariffs.wholesaleContribution.*`; `tariffContributionLag` 0 | **inactive** since the additive tariff (12 Nov) | R3 step 3 | inactive |
 | Nameplate scaling | `nameplateCapacityChange` 1.0 | yes (neutral) | sensitivity knob | decision |
 
-Open from this review: `domesticConsumptionPercentage` (solar step 2) and the x 1.25 on the rooftop forecast (A1, your decision). The emission factors, off-market capacity factors and battery efficiency were sourced on 14 Nov (N25).
+Open from this review: `domesticConsumptionPercentage` (solar step 2). The x 1.25 on the rooftop forecast was dropped (N29). The emission factors, off-market capacity factors and battery efficiency were sourced on 14 Nov (N25).
 
 ## 3. Assumptions register
 
@@ -67,7 +67,7 @@ whose parameter list predates the repairs (`PARAMETER_AUDIT_R3.md`); "tested" me
 
 | # | Area | Assumption | Value | Basis | Varied | Where |
 |---|---|---|---|---|---|---|
-| A1 | Rooftop PV | AEMO's 2019 rooftop forecast (ESOO/ISP inputs, effective October 2019; `isp_annual_consumption`) is raised by 25 % "to reconcile the latest info in pv-map" | x 1.25 | **unsourced**, and not AEMO's: the forecast's FY2020 value, 2,485 GWh, is within 2 % of the recorded FY2020 output (2,439 GWh), so the 2020 information set shows no gap; the code's reason refers to installations seen later. The register's years are financial years, while the forward fleet treats them as calendar years | no | `LoadData.selectForecastSolarUptake` |
+| A1 | Rooftop PV | AEMO's 2019 rooftop forecast (ESOO/ISP inputs, October 2019) used as published, read as financial years | uplift 1.0 (thesis 1.25) | decision (N29, 14 Nov): AEMO's FY2020 value is within 2 % of the recorded FY2020 output; the thesis uplift reflected installations seen after 2020 | no | `rooftopForecastUplift`, `forecastFinancialYears` |
 | A2 | Rooftop PV | Arrays face north at 16 degrees; diffuse irradiance by Erbs, transposition by Hay-Davies, ground reflectance 0.2 | +8.6 % irradiation (2007-2019) | Killinger et al. (2018) mean tilt; standard models. A fleet with a quarter facing east and a quarter west would get +3.1 % at 20 degrees | no | `RooftopIrradiance`, `VIC.yaml` |
 | A3 | Rooftop PV | One irradiance station (Melbourne Airport) for all of Victoria | | decision; with it, rooftop output is within -6.2 to +6.2 % of the record each year (2011-2019) | no | `solar_ghi` |
 | A4 | Rooftop PV | Systems last 30 years and are then replaced (forward period) | 30 years | thesis value | no | `SimPolicies`, `LoadData.createSolarInstallationForecastFromYield` |
@@ -105,3 +105,4 @@ whose parameter list predates the repairs (`PARAMETER_AUDIT_R3.md`); "tested" me
 
 | A36 | Small units | Units embedded in an industrial or hospital load supply that load only: Longford (Esso gas plant), Qenos (Altona), the hospital backup diesel | output 0 | AEMO 2020 s. 4.1.2 (removes units captured by net metering); not in NGER or the demand record | no | `generator_parameters_VIC.csv` |
 | A37 | Battery | One round-trip efficiency for every battery, existing and generic | 0.85 | measured (Gannawarra 85.0 %); IASR 81 % as the lower bound | no | `VIC.yaml` |
+| A38 | Demand | Off-market units of fuel types outside the recorded total (landfill gas, biogas, gas engines, diesel) supply demand the record leaves out; non-scheduled wind and hydro are in the record | | decision (N28): OpenElectricity counts registered non-scheduled units; its biogas and gas-engine techs were not fetched | no | `demandRecordFuels` |

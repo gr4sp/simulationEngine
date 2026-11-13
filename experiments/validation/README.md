@@ -494,3 +494,29 @@ Sanity suite, seed 42: all pass except the GHG NSE, 0.47 (0.64 before; tolerance
 household x households / 0.3, so it carries the unsourced residential share. Direct scope 1 emissions (each unit's
 generation x its factor) against the Victorian inventory, 2005-2018: NSE 0.66, bias -1.0 Mt with station factors;
 0.69, -1.4 Mt with the old type factors. The indicator is to be revisited when solar step 2 replaces the 0.3.
+
+## N29 and N28: the rooftop forecast and small units outside the demand record (14 Nov 2026)
+
+**N29 (your decision).** The x 1.25 on AEMO's 2019 rooftop forecast is dropped (`rooftopForecastUplift: 1.0`): AEMO's
+FY2020 value (2,485 GWh) is within 2 % of the recorded FY2020 output (2,439 GWh). The ISP/ESOO annual registers are
+financial years (`forecastFinancialYears: true`): the demand growth from calendar year Y to Y+1 now uses the calendar
+values (FY Y + FY Y+1) / 2 instead of FY Y+1 / FY Y, and the rooftop fleet on 1 January Y follows FY Y's energy. Check:
+rooftop output in calendar 2021 is 3,008 GWh, the mean of FY2021 (2,876) and FY2022 (3,142). Nothing before 2020 changes.
+
+**N28.** The monthly total the demand is calibrated to (`total_consumption_gwh`) sums the OpenElectricity fuel techs of
+`fetch_openelectricity.py`, which leave out biogas, gas engines and distillate; `Arena` still subtracted those units'
+output, so the market met less demand than the record. With `demandRecordFuels` (the recorded fuel types), the output
+of the other off-market units is added to each month's target: calibrated demand minus the recorded total equals that
+output exactly (15.3 GWh in July 2005, 23.5 in January 2012, 24.2 in June 2019; 0.18-0.29 TWh a year).
+
+| Mean of seeds 42/7/99 | After N25 (`0f9bde3`) | After N29 and N28 |
+|---|---|---|
+| Coal / gas bias | +1.3 % / -2.2 % | +1.7 % / +3.8 % |
+| Price NSE, time-weighted | 0.33 | 0.38 |
+| Price 1999-2019 / 2019, $/MWh | 31.8 / 69.9 | 32.8 / 73.4 |
+| Price 2030, $/MWh | 14.6 | 16.4 |
+| Unmet energy 2050, TWh | 9.5 | 10.2 |
+| Rooftop PV 2030 / 2050, TWh (seed 42) | 4.7 / 12.6 | 3.8 / 10.2 |
+
+Sanity suite, seed 42: all pass but the GHG indicator (0.48, the 0.3 residential share, see N25); energy balance worst
+year 4.4 % (tolerance 5 %). Minimum demand 2019: 3,254 MW (AEMO 3,058).
