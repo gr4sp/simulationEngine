@@ -66,6 +66,31 @@ Caveat: AES "Residential, Electricity" is electricity bought from the grid; roof
 "Residential, Solar energy" together with solar hot water (1.0 TWh in 2018-19). Adding all of it does not close the
 gap (ratio 1.22 in 2019).
 
+## Definitions
+
+From the literature (ABS 4670.0, HECS 2012, Table 7A footnotes; the survey ran on the Survey of Income and
+Housing 2011-12 sample, so it uses that survey's concepts):
+
+- **Low income:** households in the lowest quintile of *equivalised disposable household income, including
+  imputed rent*. Equivalised means adjusted for household size and composition (ABS: modified OECD scale). Imputed
+  rent is the rent owner-occupiers would pay for their own home, net of their housing costs.
+- **Low wealth:** households in the lowest quintile of *equivalised household net worth* (assets minus
+  liabilities, including the home).
+- **Low economic resources:** households in the lowest two quintiles of *both* income and net worth (ABS concept
+  for households with little income and little to fall back on). PV share in 2012: 2.7 %, against 4.8 % for low
+  income and 1.6 % for low wealth.
+
+From this work:
+
+- **Tenure** (`tenure_VIC.csv`): renting = households in the census rent table with a stated, nil or unstated rent;
+  mortgage = the same in the mortgage table; outright = the rest (owned outright, other tenures, not stated).
+- **Income quintile** (D1 cohorts): the quintile of *gross* household income (census HIED brackets) that holds the
+  bracket's middle household. It is not the ABS low-income measure (not equivalised, no imputed rent), so the
+  model's quintile 1 cannot be compared with the HECS "low income" share as is. Before validation (step 4) either
+  equivalise the census cells with the household type (it gives the household size) or state the comparison as
+  approximate. The model has no wealth; tenure stands in for it (renters and low wealth overlap most).
+- **Self-consumption share:** the share of a system's annual output used in the home rather than exported.
+
 ## Open items (none blocks step 2)
 
 - Tenure before 2006: the 2006 shares are held back to 1999 (adoption before 2007 is negligible: rebate-funded,
