@@ -458,3 +458,39 @@ construction. Run with `--ensemble` to reproduce that comparison.
 
 The figures therefore use bands of one and two RMSE, which are built from the
 model's own error.
+
+## N25: station emission factors, small-unit capacity factors, battery efficiency (14 Nov 2026)
+
+Sources replace three unsourced settings (`ASSUMPTIONS.md`):
+- **Emission factors**: each station's scope 1 emissions / production in the NGER designated generation facility data
+  (Clean Energy Regulator), 2013-14 to 2018-19: Loy Yang A 1.159, Loy Yang B 1.134, Yallourn 1.306, Hazelwood 1.399,
+  Anglesea 1.086 t/MWh; gas 0.533 (Newport) to 0.786 (Valley Power); Morwell 1.425 (heat rate x 95 kg/GJ, Acil Allen
+  2016). Before, every brown coal unit had 1.23 and every gas unit 0.56 (Newport, a steam plant, is typed OCGT).
+- **Off-market capacity factors**: each small unit's mean NGER output over its capacity; units without history take
+  their Victorian class (landfill gas 0.648, small gas engines 0.193); embedded units (Longford, Qenos, the hospital
+  backup diesel) 0 - AEMO's method for other non-scheduled generation (Demand Forecasting Methodology 2020, s. 4.1.2).
+  Before, the landfill units took `Default` (0.9: the `Landfill` block never matched the database name `Landfill Gas`),
+  Longford 0.30 and Qenos 0.65. Off-market non-rooftop output in 2019 falls from 1,510 to 1,110 GWh.
+- **Battery round-trip efficiency** 0.85 is now sourced: Gannawarra measured 85.0 % (ARENA final report 2021); Ballarat
+  contracted 86.8-87.2 %; IASR 2020 81 %. No change.
+
+Mean of seeds 42/7/99:
+
+| | After N23 (`e482238`) | After N25 |
+|---|---|---|
+| Coal / gas bias | +0.9 % / +2.0 % | +1.3 % / -2.2 % |
+| Price NSE, time-weighted | 0.24 | 0.33 |
+| Price 1999-2019 / 2019, $/MWh | 30.3 / 64.6 | 31.8 / 69.9 |
+| Unmet energy 1999-2019, GWh | 39.2 | 42.7 |
+| Price 2030, $/MWh | 14.1 | 14.6 |
+| Unmet energy 2050, TWh | 9.5 | 9.5 |
+
+The price rises because less small-unit output is taken out of market demand. That demand never contained it: the
+monthly total it is calibrated to (`total_consumption_gwh`, OpenElectricity) sums only the fuel types of
+`fetch_openelectricity.py`, without biogas, gas engines or distillate, while `Arena` still subtracts the units' output
+(open item N28, the same kind of double count as N21).
+
+Sanity suite, seed 42: all pass except the GHG NSE, 0.47 (0.64 before; tolerance 0.5). That indicator is emissions per
+household x households / 0.3, so it carries the unsourced residential share. Direct scope 1 emissions (each unit's
+generation x its factor) against the Victorian inventory, 2005-2018: NSE 0.66, bias -1.0 Mt with station factors;
+0.69, -1.4 Mt with the old type factors. The indicator is to be revisited when solar step 2 replaces the 0.3.

@@ -761,9 +761,15 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //Apply the station parameters whose name prefix matches (later rows win)
     public void applyGeneratorParameters(Generator g) {
         for (String[] p : generatorParameters) {
-            if (!g.getName().startsWith(p[0])) continue;
+            //a name ending in $ must match exactly (e.g. "Ballarat$", the landfill unit, not the battery or the hospital)
+            boolean exact = p[0].endsWith("$");
+            if (exact ? !g.getName().equals(p[0].substring(0, p[0].length() - 1)) : !g.getName().startsWith(p[0])) continue;
             double v = Double.parseDouble(p[2]);
             switch (p[1]) {
+                //N25: station scope 1 intensity (t CO2-e/MWh), constant over the unit's life
+                case "emissionFactorTonnesMWh": g.minEF = v; g.linRateEF = 0; g.expRateEF = 0; break;
+                //N25: capacity factor of an off-market unit, all months (its output when outside the market)
+                case "capacityFactor": g.maxCapacityFactor = v; g.maxCapacityFactorSummer = v; break;
                 case "heatRateGJperMWh": g.heatRateGJperMWh = v; break;
                 case "variableOMMWh": g.variableOMMWh = v; break;
                 case "fuelPriceGJ": g.fuelPriceGJ = v; break;
