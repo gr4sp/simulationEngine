@@ -1427,9 +1427,40 @@ public class LoadData implements java.io.Serializable {
     }
 
     /**
-     * Update Total Consumption with monthly domestic consumers and Percentage of domestic usage
+     * Solar step 2: AEMO's residential grid demand forecast (isp_annual_consumption, category Residential, subcategory
+     * "Res grid demand", the consumption scenario; financial years) for the years after the recorded series
+     * (residentialConsumptionFile) ends. Only read when that file is set.
+     */
+    public static void selectResidentialForecast(Gr4spSim data) {
+        if (data.getResidentialFyGwh().isEmpty()) return;
+        int lastRecorded = Collections.max(data.getResidentialFyGwh().keySet());
+        String sql = "SELECT year, sum(annual_consumption) AS gwh FROM isp_annual_consumption WHERE category = 'Residential'" +
+                " AND subcategory = 'Res grid demand' AND region = '" + data.settings.getAreaCode() + "'" +
+                " AND scenario = '" + data.settingsAfterBaseYear.getForecastScenarioConsumption() + "' GROUP BY year;";
+        try (Connection conn = DriverManager.getConnection(data.url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next())
+                if (rs.getInt("year") > lastRecorded) data.getResidentialFyGwh().put(rs.getInt("year"), rs.getFloat("gwh"));
+        } catch (SQLException e) {
+            data.LOGGER.warning(e.getMessage());
+        }
+    }
+
+    /**
+     * Update Total Consumption with monthly domestic consumers and Percentage of domestic usage.
+     * Solar step 2 (residentialConsumptionFile): the residential share of each calendar year is the recorded (then
+     * forecast) residential grid electricity of that year over the year's total, instead of the constant
+     * domesticConsumptionPercentage. The month's household use keeps the shape of the month's total.
      */
     static void convertConsumptionToPerHousehold(Gr4spSim data) {
+        HashMap<Integer, Double> yearTotalGwh = new HashMap<>();
+        Calendar cy = Calendar.getInstance();
+        for (Map.Entry<Date, Double> e : data.getMonthly_consumption_register().entrySet()) {
+            cy.setTime(e.getKey());
+            yearTotalGwh.merge(cy.get(Calendar.YEAR), e.getValue(), Double::sum);
+        }
+        HashMap<Integer, Float> residential = data.getResidentialFyGwh();
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
         //Set Base Date
@@ -1458,6 +1489,15 @@ public class LoadData implements java.io.Serializable {
 
             if( month.after(baseDate) )
                 domesticConsumptionPercentage = data.settingsAfterBaseYear.getDomesticConsumptionPercentage();
+
+            cy.setTime(month);
+            int y = cy.get(Calendar.YEAR);
+            if (!residential.isEmpty()) {
+                float res = calendarFromFinancial(residential, y);
+                Double tot = yearTotalGwh.get(y);
+                if (res > 0 && tot != null && tot > 0) domesticConsumptionPercentage = res / tot;
+            }
+            data.getResidentialShareByYear().put(y, domesticConsumptionPercentage);
 
             //convert to MWh and only domestic demand
             double newMwh = (gwh * 1000.0 * domesticConsumptionPercentage) / (double) consumers;

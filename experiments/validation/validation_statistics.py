@@ -135,8 +135,13 @@ def tariff_indicator(year, tariffs, column):
 
 def series(year, month, ghge, opennem, tariffs):
     """Build the (simulated, observed, period, unit) tuple for each indicator."""
-    ghge_total = (year["GHG Emissions (tCO2-e) per household"]
-                  * year["Number of Domestic Consumers (households)"] / 1e6 / 0.3)
+    # System scope 1 emissions (each generator's output x its emission factor) since solar step 2 (14 Nov 2026).
+    # Earlier runs: emissions per household x households / 0.3, which holds only while the residential share is 0.3
+    if "System GHG Emissions (tCO2-e)" in year.columns:
+        ghge_total = year["System GHG Emissions (tCO2-e)"] / 1e6
+    else:
+        ghge_total = (year["GHG Emissions (tCO2-e) per household"]
+                      * year["Number of Domestic Consumers (households)"] / 1e6 / 0.3)
     ghge_observed = ghge[ghge.index > 1997]["Hist_GHGE_MtCO2e"].values
     monthly = monthly_prices(month)
     return {

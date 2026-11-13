@@ -129,6 +129,10 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private float rooftopExposureValue;
     //N23: rooftop installations from solarInstallationsFile (year, month, installations, kW; system capacity kW)
     List<double[]> solarInstallationsOverride = new ArrayList<>();
+    //Solar step 2: recorded and forecast residential grid electricity by financial year (GWh), and the residential share
+    //of the total used in each calendar year (reported in the year summary)
+    HashMap<Integer, Float> residentialFyGwh = new HashMap<>();
+    TreeMap<Integer, Double> residentialShareByYear = new TreeMap<>();
 
     // Solar installation in kw per month in Australia
     HashMap<Date, Integer> solar_number_installs;
@@ -359,6 +363,17 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                             Double.parseDouble(f[2].trim()), Double.parseDouble(f[3].trim()), Double.parseDouble(f[4].trim())});
                 }
             }
+            if (settings.getResidentialConsumptionFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getResidentialConsumptionFile()));
+                List<String> head = null;
+                for (String line : lines) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",");
+                    if (head == null) { head = Arrays.asList(f); continue; }
+                    int iFy = head.indexOf("fy"), iRes = head.indexOf("residential_twh");
+                    residentialFyGwh.put(Integer.parseInt(f[iFy].trim()), Float.parseFloat(f[iRes].trim()) * 1000f);
+                }
+            }
             if (settings.getRooftopArrayTilt() > 0)
                 rooftopIrradiance = new RooftopIrradiance(settings.getSolarStationLatitude(), settings.getSolarStationLongitude(),
                         settings.getRooftopArrayTilt(), settings.getRooftopArrayAzimuth(), 0.2, 10.0);
@@ -570,6 +585,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         LoadData.selectDemandHalfHour(this, startDate, endDate);
         LoadData.selectForecastConsumption(this);
+        LoadData.selectResidentialForecast(this);
         LoadData.selectForecastSolarUptake(this);
         LoadData.selectForecastEnergyEfficency(this);
         LoadData.selectForecastOnsiteGeneration(this);
@@ -960,6 +976,10 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     }
 
     public List<double[]> getSolarInstallationsOverride() { return solarInstallationsOverride; }
+
+    public HashMap<Integer, Float> getResidentialFyGwh() { return residentialFyGwh; }
+
+    public TreeMap<Integer, Double> getResidentialShareByYear() { return residentialShareByYear; }
 
     public HashMap<Date, Integer> getSolar_aggregated_kw() {
         return solar_aggregated_kw;

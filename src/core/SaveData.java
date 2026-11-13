@@ -60,6 +60,8 @@ public class SaveData implements Steppable, java.io.Serializable {
 
 
     HashMap<Integer, XYSeries> genCapacityFactorSeries;  // the data series that will be added to
+    //Solar step 2: scope 1 emissions of every generator (monthly output x its emission factor), summed by calendar year
+    TreeMap<Integer, Double> systemEmissionsByYear = new TreeMap<>();
     HashMap<Integer, XYSeries> systemProductionSeries;  // the data series that will be added to
     public HashMap<Integer, XYSeries> PriceGenAvgSeries;  // the data series that will be added to
     HashMap<Integer, XYSeries> PriceGenMaxSeries;  // the data series that will be added to
@@ -742,6 +744,10 @@ public class SaveData implements Steppable, java.io.Serializable {
                             MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
                         } else {
                             MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
+                        }
+                        {
+                            int emYear = data.getSimCalendar().get(Calendar.YEAR);
+                            systemEmissionsByYear.merge(emYear, gens.get(i).getMonthlyGeneratedMWh() * gens.get(i).getEmissionsFactor(emYear), Double::sum);
                         }
 
                         if (gens.elementAt(i).getTechTypeDescriptor().equals("Solar - Rooftop")) {
@@ -1919,7 +1925,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
                     "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
-                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"));
+                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)",
+                    "System GHG Emissions (tCO2-e)", "Residential Share of Consumption"));
             TreeMap<Integer, Vector<Generator>> treeMap = new TreeMap<>(data.gen_register);
 
             for (Integer integer : treeMap.keySet()) {
@@ -2567,6 +2574,9 @@ public class SaveData implements Steppable, java.io.Serializable {
                         Double.toString(spcoalagg), Double.toString(spwateragg), Double.toString(spwindagg), Double.toString(spgasagg), Double.toString(spsolagg),
                         Double.toString(spbatagg), Double.toString(maxNumActors), Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
                         Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay) ));
+                int yInt = Integer.parseInt(year.trim());
+                record.add(Double.toString(systemEmissionsByYear.getOrDefault(yInt, 0.0)));
+                record.add(Double.toString(data.getResidentialShareByYear().getOrDefault(yInt, 0.0)));
 
                 for( Double spg : spgenprodagg){
                     record.add(Double.toString(spg));

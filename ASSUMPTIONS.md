@@ -46,7 +46,7 @@ no effect.
 | Emission factors | station `emissionFactorTonnesMWh` for 13 stations (brown coal 1.086-1.425, gas 0.533-0.786 t/MWh); type `minEF` for other units | yes (GHG outputs) | NGER scope 1 / production, 2013-14 to 2018-19 (the Acil Allen 2016 report in `docs/` is the review behind AEMO's factors; its station values are charts, the IASR 2020 Emissions sheet tabulates AEMO's values: for brown coal they agree with NGER within 0.01 t/MWh; for the gas peakers NGER differs by up to 0.2 t/MWh, as their intensity depends on starts); Morwell: its heat rate x 95 kg/GJ (Acil Allen 2016) | sourced (N25); held constant before 2013-14 |
 | LCOE rule | `basePriceMWh`, `marketPriceCap` 8000, `minCapacityFactor` by type; `policy.annualInflation` 0.033; `forecast.learningCurve` 0.05 | **inactive** in the spot market (every type has its own offer rule); used for off-market prices only | thesis values (CO2CRC 2019, CSIRO 2018 for wind; Lazard for storage) | inactive |
 | Market participation | `arena.*`: scheduled and semi-scheduled from 30 MW in the primary market; non-scheduled in none | yes | AEMO registration: units under 30 MW are normally non-scheduled | sourced (not cited in the file) |
-| Household use | `population.domesticConsumptionPercentage` 0.3 | yes (household consumption and GHG per household, not the market) | none in the file. The recorded residential share is 24-28 % of *final* electricity use (AES Table F3), but the model applies 0.3 to its total consumption, which includes losses and power stations' own use: against that total the record gives 0.19-0.26 (0.226 in 2019; `STEP1_DATA.md`) | **unsourced**, replaced in solar step 2 by the recorded series |
+| Household use | `residentialConsumptionFile` (base case); `population.domesticConsumptionPercentage` 0.3 only when unset | yes (household consumption and GHG per household, not the market) | AES 2020 Table F3 residential electricity FY1999-FY2019, then AEMO's residential grid demand forecast (ISP/ESOO 2019); share of the total 0.19-0.24 in 1999-2019 | sourced (solar step 2) |
 | Forecast scenarios | `forecast.scenario.*` Central; `rooftopPV` both | after 2020 | AEMO 2020 ISP | sourced |
 | Forecast timing | `baseYear` 2019, `startDemandForecast` 2020-08-01 | yes | last full year; last month of AEMO data | decision |
 | Forecast rules | `includePublicallyAnnouncedGen` false, `generationRolloutPeriod` 1, `generatorRetirement` 0, `commissioningDelay` 0 | after 2020 | C53 (delay; median 1.3 years late recorded, sensitivity) | decision |
@@ -57,7 +57,7 @@ no effect.
 | Tariff share | `tariffs.wholesaleContribution.*`; `tariffContributionLag` 0 | **inactive** since the additive tariff (12 Nov) | R3 step 3 | inactive |
 | Nameplate scaling | `nameplateCapacityChange` 1.0 | yes (neutral) | sensitivity knob | decision |
 
-Open from this review: `domesticConsumptionPercentage` (solar step 2). The x 1.25 on the rooftop forecast was dropped (N29). The emission factors, off-market capacity factors and battery efficiency were sourced on 14 Nov (N25).
+Nothing open from this review: the residential share comes from the record since solar step 2, and the x 1.25 on the rooftop forecast was dropped (N29). The emission factors, off-market capacity factors and battery efficiency were sourced on 14 Nov (N25).
 
 ## 3. Assumptions register
 
@@ -88,7 +88,7 @@ whose parameter list predates the repairs (`PARAMETER_AUDIT_R3.md`); "tested" me
 | A19 | Forward period | Projects arrive on time | delay 0 | decision; recorded median 1.3 years late | tested (C53) | `forecast.commissioningDelay` |
 | A20 | Forward period | Technological improvement after the base year | 0.01 a year | assumed | thesis | `VICfuture.yaml` |
 | A21 | Forward period | CPI after the base year | 2.33 % a year | sourced | thesis | `forecast.annualCpi` |
-| A22 | Households | Residential share of total consumption | 0.3 | unsourced, too high (STEP1_DATA) | thesis | `domesticConsumptionPercentage` |
+| A22 | Households | Residential grid use from AES (to FY2019) and AEMO's forecast (after); each month follows the shape of the month's total | 0.17-0.24 of the total | sourced series, assumed monthly shape | no | `residentialConsumptionFile` |
 | A23 | EVA | Share of homes on gas: ABS surveys, linear between surveys, held at the ends; 2009 income gradient applied every year | 71.5 % (1999) to 64.3 % (2014) | sourced, constructed | tested (`--fuel-mix`) | R4 step 6 |
 | A24 | EVA | A dwelling's age is independent of its occupants' type, fuel and income | | assumed | no | R4 step 8 |
 | A25 | EVA | Stock shares by construction period from completions, without demolitions or vacant dwellings (newer stock an upper bound) | | constructed | no | R4 step 8 |

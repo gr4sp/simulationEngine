@@ -247,6 +247,12 @@ public class Settings implements java.io.Serializable {
     //of other types (landfill gas, biogas, gas engines, diesel) are not: their output is added to the monthly target,
     //so Arena's subtraction leaves the market demand as recorded. Unset: every off-market unit is taken as recorded
     public String demandRecordFuels;
+    //Solar adoption step 2 (14 Nov 2026): CSV in simulationSettings with the recorded residential grid electricity by
+    //financial year (fy, residential_twh, ...: AES Table F3). With it, households' use is each calendar year's
+    //residential electricity (AES to its last year, then the ISP's residential grid demand for the consumption scenario,
+    //FY values turned into calendar years) over the households, and the residential share of the total becomes a yearly
+    //series; domesticConsumptionPercentage is then unused for household use. Unset: the constant share (thesis)
+    public String residentialConsumptionFile;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
@@ -644,6 +650,8 @@ public class Settings implements java.io.Serializable {
     public boolean getForecastFinancialYears() { return forecastFinancialYears; }
 
     public String getDemandRecordFuels() { return demandRecordFuels; }
+
+    public String getResidentialConsumptionFile() { return residentialConsumptionFile; }
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 

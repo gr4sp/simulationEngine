@@ -520,3 +520,11 @@ output exactly (15.3 GWh in July 2005, 23.5 in January 2012, 24.2 in June 2019; 
 
 Sanity suite, seed 42: all pass but the GHG indicator (0.48, the 0.3 residential share, see N25); energy balance worst
 year 4.4 % (tolerance 5 %). Minimum demand 2019: 3,254 MW (AEMO 3,058).
+
+## Solar step 2: residential demand from the record; GHG from system emissions (14 Nov 2026)
+
+Household use now follows the recorded residential series (`experiments/solarAdoption/STEP2_RESIDENTIAL.md`); the market
+is unchanged (every market column identical). The GHG indicator now uses the year summary's `System GHG Emissions
+(tCO2-e)` (each generator's output x its emission factor) instead of emissions per household x households / 0.3, which
+held only while the residential share was 0.3: GHG NSE 0.68 (seed 42, 2005-2018; 0.48 on the old route). All sanity
+checks pass.

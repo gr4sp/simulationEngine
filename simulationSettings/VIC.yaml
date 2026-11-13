@@ -58,6 +58,12 @@ forecastFinancialYears: true
 # so subtracting it in the market no longer removes demand the record never had. Non-scheduled wind and hydro are taken
 # as recorded (OpenElectricity counts registered non-scheduled units).
 demandRecordFuels: "Brown Coal; Water; Wind; Battery; Gas Pipeline Turbine - OCGT; Gas Pipeline Turbine - Steam Sub Critical"
+# Solar adoption step 2 (14 Nov 2026, decision D3): household electricity use is the recorded residential grid
+# electricity (Australian Energy Statistics 2020, Table F3, FY1974-FY2019), then AEMO's residential grid demand forecast
+# for the consumption scenario (ISP/ESOO 2019), turned into calendar years, over the households. The residential share
+# of the total becomes a yearly series (0.19-0.26 in 1999-2019, reported in the year summary) instead of
+# domesticConsumptionPercentage (0.3, against a total that includes losses and power stations' own use).
+residentialConsumptionFile: residential_electricity_VIC.csv
 # R3 step 4 (9 Nov 2026): shortfalls are met by interconnector imports up to each link's peak import capability,
 # offered at the neighbour's short-run cost or a water value; demand left unmet is priced at the market price cap.
 # Read from this file only and applied in every year (VICfuture.yaml needs no copy).
