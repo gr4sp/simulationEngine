@@ -320,6 +320,51 @@ tariff was 15.1 against 23.4 recorded. Since 12 Nov (Angela) the 2007 retail com
 changes (prices and generation identical, seeds 42/7/99). For 2007 the Oakley Greenwood row is then no longer a pure
 wholesale test, since its retail component is no longer the comparator's own.
 
+## Audit repairs (13 Nov 2026)
+
+The audit of 13 Nov 2026 (notes repo `docs/AUDIT_2026-11-13.md`) found defects that changed 1999-2019 results. They were
+repaired in four commits, each with a regenerated baseline:
+- `9641280` (F2): one clean `solar_ghi` value per half-hour. Midnight had used the day's peak irradiance.
+- `73f0bd3` (F1): off-market units keep their capacity factor. Small hydro and gas had run at nameplate all year.
+- `27f2402` (N21, F7): the solar fleet is added back to historic demand at its shape, and the forward period grows the
+  calibrated base year.
+- `063649e` (F4, F5): the forward tariff deflator, and the reporting of market output.
+
+Mean of seeds 42/7/99 unless stated. Generation is against `generation_consumption_historic` 2005-2019; price NSE is
+the time-weighted annual mean vs AEMO VIC1, 1999-2019.
+
+| | Before (`847b549`) | F2 | + F1 | + N21/F7 | + F4/F5 (current) |
+|---|---|---|---|---|---|
+| Coal bias | -0.1 % | 0.0 % | +1.0 % | +1.0 % | +1.0 % |
+| Gas bias | +26.1 % | +26.6 % | +4.4 % | +3.7 % | +3.7 % |
+| Hydro bias | +0.4 % | +0.4 % | -1.7 % | -1.7 % | -1.7 % |
+| Rooftop PV bias | -1.7 % | -9.7 % | -9.7 % | -9.7 % | -9.7 % |
+| Utility solar bias 2018-19 | +14.9 % | +5.3 % | +5.8 % | +7.2 % | +7.2 % |
+| Price NSE, time-weighted | 0.28 | 0.29 | 0.33 | 0.29 | 0.29 |
+| Price 2019, $/MWh (record 124.4) | 74.2 | 75.6 | 74.1 | 69.3 | 69.3 |
+| Unmet energy 1999-2019, GWh | 45.6 | 45.6 | 38.9 | 39.8 | 39.8 |
+| Price 2030, $/MWh | 5.7 | 5.8 | 7.0 | 15.1 | 15.1 |
+| Tariff 2030, c/kWh | 23.5 | 23.5 | 23.5 | 24.0 | 24.3 |
+| Unmet energy 2050, TWh | 5.9 | 6.0 | 6.4 | 10.8 | 10.8 |
+
+Current base case, with this script (`--run`), annual price vs AEMO demand-weighted 1999-2020:
+- NSE 0.02 / 0.15 / 0.08 for seeds 42 / 7 / 99 (before: 0.07 / 0.14 / 0.13);
+- bias -20.5 / -18.2 / -20.5 $/MWh;
+- RE share NSE 0.91 (0.85 before);
+- tariff vs Oakley Greenwood NSE 0.44-0.47.
+
+Sanity suite, seed 42 (`checks.py`): all pass. Gas +3.7 % (was +25.8 %), gas burned vs AER +7.6 % (was +35 %), GHG NSE
+0.64 (was 0.68).
+
+What moved, and why:
+- **Gas** is now close to the record. The off-market gas no longer runs flat, and the dispatchable hydro has its water
+  back for the peaks.
+- **Rooftop PV** is 10 % below the record once the phantom midnight output is gone. The fleet size or the 0.7168
+  efficiency should be checked when step 3 (endogenous adoption) recalibrates the fleet.
+- **The price fit** falls with N21. The double count had over-stated evening demand, which raised evening prices toward
+  the record. The gap is part of the market-power mark-up the base case leaves out (cost-based competitive benchmark).
+- **Minimum demand** in 2019 is now 3,210 MW against AEMO's 3,058 (2,255 before).
+
 ## Ensembles
 
 Two exist and are not interchangeable.
