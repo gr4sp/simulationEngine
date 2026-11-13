@@ -8,6 +8,7 @@ EVA already uses for its projection after 2016.
 | `data/tenure_VIC.csv` | Households by census (2006, 2011, 2016, 2021) x dwelling (the EVA's four + OTHER) x HIED bracket x household type, split into renting / mortgage / outright, and the bracket's income quintile | `build_tenure_census.py DATA_DIR` | ABS TableBuilder rent and mortgage wafers already used by the EVA (`build_ahc_census.py`) |
 | `data/hecs2012_targets.csv` | Share of households with grid PV by tenure, economic resources, Melbourne / rest of Victoria; mean weekly electricity use by fuel combination, area, family composition; feed-in kWh | `build_hecs2012_targets.py XLS` | ABS 4670.0 Household Energy Consumption Survey 2012, additional tables |
 | `simulationSettings/residential_electricity_VIC.csv` | Residential electricity, residential solar, final electricity use and the residential share, FY1974-FY2019 | `scripts/data/residential_electricity_vic.py` | Australian Energy Statistics 2020, Table F3 |
+| `simulationSettings/residential_dnsp_VIC.csv` | Residential energy delivered, customers, network revenue and solar exports, by distribution network, 2006-2019 (calendar years) | `scripts/data/fetch_aer_dnsp_rin.py DIR OUT` | AER economic benchmarking RIN responses of the five Victorian DNSPs |
 | `simulationSettings/rooftop_pv_economics_VIC.csv` | System prices 1997-2019, federal rebate 2000-2009 with the 2008 means test, certificates (Solar Credits multiplier, deeming, price), Victorian feed-in tariffs 2009-2019, Victorian Solar Homes rebate 2018-19 | by hand, one row per change with its source and status | IEA PVPS national reports, IEA policies database, ESC decisions |
 
 The recorded APVI installations (`solar_installation_monthly`, 2007-2019, already in the database) are the
@@ -65,6 +66,53 @@ per-household use by profile scaled to the AES residential series, and reports t
 Caveat: AES "Residential, Electricity" is electricity bought from the grid; rooftop output used in the home is in
 "Residential, Solar energy" together with solar hot water (1.0 TWh in 2018-19). Adding all of it does not close the
 gap (ratio 1.22 in 2019).
+
+**Third source: the distribution networks (AER RIN, added 13 Nov).** Residential energy delivered by the five
+Victorian networks is 11.5-12.7 TWh a year (2006-2019). That is 0-13 % above AES (calendar year against the mean of
+the two financial years). Per residential customer it is 5.66 MWh in 2006, 5.16 in 2012 and 4.61 in 2019. Network
+customers (2.35 M in 2012) outnumber census households (about 2.0 M in 2011), because the networks also count
+unoccupied dwellings and holiday homes. So the network figure per *household* is higher: about 6.0 MWh in 2012. In
+2012 the three sources give 5.2-6.0 MWh per household, and the model gives 8.3 MWh. The finding stands. The network
+data also give the step 2 split by area: Jemena 4.2-4.3, CitiPower 4.4-4.6, United Energy 4.5-4.7, Powercor 5.0-5.1
+and AusNet 5.0-5.2 MWh per customer (2014-19).
+
+## Finding 2: rooftop PV is taken out of the wholesale demand twice at midday
+
+The script is `midday_double_count.py`, and its output is `data/midday_double_count.csv`. The wholesale demand is
+built in three steps:
+1. The input is AEMO's VIC1 total demand. Rooftop PV sits behind the meter, so that series is already net of rooftop
+   output, midday dip included.
+2. The base case adds a flat monthly uplift (`shapeDemandUplift: true`) so each month sums to
+   `total_consumption_gwh`. That total includes the recorded rooftop generation, so the rooftop energy comes back in,
+   spread evenly over every half-hour.
+3. `Arena` subtracts the model's rooftop output in each half-hour (lines 559-599).
+
+The error at each half-hour is the month's mean rooftop output minus the output at that half-hour. Wholesale demand
+is too low at midday and too high at night. The monthly energy is right: the model's rooftop energy matches the
+recorded series within 5 %.
+
+| Year | Rooftop MW (end) | Midday 10-15 h, mean error (MW) | Same, summer | Worst half-hour (MW) | Evening 17-21 h (MW) | Minimum demand, AEMO vs model (MW) | Half-hours with a dip > 5 % |
+|---|---|---|---|---|---|---|---|
+| 2012 | 430 | -71 (-1.2 %) | -90 | -258 | +38 | 3,612 vs 3,682 | 0.1 % |
+| 2015 | 880 | -192 (-3.5 %) | -263 | -712 | +94 | 3,369 vs 3,032 | 9.6 % |
+| 2017 | 1,237 | -277 (-5.4 %) | -349 | -996 | +124 | 2,967 vs 2,484 | 15.7 % |
+| 2019 | 1,831 | -403 (-8.2 %) | -557 | -1,472 | +215 | 3,058 vs 2,116 | 19.9 % |
+
+Before 2012 the error is negligible, and from 2015 it is material. The model under-states midday demand, which
+pushes down midday prices and the coal output that midday demand would need. It over-states evening demand. The
+summary indicators most exposed are minimum demand, the price spread within the day, the renewable share and the
+value of rooftop exports. The value of exports matters directly for the adoption payback in step 3.
+
+Two checks were made:
+- `solar_ghi` holds identical copies of most half-hours. The model keeps one value per timestamp, and so does the
+  script. Without that de-duplication, the first pass over-stated rooftop energy 2.7 times.
+- The reference series is AEMO's demand with the rooftop energy left out of the uplift.
+
+Proposed repair, not applied: build underlying demand by adding back the *recorded* rooftop fleet's output at its own
+half-hourly shape. That fleet is the APVI capacity x GHI x efficiency. Calibrate only the remaining gap flat, and
+leave the Arena subtracting the *simulated* fleet. With recorded adoption the two cancel exactly. With endogenous
+adoption (step 3) the difference is the effect of the simulated adoption, which is what the experiment needs. The
+repair changes base-case results from about 2013, so it comes with a baseline regeneration.
 
 ## Definitions
 

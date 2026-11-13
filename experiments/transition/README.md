@@ -14,6 +14,12 @@ article, not the ERSS article. The ERSS article covers the past (1999-2019) on t
 Eraring extensions, slippage measured with AEMO's 2025 file) are recorded as considerations and limitations of that
 analysis. `d` stays 0 in the base case; the closure rule of section 3 (tracker N19) is deferred to that article.
 
+Also for that article: coordinating distributed resources layer by layer, compared with central dispatch. Sources are
+Kristov, De Martini and Taft (2016) on layered decentralised optimisation (Vox, 2018), and AEMO and ENA's Open Energy
+Networks (2018-19). GR4SP's nested SPM chain has the layered structure, but one central Arena clears the market. A
+`coordination: central | layered` switch would let the article compare the two. The assessment and the build steps
+are in ROADMAP item 4 (local notes, 13 Nov 2026).
+
 ## 1. How late did Victoria's 2019 pipeline arrive?
 
 `scripts/data/commissioning_slippage_vic.py` follows every Victorian project in the model's pipeline
