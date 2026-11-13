@@ -162,7 +162,13 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 if(wholesalePriceComponent < 0.01) wholesalePriceComponent = (float)0.01;
                 if(wholesalePriceComponent > 1.00) wholesalePriceComponent = (float)1.0;
 
-                //Get CPI conversion
+                //Get CPI conversion. Prices of the six months before are turned into January-2019 dollars with this
+                //January's factor. With cost-based offers (cpiFile) costs stop inflating after the CPI file's last year, so
+                //later prices are in that year's dollars and the factor is held at the January after it (it kept falling
+                //by annualCpi, deflating forward wholesale prices a second time)
+                int lastPriceYear = data.getCostPriceLastYear();
+                if (lastPriceYear < Integer.MAX_VALUE && c.get(Calendar.YEAR) > lastPriceYear + 1)
+                    c.set(Calendar.YEAR, lastPriceYear + 1);
                 Date cpiDate = c.getTime();
                 float conversion_rate = data.getCpi_conversion().get(cpiDate);
 

@@ -728,6 +728,12 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         return cpiAt(year) / cpiAt(settings.getCostPriceYear());
     }
 
+    //Last year in which cost settings follow the CPI file (later years hold its last value); MAX_VALUE without cpiFile
+    public int getCostPriceLastYear() {
+        if (cpi.isEmpty() || settings.getCostPriceYear() <= 0) return Integer.MAX_VALUE;
+        return cpi.lastKey();
+    }
+
     private double cpiAt(int year) {
         Map.Entry<Integer, Double> e = cpi.floorEntry(year);
         return (e != null ? e : cpi.firstEntry()).getValue();

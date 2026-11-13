@@ -733,22 +733,16 @@ public class SaveData implements Steppable, java.io.Serializable {
                         genCapacityFactorSeries.get(integer).add(floatDate, gens.get(i).getHistoricCapacityFactor(), false);
                         systemProductionSeries.get(integer).add(floatDate, gens.get(i).getMonthlyGeneratedMWh(), false);
 
-                        if( currentDate.before(data.getBaseYearForecastDate()) )
-                            if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ){
-                                MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                            } else if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ) {
-                                MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                            } else {
-                                MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
-                            }
-                        else
-                            if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ){
-                                MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                            } else if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ) {
-                                MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                            } else {
-                                MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
-                            }
+                        //Market output follows the market the unit dispatches in (Generator.getInPrimaryMarket / Secondary),
+                        //which SimPolicies updates after the base year. Classifying again by dispatch type and size put
+                        //storage under 30 MW, which always dispatches in the primary market, under off-market output
+                        if( gens.get(i).getInPrimaryMarket() ){
+                            MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                        } else if( gens.get(i).getInSecondaryMarket() ) {
+                            MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                        } else {
+                            MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
+                        }
 
                         if (gens.elementAt(i).getTechTypeDescriptor().equals("Solar - Rooftop")) {
                             MWhRooftopPV += gens.get(i).getMonthlyGeneratedMWh();
