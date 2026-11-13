@@ -1295,8 +1295,11 @@ public class LoadData implements java.io.Serializable {
 
     public static void selectHalfHourSolarExposure(Gr4spSim data) {
 
-        String sql = "SELECT time , ghi" +
-                " FROM solar_ghi ORDER BY time, ghi;";
+        //One value per timestamp. solar_ghi repeats every half-hour (identical copies), and each day's 00:00 also holds
+        //that day's hourly values with the time cut off (about 50 rows), so taking any one row put daytime irradiance at
+        //midnight. A conflicting 00:00 is night in Victoria (0); other conflicts (two series in May 2015) take the mean.
+        String sql = "SELECT time, CASE WHEN count(DISTINCT ghi) > 1 AND time::time = '00:00' THEN 0.0 ELSE avg(ghi) END AS ghi" +
+                " FROM solar_ghi GROUP BY time ORDER BY time;";
 
         //Loading Solar Exposure data
         try (Connection conn = DriverManager.getConnection(data.url);
