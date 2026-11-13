@@ -1,7 +1,7 @@
 # Household rooftop solar adoption as a model decision (design, 13 Nov 2026)
 
-Scope: the ERSS article (1999-2019, on the information available in 2020). Status: design, waiting for Angela's
-decisions D1-D4 (section 8) before the build.
+Scope: the ERSS article (1999-2019, on the information available in 2020). Status: D1-D4 decided (Angela, 13 Nov
+2026: the recommended option in each); build next.
 
 ## 1. Why
 
@@ -132,6 +132,60 @@ the chain, so a "sub-distribution" SPM is not a place.
 - D3 Residential series: Australian Energy Statistics Table F (long, 1999-2019, recommended) with AEMO as a check.
 - D4 Self-consumption shares by household type: literature values fixed (recommended), or calibrated.
 
+Decided (13 Nov 2026): D1 720 cohorts; D2 the revenue-recovery network component, as a switch; D3 Australian Energy
+Statistics Table F with AEMO as a check; D4 fixed literature values for self-consumption.
+
+## 8a. The cost-shift debate since Nelson, Simshauser and Kelley (2011), and what the model can add
+
+Positions:
+
+- **Regressive transfer.** Nelson, Simshauser and Kelley (2011) and Nelson, Simshauser and Nelson (2012, Queensland)
+  argue that premium feed-in tariffs and volumetric network charges move costs from adopters to non-adopters, who
+  are poorer, and that the merit-order effect of rooftop PV is transient and not a welfare gain. Simshauser (2016)
+  extends this to networks: costs follow the evening peak, solar output does not, so volumetric charges let adopters
+  avoid network costs they still cause; demand (capacity) tariffs remove the transfer.
+- **The merit-order offset.** McConnell et al. (2013, Energy Policy 58) model the NEM retrospectively: rooftop PV
+  lowers wholesale prices, mostly at summer peaks, and over their period the saving to all consumers offsets the
+  cost of the feed-in tariffs, so the tariffs need not be regressive. Their model leaves out distribution costs, which
+  is the other half of the argument.
+- **Who adopts is not simply the rich.** The income gradient is weaker and less stable than the 2011 argument
+  assumes. Best and Chareunsy (2022, Energy Economics 112): income is negatively related to uptake in area data and
+  positively in household data, and the positive link fades with controls; uptake falls at the highest incomes; wealth,
+  tenure and dwelling matter more than income. Their review of Australian studies counts positive, negative and
+  inconclusive income effects in similar numbers. Best, Burke and Nishitateno (2019): wealth and tenure. Best,
+  Chareunsy and Li (2021, Ecological Economics 180) still find inequity in both the feed-in tariffs and the SRES.
+  The dividing line is ownership and housing more than income: renters and flat-dwellers cannot adopt.
+- **The other cause of rising bills.** Network charges drove much of the 2008-2013 rise in Australian bills, through
+  network investment; the Grattan Institute (Wood, Blowers and Griffiths 2018) estimates up to $20 b of
+  over-investment, in NSW, Queensland and Tasmania rather than Victoria. A model that attributes the rise in
+  non-adopters' bills to solar alone would overstate the transfer.
+- **Rooftop solar reduces hardship for those who have it.** Hammerle and Burke (AJARE, ABS cross-section, instrumental
+  variable): PV is associated with a large fall in the probability of energy poverty. Dodd and Nelson (2022): hardship
+  customers, more often low-income renters, could cut grid use by about 40 % with PV. The justice question moves from
+  "who pays for the subsidy" to "who is excluded from the asset".
+
+The death spiral (falling grid sales -> higher per-kWh charges -> more adoption -> ...):
+
+- Named for the NEM by Simshauser (2014, Australian Economic Review 47(4), "From first place to last").
+- Later work finds it needs a "perfect storm" of high intrinsic adoption, rising utility costs and favourable customer
+  finances (Laws et al. 2017, Applied Energy 185), and that it can be avoided with tariff and regulatory interventions
+  (Castaneda et al. 2017, Energy Policy 110, system dynamics, Colombia).
+- The Australian responses were tariff reform, not a collapse: the AEMC's distribution network pricing rule
+  (November 2014, in force 1 December 2014) required cost-reflective network tariffs and tariff structure statements,
+  hence demand and time-of-use network tariffs; Passey et al. (2017, Energy Policy 109) show that demand charges are
+  only cost-reflective if they are measured at the network's peak. After the ERSS period, the AEMC's DER access and
+  pricing rule (12 August 2021) allowed export (two-way) tariffs (AER export tariff guidelines, May 2022), and
+  feed-in tariffs fell to near the wholesale value. These post-2020 changes are for the future-scenarios article.
+
+What the model can add (the ABM contribution, sections 4 and 8 D2): it has, in one run, the merit-order effect
+(rooftop output taken off the wholesale demand, so the price falls), the feed-in tariff cost, the network cost
+recovery and the adoption decision by tenure, dwelling and income. It can therefore report the net transfer to and
+from non-adopters by group, year by year, as the sum of the three terms instead of taking one side, and test whether
+the 2009-2019 feedback loop came near a spiral in Victoria (switch on and off). Two things to check before the build:
+the form of price control of the Victorian distributors over 2001-2019 (a revenue cap passes volume loss to the
+per-kWh charge, a price cap leaves it with the network), and the volume of premium feed-in tariff payments and how
+they were recovered (distributors' pass-through).
+
 ## 9. Steps
 
 1. Data: census cohorts with tenure and income; residential series; system prices, rebates, certificates, feed-in
@@ -168,3 +222,27 @@ the chain, so a "sub-distribution" SPM is not a place.
 
 Page numbers and volumes not yet checked against the papers are to be confirmed when the PDFs are saved to
 `Sandbox/papers/GR4SPArticle_ERSS/`.
+- Best, R., Chareunsy, A. (2022). The impact of income on household solar panel uptake: exploring diverse results
+  using Australian data. Energy Economics 112, 106124.
+- Best, R., Chareunsy, A., Li, H. (2021). Equity and effectiveness of Australian small-scale solar schemes.
+  Ecological Economics 180, 106890.
+- Castaneda, M. et al. (2017). Myths and facts of the utility death spiral. Energy Policy 110, 105-116.
+- Dodd, T., Nelson, T. (2022). Australian household adoption of solar photovoltaics: a comparative study of hardship
+  and non-hardship customers (journal to confirm).
+- Hammerle, M., Burke, P.J. Solar PV and energy poverty (AJARE; year to confirm).
+- Laws, N.D. et al. (2017). On the utility death spiral and the impact of utility rate structures on the adoption of
+  residential solar photovoltaics and energy storage. Applied Energy 185, 627-641.
+- McConnell, D. et al. (2013). Retrospective modeling of the merit-order effect on wholesale electricity prices from
+  distributed photovoltaic generation in the Australian National Electricity Market. Energy Policy 58, 17-27.
+- Nelson, T., Simshauser, P., Nelson, J. (2012). Queensland solar feed-in tariffs and the merit-order effect: economic
+  benefit, or regressive taxation and wealth transfers? Economic Analysis and Policy 42(3), 277-301.
+- Passey, R., Haghdadi, N., Bruce, A., MacGill, I. (2017). Designing more cost reflective electricity network tariffs
+  with demand charges. Energy Policy 109, 642-649.
+- Simshauser, P. (2014). From first place to last: the National Electricity Market's policy-induced "energy market
+  death spiral". Australian Economic Review 47(4), 540-562.
+- Simshauser, P. (2016). Distribution network prices and solar PV: resolving rate instability and wealth transfers
+  through demand tariffs. Energy Economics 54, 108-122.
+- Wood, T., Blowers, D., Griffiths, K. (2018). Down to the wire: a sustainable electricity network for Australia.
+  Grattan Institute.
+- AEMC (2014). Distribution network pricing arrangements, final determination, 27 November 2014. AEMC (2021). Access,
+  pricing and incentive arrangements for distributed energy resources, final determination, 12 August 2021.
