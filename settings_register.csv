@@ -1,0 +1,296 @@
+file,key,value,line,commit,date,status,comment,differs_after_base_year
+VIC.yaml,folderOutput,auto,3,7c2cf2f,2026-05-26,none,,
+VIC.yaml,reportGeneration,light,9,6dbb43d,2022-09-06,cited,"report can be ""full"" or ""light"" ""full"": generates all csv data ~8MB, and all the plots 2.5MB per simulation ""light"": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB",
+VIC.yaml,carbonPriceFile,carbon_price_AU.csv,19,d40b131,2026-11-04,cited,"R3 merit order (4 Nov 2026, docs/r3_offer_tests_30oct): coal and gas offer at short-run cost (heatRateGJperMWh x fuel price + variableOMMWh + emission factor x carbon price), coal offers a must-run share at 0 $/MWh, hydro offers its daily energy in peak half-hours at last month's mean price, coal and gas units break down at random (forcedOutageRate), and storage buys low and sells high. Station he",
+VIC.yaml,generatorCorrections,generator_corrections.csv,20,d40b131,2026-11-04,none,,
+VIC.yaml,generatorParametersFile,generator_parameters_VIC.csv,21,ee543b0,2026-11-04,none,,
+VIC.yaml,cpiFile,cpi_melbourne.csv,22,ee543b0,2026-11-04,none,,
+VIC.yaml,costPriceYear,2020,23,ee543b0,2026-11-04,none,,
+VIC.yaml,shapeDemandUplift,true,26,ef2efd1,2026-11-08,explained,"R3 shortfall repair (8 Nov 2026): the demand uplift to total generation follows the 2015-20 net-export shape, multi-unit rows break down unit by unit, and hydro gets each month's recorded energy (an input, not a validation result).",
+VIC.yaml,netExportsShapeFile,net_exports_shape_VIC.csv,27,ef2efd1,2026-11-08,none,,
+VIC.yaml,outagesPerUnit,true,28,ef2efd1,2026-11-08,none,,
+VIC.yaml,solarShapeInDemand,true,31,27f2402,2026-11-13,cited,"N21 (13 Nov 2026): AEMO's half-hourly demand is net of rooftop PV and small solar; their recorded output is added back at its own shape before the calibration, so Arena's subtraction no longer takes midday demand out twice.",
+VIC.yaml,forecastFromCalibratedDemand,true,34,27f2402,2026-11-13,cited,"Forward period (13 Nov 2026): demand after the forecast start grows the calibrated base-year profile (total generation), not AEMO's operational demand, which lacks exports, non-scheduled and rooftop output (2021 demand was 10 % low).",
+VIC.yaml,solarInstallationsFile,solar_installation_cer_VIC.csv,42,e482238,2026-11-14,cited,"N23 (14 Nov 2026): rooftop PV was 10 % below the record. Three causes, each repaired: (1) the installation register (APVI) stops in September 2019; the CER postcode record replaces it for 2011-2019 (scripts/data/cer_solar_vic_csv.py; 2011-2018 agree within 0.5 %, 2019 adds 191 MW); (2) missing solar_ghi half-hours gave no output; they are filled from the same half-hour on nearby days (always on); ",
+VIC.yaml,rooftopArrayTilt,16,43,e482238,2026-11-14,none,,
+VIC.yaml,rooftopArrayAzimuth,0,44,e482238,2026-11-14,none,,
+VIC.yaml,rooftopForecastFromModelYield,true,48,e482238,2026-11-14,cited,"Forward rooftop fleet: the ISP energy path (x 1.25, LoadData) divided by the model's own yield per kW, from the recorded 2019 fleet and replacing 30-year-old systems; before, energy increments were converted at a 20 % capacity factor from 2021 (the model's yield is about 14 %), and nothing was added in 2020",
+VIC.yaml,interconnectorFile,interconnectors_VIC.csv,52,e8ffe61,2026-11-09,explained,"R3 step 4 (9 Nov 2026): shortfalls are met by interconnector imports up to each link's peak import capability, offered at the neighbour's short-run cost or a water value; demand left unmet is priced at the market price cap. Read from this file only and applied in every year (VICfuture.yaml needs no copy).",
+VIC.yaml,shortfallPriceFile,market_price_cap_NEM.csv,53,e8ffe61,2026-11-09,none,,
+VIC.yaml,tariffContributionFile,tariff_contribution_VIC.csv,56,0e8f500,2026-11-09,cited,"R3 step 3 (9 Nov 2026): the wholesale share of the tariff (R_w) comes from sourced rows (Oakley Greenwood 2014/2017, AEMC price trends; 1999-2000 constructed), one row per calendar year of bills, used without a lag by the January update.",
+VIC.yaml,tariffContributionLag,0,57,0e8f500,2026-11-09,none,,
+VIC.yaml,tariffComponentsFile,tariff_components_VIC.csv,62,b6df85e,2026-11-12,cited,"Forward period (12 Nov 2026): additive tariff for the whole run, (simulated wholesale + network + environmental + retail) x (1 + GST), replacing wholesale / R_w (R_w above is then unused). Components from Oakley Greenwood 2014/2017 and AEMC price trends 2018-2020 (forecasts to 2022/23, then held in real terms), AEMC years on the Oakley Greenwood basis (scripts/data/tariff_components_vic.py). The 2",
+VIC.yaml,capacityPathFile,capacity_path_VIC.csv,65,b6df85e,2026-11-12,cited,"Forward period (12 Nov 2026): utility wind, solar, battery and gas follow the AEMO 2020 ISP Central DP1 path to FY2042, then hold (scripts/data/capacity_path_isp2020.py). Closures stay the database's, which agree with the ISP's.",
+VIC.yaml,logLevel,OFF,71,6dbb43d,2022-09-06,none,,
+VIC.yaml,simulationDates.startDate,1998-01-01,76,6dbb43d,2022-09-06,explained,Simulation Date Range 1998-01-01 #1920-01-01,
+VIC.yaml,simulationDates.endDate,2051-01-01,80,6dbb43d,2022-09-06,explained,There's only forecast data up to 2050/12. 2051-01-01 #REMEMBER TO CHANGE startDemandForecast:2020-06-01 2000-01-01 #1995-01-01 #2019-01-01,
+VIC.yaml,simulationDates.startDateSpotMarket,1999-01-01,83,6dbb43d,2022-09-06,explained,"Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before",
+VIC.yaml,population.areaCode,VIC,100,6dbb43d,2022-09-06,explained,"Include regional with all framework indicators, 100% Population data",
+VIC.yaml,population.populationPercentageAreacCode,1.0,101,6dbb43d,2022-09-06,none,,
+VIC.yaml,population.maxHouseholdsPerConsumerUnit,2147483647,112,6dbb43d,2022-09-06,explained,Adds all households as a single actor connected to a single SPM (Integer.MAX_VALUE: 2147483647),
+VIC.yaml,population.domesticConsumptionPercentage,0.3,115,6dbb43d,2022-09-06,explained,"Percentage of Total Consumption that corresponds to residential consumption (used by secondary markets, and emissions per household)",
+VIC.yaml,forecast.scenario.consumption,Central,120,6dbb43d,2022-09-06,explained,consumptions = OpSentOut + PV + EE + ONSG,
+VIC.yaml,forecast.scenario.energyEfficiency,Central,121,6dbb43d,2022-09-06,explained,consumption = consumption - EE  # consumption avoided given energy efficiency measures,
+VIC.yaml,forecast.scenario.onsiteGeneration,Central,122,6dbb43d,2022-09-06,explained,consumption = consumption - ONSG # corresponds to the subcategory of SmallNonScheduledGeneration,
+VIC.yaml,forecast.scenario.solarUptake,Central,123,6dbb43d,2022-09-06,explained,Slow change,
+VIC.yaml,forecast.baseYear,2019,125,6dbb43d,2022-09-06,none,,
+VIC.yaml,forecast.startDemandForecast,2020-08-01,127,6dbb43d,2022-09-06,none,,
+VIC.yaml,forecast.annualCpi,0.0233,134,6dbb43d,2022-09-06,cited,"This is applied to the tariffs (see EndUser class). If price rises in year baseYear+1 is 2%, then annualCpi should be 0.02. https://www.rateinflation.com/consumer-price-index/australia-historical-cpi.php?start-year=1948&end-year=2019 From base year onward, BAU is median change of CPI between 1990 to 2019 was 2.33 and average 2.43. Max 5 and min 0.",
+VIC.yaml,forecast.includePublicallyAnnouncedGen,false,137,6dbb43d,2022-09-06,explained,true means new generation that has been publically announced but not committed is included. true,
+VIC.yaml,forecast.generationRolloutPeriod,1,141,6dbb43d,2022-09-06,explained,"Rollout period of announced generation: including ""Publically announced"", ""Emerging"", ""Committed"", and ""In Commissioning"". This are all the projects that are on their way to be integrated in the generation pool but haven't start operating",
+VIC.yaml,forecast.commissioningDelay,0,145,b638b5a,2026-11-13,cited,"Commissioning delay d (years; fractions in whole months) of projects due after the base year: pipeline projects and the capacity path's steps arrive d later (> 0) or earlier (< 0, not before the base year). Realised 2019-list committed projects: median 1.3 years late (experiments/transition/README.md)",
+VIC.yaml,forecast.rooftopPV,both,148,6dbb43d,2022-09-06,explained,"Include subcategory of rooftop pv. (residential), (business) or (both)",
+VIC.yaml,forecast.generatorRetirement,0,152,6dbb43d,2022-09-06,explained,"Shift on closure date for Brown Coal Generators. E.g. -5 means 5 years earlier than expected Only affects generators for which there's no closure date, but only an expected closure date",
+VIC.yaml,forecast.technologicalImprovement,0.0,159,8a72859,2026-10-30,cited,"0 up to the base year: from 1999 it raised historical wind farms to CF 0.49 and solar efficiency by 0.01/yr (R3, 30 Oct 2026, docs/r3_offer_tests_30oct). VICfuture.yaml keeps 0.01 after the base year.",
+VIC.yaml,forecast.learningCurve,0.05,164,6dbb43d,2022-09-06,none,,
+VIC.yaml,forecast.solarInstallCapacity,6.3,167,6dbb43d,2022-09-06,explained,size of solar systems capacity. Used to estimate number of units installed from the forecast MW solar uptake,
+VIC.yaml,forecast.importPriceFactor,0.29,171,6dbb43d,2022-09-06,explained,"Variation on the price of imports. This variable is by default set to the median historic, 29% Changes of this variable will only affect price from imports after the base year.",
+VIC.yaml,policy.endConsumerTariff,AVG,177,6dbb43d,2022-09-06,explained,"Consumers will choose the Best (MIN), Worst (MAX), Random (RND), Average (AVG) available retail price",
+VIC.yaml,policy.annualInflation,0.033,182,6dbb43d,2022-09-06,cited,"Apply inflation to the base price of generators from the base year onwards median inflation from 1990-2019 is 1.85% and average 5.06%, Max 19.33% and min -0.33%. source from https://www.rateinflation.com/inflation-rate/australia-historical-inflation-rate.php?start-year=1949&end-year=2019",
+VIC.yaml,arena.scheduled.spotMarket,primary,190,6dbb43d,2022-09-06,explained,primary/secondary/none,
+VIC.yaml,arena.scheduled.minCapMarketGen,30,191,6dbb43d,2022-09-06,block,Regulation https://www.aemc.gov.au/sites/default/files/2020-06/NER%20-%20v142%20-%20Chapter%202.pdf,
+VIC.yaml,arena.semiScheduled.spotMarket,primary,193,6dbb43d,2022-09-06,block,market settings,
+VIC.yaml,arena.semiScheduled.minCapMarketGen,30,194,6dbb43d,2022-09-06,block,market settings,
+VIC.yaml,arena.nonScheduled.spotMarket,none,196,6dbb43d,2022-09-06,block,market settings,
+VIC.yaml,arena.nonScheduled.minCapMarketGen,0.1,197,6dbb43d,2022-09-06,block,market settings,
+VIC.yaml,generators.Default.basePriceMWh,1,213,6dbb43d,2022-09-06,explained,LCOE Price Parameters,
+VIC.yaml,generators.Default.marketPriceCap,8000,214,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Default.minCapacityFactor,0,216,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Default.maxCapacityFactor,0.9,217,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Default.maxCapacityFactorSummer,0.9,219,1e13ab1,2026-07-21,explained,DEFAULT summer CF equalised to annual for now (TODO: set the right % - divergent value was 0.5),
+VIC.yaml,generators.Default.emissionFactors[0].startYear,1850,222,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Default.emissionFactors[0].minEF,0.023,223,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Default.emissionFactors[0].linRateEF,0.0,224,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Default.emissionFactors[0].expRateEF,0.0,225,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Default.nameplateCapacityChange,1.0,228,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Biogas.basePriceMWh,1.75,237,6dbb43d,2022-09-06,explained,LCOE Price Parameters,
+VIC.yaml,generators.Biogas.marketPriceCap,8000,238,6dbb43d,2022-09-06,block,"Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data greenhouse and energy data or data for the usual CO2EII for landfill biogas methane: 0.062 LCOE vs CF relationship figures for some technologies were chosen with the https://www.aer.gov.au/ report on ""Wholesale electricity marke",
+VIC.yaml,generators.Biogas.minCapacityFactor,0,240,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Biogas.maxCapacityFactor,0.9,241,6dbb43d,2022-09-06,block,"Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data greenhouse and energy data or data for the usual CO2EII for landfill biogas methane: 0.062 LCOE vs CF relationship figures for some technologies were chosen with the https://www.aer.gov.au/ report on ""Wholesale electricity marke",
+VIC.yaml,generators.Biogas.maxCapacityFactorSummer,0.9,242,6dbb43d,2022-09-06,block,"Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data greenhouse and energy data or data for the usual CO2EII for landfill biogas methane: 0.062 LCOE vs CF relationship figures for some technologies were chosen with the https://www.aer.gov.au/ report on ""Wholesale electricity marke",
+VIC.yaml,generators.Biogas.emissionFactors[0].startYear,1850,245,6dbb43d,2022-09-06,block,"Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data greenhouse and energy data or data for the usual CO2EII for landfill biogas methane: 0.062 LCOE vs CF relationship figures for some technologies were chosen with the https://www.aer.gov.au/ report on ""Wholesale electricity marke",
+VIC.yaml,generators.Biogas.emissionFactors[0].minEF,0.062,246,6dbb43d,2022-09-06,block,"Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data greenhouse and energy data or data for the usual CO2EII for landfill biogas methane: 0.062 LCOE vs CF relationship figures for some technologies were chosen with the https://www.aer.gov.au/ report on ""Wholesale electricity marke",
+VIC.yaml,generators.Biogas.emissionFactors[0].linRateEF,0.0,247,6dbb43d,2022-09-06,block,"Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data greenhouse and energy data or data for the usual CO2EII for landfill biogas methane: 0.062 LCOE vs CF relationship figures for some technologies were chosen with the https://www.aer.gov.au/ report on ""Wholesale electricity marke",
+VIC.yaml,generators.Biogas.emissionFactors[0].expRateEF,0.0,248,6dbb43d,2022-09-06,block,"Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data greenhouse and energy data or data for the usual CO2EII for landfill biogas methane: 0.062 LCOE vs CF relationship figures for some technologies were chosen with the https://www.aer.gov.au/ report on ""Wholesale electricity marke",
+VIC.yaml,generators.Biogas.nameplateCapacityChange,1.0,251,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Diesel.basePriceMWh,10,257,6dbb43d,2022-09-06,explained,"LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf",
+VIC.yaml,generators.Diesel.marketPriceCap,8000,258,6dbb43d,2022-09-06,block,Fuel bucket: Other usual CO2EII Diesel oil: 0.957,
+VIC.yaml,generators.Diesel.minCapacityFactor,0,260,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Diesel.maxCapacityFactor,0.5,261,6dbb43d,2022-09-06,block,Fuel bucket: Other usual CO2EII Diesel oil: 0.957,
+VIC.yaml,generators.Diesel.maxCapacityFactorSummer,0.5,262,1e13ab1,2026-07-21,explained,equalised to annual for now (TODO: was 0.8),
+VIC.yaml,generators.Diesel.emissionFactors[0].startYear,1850,265,6dbb43d,2022-09-06,block,Fuel bucket: Other usual CO2EII Diesel oil: 0.957,
+VIC.yaml,generators.Diesel.emissionFactors[0].minEF,0.957,266,6dbb43d,2022-09-06,block,Fuel bucket: Other usual CO2EII Diesel oil: 0.957,
+VIC.yaml,generators.Diesel.emissionFactors[0].linRateEF,0.0,267,6dbb43d,2022-09-06,block,Fuel bucket: Other usual CO2EII Diesel oil: 0.957,
+VIC.yaml,generators.Diesel.emissionFactors[0].expRateEF,0.0,268,6dbb43d,2022-09-06,block,Fuel bucket: Other usual CO2EII Diesel oil: 0.957,
+VIC.yaml,generators.Diesel.nameplateCapacityChange,1.0,271,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Dry wood.basePriceMWh,1.25,276,6dbb43d,2022-09-06,explained,LCOE Price Parameters: assumed less expensive than landfill,
+VIC.yaml,generators.Dry wood.marketPriceCap,8000,277,6dbb43d,2022-09-06,block,"Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)",
+VIC.yaml,generators.Dry wood.minCapacityFactor,0,279,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Dry wood.maxCapacityFactor,0.85,280,6dbb43d,2022-09-06,block,"Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)",
+VIC.yaml,generators.Dry wood.maxCapacityFactorSummer,0.85,281,1e13ab1,2026-07-21,explained,equalised to annual for now (TODO: was 0.9),
+VIC.yaml,generators.Dry wood.emissionFactors[0].startYear,1850,284,6dbb43d,2022-09-06,block,"Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)",
+VIC.yaml,generators.Dry wood.emissionFactors[0].minEF,0.023,285,6dbb43d,2022-09-06,block,"Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)",
+VIC.yaml,generators.Dry wood.emissionFactors[0].linRateEF,0.0,286,6dbb43d,2022-09-06,block,"Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)",
+VIC.yaml,generators.Dry wood.emissionFactors[0].expRateEF,0.0,287,6dbb43d,2022-09-06,block,"Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)",
+VIC.yaml,generators.Dry wood.nameplateCapacityChange,1.0,290,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Landfill.basePriceMWh,1.75,295,6dbb43d,2022-09-06,explained,LCOE Price Parameters,
+VIC.yaml,generators.Landfill.marketPriceCap,8000,296,6dbb43d,2022-09-06,block,usual CO2EII for landfill biogas methane: 0.06,
+VIC.yaml,generators.Landfill.minCapacityFactor,0,298,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Landfill.maxCapacityFactor,0.9,299,6dbb43d,2022-09-06,block,usual CO2EII for landfill biogas methane: 0.06,
+VIC.yaml,generators.Landfill.maxCapacityFactorSummer,0.9,300,6dbb43d,2022-09-06,block,usual CO2EII for landfill biogas methane: 0.06,
+VIC.yaml,generators.Landfill.emissionFactors[0].startYear,1950,303,6dbb43d,2022-09-06,block,usual CO2EII for landfill biogas methane: 0.06,
+VIC.yaml,generators.Landfill.emissionFactors[0].minEF,0.062,304,6dbb43d,2022-09-06,block,usual CO2EII for landfill biogas methane: 0.06,
+VIC.yaml,generators.Landfill.emissionFactors[0].linRateEF,0.0,305,6dbb43d,2022-09-06,block,usual CO2EII for landfill biogas methane: 0.06,
+VIC.yaml,generators.Landfill.emissionFactors[0].expRateEF,0.0,306,6dbb43d,2022-09-06,block,usual CO2EII for landfill biogas methane: 0.06,
+VIC.yaml,generators.Landfill.nameplateCapacityChange,1.0,309,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Brown Coal.outageHours,94,312,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Brown Coal.forcedOutageRate,0.0551,313,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Brown Coal.availabilityFactor,0.980,314,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Brown Coal.mustRunPriceMWh,0,315,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Brown Coal.mustRunShare,0.6,316,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Brown Coal.fuelPriceGJ,0.638,317,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Brown Coal.variableOMMWh,4.265,318,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Brown Coal.heatRateGJperMWh,13.0,319,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Brown Coal.basePriceMWh,4.75,321,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2: 14.25,
+VIC.yaml,generators.Brown Coal.marketPriceCap,8000,322,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.minCapacityFactor,0.47,324,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Brown Coal.maxCapacityFactor,0.90,326,8a72859,2026-10-30,cited,"Availability (nameplate x this, every half-hour): 0.90, the record implies ~0.89 for 2006-2018 (was 0.85; R3, 30 Oct 2026, docs/r3_offer_tests_30oct)",
+VIC.yaml,generators.Brown Coal.maxCapacityFactorSummer,0.90,327,8a72859,2026-10-30,none,,
+VIC.yaml,generators.Brown Coal.emissionFactors[0].startYear,1850,330,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.emissionFactors[0].minEF,1.23,331,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.emissionFactors[0].linRateEF,0.0,332,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.emissionFactors[0].expRateEF,0.0,333,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.emissionFactors[1].startYear,1964,334,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.emissionFactors[1].minEF,1.23,335,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.emissionFactors[1].linRateEF,0.0,336,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.emissionFactors[1].expRateEF,0.0,337,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Brown Coal.nameplateCapacityChange,1.0,340,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.outageHours,9,343,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.forcedOutageRate,0.0242,344,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.fuelPriceFile,fuel_price_gas_VIC.csv,345,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.variableOMMWh,10.663,346,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.heatRateGJperMWh,12.0,347,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.availabilityFactor,1.0,348,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.basePriceMWh,7.9,350,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2: 5.06,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.marketPriceCap,8000,351,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.minCapacityFactor,0.06,353,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.maxCapacityFactor,0.3,354,6dbb43d,2022-09-06,explained,30% in LCOE report truncation assuming more usage of this tech,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.maxCapacityFactorSummer,0.3,355,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.emissionFactors[0].startYear,1850,358,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.emissionFactors[0].minEF,0.56,359,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.emissionFactors[0].linRateEF,0.0,360,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.emissionFactors[0].expRateEF,0.0,361,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - OCGT.nameplateCapacityChange,1.0,364,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.outageHours,41,367,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.forcedOutageRate,0.0253,368,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.fuelPriceFile,fuel_price_gas_VIC.csv,369,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.variableOMMWh,4,370,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.heatRateGJperMWh,7.5,371,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.availabilityFactor,0.9,372,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.basePriceMWh,16.41,374,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2:13.95,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.marketPriceCap,8000,375,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.minCapacityFactor,0.22,377,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.maxCapacityFactor,0.65,378,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.maxCapacityFactorSummer,0.65,379,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.emissionFactors[0].startYear,1850,382,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.emissionFactors[0].minEF,0.49,383,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.emissionFactors[0].linRateEF,0.0,384,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.emissionFactors[0].expRateEF,0.0,385,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Gas Pipeline Turbine - CCGT.nameplateCapacityChange,1.0,388,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Wind.basePriceMWh,10.45,394,6dbb43d,2022-09-06,cited,"LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf https://co2crc.com.au/wp-content/uploads/2019/12/Exec-Briefing_A4_forweb.pdf also from CSRIO report from 2018 on Generation Costs option 2:6.27",
+VIC.yaml,generators.Wind.marketPriceCap,8000,395,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Wind.srmcMWh,0,397,8a72859,2026-10-30,cited,"Spot offer at short-run marginal cost instead of the LCOE rule (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)",
+VIC.yaml,generators.Wind.minCapacityFactor,0.28,399,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Wind.maxCapacityFactor,0.30,401,8a72859,2026-10-30,explained,0.30 tracks observed wind output year by year with the SRMC offer (was 0.4; LCOE report truncates at 50%),
+VIC.yaml,generators.Wind.maxCapacityFactorSummer,0.30,402,8a72859,2026-10-30,none,,
+VIC.yaml,generators.Wind.emissionFactors[0].startYear,1850,405,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Wind.emissionFactors[0].minEF,0.0024,406,6dbb43d,2022-09-06,cited,0 or average scope 1 emissions from Clean Energy Regulator data (0.0024),
+VIC.yaml,generators.Wind.emissionFactors[0].linRateEF,0.0,407,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Wind.emissionFactors[0].expRateEF,0.0,408,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Wind.nameplateCapacityChange,1.0,411,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Water.monthlyEnergyFromRecord,true,414,ef2efd1,2026-11-08,explained,"recorded monthly hydro energy, water-value offers; peakOnly/dailyEnergyLimit only for months without a record",
+VIC.yaml,generators.Water.outageHours,27,415,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Water.forcedOutageRate,0.0252,416,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Water.storageOfferFactor,1.0,417,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Water.peakOnly,true,418,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Water.dailyEnergyLimit,true,419,d40b131,2026-11-04,none,,
+VIC.yaml,generators.Water.availabilityFactor,1.0,420,ee543b0,2026-11-04,none,,
+VIC.yaml,generators.Water.basePriceMWh,2.06,422,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2:5.06,
+VIC.yaml,generators.Water.marketPriceCap,8000,423,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Water.minCapacityFactor,0.03,425,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Water.maxCapacityFactor,0.20,427,8a72859,2026-10-30,cited,"0.20: hydro output matches the record at ~0.18 (2006-2019 mean 2,551 GWh/yr); was 0.3 (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)",
+VIC.yaml,generators.Water.maxCapacityFactorSummer,0.20,428,8a72859,2026-10-30,none,,
+VIC.yaml,generators.Water.emissionFactors[0].startYear,1850,431,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Water.emissionFactors[0].minEF,0.0003,432,6dbb43d,2022-09-06,cited,0 or average scope 1 emissions from Clean Energy Regulator data (0.0003),
+VIC.yaml,generators.Water.emissionFactors[0].linRateEF,0.0,433,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Water.emissionFactors[0].expRateEF,0.0,434,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Water.nameplateCapacityChange,1.0,437,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Solar.basePriceMWh,7.05,442,6dbb43d,2022-09-06,explained,"TODO: Solar. According to LCOE report, CF varies from 12% to 26%. But they truncated solar at 40 and wind at 50 LCOE Price Parameters 6.71 #option 2:7.05",
+VIC.yaml,generators.Solar.marketPriceCap,8000,443,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Solar.srmcMWh,0,445,8a72859,2026-10-30,cited,"Spot offer at short-run marginal cost instead of the LCOE rule (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)",
+VIC.yaml,generators.Solar.minCapacityFactor,0.12,447,6dbb43d,2022-09-06,explained,Capacity Factor,
+VIC.yaml,generators.Solar.maxCapacityFactor,0.26,448,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Solar.maxCapacityFactorSummer,0.26,449,1e13ab1,2026-07-21,explained,equalised to annual for now (TODO: was 0.4; note: solar CF is inert - solar uses irradiance),
+VIC.yaml,generators.Solar.emissionFactors[0].startYear,1850,452,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Solar.emissionFactors[0].minEF,0.0009,453,6dbb43d,2022-09-06,cited,0 or average scope 1 emissions from Clean Energy Regulator data (0.031),
+VIC.yaml,generators.Solar.emissionFactors[0].linRateEF,0.0,454,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Solar.emissionFactors[0].expRateEF,0.0,455,6dbb43d,2022-09-06,none,,
+VIC.yaml,generators.Solar.solarEfficiency.fman,0.97,458,6dbb43d,2022-09-06,explained,"de-rating factor for manufacturing tolerance, dimensionless",
+VIC.yaml,generators.Solar.solarEfficiency.fdirt,0.95,460,6dbb43d,2022-09-06,explained,"de-rating factor for dirt, dimensionless",
+VIC.yaml,generators.Solar.solarEfficiency.ftemp,0.9,464,6dbb43d,2022-09-06,cited,"temperature de-rating factor, dimensionless, ƒtemp = 1 + (γ × (avg temp) y=-.005 * 20 y is the temperature coefficient, using example from CEC guidelines as -0.5%/C and average daily temperature of 20C the de-rating factor increases with increasing average daily temperatures.",
+VIC.yaml,generators.Solar.solarEfficiency.npv_inv,0.97,467,6dbb43d,2022-09-06,explained,efficiency of the subsystem (cables) between the PV array and the inverter (DC cable loss),
+VIC.yaml,generators.Solar.solarEfficiency.ninv,0.9,469,6dbb43d,2022-09-06,explained,efficiency of the inverter. Typically 0.9,
+VIC.yaml,generators.Solar.solarEfficiency.ninv_sb,0.99,472,6dbb43d,2022-09-06,explained,efficiency of the subsystem (cables) between the inverter and the switchboard (AC cable loss) recommended voltage drop between inverter and main switch shouldn't be greater than 1%,
+VIC.yaml,generators.Solar.nameplateCapacityChange,1.0,475,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,generators.Battery.roundTripEfficiency,0.85,479,d40b131,2026-11-04,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,
+VIC.yaml,generators.Battery.basePriceMWh,23.57,481,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2: 42.43,
+VIC.yaml,generators.Battery.marketPriceCap,8000,482,6dbb43d,2022-09-06,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,
+VIC.yaml,generators.Battery.storageOfferFactor,1.2,485,8a72859,2026-10-30,cited,"Spot offer at 1.2 x last month's mean spot price. The LCOE rule with minCapacityFactor 0.01 offered up to ~2,350 $/MWh and set most of the 2019 price (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)",
+VIC.yaml,generators.Battery.minCapacityFactor,0.01,489,6dbb43d,2022-09-06,explained,"Capacity Factor for simplicity but in storage systems is better referred as usage factor, as it is based on gross generation rather than net generation. This tech uses more energy than the energy it stored (resulting always in negative net generation) 0.0053",
+VIC.yaml,generators.Battery.maxCapacityFactor,0.9,490,6dbb43d,2022-09-06,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,
+VIC.yaml,generators.Battery.maxCapacityFactorSummer,0.9,491,6dbb43d,2022-09-06,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,
+VIC.yaml,generators.Battery.emissionFactors[0].startYear,1850,494,6dbb43d,2022-09-06,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,
+VIC.yaml,generators.Battery.emissionFactors[0].minEF,0.00,495,6dbb43d,2022-09-06,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,
+VIC.yaml,generators.Battery.emissionFactors[0].linRateEF,0.0,496,6dbb43d,2022-09-06,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,
+VIC.yaml,generators.Battery.emissionFactors[0].expRateEF,0.0,497,6dbb43d,2022-09-06,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,
+VIC.yaml,generators.Battery.nameplateCapacityChange,1.0,500,6dbb43d,2022-09-06,explained,"This will be used to multiply the nameplate capacity of the generators in the DB It can be used to increase the capacity or decrease it, simulating the closure or introduction of new capacity",
+VIC.yaml,tariffs.wholesaleContribution.fixed,1,505,6dbb43d,2022-09-06,none,,
+VIC.yaml,tariffs.wholesaleContribution.usage,0.2837,510,6dbb43d,2022-09-06,explained,"percentage contribution of final tariff with respect to wholesale price. It applies after the forecast date. Quantification of historic tariff takes wholesale contribution from historic annual average from the ""historic_tariff_contribution"" table. to the median value between min (11.37%) and max (45.37%) values from historic data.",
+VICfuture.yaml,outagesPerUnit,true,1,ef2efd1,2026-11-08,none,,no
+VICfuture.yaml,population.domesticConsumptionPercentage,0.3,7,6dbb43d,2022-09-06,explained,"Percentage of Total Consumption that corresponds to residential consumption (use in secondary markets, and emissions per household)",no
+VICfuture.yaml,forecast.scenario.consumption,Central,12,6dbb43d,2022-09-06,explained,consumptions = OpSentOut + PV + EE + ONSG,no
+VICfuture.yaml,forecast.scenario.energyEfficiency,Central,13,6dbb43d,2022-09-06,explained,consumption = consumption - EE  # consumption avoided given energy efficiency measures,no
+VICfuture.yaml,forecast.scenario.onsiteGeneration,Central,14,6dbb43d,2022-09-06,explained,consumption = consumption - ONSG # corresponds to the subcategory of SmallNonScheduledGeneration,no
+VICfuture.yaml,forecast.scenario.solarUptake,Central,15,6dbb43d,2022-09-06,explained,Slow change,no
+VICfuture.yaml,forecast.annualCpi,0.0233,26,6dbb43d,2022-09-06,cited,"This is applied to the tariffs (see EndUser class). If price rises in year baseYear+1 is 2%, then annualCpi should be 0.02. https://www.rateinflation.com/consumer-price-index/australia-historical-cpi/ From base year onwards, BAU is median change of CPI between 1990 to 2019 was 2.33 and average 2.43. Max 5 and min 0.",no
+VICfuture.yaml,forecast.includePublicallyAnnouncedGen,false,29,6dbb43d,2022-09-06,explained,true means new generation that has been publically announced but not yet committed is included. true,no
+VICfuture.yaml,forecast.generationRolloutPeriod,1,33,6dbb43d,2022-09-06,explained,"Rollout period of announced generation: including ""Publically announced"", ""Emerging"", ""Committed"", and ""In Commissioning"". This are all the projects that are on their way to be integrated in the generation pool but haven't start operating",no
+VICfuture.yaml,forecast.commissioningDelay,0,37,b638b5a,2026-11-13,cited,"Commissioning delay d (years; fractions in whole months) of projects due after the base year: pipeline projects and the capacity path's steps arrive d later (> 0) or earlier (< 0, not before the base year). Realised 2019-list committed projects: median 1.3 years late (experiments/transition/README.md)",no
+VICfuture.yaml,forecast.rooftopPV,both,40,6dbb43d,2022-09-06,explained,"Include subcategory of rooftop pv. (residential), (business) or (both)",no
+VICfuture.yaml,forecast.generatorRetirement,0,44,6dbb43d,2022-09-06,explained,"Shift on closure date for Brown Coal Generators. E.g. -5 means 5 years earlier than expected Only affects generators for which there's no closure date, but only an expected closure date",no
+VICfuture.yaml,forecast.technologicalImprovement,0.01,49,6dbb43d,2022-09-06,none,,yes
+VICfuture.yaml,forecast.learningCurve,0.05,54,6dbb43d,2022-09-06,none,,no
+VICfuture.yaml,forecast.importPriceFactor,0.29,58,6dbb43d,2022-09-06,explained,"Variation on the price of imports. This variable is by default set to the median historic, 29% Changes of this variable will only affect price from imports after the base year.",no
+VICfuture.yaml,policy.annualInflation,0.033,65,6dbb43d,2022-09-06,cited,"Apply inflation to the max and min value used by generators to define the LCOE from the base year onwards median inflation from 1990-2019 is 1.85% and average 5.06%, Max 19.33% and min -0.33%. source from https://www.rateinflation.com/inflation-rate/australia-historical-inflation-rate.php?start-year=1949&end-year=2019",no
+VICfuture.yaml,arena.scheduled.spotMarket,primary,72,6dbb43d,2022-09-06,explained,primary/secondary/none,no
+VICfuture.yaml,arena.scheduled.minCapMarketGen,30,73,6dbb43d,2022-09-06,block,Regulation https://www.aemc.gov.au/sites/default/files/2020-06/NER%20-%20v142%20-%20Chapter%202.pdf,no
+VICfuture.yaml,arena.semiScheduled.spotMarket,primary,75,6dbb43d,2022-09-06,block,market settings,no
+VICfuture.yaml,arena.semiScheduled.minCapMarketGen,30,76,6dbb43d,2022-09-06,block,market settings,no
+VICfuture.yaml,arena.nonScheduled.spotMarket,none,78,6dbb43d,2022-09-06,block,market settings,no
+VICfuture.yaml,arena.nonScheduled.minCapMarketGen,0.1,79,6dbb43d,2022-09-06,block,market settings,no
+VICfuture.yaml,generators.Default.basePriceMWh,1,94,6dbb43d,2022-09-06,explained,LCOE Price Parameters,no
+VICfuture.yaml,generators.Default.nameplateCapacityChange,1.0,95,6dbb43d,2022-09-06,block,TODO: battery storage LCOE. Only discharge Prices are uptated at the same time in both settings (1998 adn 2019) but the changes are applied only to VICFuture,no
+VICfuture.yaml,generators.Biogas.basePriceMWh,1.75,104,6dbb43d,2022-09-06,explained,LCOE Price Parameters,no
+VICfuture.yaml,generators.Biogas.nameplateCapacityChange,1.0,105,6dbb43d,2022-09-06,block,"Weighted average using http://www.cleanenergyregulator.gov.au/NGER/National%20greenhouse%20and%20energy%20reporting%20data/electricity-sector-emissions-and-generation-data greenhouse and energy data or data for the usual CO2EII for landfill biogas methane: 0.062 LCOE vs CF relationship figures for some technologies were chosen with the https://www.aer.gov.au/ report on ""Wholesale electricity marke",no
+VICfuture.yaml,generators.Diesel.basePriceMWh,10,111,6dbb43d,2022-09-06,explained,"LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf",no
+VICfuture.yaml,generators.Diesel.nameplateCapacityChange,1.0,112,6dbb43d,2022-09-06,block,Fuel bucket: Other usual CO2EII Diesel oil: 0.957,no
+VICfuture.yaml,generators.Dry wood.basePriceMWh,1.25,117,6dbb43d,2022-09-06,explained,LCOE Price Parameters: assumed less expensive than landfill,no
+VICfuture.yaml,generators.Dry wood.nameplateCapacityChange,1.0,118,6dbb43d,2022-09-06,block,"Fuel type: dry wood, land fill; Fuel bucket: Biomass (usual CO2EII Biomass and industrial materials: 0.023)",no
+VICfuture.yaml,generators.Landfill.basePriceMWh,1.75,123,6dbb43d,2022-09-06,explained,LCOE Price Parameters,no
+VICfuture.yaml,generators.Landfill.nameplateCapacityChange,1.0,124,6dbb43d,2022-09-06,block,usual CO2EII for landfill biogas methane: 0.06,no
+VICfuture.yaml,generators.Brown Coal.outageHours,94,127,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Brown Coal.forcedOutageRate,0.0551,128,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Brown Coal.availabilityFactor,0.980,129,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Brown Coal.mustRunPriceMWh,0,130,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Brown Coal.mustRunShare,0.6,131,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Brown Coal.fuelPriceGJ,0.638,132,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Brown Coal.variableOMMWh,4.265,133,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Brown Coal.heatRateGJperMWh,13.0,134,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Brown Coal.basePriceMWh,4.75,136,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2: 14.25,no
+VICfuture.yaml,generators.Brown Coal.nameplateCapacityChange,1.0,137,6dbb43d,2022-09-06,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - OCGT.outageHours,9,140,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - OCGT.forcedOutageRate,0.0242,141,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - OCGT.fuelPriceFile,fuel_price_gas_VIC.csv,142,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - OCGT.variableOMMWh,10.663,143,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - OCGT.heatRateGJperMWh,12.0,144,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - OCGT.availabilityFactor,1.0,145,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - OCGT.basePriceMWh,7.9,147,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2: 5.06,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - OCGT.nameplateCapacityChange,1.0,148,6dbb43d,2022-09-06,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - CCGT.outageHours,41,151,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - CCGT.forcedOutageRate,0.0253,152,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - CCGT.fuelPriceFile,fuel_price_gas_VIC.csv,153,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - CCGT.variableOMMWh,4,154,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - CCGT.heatRateGJperMWh,7.5,155,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - CCGT.availabilityFactor,0.9,156,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - CCGT.basePriceMWh,16.41,158,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2: 13.95,no
+VICfuture.yaml,generators.Gas Pipeline Turbine - CCGT.nameplateCapacityChange,1.0,159,6dbb43d,2022-09-06,none,,no
+VICfuture.yaml,generators.Wind.basePriceMWh,10.45,165,6dbb43d,2022-09-06,cited,"LCOE Price Parameters, from CO2CRC - Australian Power Generation Technology Report - Executive Summary.pdf https://co2crc.com.au/wp-content/uploads/2019/12/Exec-Briefing_A4_forweb.pdf also from CSRIO report from 2018 on Generation Costs option 2: 6.27",no
+VICfuture.yaml,generators.Wind.srmcMWh,0,166,8a72859,2026-10-30,cited,"R3, 30 Oct 2026, docs/r3_offer_tests_30oct",no
+VICfuture.yaml,generators.Wind.nameplateCapacityChange,1.0,167,6dbb43d,2022-09-06,none,,no
+VICfuture.yaml,generators.Water.monthlyEnergyFromRecord,true,170,ef2efd1,2026-11-08,explained,"recorded monthly hydro energy, water-value offers; peakOnly/dailyEnergyLimit only for months without a record",no
+VICfuture.yaml,generators.Water.outageHours,27,171,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Water.forcedOutageRate,0.0252,172,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Water.storageOfferFactor,1.0,173,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Water.peakOnly,true,174,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Water.dailyEnergyLimit,true,175,d40b131,2026-11-04,none,,no
+VICfuture.yaml,generators.Water.availabilityFactor,1.0,176,ee543b0,2026-11-04,none,,no
+VICfuture.yaml,generators.Water.basePriceMWh,2.06,178,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2: 5.06,no
+VICfuture.yaml,generators.Water.nameplateCapacityChange,1.0,179,6dbb43d,2022-09-06,none,,no
+VICfuture.yaml,generators.Solar.basePriceMWh,7.05,184,6dbb43d,2022-09-06,explained,"TODO: Solar. According to LCOE report, CF varies from 12% to 26%. But they truncated solar at 40 and wind at 50 LCOE Price Parameters option 2: 7.05",no
+VICfuture.yaml,generators.Solar.srmcMWh,0,185,8a72859,2026-10-30,cited,"R3, 30 Oct 2026, docs/r3_offer_tests_30oct",no
+VICfuture.yaml,generators.Solar.nameplateCapacityChange,1.0,186,6dbb43d,2022-09-06,none,,no
+VICfuture.yaml,generators.Battery.roundTripEfficiency,0.85,190,d40b131,2026-11-04,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,no
+VICfuture.yaml,generators.Battery.basePriceMWh,23.57,192,6dbb43d,2022-09-06,explained,LCOE Price Parameters option 2: 42.43,no
+VICfuture.yaml,generators.Battery.storageOfferFactor,1.2,193,8a72859,2026-10-30,cited,"R3, 30 Oct 2026, docs/r3_offer_tests_30oct",no
+VICfuture.yaml,generators.Battery.nameplateCapacityChange,1.0,194,6dbb43d,2022-09-06,block,LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11,no
+VICfuture.yaml,tariffs.wholesaleContribution.usage,0.2837,203,6dbb43d,2022-09-06,explained,"percentage contribution of final tariff with respect to wholesale price. It applies after the forecast date. Quantification of historic tariff takes wholesale contribution from historic annual average from the ""historic_tariff_contribution"" table. to the median value between min (11.37%) and max (45.37%) values from historic data.",no
