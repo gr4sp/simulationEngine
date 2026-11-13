@@ -403,7 +403,11 @@ public class Generator implements java.io.Serializable, Asset {
     public void computeAvailableCapacity(SimState state, Date today, Date currentTime, int currentMonth) {
             double capacityFactor = getCapacityFactor(currentMonth);
             cfCapacity = this.getMaxCapacity() * capacityFactor;
-            availableCapacity = availabilityFactor >= 0 ? this.getMaxCapacity() * availabilityFactor : cfCapacity;
+            //availabilityFactor is the power a market unit offers; its energy is limited by the offer rules (monthly
+            //budget, daily limit, outages). An off-market unit has no such limit and runs at what it makes available every
+            //half-hour, so it keeps its capacity factor (with the factor, small hydro and gas ran at nameplate all year)
+            boolean inMarket = getInPrimaryMarket() || getInSecondaryMarket();
+            availableCapacity = availabilityFactor >= 0 && inMarket ? this.getMaxCapacity() * availabilityFactor : cfCapacity;
     }
 
     //MW offered in this half-hour: the available capacity, or what is left of today's energy if energy-limited
