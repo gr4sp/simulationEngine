@@ -101,7 +101,12 @@ whose parameter list predates the repairs (`PARAMETER_AUDIT_R3.md`); "tested" me
 | A32 | Solar adoption | Tenure before 2006 held at the 2006 shares | | assumed | no | `STEP1_DATA.md` |
 | A33 | Solar adoption | Exports before November 2009 credited at the retail rate | | assumed | no | `STEP1_DATA.md` |
 | A34 | Solar adoption | Economics values marked `secondary` (10) or `assumed` (4): 2015-16 minimum feed-in tariffs, Solar Credits dates, Solar Homes cap and income limit, zone 4 rating, certificate price before 2011 | | secondary, assumed | planned | `rooftop_pv_economics_VIC.csv` |
-| A35 | Solar adoption | Self-consumption shares by household type | | to set in step 3 | planned | `DESIGN.md` D4 |
+| A35 | Solar adoption | Self-consumed share of output: one Victorian value for every household type, falling as systems grow (no source by type found) | 0.67 (2007-2012) to 0.45 (2019) | constructed from HECS 2012 and AER RIN exports (open, D4) | planned | `rooftop_self_consumption_VIC.csv` |
+| A39 | Solar adoption | Cohort shares: households with unstated income and dwelling OTHER (0.5-0.8 %) spread like the rest; fuel independent of tenure within a census cell; open top income bracket ends at twice its lower bound; gross income stands in for the taxable income of the means tests | | assumed | no | `build_cohorts.py` |
+| A40 | Solar adoption | Payback: simple, first-year saving at last month's household tariff and the feed-in tariff of the installation date; system price as quoted (excl. GST from 2008) | | assumed (constant factors absorbed by PB0 in step 4) | planned | `RooftopAdoption` |
+| A41 | Solar adoption | Before June 2009 a household gets both the federal rebate and the certificates (RECs) | | assumed | no | `RooftopAdoption` |
+| A42 | Solar adoption | Hazard parameters (a, b, k, PB0, renter, flat and quintile-1 factors) | 0.0005, 0.03, 0.8, 8, 0.1, 0.1, 0.5 | initial guesses, to calibrate in step 4 | step 4 | `VIC.yaml` |
+| A43 | Solar adoption | Share of the register owned by non-households, kept as recorded in endogenous mode | 0 | assumed (HECS 2012 suggests about 10 % by count) | planned | `rooftopNonResidentialShare` |
 
 | A36 | Small units | Units embedded in an industrial or hospital load supply that load only: Longford (Esso gas plant), Qenos (Altona), the hospital backup diesel | output 0 | AEMO 2020 s. 4.1.2 (removes units captured by net metering); not in NGER or the demand record | no | `generator_parameters_VIC.csv` |
 | A37 | Battery | One round-trip efficiency for every battery, existing and generic | 0.85 | measured (Gannawarra 85.0 %); IASR 81 % as the lower bound | no | `VIC.yaml` |

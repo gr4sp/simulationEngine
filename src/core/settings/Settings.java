@@ -253,6 +253,27 @@ public class Settings implements java.io.Serializable {
     //FY values turned into calendar years) over the households, and the residential share of the total becomes a yearly
     //series; domesticConsumptionPercentage is then unused for household use. Unset: the constant share (thesis)
     public String residentialConsumptionFile;
+    //Solar adoption step 3 (14 Nov 2026): "recorded" (default) builds the rooftop fleet from the installation register;
+    //"endogenous" lets household cohorts decide (core.Social.RooftopAdoption): the register then serves only the N21
+    //add-back of the historic demand and the non-household share, and is the calibration target (step 4)
+    public String rooftopAdoption = "recorded";
+    //CSVs in simulationSettings read in endogenous mode: cohort shares (build_cohorts.py), economics register, and the
+    //self-consumed share of a system's output by household type (type ALL for every type)
+    public String householdCohortsFile = "household_cohorts_VIC.csv";
+    public String rooftopEconomicsFile = "rooftop_pv_economics_VIC.csv";
+    public String rooftopSelfConsumptionFile = "rooftop_self_consumption_VIC.csv";
+    //Hazard h = e [a + b A] / (1 + exp(k (PB - PB0))), monthly: innovation a, imitation b, payback slope k (1/yr) and
+    //midpoint PB0 (yr); e multiplies the factors of renters, flats and income quintile 1. Initial values, calibrated in
+    //step 4 against the register 2007-2015
+    public double adoptionInnovation = 0.0005;
+    public double adoptionImitation = 0.03;
+    public double adoptionPaybackSlope = 0.8;
+    public double adoptionPaybackMidpoint = 8.0;
+    public double adoptionRenterFactor = 0.1;
+    public double adoptionFlatFactor = 0.1;
+    public double adoptionLowIncomeFactor = 0.5;
+    //Share of the register's monthly installations and kW owned by non-households (small businesses), kept as recorded
+    public double rooftopNonResidentialShare = 0.0;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
@@ -652,6 +673,30 @@ public class Settings implements java.io.Serializable {
     public String getDemandRecordFuels() { return demandRecordFuels; }
 
     public String getResidentialConsumptionFile() { return residentialConsumptionFile; }
+
+    public boolean isRooftopAdoptionEndogenous() { return "endogenous".equalsIgnoreCase(rooftopAdoption); }
+
+    public String getHouseholdCohortsFile() { return householdCohortsFile; }
+
+    public String getRooftopEconomicsFile() { return rooftopEconomicsFile; }
+
+    public String getRooftopSelfConsumptionFile() { return rooftopSelfConsumptionFile; }
+
+    public double getAdoptionInnovation() { return adoptionInnovation; }
+
+    public double getAdoptionImitation() { return adoptionImitation; }
+
+    public double getAdoptionPaybackSlope() { return adoptionPaybackSlope; }
+
+    public double getAdoptionPaybackMidpoint() { return adoptionPaybackMidpoint; }
+
+    public double getAdoptionRenterFactor() { return adoptionRenterFactor; }
+
+    public double getAdoptionFlatFactor() { return adoptionFlatFactor; }
+
+    public double getAdoptionLowIncomeFactor() { return adoptionLowIncomeFactor; }
+
+    public double getRooftopNonResidentialShare() { return rooftopNonResidentialShare; }
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 

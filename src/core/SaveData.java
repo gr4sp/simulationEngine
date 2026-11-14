@@ -1278,6 +1278,8 @@ public class SaveData implements Steppable, java.io.Serializable {
 
         // Prices are recomputed monthly but were never persisted; see savePriceSeries.
         savePriceSeries(simState, folderName);
+        if (data.getRooftopAdoption() != null)
+            data.getRooftopAdoption().write(folderName + "/" + data.yamlFileName + "RooftopAdoption" + data.outputID + ".csv");
 
         try (
 
@@ -1895,6 +1897,8 @@ public class SaveData implements Steppable, java.io.Serializable {
 
         // Prices are recomputed monthly but were never persisted; see savePriceSeries.
         savePriceSeries(simState, folderName);
+        if (data.getRooftopAdoption() != null)
+            data.getRooftopAdoption().write(folderName + "/" + data.yamlFileName + "RooftopAdoption" + data.outputID + ".csv");
 
         try (
 

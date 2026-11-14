@@ -141,11 +141,12 @@ From this work:
 
 - **Tenure** (`tenure_VIC.csv`): renting = households in the census rent table with a stated, nil or unstated rent;
   mortgage = the same in the mortgage table; outright = the rest (owned outright, other tenures, not stated).
-- **Income quintile** (D1 cohorts): the quintile of *gross* household income (census HIED brackets) that holds the
-  bracket's middle household. It is not the ABS low-income measure (not equivalised, no imputed rent), so the
-  model's quintile 1 cannot be compared with the HECS "low income" share as is. Before validation (step 4) either
-  equivalise the census cells with the household type (it gives the household size) or state the comparison as
-  approximate. The model has no wealth; tenure stands in for it (renters and low wealth overlap most).
+- **Income quintile** (D1 cohorts): the quintile of *equivalised* gross household income (census HIED brackets) that
+  holds the bracket's middle household. Corrected 14 Nov 2026: HIED is the census's equivalised household income
+  (modified OECD scale), not gross household income as first written here. It is still not the ABS low-income measure
+  (gross, not disposable; no imputed rent), so the comparison with the HECS "low income" share is approximate. The
+  cohort table of step 3 splits brackets across quintile boundaries instead (`STEP3_COHORTS.md`). The model has no
+  wealth; tenure stands in for it (renters and low wealth overlap most).
 - **Self-consumption share:** the share of a system's annual output used in the home rather than exported.
 
 ## Open items (none blocks step 2)

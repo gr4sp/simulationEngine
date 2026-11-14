@@ -133,6 +133,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //of the total used in each calendar year (reported in the year summary)
     HashMap<Integer, Float> residentialFyGwh = new HashMap<>();
     TreeMap<Integer, Double> residentialShareByYear = new TreeMap<>();
+    //Solar step 3: household rooftop PV adoption (rooftopAdoption: endogenous only; null otherwise)
+    core.Social.RooftopAdoption rooftopAdoption;
 
     // Solar installation in kw per month in Australia
     HashMap<Date, Integer> solar_number_installs;
@@ -981,6 +983,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public TreeMap<Integer, Double> getResidentialShareByYear() { return residentialShareByYear; }
 
+    public core.Social.RooftopAdoption getRooftopAdoption() { return rooftopAdoption; }
+
     public HashMap<Date, Integer> getSolar_aggregated_kw() {
         return solar_aggregated_kw;
     }
@@ -1108,6 +1112,13 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         generateHouseholds();
         //Deferred demand calibration (solarShapeInDemand / forecastFromCalibratedDemand) needs the SPMs created above
         LoadData.finishDemandCalibration(this);
+        if (settings.isRooftopAdoptionEndogenous()) {
+            try {
+                rooftopAdoption = new core.Social.RooftopAdoption(this);
+            } catch (java.io.IOException e) {
+                throw new RuntimeException("rooftopAdoption: " + e, e);
+            }
+        }
 
         saveData.plotSeries(this);
         this.schedule.scheduleRepeating(policies);
