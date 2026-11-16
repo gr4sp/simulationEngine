@@ -130,3 +130,43 @@ payback). Recorded mode is unaffected. For the calibration the households' targe
 **N30, household counts** (2016): census occupied private dwellings 2,112,699 (2011: 1,944,691; ABS 2016 Census
 media release); `domestic_consumers` 2,242,283 (source not stated); `household_forecast_victoria` (VIF 2016)
 2,394,020; network residential customers 2,504,213 (AER RIN, includes vacant dwellings and holiday homes).
+
+## 16 Nov 2026: D4 self-consumption by household type, from the ESC usage profiles
+
+The figures of ACIL Allen (2019) for the ESC are vector charts, so the plotted values were read exactly
+(`extract_esc_profiles.py` -> `data/esc2019_profiles.csv`, re-plots `data/esc2019_fig*.png` for a visual check). Check
+against the report's own numbers: one person 7.50 kWh/day (Table 4.2: 7.5); 2 and 3 people 11.57 and 13.19 (2-3 people
+12.1; the text gives 1.6 kWh/day between them: 1.62); 4 and 5+ people 15.51 and 16.87 (4+: 16.1).
+
+`self_consumption.py`: each half-hour the home uses its PV output up to its load; share = sum of min(load, PV) / sum of
+PV over the year. Load = the profile of the type's mean size (census 2016: lone person 1.0, couple 2.1, group 2.5, other
+family 2.4, one parent 2.9, couple with children 4.0 persons) scaled to the year's use per household and x 1.2 for
+homes that adopt PV. PV = the model's own half-hourly rooftop output per kW (`tools/DumpRooftop.java`) x the year's mean
+new system.
+
+Why x 1.2: in Figure 4.8 homes with PV import about as much as homes without (12.3 against 12.2 kWh/day), and at night,
+when import is the whole load, they import 1.20-1.24 times as much at 21:00-23:00 and 1.4-1.7 times in the early
+morning (probably off-peak water heating). Homes that adopt use more (the report notes the same, footnote 9). Without
+the factor the anchors are missed (0.59 vs 0.67 in 2011-12).
+
+| Check | Computed (1.0 / 1.2 / 1.42) | Victorian anchor |
+|---|---|---|
+| FY2011-12 fleet, 2.03 kW | 0.59 / 0.66 / 0.73 | 0.67 (HECS 2012) |
+| 2017 fleet, 3.64 kW | 0.33 / 0.38 / 0.43 | 0.37-0.52 (AER RIN) |
+| 2019 fleet, 4.54 kW | 0.26 / 0.30 / 0.34 | 0.37-0.52 |
+
+The RIN range's lower end assumes 25 % of rooftop output is not households'; a larger business share lowers it. Two
+reasons the computed values are low rather than high: Figure 4.2 averages the whole sample, where PV homes are
+over-represented (AER), so midday load is already net of some self-use; one daily shape all year misses winter (high
+load, low PV). Real loads are spikier, which works the other way.
+
+New systems by type (factor 1.2): 2012 (3.1 kW) lone person 0.36, couple 0.49, couple with children 0.60; 2019 (7.5 kW)
+0.14, 0.20, 0.25. Main heating fuel moves the share by about 3 points (Figure 4.9, 4 kW, 2016: gas 0.33, all-electric
+0.36), so it is left out. Endogenous run (seed 42, initial hazard parameters): paybacks now differ by type (2012: 8.6-9.6
+years) and the lower self-consumption of large systems lengthens the 2015 payback to 10 years.
+
+Other material in the report for later steps: Figure 4.9 and Table 3.5 (gas and all-electric homes: 4,432 vs 6,871
+kWh/yr; profiles) for the EVA's fuel profiles and per-profile use (step 6); Table 4.3 gas use by household size (92,
+159, 201 MJ/day) for the EVA's gas bills; Figure 4.1 (controlled load) for off-peak water heating. The VEMD workbook
+(ESC Victorian Energy Market Dashboard, 2020-21 onwards: hardship, disconnections, best offers) is after the ERSS period;
+it belongs to the policy-mixes article.

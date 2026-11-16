@@ -1,22 +1,88 @@
-# Self-consumed share of a household rooftop system's annual output (the rest is exported), by household type; type ALL
-# applies to every type without its own rows. A value holds from date_from to the next row; before the first row the
-# first value applies. Read by core.Social.RooftopAdoption (rooftopAdoption: endogenous; solar step 3, D4).
-# Status: no primary source found by household type (14 Nov 2026), so one Victorian value, which falls as systems grow:
-#  2011-12: 0.67. ABS 4670.0 HECS 2012 Table 18B: Victorian households with PV export 14.8 kWh/week (net feed-in tariffs,
-#           so exports); mean system in service in FY2011-12 2.03 kW (APVI to 2010, CER from 2011, monthly fleet mean) x
-#           1,167 kWh/kW/yr (recorded rooftop output FY2011-12, 264 GWh, over the mean fleet, 226 MW) = 45.4 kWh/week,
-#           so 33 % exported.
-#  2017-19: about 0.45. AER RIN, residential exports of the five Victorian networks 616-1,037 GWh against the recorded
-#           rooftop output 1,275-2,185 GWh (48-50 %); the rooftop output includes non-household systems, so the
-#           household export share is higher and self-consumption 0.37-0.52 for a non-household share of 25-0 %.
-# To confirm with Angela (D4): the literature values by household type were not found; see STEP3_COHORTS.md.
+# Self-consumed share of a household rooftop system's output (the rest is exported), by household type and
+# year of installation. Built by experiments/solarAdoption/self_consumption.py: each half-hour of the year the
+# home uses its PV output up to its load. Load: ACIL Allen (2019) for the ESC, Victorian usage profiles by
+# household size (Figure 4.2, mostly 2016 smart-meter data), at the type's mean size (census 2016), scaled to
+# the year's use per household (AES Table F3) x 1.20 for homes that adopt PV (Figure 4.8: their night-time
+# import is 1.2-1.7 times that of homes without PV); one daily shape all year. PV: the model's rooftop output
+# per kW x the year's mean new system (installation register). Checked against Victorian anchors: HECS 2012
+# (0.67 for the 2.03 kW fleet of FY2011-12; computed 0.66) and AER RIN exports (0.37-0.52 in 2017-19,
+# depending on the non-household share; computed 0.30-0.38).
 type,date_from,share,note,status
-ALL,2007-01-01,0.67,HECS 2012 anchor held back (smaller systems before 2012),constructed
-ALL,2012-01-01,0.670,linear between the 2011-12 and 2017-19 anchors,constructed
-ALL,2013-01-01,0.639,linear between the 2011-12 and 2017-19 anchors,constructed
-ALL,2014-01-01,0.607,linear between the 2011-12 and 2017-19 anchors,constructed
-ALL,2015-01-01,0.576,linear between the 2011-12 and 2017-19 anchors,constructed
-ALL,2016-01-01,0.544,linear between the 2011-12 and 2017-19 anchors,constructed
-ALL,2017-01-01,0.513,linear between the 2011-12 and 2017-19 anchors,constructed
-ALL,2018-01-01,0.481,linear between the 2011-12 and 2017-19 anchors,constructed
-ALL,2019-01-01,0.450,linear between the 2011-12 and 2017-19 anchors,constructed
+Couple family with children,2007-01-01,0.959,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2007-01-01,0.869,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2007-01-01,0.897,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2007-01-01,0.7,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2007-01-01,0.92,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2007-01-01,0.888,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2008-01-01,0.955,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2008-01-01,0.869,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2008-01-01,0.895,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2008-01-01,0.707,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2008-01-01,0.917,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2008-01-01,0.886,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2009-01-01,0.964,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2009-01-01,0.881,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2009-01-01,0.907,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2009-01-01,0.718,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2009-01-01,0.927,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2009-01-01,0.898,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2010-01-01,0.881,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2010-01-01,0.777,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2010-01-01,0.805,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2010-01-01,0.612,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2010-01-01,0.83,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2010-01-01,0.796,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2011-01-01,0.728,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2011-01-01,0.617,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2011-01-01,0.644,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2011-01-01,0.462,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2011-01-01,0.669,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2011-01-01,0.635,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2012-01-01,0.597,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2012-01-01,0.491,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2012-01-01,0.516,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2012-01-01,0.358,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2012-01-01,0.538,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2012-01-01,0.507,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2013-01-01,0.477,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2013-01-01,0.386,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2013-01-01,0.406,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2013-01-01,0.275,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2013-01-01,0.424,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2013-01-01,0.399,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2014-01-01,0.448,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2014-01-01,0.362,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2014-01-01,0.38,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2014-01-01,0.256,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2014-01-01,0.397,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2014-01-01,0.374,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2015-01-01,0.405,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2015-01-01,0.325,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2015-01-01,0.342,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2015-01-01,0.229,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2015-01-01,0.358,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2015-01-01,0.336,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2016-01-01,0.362,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2016-01-01,0.289,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2016-01-01,0.304,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2016-01-01,0.203,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2016-01-01,0.318,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2016-01-01,0.299,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2017-01-01,0.298,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2017-01-01,0.235,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2017-01-01,0.248,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2017-01-01,0.162,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2017-01-01,0.26,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2017-01-01,0.244,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2018-01-01,0.272,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2018-01-01,0.214,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2018-01-01,0.225,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2018-01-01,0.147,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2018-01-01,0.236,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2018-01-01,0.221,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2019-01-01,0.252,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family without children,2019-01-01,0.197,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Group household,2019-01-01,0.208,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Lone person,2019-01-01,0.135,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+One parent family,2019-01-01,0.218,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Other family,2019-01-01,0.204,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
