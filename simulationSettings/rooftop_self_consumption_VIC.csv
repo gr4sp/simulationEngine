@@ -1,88 +1,88 @@
 # Self-consumed share of a household rooftop system's output (the rest is exported), by household type and
 # year of installation. Built by experiments/solarAdoption/self_consumption.py: each half-hour of the year the
 # home uses its PV output up to its load. Load: ACIL Allen (2019) for the ESC, Victorian usage profiles by
-# household size (Figure 4.2, mostly 2016 smart-meter data), at the type's mean size (census 2016), scaled to
-# the year's use per household (AES Table F3) x 1.20 for homes that adopt PV (Figure 4.8: their night-time
-# import is 1.2-1.7 times that of homes without PV); one daily shape all year. PV: the model's rooftop output
-# per kW x the year's mean new system (installation register). Checked against Victorian anchors: HECS 2012
-# (0.67 for the 2.03 kW fleet of FY2011-12; computed 0.66) and AER RIN exports (0.37-0.52 in 2017-19,
-# depending on the non-household share; computed 0.30-0.38).
+# household size (Figure 4.2, mostly 2016 smart-meter data), at the type's mean size (census 2016), shaped by
+# day from Melbourne temperature, day type, night length and Christmas (temperature response of Victorian
+# small-customer load, AEMO NSLP 2002-2010, ERA5), scaled to the year's use per household (AES Table F3 /
+# census households) x 1.20 for homes that adopt PV (Figure 4.8). PV: the model's rooftop output per kW x the
+# year's mean new system (installation register). Divided by the averaging bias measured on 1,217 Smart Grid
+# Smart City homes (an average profile overstates the share 5-28 % against measured loads, by PV/load ratio).
 type,date_from,share,note,status
-Couple family with children,2007-01-01,0.959,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2007-01-01,0.869,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2007-01-01,0.897,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2007-01-01,0.7,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2007-01-01,0.92,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2007-01-01,0.888,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2008-01-01,0.955,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2008-01-01,0.869,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2008-01-01,0.895,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2008-01-01,0.707,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2008-01-01,0.917,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2008-01-01,0.886,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2009-01-01,0.964,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2009-01-01,0.881,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2009-01-01,0.907,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2009-01-01,0.718,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2009-01-01,0.927,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2009-01-01,0.898,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2010-01-01,0.881,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2010-01-01,0.777,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2010-01-01,0.805,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2010-01-01,0.612,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2010-01-01,0.83,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2010-01-01,0.796,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2011-01-01,0.728,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2011-01-01,0.617,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2011-01-01,0.644,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2011-01-01,0.462,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2011-01-01,0.669,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2011-01-01,0.635,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2012-01-01,0.597,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2012-01-01,0.491,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2012-01-01,0.516,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2012-01-01,0.358,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2012-01-01,0.538,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2012-01-01,0.507,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2013-01-01,0.477,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2013-01-01,0.386,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2013-01-01,0.406,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2013-01-01,0.275,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2013-01-01,0.424,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2013-01-01,0.399,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2014-01-01,0.448,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2014-01-01,0.362,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2014-01-01,0.38,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2014-01-01,0.256,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2014-01-01,0.397,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2014-01-01,0.374,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2015-01-01,0.405,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2015-01-01,0.325,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2015-01-01,0.342,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2015-01-01,0.229,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2015-01-01,0.358,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2015-01-01,0.336,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2016-01-01,0.362,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2016-01-01,0.289,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2016-01-01,0.304,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2016-01-01,0.203,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2016-01-01,0.318,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2016-01-01,0.299,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2017-01-01,0.298,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2017-01-01,0.235,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2017-01-01,0.248,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2017-01-01,0.162,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2017-01-01,0.26,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2017-01-01,0.244,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2018-01-01,0.272,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2018-01-01,0.214,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2018-01-01,0.225,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2018-01-01,0.147,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2018-01-01,0.236,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2018-01-01,0.221,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family with children,2019-01-01,0.252,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Couple family without children,2019-01-01,0.197,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Group household,2019-01-01,0.208,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Lone person,2019-01-01,0.135,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-One parent family,2019-01-01,0.218,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
-Other family,2019-01-01,0.204,"min(load, PV) per half-hour; ESC 2019 profile of the type's size; model PV; year's mean new system",constructed
+Couple family with children,2007-01-01,0.806,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2007-01-01,0.725,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2007-01-01,0.746,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2007-01-01,0.604,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2007-01-01,0.764,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2007-01-01,0.738,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2008-01-01,0.809,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2008-01-01,0.725,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2008-01-01,0.748,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2008-01-01,0.608,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2008-01-01,0.766,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2008-01-01,0.74,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2009-01-01,0.813,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2009-01-01,0.738,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2009-01-01,0.759,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2009-01-01,0.623,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2009-01-01,0.775,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2009-01-01,0.752,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2010-01-01,0.741,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2010-01-01,0.66,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2010-01-01,0.681,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2010-01-01,0.54,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2010-01-01,0.698,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2010-01-01,0.674,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2011-01-01,0.624,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2011-01-01,0.545,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2011-01-01,0.565,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2011-01-01,0.423,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2011-01-01,0.582,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2011-01-01,0.558,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2012-01-01,0.536,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2012-01-01,0.449,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2012-01-01,0.468,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2012-01-01,0.341,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2012-01-01,0.484,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2012-01-01,0.461,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2013-01-01,0.443,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2013-01-01,0.37,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2013-01-01,0.386,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2013-01-01,0.267,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2013-01-01,0.402,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2013-01-01,0.381,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2014-01-01,0.42,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2014-01-01,0.347,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2014-01-01,0.364,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2014-01-01,0.25,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2014-01-01,0.379,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2014-01-01,0.358,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2015-01-01,0.381,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2015-01-01,0.312,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2015-01-01,0.328,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2015-01-01,0.224,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2015-01-01,0.342,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2015-01-01,0.322,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2016-01-01,0.345,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2016-01-01,0.279,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2016-01-01,0.293,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2016-01-01,0.199,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2016-01-01,0.306,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2016-01-01,0.288,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2017-01-01,0.294,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2017-01-01,0.234,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2017-01-01,0.247,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2017-01-01,0.164,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2017-01-01,0.258,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2017-01-01,0.242,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2018-01-01,0.27,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2018-01-01,0.215,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2018-01-01,0.226,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2018-01-01,0.15,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2018-01-01,0.237,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2018-01-01,0.222,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family with children,2019-01-01,0.254,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Couple family without children,2019-01-01,0.202,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Group household,2019-01-01,0.212,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Lone person,2019-01-01,0.139,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+One parent family,2019-01-01,0.222,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed
+Other family,2019-01-01,0.209,"min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, calendar); model PV; year's mean new system; / SGSC averaging bias",constructed

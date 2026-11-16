@@ -86,17 +86,17 @@ the recorded fleet, so the difference is the effect of the simulated adoption.
 
 ## Open items
 
-1. **D4, self-consumption by household type.** No primary source with shares by household type was found. The file
+1. **D4, self-consumption by household type.** Done 16 Nov 2026 (ESC profiles, then D4b below). No primary source with shares by household type was found. The file
    holds one Victorian value that falls as systems grow, from two Victorian anchors: 0.67 in 2011-12 (HECS 2012 exports
    of 14.8 kWh/week per PV household against 45.4 kWh/week of output from a 2.03 kW mean system at 1,167 kWh/kW) and
    about 0.45 in 2017-19 (AER RIN residential exports, 48-50 % of all rooftop output; the household share depends on
    the unknown non-household part, 0.37-0.52). Status `constructed`. Options: keep one value (falling with size), or
    look further for type differences (Griffith 2021: hardship customers self-consume 36 % against 26 % for others,
    a later study, retailer data). For Angela.
-2. **Non-household systems.** The register counts small businesses too; `rooftopNonResidentialShare` (0 for now) adds
+2. **Non-household systems.** Done 16 Nov 2026 (A43 below). The register counts small businesses too; `rooftopNonResidentialShare` (0 for now) adds
    that share of the recorded kW. HECS 2012 counts about 128,000 Victorian households with PV against about 143,000
    systems in the register by mid-2012 (a non-household share near 10 % by count). To set before the calibration.
-3. **N30 (found here): the household count jumps 7 % in 2015.** From 2016 the model's household register takes
+3. **N30 (found here): the household count jumps 7 % in 2015.** Done 16 Nov 2026 (census series below). From 2016 the model's household register takes
    `household_forecast_victoria` (2.394 M in 2016) instead of the recorded `domestic_consumers` (2.242 M), and the
    monthly interpolation spreads the jump over 2015. It changes step 2's use per household in 2015-2019 and, in
    endogenous mode, the cohort sizes. Not repaired here.
@@ -205,3 +205,101 @@ replaces the constant in endogenous mode; in step 4 the households' calibration 
 share. It is a lower bound for businesses (small businesses with small systems count as households). The HECS gap
 (about 10 % by count in 2012) suggests more small business systems than the size rule finds, or survey error; to test
 in step 4 as a sensitivity. Recorded mode unchanged (46 tests).
+
+## 16-17 Nov 2026: D4b, self-consumption with loads that vary by day, and the averaging bias
+
+Question (Angela): one load profile for the whole year is hard to justify, and later the model may shape demand by a
+weather forecast. Sources for seasonal and weather variation, and what they change.
+
+**Data** (`Sandbox/papers/GR4SPArticle_ERSS/data/`, outside the repository):
+- AEMO *net system load profile* (NSLP), 2002-2020 by Victorian network (no 2008 file yet). In Victoria it is the
+  energy entering the network, plus embedded generation, minus every interval-metered load (AEMO, *Understanding load
+  profiles published from MSATS*, v6.1, App. A). Before the smart-meter rollout it is the load of the small customers on
+  accumulation meters (homes and small businesses, 17-18 TWh a year in 2002-2010); from 2011 it shrinks to a residual
+  (0.4 TWh in 2019). Usable for 2002-2010 (`aemo_small_customers.py`).
+- AEMO MRIM data (type 5 meters, sites under 160 MWh a year, mostly the Victorian smart meters), Jul 2018-Dec 2020:
+  15.4 TWh in 2019. Grid import: midday is net of rooftop self-use.
+- ERA5 hourly 2 m temperature for Melbourne, 1999-2020 (`scripts/data/fetch_era5_temperature.py` ->
+  `data/era5_t2m_melbourne_hourly.csv`).
+- Smart Grid Smart City customer trial (Ausgrid, NSW, 2010-2014): half-hourly load of individual homes, and gross PV
+  output of homes with a gross meter (`sgsc_sample.py`: all 224 gross-solar homes and 2,000 random homes without solar).
+- OpenElectricity holds only regional demand (already in the model), with no customer split.
+
+**Temperature response** (`load_temperature_response.py` -> `data/load_temperature_response.csv`,
+`data/load_temperature_fit.png`). Relative load = a half-hour's load / that half-hour's mean over the calendar year.
+For each half-hour and day type (weekday; weekend or public holiday) it is fitted on heating degrees HDD = max(0, 13.5 -
+T), cooling degrees CDD = max(0, T - 18.5) (T: the day's mean temperature; thresholds by least squares), the previous
+day's CDD (heat build-up), night length and the Christmas period.
+
+| Fit | R2 half-hourly | R2 daily |
+|---|---|---|
+| NSLP 2002-07 (fit) | 0.785 | 0.847 |
+| NSLP 2009-10 (out of sample) | 0.785 | 0.846 |
+| NSLP 2009-10, calendar and night length only | 0.346 | 0.348 |
+| MRIM 2018-19 (fit) | 0.760 | 0.855 |
+
+Responses per degree day, in % of the half-hour's mean: heating 3-5 % (NSLP), 5-7 % (MRIM); cooling at 15:00 9.6 %
+(NSLP) and 15 % (MRIM). Part of the MRIM increase is air conditioning bought since 2010, part is the PV-depressed
+midday mean of MRIM (a smaller denominator). The fit is ready for a weather-driven demand later (any temperature series,
+including a forecast).
+
+**Averaging bias** (`sgsc_averaging_test.py` -> `data/sgsc_averaging_test.csv`, `data/sgsc_averaging_bias_by_x.csv`;
+1,217 homes with 330 or more complete days in 2013). The self-consumed share computed with each home's measured load,
+then with averaged loads of the same annual use. The PV is the model's Melbourne output at 2, 4 and 6 kW, and, for
+the gross-solar homes, their own measured output.
+
+| Load used | 2 kW | 4 kW | 6 kW | Own measured PV |
+|---|---|---|---|---|
+| Measured, half-hour by half-hour | 0.47-0.49 | 0.32-0.33 | 0.24-0.25 | 0.49 |
+| Sample average shape, every day (D4 method) | x1.26-1.28 | x1.21 | x1.16-1.18 | x1.26 |
+| Sample average by month and day type | x1.25-1.28 | x1.20 | x1.16 | x1.22 |
+| Sample average of each calendar day | x1.21-1.26 | x1.16-1.19 | x1.13-1.15 | x1.20 |
+
+The last row is the best any profile driven by weather and calendar can do (a perfect model of the average home's
+day): the bias is the spikiness of single homes (a kettle or dryer for a short time, many middays with little use),
+not the season. It depends on x = annual PV / annual load: x1.05 below 0.1, x1.25-1.28 at 0.2-0.6, x1.15 at 1.5-3
+(ratio_day). The trial is Sydney and Newcastle, 2013; the transfer to Victoria is an assumption (A45).
+
+**A flaw found in D4: the ESC size profiles are grid import.** In the ESC sample 45 % of homes have PV (Table 3.5:
+4,984 kWh all, 5,241 without PV, 4,671 with: (5,241 - 4,984) / (5,241 - 4,671) = 0.45; fitting the size-weighted
+Figure 4.2 average to the Figure 4.8 profiles gives 0.42-0.44). Their midday is net of self-use (2 people at 12:00:
+0.18 kWh, homes without PV 0.25). D4 took them as the whole load, which understates the share.
+
+**New method** (`self_consumption.py`): load of a home = ESC size profile made gross (each half-hour x NoPV(h) /
+[0.55 NoPV(h) + 0.45 PV(h)], Figure 4.8, day total kept) x the day's relative load from the NSLP fit with that day's
+Melbourne temperature (mean 1 over the year in each half-hour, so the year's average day stays the ESC profile) x the
+year's use level (AES / census households, as the model since N30) x 1.2 (PV homes); share = sum of min(load, PV) / sum
+of PV, divided by the averaging bias at the home's x. Seasonal check against AER 2020 Table 17 (climate zone 6): the
+NSLP-shaped load gives winter / summer daily use 1.21, the AER 1.31-1.38; the NSLP's own ratio is 1.24 (2002-2010) and
+MRIM's 1.34 (2019). The AER and MRIM are 2019 grid import (PV lowers summer import; heating moved to electricity since
+2010), so the fit is kept as estimated (`--amplitude 1`); matching the AER needs the weather terms x3-4, not credible.
+The MRIM fit is the sensitivity.
+
+| Variant (factor 1.2) | New 2012 | New 2019 | FY2011-12 fleet | 2017 / 2018 / 2019 fleet |
+|---|---|---|---|---|
+| D4 as committed (flat, grid-import profiles, no bias) | 0.50 | 0.20 | 0.66 | 0.38 / 0.34 / 0.30 |
+| + census households (N30) | 0.49 | 0.21 | 0.66 | 0.39 / 0.35 / 0.31 |
+| + weather shape (NSLP) | 0.49 | 0.21 | 0.65 | 0.38 / 0.35 / 0.31 |
+| + profiles made gross | 0.56 | 0.24 | 0.74 | 0.44 / 0.40 / 0.36 |
+| **+ averaging bias (new default)** | **0.45** | **0.21** | **0.58** | **0.37 / 0.34 / 0.30** |
+| same, MRIM weather shape | 0.44 | 0.20 | 0.55 | 0.36 / 0.33 / 0.30 |
+| same, flat shape | 0.46 | 0.21 | 0.59 | 0.37 / 0.34 / 0.31 |
+| same, factor 1.0 / 1.42 | 0.40 / 0.50 | 0.18 / 0.23 | 0.53 / 0.63 | 0.32-0.26 / 0.41-0.34 |
+| Anchor | | | 0.67 (HECS 2012) | 0.37-0.52 (AER RIN); 0.37-0.43 with the A43 shares |
+
+The two corrections offset: the values the model reads change little (new systems 2012: 0.50 -> 0.45; 2019: 0.20 ->
+0.21; by type 2012 lone person 0.34, couple 0.45, couple with children 0.54; 2019 0.14, 0.20, 0.25), but the anchors
+are now missed: 0.58 against 0.67, and 0.30-0.37 against 0.37-0.43.
+
+**The anchors.** HECS: 14.8 kWh/week of exports against an output assumed from the fleet's mean size (2.03 kW) and a
+yield of 1,167 kWh/kW (the model's own yield in FY2011-12 is 1,120). Measured homes give less: the SGSC gross-solar
+homes (about 1.55 kW, x = 0.41) self-consume 0.49 of their measured output, and all SGSC homes 0.54-0.61 at x = 0.3-0.5,
+the Victorian fleet's x in 2011-12 (0.29-0.60 by type). The computed 0.58 is in that range; 0.67 is above it. Possible
+reasons: exports read from bills or recalled, systems below rated output (shading, orientation, faults: the share is
+higher when output is lower), or homes that adopted early using more at midday. RIN: residential exports (2017-19:
+616, 820, 1,037 GWh) divided by an estimated rooftop output; if real systems produce less than the estimate, the
+self-consumed share derived from it is too high. Both anchors rest on a rated output, the computed share on the
+model's output at its own yield; the comparison is like for like only if the model's yield is right. For Angela:
+keep the new default (anchors read as upper bounds), or raise the PV-home factor (1.42 brings 0.63 and 0.34-0.41).
+
+Recorded mode unchanged (46 tests); the file is read only in endogenous mode.
