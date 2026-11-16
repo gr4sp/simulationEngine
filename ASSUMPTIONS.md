@@ -107,6 +107,7 @@ whose parameter list predates the repairs (`PARAMETER_AUDIT_R3.md`); "tested" me
 | A41 | Solar adoption | Before June 2009 a household gets both the federal rebate and the certificates (RECs) | | assumed | no | `RooftopAdoption` |
 | A42 | Solar adoption | Hazard parameters (a, b, k, PB0, renter, flat and quintile-1 factors) | 0.0005, 0.03, 0.8, 8, 0.1, 0.1, 0.5 | initial guesses, to calibrate in step 4 | step 4 | `VIC.yaml` |
 | A43 | Solar adoption | Share of the register owned by non-households, kept as recorded in endogenous mode | 0 | assumed (HECS 2012 suggests about 10 % by count) | planned | `rooftopNonResidentialShare` |
+| A44 | Households | A household is an occupied private dwelling on census night (dwellings whose residents were all away count as unoccupied); 1 January values linear between census nights; Victoria in Future's growth after 2021, rebased | 2.11 M (2016) | sourced (census), decision (N30) | no | `householdsFile` |
 
 | A36 | Small units | Units embedded in an industrial or hospital load supply that load only: Longford (Esso gas plant), Qenos (Altona), the hospital backup diesel | output 0 | AEMO 2020 s. 4.1.2 (removes units captured by net metering); not in NGER or the demand record | no | `generator_parameters_VIC.csv` |
 | A37 | Battery | One round-trip efficiency for every battery, existing and generic | 0.85 | measured (Gannawarra 85.0 %); IASR 81 % as the lower bound | no | `VIC.yaml` |

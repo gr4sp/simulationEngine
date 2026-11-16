@@ -133,6 +133,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //of the total used in each calendar year (reported in the year summary)
     HashMap<Integer, Float> residentialFyGwh = new HashMap<>();
     TreeMap<Integer, Double> residentialShareByYear = new TreeMap<>();
+    //N30: households on 1 January by year from householdsFile (empty: database series)
+    TreeMap<Integer, Integer> householdsOverride = new TreeMap<>();
     //Solar step 3: household rooftop PV adoption (rooftopAdoption: endogenous only; null otherwise)
     core.Social.RooftopAdoption rooftopAdoption;
 
@@ -363,6 +365,16 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     String[] f = line.split(",", 6);
                     solarInstallationsOverride.add(new double[]{Double.parseDouble(f[0].trim()), Double.parseDouble(f[1].trim()),
                             Double.parseDouble(f[2].trim()), Double.parseDouble(f[3].trim()), Double.parseDouble(f[4].trim())});
+                }
+            }
+            if (settings.getHouseholdsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getHouseholdsFile()));
+                boolean head = true;
+                for (String line : lines) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    if (head) { head = false; continue; }
+                    String[] f = line.split(",");
+                    householdsOverride.put(Integer.parseInt(f[0].trim()), Integer.parseInt(f[1].trim()));
                 }
             }
             if (settings.getResidentialConsumptionFile() != null) {
@@ -982,6 +994,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     public HashMap<Integer, Float> getResidentialFyGwh() { return residentialFyGwh; }
 
     public TreeMap<Integer, Double> getResidentialShareByYear() { return residentialShareByYear; }
+
+    public TreeMap<Integer, Integer> getHouseholdsOverride() { return householdsOverride; }
 
     public core.Social.RooftopAdoption getRooftopAdoption() { return rooftopAdoption; }
 

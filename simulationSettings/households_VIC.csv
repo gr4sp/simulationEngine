@@ -1,0 +1,19 @@
+# Victorian households on 1 January: census counts of occupied private dwellings, linear between census nights
+# (N30; scripts/data/households_census_vic.py). Read with householdsFile: these years replace the database's;
+# earlier years keep domestic_consumers (equal to the census in 2006); later years grow at Victoria in Future's rates.
+year,households,source
+2007,1875409,"linear between census nights 2006 and 2011 (ABS 2006 Census QuickStats, Victoria; ABS 2016 Census media release (2011 count))"
+2008,1890470,"linear between census nights 2006 and 2011 (ABS 2006 Census QuickStats, Victoria; ABS 2016 Census media release (2011 count))"
+2009,1905531,"linear between census nights 2006 and 2011 (ABS 2006 Census QuickStats, Victoria; ABS 2016 Census media release (2011 count))"
+2010,1920593,"linear between census nights 2006 and 2011 (ABS 2006 Census QuickStats, Victoria; ABS 2016 Census media release (2011 count))"
+2011,1935654,"linear between census nights 2006 and 2011 (ABS 2006 Census QuickStats, Victoria; ABS 2016 Census media release (2011 count))"
+2012,1958132,"linear between census nights 2011 and 2016 (ABS 2016 Census media release (2011 count); ABS 2016 Census: Victoria, media release)"
+2013,1991733,"linear between census nights 2011 and 2016 (ABS 2016 Census media release (2011 count); ABS 2016 Census: Victoria, media release)"
+2014,2025335,"linear between census nights 2011 and 2016 (ABS 2016 Census media release (2011 count); ABS 2016 Census: Victoria, media release)"
+2015,2058936,"linear between census nights 2011 and 2016 (ABS 2016 Census media release (2011 count); ABS 2016 Census: Victoria, media release)"
+2016,2092538,"linear between census nights 2011 and 2016 (ABS 2016 Census media release (2011 count); ABS 2016 Census: Victoria, media release)"
+2017,2134902,"linear between census nights 2016 and 2021 (ABS 2016 Census: Victoria, media release; ABS 2021 Census QuickStats, Victoria)"
+2018,2190408,"linear between census nights 2016 and 2021 (ABS 2016 Census: Victoria, media release; ABS 2021 Census QuickStats, Victoria)"
+2019,2245915,"linear between census nights 2016 and 2021 (ABS 2016 Census: Victoria, media release; ABS 2021 Census QuickStats, Victoria)"
+2020,2301421,"linear between census nights 2016 and 2021 (ABS 2016 Census: Victoria, media release; ABS 2021 Census QuickStats, Victoria)"
+2021,2356928,"linear between census nights 2016 and 2021 (ABS 2016 Census: Victoria, media release; ABS 2021 Census QuickStats, Victoria)"

@@ -170,3 +170,26 @@ kWh/yr; profiles) for the EVA's fuel profiles and per-profile use (step 6); Tabl
 159, 201 MJ/day) for the EVA's gas bills; Figure 4.1 (controlled load) for off-peak water heating. The VEMD workbook
 (ESC Victorian Energy Market Dashboard, 2020-21 onwards: hardship, disconnections, best offers) is after the ERSS period;
 it belongs to the policy-mixes article.
+
+## 16 Nov 2026: N30 repaired (census household series)
+
+`domestic_consumers` (source not stated) equals the census count of occupied private dwellings in 2006 (1,869,388 vs
+1,869,384) and is within 0.6 % in 2001, then runs above it (2011 +4.4 %, 2016 +6.1 %, 2021 +8.1 %); from 2016 the model
+took Victoria in Future (2.394 M, 13 % above the 2016 census), hence the 7 % jump in 2015. `householdsFile:
+households_VIC.csv` (`scripts/data/households_census_vic.py`) puts the census counts (linear between census nights) on
+1 January 2007-2021; earlier years keep `domestic_consumers`; later years keep Victoria in Future's growth, rebased on
+the 2021 census (x 0.880). Prices, generation and every market column are identical; per-household outputs change
+(seed 42):
+
+| Year | Households (was) | Use per household, kWh (was) | GHG per household, t (was) |
+|---|---|---|---|
+| 2008 | 1.890 M (1.934) | 6,263 (6,097) | 7.73 (7.53) |
+| 2012 | 1.958 M (2.073) | 5,683 (5,359) | 6.78 (6.40) |
+| 2016 | 2.093 M (2.394) | 5,038 (4,397) | 5.54 (4.84) |
+| 2019 | 2.246 M (2.565) | 4,823 (4,228) | 4.69 (4.12) |
+| 2030 | 2.775 M (3.153) | 4,043 (3,557) | 2.44 (2.15) |
+
+Checks: 2012, 5.68 MWh against HECS 2012 (5.4-6.0) and the networks (about 6.0 per household); 2016, 5.04 MWh against
+the ESC sample's 4,984 kWh (ACIL Allen 2019, Table 3.5, mostly 2016 meter data). The census count is a lower bound on
+households using electricity over a year (residents away on census night make a dwelling "unoccupied"); ERP-based
+estimates such as Victoria in Future are higher for that reason and the census undercount.

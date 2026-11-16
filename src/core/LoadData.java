@@ -800,6 +800,34 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
+    /**
+     * N30 (16 Nov 2026), householdsFile: the file's 1 January values replace the register's for its years; the
+     * register's later years (Victoria in Future, createForecastDomesticConsumers) are multiplied by the ratio of the
+     * file's last value to the register's value that year, so they keep the forecast's growth without a jump.
+     */
+    static void applyHouseholdsFile(Gr4spSim data) {
+        TreeMap<Integer, Integer> file = data.getHouseholdsOverride();
+        if (file.isEmpty()) return;
+        HashMap<Date, Integer> reg = data.getMonthly_domestic_consumers_register();
+        Calendar c = Calendar.getInstance();
+        int last = file.lastKey();
+        c.clear();
+        c.set(last, Calendar.JANUARY, 1);
+        Integer atLast = reg.get(c.getTime());
+        double ratio = (atLast == null || atLast == 0) ? 1.0 : file.get(last) / (double) atLast;
+        for (Date d : new ArrayList<>(reg.keySet())) {
+            c.setTime(d);
+            if (c.get(Calendar.MONTH) == Calendar.JANUARY && c.get(Calendar.DAY_OF_MONTH) == 1 && c.get(Calendar.YEAR) > last)
+                reg.put(d, (int) Math.round(reg.get(d) * ratio));
+        }
+        for (Map.Entry<Integer, Integer> e : file.entrySet()) {
+            c.clear();
+            c.set(e.getKey(), Calendar.JANUARY, 1);
+            reg.put(c.getTime(), e.getValue());
+        }
+        data.LOGGER.info("householdsFile: " + file.size() + " years replaced; later years x " + ratio);
+    }
+
     public static void createForecastDomesticConsumers(Gr4spSim data){
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -1243,6 +1271,7 @@ public class LoadData implements java.io.Serializable {
         }
 
         createForecastDomesticConsumers(data);
+        applyHouseholdsFile(data);
 
         /**
          * Compute linear Monthly growth from Yearly data

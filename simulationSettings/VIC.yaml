@@ -64,6 +64,11 @@ demandRecordFuels: "Brown Coal; Water; Wind; Battery; Gas Pipeline Turbine - OCG
 # of the total becomes a yearly series (0.19-0.26 in 1999-2019, reported in the year summary) instead of
 # domesticConsumptionPercentage (0.3, against a total that includes losses and power stations' own use).
 residentialConsumptionFile: residential_electricity_VIC.csv
+# N30 (16 Nov 2026, your decision): households are the census counts of occupied private dwellings (2001-2021, linear
+# between census nights, scripts/data/households_census_vic.py) from 2007; before, domestic_consumers (equal to the
+# census in 2006); after 2021, Victoria in Future's growth from the 2021 census. Removes the 7 % jump of 2015 (the
+# database switched from domestic_consumers to Victoria in Future in 2016).
+householdsFile: households_VIC.csv
 # Solar adoption step 3 (14 Nov 2026): recorded = rooftop PV from the installation register (base case until the step 4
 # calibration is accepted); endogenous = 720 household cohorts decide (core.Social.RooftopAdoption, hazard
 # e [a + b A] / (1 + exp(k (PB - PB0))) on the simple payback), the register then serves the N21 add-back and is the

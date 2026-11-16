@@ -253,6 +253,11 @@ public class Settings implements java.io.Serializable {
     //FY values turned into calendar years) over the households, and the residential share of the total becomes a yearly
     //series; domesticConsumptionPercentage is then unused for household use. Unset: the constant share (thesis)
     public String residentialConsumptionFile;
+    //N30 (16 Nov 2026): optional CSV in simulationSettings (year,households,source) of Victorian households on 1 January
+    //(census counts of occupied private dwellings, scripts/data/households_census_vic.py). Its years replace the
+    //database's (domestic_consumers, then Victoria in Future from 2016, which jumped 7 % in 2015); later years keep
+    //Victoria in Future's growth from the file's last value. Unset: the database series as before
+    public String householdsFile;
     //Solar adoption step 3 (14 Nov 2026): "recorded" (default) builds the rooftop fleet from the installation register;
     //"endogenous" lets household cohorts decide (core.Social.RooftopAdoption): the register then serves only the N21
     //add-back of the historic demand and the non-household share, and is the calibration target (step 4)
@@ -673,6 +678,8 @@ public class Settings implements java.io.Serializable {
     public String getDemandRecordFuels() { return demandRecordFuels; }
 
     public String getResidentialConsumptionFile() { return residentialConsumptionFile; }
+
+    public String getHouseholdsFile() { return householdsFile; }
 
     public boolean isRooftopAdoptionEndogenous() { return "endogenous".equalsIgnoreCase(rooftopAdoption); }
 
