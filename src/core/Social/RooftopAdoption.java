@@ -36,7 +36,8 @@ import java.util.*;
  * Output to SimPolicies: monthly installations and kW, which replace the recorded register (solar_aggregated_kw) as
  * the source of the rooftop generators. The register itself is left as recorded, so the N21 add-back of the historic
  * demand keeps the recorded fleet while Arena subtracts the simulated one. Systems of non-household owners (small
- * businesses) are not modelled: a share rooftopNonResidentialShare of the recorded register's capacity is added as is.
+ * businesses) are not modelled: a share of the recorded register's capacity and installations is added as is
+ * (rooftopNonResidentialShareFile by year, else the constant rooftopNonResidentialShare).
  */
 public class RooftopAdoption implements java.io.Serializable {
 
@@ -52,6 +53,8 @@ public class RooftopAdoption implements java.io.Serializable {
     final Map<String, TreeMap<Date, String>> econ = new HashMap<>();
     //self-consumed share by household type (rooftopSelfConsumptionFile): type -> date -> share
     final Map<String, TreeMap<Date, Double>> selfConsumption = new HashMap<>();
+    //non-household share of the register by year: {kW, installations} (rooftopNonResidentialShareFile; empty: constant)
+    final TreeMap<Integer, double[]> nonResidential = new TreeMap<>();
 
     //state
     double[] adopters, adoptersKw, lastPayback, households;
@@ -70,6 +73,9 @@ public class RooftopAdoption implements java.io.Serializable {
         readCohorts(folder.resolve(data.settings.getHouseholdCohortsFile()));
         readEconomics(folder.resolve(data.settings.getRooftopEconomicsFile()));
         readSelfConsumption(folder.resolve(data.settings.getRooftopSelfConsumptionFile()));
+        if (data.settings.getRooftopNonResidentialShareFile() != null)
+            for (String[] r : csv(folder.resolve(data.settings.getRooftopNonResidentialShareFile())))
+                nonResidential.put(Integer.parseInt(r[0]), new double[]{Double.parseDouble(r[1]), Double.parseDouble(r[2])});
         int n = type.size();
         adopters = new double[n];
         adoptersKw = new double[n];
@@ -321,7 +327,12 @@ public class RooftopAdoption implements java.io.Serializable {
         //systems of non-household owners: the recorded register's share
         Integer recordedKw = data.getSolar_aggregated_kw().get(t);
         Integer recordedN = data.getSolar_number_installs().get(t);
-        double nonRes = data.settings.getRooftopNonResidentialShare();
+        double nonResKw = data.settings.getRooftopNonResidentialShare(), nonResN = nonResKw;
+        if (!nonResidential.isEmpty()) {
+            double[] v = atYear(nonResidential, year);
+            nonResKw = v[0];
+            nonResN = v[1];
+        }
         pendingInstalls += installs;
         pendingKw += installs * sizeKw;
         double householdN = 0, householdKw = 0;
@@ -331,8 +342,8 @@ public class RooftopAdoption implements java.io.Serializable {
             pendingInstalls = 0;
             pendingKw = 0;
         }
-        double kw = householdKw + (recordedKw == null ? 0 : nonRes * recordedKw);
-        double n = householdN + (recordedN == null ? 0 : nonRes * recordedN);
+        double kw = householdKw + (recordedKw == null ? 0 : nonResKw * recordedKw);
+        double n = householdN + (recordedN == null ? 0 : nonResN * recordedN);
         if (kw > 0) {
             simInstalls.put(t, n);
             simKw.put(t, kw);

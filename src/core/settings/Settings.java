@@ -279,6 +279,9 @@ public class Settings implements java.io.Serializable {
     public double adoptionLowIncomeFactor = 0.5;
     //Share of the register's monthly installations and kW owned by non-households (small businesses), kept as recorded
     public double rooftopNonResidentialShare = 0.0;
+    //Optional CSV in simulationSettings (year,share_kw,share_installs,...): the year's non-household share of the register's
+    //kW and installations (systems of 14 kW and more, APVI size bands); replaces rooftopNonResidentialShare when set
+    public String rooftopNonResidentialShareFile;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
@@ -704,6 +707,8 @@ public class Settings implements java.io.Serializable {
     public double getAdoptionLowIncomeFactor() { return adoptionLowIncomeFactor; }
 
     public double getRooftopNonResidentialShare() { return rooftopNonResidentialShare; }
+
+    public String getRooftopNonResidentialShareFile() { return rooftopNonResidentialShareFile; }
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 

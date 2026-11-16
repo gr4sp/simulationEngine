@@ -83,6 +83,9 @@ adoptionRenterFactor: 0.1
 adoptionFlatFactor: 0.1
 adoptionLowIncomeFactor: 0.5
 rooftopNonResidentialShare: 0.0
+# Non-household share of the register by year (systems of 14 kW and more, APVI size bands, Australia; 1.8-3.3 % of kW
+# in 2010-12, 15-24 % in 2014-19): replaces the constant when set (scripts/data/rooftop_nonresidential_share.py)
+rooftopNonResidentialShareFile: rooftop_nonresidential_share_VIC.csv
 # R3 step 4 (9 Nov 2026): shortfalls are met by interconnector imports up to each link's peak import capability,
 # offered at the neighbour's short-run cost or a water value; demand left unmet is priced at the market price cap.
 # Read from this file only and applied in every year (VICfuture.yaml needs no copy).

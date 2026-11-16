@@ -193,3 +193,15 @@ Checks: 2012, 5.68 MWh against HECS 2012 (5.4-6.0) and the networks (about 6.0 p
 the ESC sample's 4,984 kWh (ACIL Allen 2019, Table 3.5, mostly 2016 meter data). The census count is a lower bound on
 households using electricity over a year (residents away on census night make a dwelling "unoccupied"); ERP-based
 estimates such as Victoria in Future are higher for that reason and the census undercount.
+
+## 16 Nov 2026: non-household systems from the size bands (A43)
+
+APVI publishes monthly installations by size band (Australia, from the CER register, 2010 onwards; no Victorian split).
+Systems of 14 kW and more, taken as non-household: 0.1-0.3 % of installations and 1.8-3.3 % of capacity in 2010-12,
+3-5 % of installations and 15-24 % of capacity in 2014-19 (band middles; they match APVI's average size within 0-8 %).
+So the constant 10 % (HECS 2012 households vs the register, by count) is too high before 2013 and too low by capacity
+after 2014. The yearly share (`rooftop_nonresidential_share_VIC.csv`, `scripts/data/rooftop_nonresidential_share.py`)
+replaces the constant in endogenous mode; in step 4 the households' calibration target is the register minus this
+share. It is a lower bound for businesses (small businesses with small systems count as households). The HECS gap
+(about 10 % by count in 2012) suggests more small business systems than the size rule finds, or survey error; to test
+in step 4 as a sensitivity. Recorded mode unchanged (46 tests).
