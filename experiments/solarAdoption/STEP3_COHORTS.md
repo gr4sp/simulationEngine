@@ -303,3 +303,16 @@ model's output at its own yield; the comparison is like for like only if the mod
 keep the new default (anchors read as upper bounds), or raise the PV-home factor (1.42 brings 0.63 and 0.34-0.41).
 
 Recorded mode unchanged (46 tests); the file is read only in endogenous mode.
+
+**Decision, 17 Nov 2026 (Angela).** Against the goal of simple rules that reproduce past mechanisms:
+- PV-home factor **1.2** stays the default. It rests on the evening ratio (1.20-1.24, Figure 4.8) and is not tuned to an
+  anchor; 1.0 and 1.42 are the sensitivity range. The anchors are read as upper bounds (reasons above).
+- **Weather shaping is dropped from the method** and kept as a sensitivity (`--shape nslp|mrim`): it moves the share by
+  about 0.01 (FY2011-12 fleet 0.58 shaped, 0.59 flat), and it would add two data sources (AEMO NSLP, ERA5) to the
+  method. Default `--shape flat`. The NSLP fit now includes 2008 (fit 2002-2008, test 2009-2010; daily R2 0.851 /
+  0.850, before 0.847 / 0.846).
+- The two corrections with a physical reason stay: profiles made gross (the ESC profiles are grid import of a sample
+  with 45 % PV homes) and the averaging bias (one home's load is spikier than an average of many).
+- Written values (flat, factor 1.2): new systems 2012 0.46, 2019 0.21; by type 2019 lone person 0.14, couple 0.20,
+  couple with children 0.26; FY2011-12 fleet 0.59 (HECS 0.67); 2017 / 2018 / 2019 fleet 0.37 / 0.34 / 0.31 (RIN
+  0.37-0.43). Against the D4b file every value rises by 0.001-0.015.

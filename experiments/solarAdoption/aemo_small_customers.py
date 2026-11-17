@@ -1,7 +1,7 @@
 """Victorian small-customer half-hourly load from AEMO settlement profiles (solar step 3, D4b: seasonal and weather shape).
 
 Sources (AEMO, downloaded Nov 2026 to Sandbox/papers/GR4SPArticle_ERSS/data/load_profiles/):
-  NSLP, Net System Load Profile, yearly files 2002-2020 (no 2008 file): per distribution network (profile area) and
+  NSLP, Net System Load Profile, yearly files 2002-2020: per distribution network (profile area) and
     day, energy in each half-hour (kWh). For Victoria it is the energy entering the network (plus embedded
     generation) minus every interval-metered load (AEMO, Understanding load profiles published from MSATS, v6.1,
     2021, App. A). Before the Victorian smart-meter (AMI) rollout it is the load of the small customers on

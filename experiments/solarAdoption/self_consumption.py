@@ -10,8 +10,9 @@ of min(load, PV) / sum of PV (net metering at half-hour resolution).
     m(d, h): day-to-day shape from weather and calendar (D4b), the relative load of Victorian small customers
       predicted from the day's temperature, the previous day's, day type, night length and the Christmas period
       (load_temperature_response.py, AEMO NSLP 2002-2010, ERA5 Melbourne temperature), divided by its mean over the
-      calendar year in each half-hour so that the year's average day stays the ESC profile. --shape flat gives
-      m = 1 (one daily shape all year, the D4 method).
+      calendar year in each half-hour so that the year's average day stays the ESC profile. Default --shape flat:
+      m = 1 (one daily shape all year). Weather shaping (--shape nslp|mrim) moves the share by about 0.01 (FY2011-12
+      fleet 0.58 shaped vs 0.59 flat), so it is a sensitivity, not part of the method (decision 17 Nov 2026).
     level: use per household by calendar year relative to 2016 (AES residential electricity, Table F3 / census
       households, households_VIC.csv as in the model since N30).
     pv_home_factor: homes that adopt PV use more than the average home of their size: in Figure 4.8 the PV homes'
@@ -152,7 +153,8 @@ def main():
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--pv-home-factor", type=float, default=1.2,
                     help="load of homes that adopt PV relative to the average home of their size (Figure 4.8 night ratio)")
-    ap.add_argument("--shape", choices=["nslp", "mrim", "flat"], default="nslp")
+    ap.add_argument("--shape", choices=["nslp", "mrim", "flat"], default="flat",
+                    help="day-to-day load shape: flat (the method) or weather-shaped from NSLP/MRIM (sensitivity)")
     ap.add_argument("--bias", choices=["day", "mdt", "none"], default="day")
     ap.add_argument("--amplitude", default="1", help="seasonal amplitude k of the weather terms (1 = as fitted), or auto (match AER Table 17)")
     ap.add_argument("--esc-pv-mix", type=float, default=0.45,
@@ -252,21 +254,25 @@ def main():
         print("fuel sensitivity, Figure 4.9 %s (%.1f kWh/day), 2016, 4 kW: %.3f" % (f, g.loc[f].sum(), s[0]))
     if a.write:
         out = pd.DataFrame(rows, columns=["type", "date_from", "share"])
-        out["note"] = ("min(load, PV) per half-hour; ESC 2019 profile of the type's size shaped by day (weather, "
-                       "calendar); model PV; year's mean new system; / SGSC averaging bias")
+        shaped = "same daily shape all year" if a.shape == "flat" else "shaped by day (weather, calendar)"
+        out["note"] = ("min(load, PV) per half-hour; ESC 2019 profile of the type's size, gross of PV, " + shaped +
+                       "; model PV; year's mean new system; / SGSC averaging bias")
         out["status"] = "constructed"
         path = os.path.join(ROOT, "simulationSettings", "rooftop_self_consumption_VIC.csv")
         with open(path, "w", newline="\n") as fh:
             fh.write("# Self-consumed share of a household rooftop system's output (the rest is exported), by household type and\n"
                      "# year of installation. Built by experiments/solarAdoption/self_consumption.py: each half-hour of the year the\n"
                      "# home uses its PV output up to its load. Load: ACIL Allen (2019) for the ESC, Victorian usage profiles by\n"
-                     "# household size (Figure 4.2, mostly 2016 smart-meter data), at the type's mean size (census 2016), shaped by\n"
-                     "# day from Melbourne temperature, day type, night length and Christmas (temperature response of Victorian\n"
-                     "# small-customer load, AEMO NSLP 2002-2010, ERA5), scaled to the year's use per household (AES Table F3 /\n"
+                     "# household size (Figure 4.2, mostly 2016 smart-meter data; the %.0f %% PV homes of the sample made gross),\n"
+                     "# at the type's mean size (census 2016), %s,\n"
+                     "# scaled to the year's use per household (AES Table F3 /\n"
                      "# census households) x %.2f for homes that adopt PV (Figure 4.8). PV: the model's rooftop output per kW x the\n"
                      "# year's mean new system (installation register). Divided by the averaging bias measured on 1,217 Smart Grid\n"
                      "# Smart City homes (an average profile overstates the share 5-28 %% against measured loads, by PV/load ratio).\n"
-                     % a.pv_home_factor)
+                     % (a.esc_pv_mix * 100,
+                        "the same daily shape all year" if a.shape == "flat" else
+                        "shaped by day from Melbourne temperature (AEMO %s, ERA5)" % SHAPES[a.shape],
+                        a.pv_home_factor))
             out.to_csv(fh, index=False)
         print("written", path)
 

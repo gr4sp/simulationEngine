@@ -1,7 +1,7 @@
 """Temperature response of Victorian small-customer load, by half-hour (solar step 3, D4b).
 
 Data: Victorian small-customer half-hourly load (aemo_small_customers.py): NSLP 2002-2010 (accumulation-metered homes
-and small businesses, before the AMI rollout; 2008 missing) and MRIM Jul 2018-Dec 2019 (smart-metered sites under
+and small businesses, before the AMI rollout) and MRIM Jul 2018-Dec 2019 (smart-metered sites under
 160 MWh a year; 2020 left out: COVID-19 lockdowns). Sum of the five networks. ERA5 hourly 2 m temperature for Melbourne
 (fetch_era5_temperature.py), AEST.
 
@@ -15,7 +15,7 @@ Definitions:
     y(d, h) = c + bH HDD + bC CDD + bC1 CDD1 + bN N(d) + bX Xmas(d)
     N(d): night length (hours between sunset and sunrise at Melbourne, astronomical), the seasonal driver that is not
     weather (lighting, time indoors); Xmas: 24 Dec - 6 Jan (holiday period).
-Fit 2002-2007, test 2009-2010 (out of sample); MRIM fitted on Jul 2018-Dec 2019 with the same thresholds.
+Fit 2002-2008, test 2009-2010 (out of sample); MRIM fitted on Jul 2018-Dec 2019 with the same thresholds.
 
 Output: data/load_temperature_response.csv (period, daytype, period_hh, term, value) and data/load_temperature_fit.png.
 Usage: python load_temperature_response.py AEMO_CSV_GZ ERA5_CSV
@@ -133,13 +133,13 @@ def main():
     load = pd.read_csv(a.aemo)
     temp = daily_temperature(a.era5)
     rows, report = [], []
-    # period 1: NSLP, fit 2002-2007, test 2009-2010; final coefficients on 2002-2010
-    y, f = frame(load, temp, "NSLP", [2002, 2003, 2004, 2005, 2006, 2007, 2009, 2010])
-    tr, te = f.index.year <= 2007, f.index.year >= 2009
+    # period 1: NSLP, fit 2002-2008, test 2009-2010; final coefficients on 2002-2010
+    y, f = frame(load, temp, "NSLP", [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010])
+    tr, te = f.index.year <= 2008, f.index.year >= 2009
     th, tc = thresholds(y[tr], f[tr])
     c = fit(y[tr], f[tr], th, tc)
     pr = predict(c, f, th, tc)
-    report.append(("NSLP 2002-07 fit", th, tc, r2(y[tr], pr[tr]), r2(y[tr].sum(axis=1), pr[tr].sum(axis=1))))
+    report.append(("NSLP 2002-08 fit", th, tc, r2(y[tr], pr[tr]), r2(y[tr].sum(axis=1), pr[tr].sum(axis=1))))
     report.append(("NSLP 2009-10 test", th, tc, r2(y[te], pr[te]), r2(y[te].sum(axis=1), pr[te].sum(axis=1))))
     # baseline without weather (day type, night length, Christmas only), to show what temperature adds
     c0 = {}
@@ -177,7 +177,7 @@ def main():
                  "# + night_h x b + xmas x b. HDD = max(0, %.1f - T), CDD = max(0, T - %.1f), T = daily mean 2 m temperature\n"
                  "# (ERA5, Melbourne, deg C); CDD1 = previous day's CDD; night_h = night length (h); xmas = 24 Dec-6 Jan.\n"
                  "# Weekend includes Victorian public holidays. Rows with term Th and Tc hold the two thresholds.\n"
-                 "# NSLP: AEMO net system load profile, 5 Victorian networks, 2002-2010 (no 2008); MRIM: AEMO type 5 meter\n"
+                 "# NSLP: AEMO net system load profile, 5 Victorian networks, 2002-2010; MRIM: AEMO type 5 meter\n"
                  "# data, Jul 2018-Dec 2019. Built by experiments/solarAdoption/load_temperature_response.py.\n" % (th, tc))
         out.to_csv(fh, index=False, float_format="%.6f")
     print("written", path)
