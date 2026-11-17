@@ -4,7 +4,9 @@ Sandbox/papers/GR4SPArticle_ERSS/data/abs_energy_use_VIC/4670_2012_HECS_addition
 
 Writes data/hecs2012_targets.csv, long format: table, group, measure, value, unit, rse_flag
   pv_share          households with solar electricity connected to the grid / estimated households (%)
-                    by tenure (Table 12A, Australia), economic resources (Table 7A, Australia),
+                    by tenure (Table 12A, Australia), economic resources (Table 7A, Australia), life cycle
+                    group (Table 17B, Australia: lone person, couple only, couple with children by age of the
+                    reference person or eldest child, one parent; the groups do not cover every household),
                     Victoria capital city and balance of state (Tables 19B, 19C)
   kwh_week          mean weekly electricity consumption (kWh) by energy sources used in the dwelling and in total,
                     Melbourne and balance of Victoria (Tables 18B, 18C), by tenure (12A), by family composition (16A)
@@ -93,6 +95,7 @@ def main():
 
     share("Table 12A", [6, 7])
     share("Table 7A", [6])
+    share("Table 17B", [8])
     share("Table 19B", [6])
     share("Table 19C", [6])
     kwh("Table 18B", [6])

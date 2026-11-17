@@ -316,3 +316,62 @@ Recorded mode unchanged (46 tests); the file is read only in endogenous mode.
 - Written values (flat, factor 1.2): new systems 2012 0.46, 2019 0.21; by type 2019 lone person 0.14, couple 0.20,
   couple with children 0.26; FY2011-12 fleet 0.59 (HECS 0.67); 2017 / 2018 / 2019 fleet 0.37 / 0.34 / 0.31 (RIN
   0.37-0.43). Against the D4b file every value rises by 0.001-0.015.
+
+## 17 Nov 2026: household system size (A46) and who adopts (HECS 2012 life cycle groups)
+
+**Repair.** The household system was the month's mean of the whole installation register, which includes the
+non-household systems of 14 kW and more (A43). Both the payback (`RooftopAdoption.systemKw`) and the self-consumed share
+(`self_consumption.py`) now use the household mean = register mean x (1 - kW share) / (1 - installation share), A43
+shares by year. Raised by Angela: her own system (about 2019) was held to 5 kW by the local network's limits; such
+limits vary by network and place and are not modelled (ROADMAP 23, future iteration).
+
+| Year (year) | Mean new system, whole register (kW) | Mean new system, households (kW) | Self-consumed share of new household systems, before -> after (fraction of PV output) |
+|---|---|---|---|
+| 2012 | 3.13 | 3.04 | 0.46 -> 0.47 |
+| 2015 | 4.78 | 4.00 | 0.32 -> 0.36 |
+| 2017 | 6.55 | 5.23 | 0.24 -> 0.29 |
+| 2019 | 7.46 | 6.32 | 0.21 -> 0.24 |
+
+Anchors, households-weighted self-consumed share of the household fleet in service (fraction of PV output): FY2011-12
+0.59 (HECS 0.67, unchanged: the HECS fleet size 2.03 kW is used); 2017 / 2018 / 2019: 0.40 / 0.37 / 0.34 (fleet mean
+3.21 / 3.53 / 3.91 kW; before 0.37 / 0.34 / 0.31 at 3.64 / 4.08 / 4.54 kW), against AER RIN 0.37-0.43 with A43.
+
+Endogenous run (seed 42, initial hazard parameters A42), before -> after:
+
+| Year (year) | Mean payback, households (years) | Installations, model (systems/year) | Installations, register (systems/year) | Households with PV, after (% of households) |
+|---|---|---|---|---|
+| 2012 | 10.0 -> 9.9 | 10,534 -> 10,708 | 66,239 | 1.4 |
+| 2015 | 10.2 -> 9.5 | 4,113 -> 6,122 | 31,382 | 2.0 |
+| 2017 | 8.4 -> 8.0 | 5,371 -> 7,690 | 31,386 | 2.4 |
+| 2019 | 4.6 -> 4.3 | 32,175 -> 36,342 | 61,784 | 5.0 |
+
+Smaller systems cost less and use more of their output at home, so payback shortens by 0.1-0.7 years and installations
+rise 2-49 % (most in 2013-17, when payback sits near the hazard's midpoint PB0 = 8 years). Recorded mode unchanged
+(46 tests).
+
+**Empirical check: who adopts.** ABS HECS 2012 (cat. 4670.0, Table 17B, Australia; now in
+`data/hecs2012_targets.csv` from `build_hecs2012_targets.py`): households with grid-connected PV by life cycle group.
+Couple with children = eldest child under 5, 5-14, 15-24, dependent and non-dependent, non-dependent only; couple
+without children = couple only with reference person under 35, 55-64, 65 and over; lone person = under 35, 65 and
+over (the 35-54 or 35-64 groups are not published). Ratio = group's PV share / all households' PV share (8.4 %).
+
+| Household type (category) | HECS 2012 PV share, Australia (% of households) | HECS ratio to all households (ratio) | Model end-2012 PV share, Victoria (% of households) | Model ratio to all households (ratio) |
+|---|---|---|---|---|
+| Couple family with children | 10.8 | 1.28 | 1.66 | 1.15 |
+| Couple family without children | 11.9 | 1.41 | 1.62 | 1.12 |
+| One parent family | 2.4 (RSE 25-50 %) | 0.29 | 1.19 | 0.83 |
+| Lone person | 4.2 | 0.49 | 1.22 | 0.85 |
+| Group household | not published | | 0.65 | 0.45 |
+
+The order of the extremes is right (couples above, one-parent and lone-person households below), but the model's spread
+is too narrow: one-parent and lone-person households adopt about three and two times too often relative to couples.
+And the couples without children (mostly aged 55 and over: 15.6 % and 13.7 %) adopt more than couples with children in
+HECS, while the model puts them level. Within types, the life cycle matters: lone persons under 35 1.7 %, over 65
+5.0 %; couples under 35 4.8 %, 55-64 15.6 %. So life stage (age, outright ownership, wealth) and income drive who
+adopts more than self-consumption does (tenure: owners outright 13.0 %, mortgage 10.9 %, renters 1.0 %, Table 12A).
+The level gap (1.4 % vs 8.4 %; Victoria in HECS: Tables 19B / 19C) is the uncalibrated hazard (step 4).
+
+For step 4: add the HECS ratios by type (and tenure, economic resources) to the calibration's pattern targets
+(currently validation only); check whether the existing eligibility factors (renters, flats, quintile 1) can produce
+the one-parent and lone-person gaps, and if not, whether an age or life stage dimension in the cohorts is needed (a
+new cohort attribute: decide against the simple-rules goal).

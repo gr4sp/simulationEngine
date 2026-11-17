@@ -7,6 +7,17 @@ Table 7A,Low income (a),pv_share,4.8,%,
 Table 7A,Low wealth (b),pv_share,1.61,%,
 Table 7A,Low economic resources (c),pv_share,2.74,%,
 Table 7A,All households,pv_share,8.43,%,
+Table 17B,Lone person aged under 35,pv_share,1.68,%,*
+Table 17B,"Couple only, reference person under 35",pv_share,4.77,%,*
+Table 17B,Eldest child under 5,pv_share,7.63,%,
+Table 17B,Eldest child 5 to 14,pv_share,11.19,%,
+Table 17B,Eldest child 15-24,pv_share,11.53,%,
+Table 17B,One parent with dependent children,pv_share,2.44,%,*
+Table 17B,Dependent & non-dependent children only,pv_share,10.23,%,
+Table 17B,Non-dependent children only,pv_share,12.68,%,
+Table 17B,"Couple only, reference person 55 to 64",pv_share,15.61,%,
+Table 17B,"Couple only, reference person 65 and over",pv_share,13.65,%,
+Table 17B,Lone person 65 and over,pv_share,5.0,%,
 Table 19B,NSW,pv_share,5.53,%,
 Table 19B,VIC,pv_share,5.42,%,
 Table 19B,QLD,pv_share,10.72,%,

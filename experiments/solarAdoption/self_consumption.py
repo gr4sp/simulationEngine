@@ -19,7 +19,8 @@ of min(load, PV) / sum of PV (net metering at half-hour resolution).
       night-time import (their whole load) is 1.20-1.24 times the non-PV homes' at 21:00-23:00 and 1.4-1.7 times in
       the early morning. Factor 1.2 (default; sensitivity 1.0 to 1.42).
   PV: the model's rooftop output per kW in each half-hour (Gr4spSim.getRooftopExposure x rooftop efficiency, dumped by
-    the DumpRooftop harness), times the year's mean system size of new installations.
+    the DumpRooftop harness), times the year's mean size of new household systems (register without the non-household
+    systems of 14 kW and more, A43 shares).
   Averaging bias (D4b): a profile averaged over many homes is smoother than any one home's load, so min(load, PV) is
     overstated. Measured on 1,217 Smart Grid Smart City homes (sgsc_averaging_test.py): the share with the sample's
     mean shape of each day (a perfect model of the average home's day) is 1.05-1.28 times the share with the homes'
@@ -173,10 +174,19 @@ def main():
     rel, per_hh = use_level()
     level = rel * a.pv_home_factor
     reg = pd.read_csv(os.path.join(ROOT, "simulationSettings", "solar_installation_cer_VIC.csv"))
-    new_kw = reg.groupby("year").aggregated_capacity_kw.sum() / reg.groupby("year").number_installations.sum()
+    # household systems only: the register without the non-household systems of 14 kW and more (A43 shares by year,
+    # 2010 value before 2010), as the model does (RooftopAdoption); household mean = kW (1 - s_kw) / (n (1 - s_n))
+    nres = pd.read_csv(os.path.join(ROOT, "simulationSettings", "rooftop_nonresidential_share_VIC.csv"), comment="#",
+                       index_col="year")
+    ny = lambda y: nres.loc[min(max(y, nres.index.min()), nres.index.max())]
+    kw_y = reg.groupby("year").aggregated_capacity_kw.sum().astype(float)
+    n_y = reg.groupby("year").number_installations.sum().astype(float)
     for y, (kw, n) in {2007: (1109, 828), 2008: (2724, 2037), 2009: (10508, 8433), 2010: (59168, 35685)}.items():
-        new_kw[y] = kw / n   # APVI (solar_installation_monthly) before the CER file
-    new_kw = new_kw.sort_index()
+        kw_y[y], n_y[y] = kw, n   # APVI (solar_installation_monthly) before the CER file
+    kw_y, n_y = kw_y.sort_index(), n_y.sort_index()
+    hkw = pd.Series({y: kw_y[y] * (1 - ny(y).share_kw) for y in kw_y.index})
+    hn = pd.Series({y: n_y[y] * (1 - ny(y).share_installs) for y in n_y.index})
+    new_kw = hkw / hn
     print(f"load shape {a.shape}, averaging-bias correction {a.bias}, PV-home factor {a.pv_home_factor}, "
           f"ESC PV mix removed {a.esc_pv_mix}")
 
@@ -239,8 +249,10 @@ def main():
     print("\nanchor FY2011-12, fleet in service (2.03 kW): %.3f (raw %.3f; HECS 2012: 0.67); x by type %s"
           % (a1, sum(res[t][1] * w[t] for t in res), xs))
     # anchor 2: fleet in service 2017-19 (mean kW of the fleet, not of new systems)
-    cum = reg.groupby("year").aggregated_capacity_kw.sum().cumsum() + 213917 - reg[reg.year == 2011].aggregated_capacity_kw.sum()
-    cumn = reg.groupby("year").number_installations.sum().cumsum() + 107239 - reg[reg.year == 2011].number_installations.sum()
+    # household fleet: 213,917 kW / 107,239 systems in service at the end of 2011 (2011 non-household shares), then
+    # the household part of each year's installations
+    cum = hkw[hkw.index >= 2012].cumsum() + 213917 * (1 - ny(2011).share_kw)
+    cumn = hn[hn.index >= 2012].cumsum() + 107239 * (1 - ny(2011).share_installs)
     for y in (2017, 2018, 2019):
         w = coh[coh.year == y].groupby("type").share.sum()
         a2, res = type_share(f"{y}-01-01", f"{y + 1}-01-01", cum[y] / cumn[y], w)
@@ -256,7 +268,7 @@ def main():
         out = pd.DataFrame(rows, columns=["type", "date_from", "share"])
         shaped = "same daily shape all year" if a.shape == "flat" else "shaped by day (weather, calendar)"
         out["note"] = ("min(load, PV) per half-hour; ESC 2019 profile of the type's size, gross of PV, " + shaped +
-                       "; model PV; year's mean new system; / SGSC averaging bias")
+                       "; model PV; year's mean new household system; / SGSC averaging bias")
         out["status"] = "constructed"
         path = os.path.join(ROOT, "simulationSettings", "rooftop_self_consumption_VIC.csv")
         with open(path, "w", newline="\n") as fh:
@@ -267,8 +279,8 @@ def main():
                      "# at the type's mean size (census 2016), %s,\n"
                      "# scaled to the year's use per household (AES Table F3 /\n"
                      "# census households) x %.2f for homes that adopt PV (Figure 4.8). PV: the model's rooftop output per kW x the\n"
-                     "# year's mean new system (installation register). Divided by the averaging bias measured on 1,217 Smart Grid\n"
-                     "# Smart City homes (an average profile overstates the share 5-28 %% against measured loads, by PV/load ratio).\n"
+                     "# year's mean new household system (installation register without the systems of 14 kW and more, A43).\n"
+                     "# Divided by the averaging bias measured on 1,217 Smart Grid Smart City homes (an average profile overstates the share 5-28 %% against measured loads, by PV/load ratio).\n"
                      % (a.esc_pv_mix * 100,
                         "the same daily shape all year" if a.shape == "flat" else
                         "shaped by day from Melbourne temperature (AEMO %s, ERA5)" % SHAPES[a.shape],

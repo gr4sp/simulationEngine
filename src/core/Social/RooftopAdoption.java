@@ -22,7 +22,8 @@ import java.util.*;
  * Each month, the non-adopters of cohort c install at the hazard
  *     h_c(t) = e_c [a + b A_c(t)] f(PB_c(t)),   f(PB) = 1 / (1 + exp(k (PB - PB0)))
  * A_c: share of the cohort that has adopted (imitation); e_c: eligibility and barriers (renters, flats, quintile 1,
- * multiplied); PB_c: simple payback in years of a system of the month's mean size (installation register) =
+ * multiplied); PB_c: simple payback in years of a household system of the month's mean size (installation register
+ * without the non-household systems of 14 kW and more, rooftopNonResidentialShareFile) =
  * net cost / first-year saving, in current dollars:
  *   net cost = system price x size - federal rebate (with its means test) - certificates (deeming x zone rating x
  *              (multiplier on the first kW, Solar Credits) x price) - Victorian Solar Homes rebate (owner-occupiers
@@ -303,7 +304,16 @@ public class RooftopAdoption implements java.io.Serializable {
             hh = (int) Math.round(s);
         }
         double[] sh = atYear(share, year);
-        double sizeKw = systemKw(data, t);
+        //non-household owners' share of the register (systems of 14 kW and more): {kW, installations}
+        double nonResKw = data.settings.getRooftopNonResidentialShare(), nonResN = nonResKw;
+        if (!nonResidential.isEmpty()) {
+            double[] v = atYear(nonResidential, year);
+            nonResKw = v[0];
+            nonResN = v[1];
+        }
+        //household system: the register's mean without the non-household systems = mean x (1 - kW share) / (1 - number
+        //share); equal to the register's mean when one constant share is used for both
+        double sizeKw = systemKw(data, t) * (1.0 - nonResKw) / Math.max(1e-9, 1.0 - nonResN);
         double yieldKwhPerKw = yieldIrradiation * data.settings.getSolarEfficiency("Solar", "Solar - Rooftop");
         float tariff = tariffNominal(data, t);
         double a = data.settings.getAdoptionInnovation(), b = data.settings.getAdoptionImitation();
@@ -327,12 +337,6 @@ public class RooftopAdoption implements java.io.Serializable {
         //systems of non-household owners: the recorded register's share
         Integer recordedKw = data.getSolar_aggregated_kw().get(t);
         Integer recordedN = data.getSolar_number_installs().get(t);
-        double nonResKw = data.settings.getRooftopNonResidentialShare(), nonResN = nonResKw;
-        if (!nonResidential.isEmpty()) {
-            double[] v = atYear(nonResidential, year);
-            nonResKw = v[0];
-            nonResN = v[1];
-        }
         pendingInstalls += installs;
         pendingKw += installs * sizeKw;
         double householdN = 0, householdKw = 0;
