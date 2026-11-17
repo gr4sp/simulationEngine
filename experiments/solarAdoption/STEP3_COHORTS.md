@@ -375,3 +375,9 @@ For step 4: add the HECS ratios by type (and tenure, economic resources) to the 
 (currently validation only); check whether the existing eligibility factors (renters, flats, quintile 1) can produce
 the one-parent and lone-person gaps, and if not, whether an age or life stage dimension in the cohorts is needed (a
 new cohort attribute: decide against the simple-rules goal).
+
+**Limitation (Angela, 17 Nov 2026).** The household groups have no age or life stage. HECS 2012 shows life stage
+drives who adopts (older couples most), and age is also an energy vulnerability factor (bill stress, thermal comfort
+and health; low retailer switching and the loyalty tax). Stated as a limitation of the model for MethodsX and the
+ERSS article, and as future work (ROADMAP 24); nothing added until step 4 shows the existing barriers cannot
+reproduce the HECS gaps and the sources listed in ROADMAP 24 are checked.
