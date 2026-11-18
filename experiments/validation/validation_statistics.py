@@ -143,6 +143,7 @@ def series(year, month, ghge, opennem, tariffs):
         ghge_total = (year["GHG Emissions (tCO2-e) per household"]
                       * year["Number of Domestic Consumers (households)"] / 1e6 / 0.3)
     ghge_observed = ghge[ghge.index > 1997]["Hist_GHGE_MtCO2e"].values
+    full_ghge = ghge_total.iloc[:-32].values > 0
     monthly = monthly_prices(month)
     return {
         "Wholesale price (monthly)": (
@@ -165,10 +166,12 @@ def series(year, month, ghge, opennem, tariffs):
             ghge_total.iloc[7:21].values,
             ghge_observed[7:],
             "2005-2018", "Mt"),
+        # System emissions are tallied from 1999: in runs that start in 1998 (spin-up) the 1998 value is 0, so years
+        # without simulated emissions are left out (19 Nov 2026; the pinned BAU has a 1998 value and keeps it)
         "GHGE (annual, full)": (
-            ghge_total.iloc[:-32].values,
-            ghge_observed,
-            "1998-2018", "Mt"),
+            ghge_total.iloc[:-32].values[full_ghge],
+            ghge_observed[full_ghge],
+            f"{1998 + int((~full_ghge).sum())}-2018", "Mt"),
     }
 
 
