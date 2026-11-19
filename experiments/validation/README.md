@@ -102,8 +102,12 @@ prints the composite's statistics and the per-source overlap figures so the size
 of the artefact stays on the record. The tariff figure keeps the composite as
 its band, because the panel spans every year either source covers.
 
-The 2018 emissions comparator is not measured. It is the 2017 figure less
-11.8 Mt for the retirement of Hazelwood.
+The 2018 emissions comparator (46.4 Mt) is the inventory value, not an estimate. Corrected 19 Nov 2026: this note
+used to say it was the 2017 figure less 11.8 Mt for Hazelwood, which would give 44.3 Mt. The Victorian Greenhouse
+Gas Emissions Report 2018 (State and Territory Greenhouse Gas Inventories, May 2020) gives 2018 net emissions of
+102.2 Mt with 45.4 % from electricity generation (46.4 Mt), and a fall of 17.1 Mt in electricity generation since
+2005 (63.5 - 17.1 = 46.4). Both match the file. The later reports (2019, 2020) would extend the record to 2020 and
+show any revisions; they were not downloaded.
 
 ## Resolution: what a weighted comparator can and cannot ask of the model
 

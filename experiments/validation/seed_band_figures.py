@@ -104,21 +104,15 @@ def main():
 
     rec = lambda label, ls="-", m="o": Line2D([], [], color=RECORD, ls=ls, marker=m, ms=4, lw=1.2, label=label)
 
-    # Figure 2: emissions. 1999-2018: the 1998 spin-up year has no simulated emissions; the 2018 record is the 2017
-    # inventory less 11.8 Mt for Hazelwood, not a measurement (README), so it is drawn hollow.
+    # Figure 2: emissions, 1999-2018 (the 1998 spin-up year has no simulated emissions)
     fig, ax = plt.subplots(figsize=(7, 4.2))
     w = wide("ghge_mt").loc[1999:2019]
     draw_sim(ax, w.index, w)
     obs = ghge["Hist_GHGE_MtCO2e"].loc[1999:2018]
-    ax.plot(obs.index[:-1], obs.values[:-1], color=RECORD, marker="o", ms=4, lw=1.2)
-    ax.plot(obs.index[-2:], obs.values[-2:], color=RECORD, ls=":", lw=1.2)
-    ax.plot([2018], [obs.loc[2018]], marker="o", ms=5, mfc="white", mec=RECORD, lw=0)
+    ax.plot(obs.index, obs.values, color=RECORD, marker="o", ms=4, lw=1.2)
     axes_style(ax, "Emissions (Mt CO$_2$-e per year)")
     ax.set_xticks(range(1999, 2020, 2))
-    ax.legend(handles=handles(nse_label(stats, "GHGE (annual, full)"),
-                              [rec("Record (Victorian inventory)"),
-                               Line2D([], [], color=RECORD, marker="o", mfc="white", lw=0, ms=5,
-                                      label="Record 2018: 2017 less Hazelwood")]),
+    ax.legend(handles=handles(nse_label(stats, "GHGE (annual, full)"), [rec("Record (Victorian inventory, electricity generation)")]),
               loc="lower left", fontsize=8.5)
     save(fig, "ghgeSeedValidation")
 
