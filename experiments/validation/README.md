@@ -611,11 +611,13 @@ half-hours each fuel sets the price). The record is AEMO's half-hourly VIC1 pric
 | 2017-2019 | 36 % / 2 % | 83 / 88 | 0.20 % / 0.35 % |
 | 1999-2019 | 55 % / 10 % | 13 / 31 | 0.09 % / 0.22 % |
 
-Reading: the middle of the distribution (roughly the 10th to 40th percentile from the top) is reproduced in every period;
-the model's errors sit at both ends. (1) A floor: in a large share of half-hours the model's price is brown coal's
+Reading: the middle of the distribution is close in 2009-2016 and 2017-2019 (from about the 5th to the 40th percentile
+from the top), and only around the 20th percentile in 1999-2008; the largest errors sit at both ends. (1) A floor: in a large share of half-hours the model's price is brown coal's
 short-run cost (about 8-12 $/MWh), while recorded prices at low demand stay at 15-30 $/MWh; brown coal sets the model
-price in 37-51 % of half-hours. This floor is most of the annual price bias (-17 $/MWh). It is what a cost-based
+price in 32-77 % of half-hours (yearly medians over the seeds). Over 1999-2019 the model's unweighted half-hour mean
+is 12.3 $/MWh below the record's: the lowest 60 % of half-hours give 5.2 of it, the top 1 % 2.4, the rest 4.7. The floor
+is what a cost-based
 competitive benchmark gives (withholding is off by design); the record's low-demand prices carry offers above cost.
-(2) Too few spikes, worst in 1999-2008 (0.03 against 0.27 %), the same gap as the imports and gas above. The model also
+(2) Too few spikes, worst in 1999-2008 (0.03 against 0.27 %). The model also
 has no negative prices (record 0.13 % of half-hours, 0.36 % in 2017-2019), as AMIRIS (Nitsch et al. 2021). Model imports
 over the 100 seeds: median 13-26 GWh/yr.
