@@ -10,7 +10,8 @@ Usage: python seed_ensemble.py OUT_DIR [N_SEEDS=100] [PARALLEL=10]   (build firs
   OUT_DIR/run_s<seed>/csv/VIC/*.csv   each run's year and monthly summaries (the other outputs are deleted)
   OUT_DIR/seed_statistics.csv         one row per seed and indicator: n, MAE, RMSE, Bias, NRMSE, NSE, r
   OUT_DIR/seed_summary.csv / .md      per indicator: seed 42, median, 5 % and 95 % over the seeds
-  OUT_DIR/seed_years.csv              per seed and year: price, RE share, tariff, GHGE (for the figures' spread)
+  OUT_DIR/seed_years.csv              per seed and year: price, RE share (full year and over the record's months),
+                                      tariff, GHGE (for the figures' spread)
 Runs already finished are not repeated, so the script can be restarted.
 """
 import concurrent.futures as cf, glob, os, shutil, subprocess, sys
@@ -53,6 +54,9 @@ def stats_for(out, seed):
         pd.to_datetime([f"{y}-12-31" for y in year.index])).values,
         "re_pct": year["Percentage Renewable Production"].values * 100,
         "tariff": year["Avg Tariff (c/KWh) per household"].values, "ghge_mt": ghge_total.values}, index=year.index)
+    # the renewable share over the months the record covers (2005: April-December, 2020: January-June), as compared
+    re_rec = vs.renewable_share_simulated(month, opennem)
+    yr["re_pct_record_months"] = pd.Series(re_rec.values, index=re_rec.index.year).reindex(year.index)
     return rows, yr
 
 

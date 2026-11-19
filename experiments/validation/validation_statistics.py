@@ -108,6 +108,24 @@ def renewable_share(opennem):
     return sum(annual[column] for column in RENEWABLE) / sum(annual.values()) * 100.0
 
 
+SIM_RENEWABLE = ["System Production Rooftop PV", "System Production Water", "System Production Wind",
+                 "System Production Solar"]
+SIM_GENERATION = SIM_RENEWABLE + ["System Production Coal", "System Production Gas", "System Production Battery"]
+
+
+def renewable_share_simulated(month, opennem):
+    """Simulated renewable share per year over the months the record covers, in per cent.
+
+    19 Nov 2026 (R6): the record's first and last years are partial (2005: April-December, 2020: January-June), and the
+    row used to compare them with the full simulated year from the year summary (2020: 31.4 % full year against 26.9 %
+    January-June). The share is generation-weighted, as the year column is: renewable over total output, summed over
+    the months. For a complete year it equals the year summary column.
+    """
+    months = month.loc[month.index.isin(opennem.index)]
+    annual = months[SIM_GENERATION].resample("YS").sum()
+    return annual[SIM_RENEWABLE].sum(axis=1) / annual.sum(axis=1) * 100.0
+
+
 def utility_solar_in_record(year):
     """Annual GWh of the utility solar the record covers: the AEMO-registered (scheduled or semi-scheduled) farms.
 
@@ -169,10 +187,13 @@ def series(year, month, ghge, opennem, tariffs):
             monthly.simulated.resample("YE").mean().values,
             monthly.observed.resample("YE").mean().values,
             "1999-2020", "$/MWh"),
+        # Both sides over the record's months (2005: April-December, 2020: January-June); see renewable_share_simulated
         "RE share (annual)": (
-            year["Percentage Renewable Production"].iloc[7:23].values * 100.0,
+            renewable_share_simulated(month, opennem).values
+            if SIM_GENERATION[0] in month.columns
+            else year["Percentage Renewable Production"].iloc[7:23].values * 100.0,  # pinned BAU has no monthly fuels
             renewable_share(opennem).values,
-            "2005-2020", "pp"),
+            "2005 (Apr-Dec) to 2020 (Jan-Jun)", "pp"),
         "Tariffs vs Oakley Greenwood": tariff_indicator(year, tariffs, 1),
         "Tariffs vs St Vincent de Paul": tariff_indicator(year, tariffs, 0),
         "GHGE (annual)": (

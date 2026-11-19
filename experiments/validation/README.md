@@ -528,3 +528,21 @@ is unchanged (every market column identical). The GHG indicator now uses the yea
 (tCO2-e)` (each generator's output x its emission factor) instead of emissions per household x households / 0.3, which
 held only while the residential share was 0.3: GHG NSE 0.68 (seed 42, 2005-2018; 0.48 on the old route). All sanity
 checks pass.
+
+## Seed-band figures (R6, 19 Nov 2026)
+
+`seed_band_figures.py ensemble_2026-11-19` draws MethodsX Figures 2-5 from the 100-seed ensemble of
+`seed_ensemble.py`: the record, the median over the seeds and the 5-95 % band of the seeds, year by year (month by
+month for the monthly price), with the median and 5-95 % range of the NSE in the legend. Outputs (PNG and PDF):
+`ensemble_2026-11-19/figures/` (`ghgeSeedValidation`, `reSeedValidation`, `tariffsSeedValidation`,
+`wholesaleSeedValidation`, the last with a monthly and an annual panel). The seeds differ only in the model's random
+draws (forced outages and other events), so the band is the model's stochastic spread, not parameter uncertainty. It
+is wide only for price; for emissions, RE share and tariffs it is under about 1 unit in most years. The figures
+replace the +/-1 and +/-2 RMSE bands of `--figures`, which drew a constant-width band around one run.
+`seed_months.csv` (monthly simulated price per seed) was written once with `--runs` from the run folders.
+
+**RE share row, like for like (19 Nov 2026).** The record's first and last years are partial (2005: April-December;
+2020: January-June), but the row compared them with the full simulated year. Both sides now cover the record's months
+(`renewable_share_simulated`, generation-weighted as the year column; complete years unchanged to the cent). 2020:
+simulated 31.4 % full year against 26.9 % January-June (record 23.0 %). Effect: repaired ensemble NSE 0.88 -> 0.97
+(5-95 %: 0.97-0.97), bias +0.40 -> +0.12 pp; pinned BAU 0.74 -> 0.72. No other row changed.
