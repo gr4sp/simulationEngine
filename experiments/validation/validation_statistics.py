@@ -108,6 +108,19 @@ def renewable_share(opennem):
     return sum(annual[column] for column in RENEWABLE) / sum(annual.values()) * 100.0
 
 
+def utility_solar_in_record(year):
+    """Annual GWh of the utility solar the record covers: the AEMO-registered (scheduled or semi-scheduled) farms.
+
+    N27 (19 Nov 2026): the recorded utility solar (OpenNEM / AEMO SCADA, 135 GWh in 2018, 635 in 2019) is exactly the
+    five semi-scheduled farms. "System Production Solar" also holds the non-scheduled units (Swan Hill, about 220 systems
+    of 0.1-5 MW, ~140-160 GWh/yr), which are real generation but outside the record. The year summary has one column
+    per generator, "id - Solar - name - MW - dispatch type - start - end - market", so the comparison sums those.
+    """
+    cols = [c for c in year.columns
+            if " - Solar - " in c and c.split(" - ")[-4] in ("S", "SS") and "Rooftop" not in c]
+    return year[cols].sum(axis=1) / 1000.0
+
+
 def tariff_years(tariffs, column):
     """The years one tariff source actually covers, as a compact label."""
     years = tariffs.iloc[:, column].dropna().index.tolist()

@@ -11,3 +11,6 @@ asset_id,action,value,source
 113,close,2001-06-20,Dartmouth 158 MW row; the 185 MW row (asset 236) replaces it from 2001-06-20. The station opened in 1981 (AGL)
 114,close,2009-10-05,McKay Creek 150 MW row; Bogong / Mackay (assets 187-188) replace it from 2009-10-05
 94,close,1996-01-01,Eildon 3-4 (32 MW); expected_closure_date 1996-01-01, replaced by the Eildon 60 MW units (assets 157 and 159) in 1996
+# N27 (19 Nov 2026): first recorded output of NUMURSF1 is 7 May 2019 (AEMO MMSDM DISPATCH_UNIT_SCADA); nothing before
+287,start,2019-05-07,Numurkah Solar Farm (107.5 MW SS); the database had 2018-08-14; first output in AEMO SCADA (NUMURSF1) 7 May 2019 (notes docs/n27_2026-11-19)
+462,start,2019-05-07,Numurkah Solar Farm 5.98 MW NS row: as asset 287
