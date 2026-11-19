@@ -411,6 +411,10 @@ public class Generator implements java.io.Serializable, Asset {
             //half-hour, so it keeps its capacity factor (with the factor, small hydro and gas ran at nameplate all year)
             boolean inMarket = getInPrimaryMarket() || getInSecondaryMarket();
             availableCapacity = availabilityFactor >= 0 && inMarket ? this.getMaxCapacity() * availabilityFactor : cfCapacity;
+            //N38 (b, c): recorded seasonal shape of the power made available (seasonalFactorsFile), 1 when unset
+            double season = ((core.Gr4spSim) state).getSeasonalFactor(fuelSourceDescriptor, currentMonth);
+            cfCapacity *= season;
+            availableCapacity *= season;
     }
 
     //MW offered in this half-hour: the available capacity, or what is left of today's energy if energy-limited

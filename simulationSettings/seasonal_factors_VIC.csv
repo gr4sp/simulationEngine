@@ -1,0 +1,25 @@
+fuel,month,factor,source
+Wind,1,0.7976,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,2,0.7212,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,3,0.7979,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,4,0.8029,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,5,1.3293,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,6,0.8959,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,7,1.5273,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,8,1.2202,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,9,1.2035,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,10,1.0887,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,11,0.7936,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Wind,12,0.8217,Mt Mercer half-hourly output 2015-2017 (gr4spdb wind30min_mtmercer); one farm in the record
+Brown Coal,1,1.0497,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,2,1.0539,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,3,1.017,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,4,1.0108,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,5,0.9896,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,6,1.051,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,7,1.004,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,8,1.0128,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,9,0.9503,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,10,0.9384,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,11,0.9316,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"
+Brown Coal,12,0.991,"AEMO MMSDM DISPATCHLOAD AVAILABILITY 2015-01 to 2019-12, 66 complete unit-years"

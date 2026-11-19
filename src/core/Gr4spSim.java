@@ -182,6 +182,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //Fuel price by year for each fuelPriceFile, carbon price by month, and station name prefixes -> portfolio
     private Map<String, TreeMap<Integer, Double>> fuelPrices = new HashMap<>();
     private Map<String, Double> carbonPriceTonne = new HashMap<>();
+    //seasonalFactorsFile: fuel source descriptor -> factor by month (index 1-12)
+    private Map<String, double[]> seasonalFactors = new HashMap<>();
     private List<String[]> portfolios = new ArrayList<>();
     private Map<String, String> portfolioOf = new HashMap<>();
     //Station parameter overrides (name prefix, parameter, value) and the consumer price index by year
@@ -348,6 +350,19 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     if (line.isBlank() || line.startsWith("#")) continue;
                     String[] f = line.split(",", 3);
                     carbonPriceTonne.put(f[0].trim(), Double.parseDouble(f[1].trim()));
+                }
+            }
+            if (settings.getSeasonalFactorsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getSeasonalFactorsFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 4);
+                    double[] byMonth = seasonalFactors.computeIfAbsent(f[0].trim(), k -> {
+                        double[] a = new double[13];
+                        java.util.Arrays.fill(a, 1.0);
+                        return a;
+                    });
+                    byMonth[Integer.parseInt(f[1].trim())] = Double.parseDouble(f[2].trim());
                 }
             }
             if (settings.getPortfolioFile() != null) {
@@ -839,7 +854,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                 price = Double.parseDouble(r[4]) * fuel + Double.parseDouble(r[6]) * costFactor
                         + Double.parseDouble(r[7]) * carbon;
             }
-            offers.add(new core.Relationships.SpotMarket.ImportOffer(r[0], price * loss, mw));
+            offers.add(new core.Relationships.SpotMarket.ImportOffer(r[0], price * loss, mw, waterValue >= 0));
         }
         return offers;
     }
@@ -851,6 +866,12 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     }
 
     //Carbon price in $/t CO2-e for the month of this date (0 outside the file)
+    //Seasonal factor of a fuel in a month (1-12), 1 without seasonalFactorsFile or a row for the fuel
+    public double getSeasonalFactor(String fuel, int month) {
+        double[] f = seasonalFactors.get(fuel);
+        return f == null ? 1.0 : f[month];
+    }
+
     public double getCarbonPriceTonne(Date time) {
         if (carbonPriceTonne.isEmpty()) return 0.0;
         return carbonPriceTonne.getOrDefault(new SimpleDateFormat("yyyy-MM").format(time), 0.0);

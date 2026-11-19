@@ -284,6 +284,10 @@ public class Settings implements java.io.Serializable {
     public String rooftopNonResidentialShareFile;
     //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
     public String carbonPriceFile;
+    //N38 (b, c) (19 Nov 2026, opt-in): CSV (fuel,month,factor,source) of monthly factors on the power a unit makes
+    //available, by fuel source descriptor (e.g. Brown Coal: recorded seasonal availability; Wind: recorded seasonal
+    //output shape). Months or fuels not listed keep 1. Unset: no seasonal factor
+    public String seasonalFactorsFile;
     //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
     //demand), each portfolio holding at least withholdingMinPortfolioShare of the offered capacity reprices
     //withholdingShare of its dispatchable bids to withholdingPriceMWh. Negative margin (the default) turns it off.
@@ -308,6 +312,11 @@ public class Settings implements java.io.Serializable {
     //or, with waterValueFactor >= 0, at waterValueFactor x last month's mean primary price; times lossFactor.
     //Unset: shortfalls keep the old rule (last offer x (1 + importPriceFactor)), unlimited in volume
     public String interconnectorFile;
+    //N38 (a) (19 Nov 2026, opt-in): with interconnectorFile, the import blocks join the merit order beside the regional
+    //offers, so imports flow whenever a neighbour is cheaper than the marginal Victorian offer, not only at shortfall
+    public boolean importsInMeritOrder = false;
+    //With importsInMeritOrder: false keeps the water-value links (hydro neighbours) as last-resort supply after the stack
+    public boolean importsInMeritOrderWaterValue = true;
     //Optional CSV (from,priceMWh,source): market price cap from each date on. When set, demand left unmet after the
     //imports is priced at the cap instead of the importPriceFactor rule
     public String shortfallPriceFile;
@@ -712,6 +721,8 @@ public class Settings implements java.io.Serializable {
 
     public String getCarbonPriceFile() { return carbonPriceFile; }
 
+    public String getSeasonalFactorsFile() { return seasonalFactorsFile; }
+
     public String getPortfolioFile() { return portfolioFile; }
 
     public String getGeneratorParametersFile() { return generatorParametersFile; }
@@ -723,6 +734,10 @@ public class Settings implements java.io.Serializable {
     public String getInterconnectorFile() { return interconnectorFile; }
 
     public String getShortfallPriceFile() { return shortfallPriceFile; }
+
+    public boolean getImportsInMeritOrder() { return importsInMeritOrder; }
+
+    public boolean getImportsInMeritOrderWaterValue() { return importsInMeritOrderWaterValue; }
 
     public double getWithholdingMargin() { return withholdingMargin; }
 

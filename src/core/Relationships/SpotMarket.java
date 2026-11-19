@@ -30,7 +30,12 @@ public class SpotMarket implements java.io.Serializable{
         public final String link;
         public final double priceMWh;
         public final double mw;
-        public ImportOffer(String link, double priceMWh, double mw) { this.link = link; this.priceMWh = priceMWh; this.mw = mw; }
+        //true for a hydro neighbour offering at a water value (Snowy, Tasmania), false for a short-run cost offer
+        public final boolean waterValue;
+        public ImportOffer(String link, double priceMWh, double mw) { this(link, priceMWh, mw, false); }
+        public ImportOffer(String link, double priceMWh, double mw, boolean waterValue) {
+            this.link = link; this.priceMWh = priceMWh; this.mw = mw; this.waterValue = waterValue;
+        }
         @Override
         public int compareTo(ImportOffer o) { return Double.compare(priceMWh, o.priceMWh); }
     }
@@ -160,6 +165,11 @@ public class SpotMarket implements java.io.Serializable{
         //Sort Bidders by price
         Collections.sort(bidders);
 
+        if (importRule && data.settings.getImportsInMeritOrder()) {
+            clearWithImports(demand, data, currentTime, currentYear);
+            return;
+        }
+
         float offered = 0;
 
         //Traverse bidders
@@ -239,6 +249,86 @@ public class SpotMarket implements java.io.Serializable{
             }
         }
 
+        finishClearing(data, currentTime, currentYear);
+    }
+
+    /**
+     * N38 (a), importsInMeritOrder: regional offers and import blocks in one stack, cheapest first. Entries at the
+     * marginal price share the remaining demand in proportion to their capacity, as regional bids do in the default
+     * rule. Demand left after the whole stack is unserved, priced as in the default import rule.
+     */
+    private void clearWithImports(double demand, Gr4spSim data, Date currentTime, int currentYear) {
+        //Hydro neighbours stay last-resort supply unless importsInMeritOrderWaterValue: their water is limited and the
+        //blocks carry no energy budget
+        boolean hydroInStack = data.settings.getImportsInMeritOrderWaterValue();
+        ArrayList<Object> stack = new ArrayList<>(bidders);
+        ArrayList<ImportOffer> reserve = new ArrayList<>();
+        for (ImportOffer io : importOffers) {
+            if (io.waterValue && !hydroInStack) reserve.add(io); else stack.add(io);
+        }
+        stack.sort((x, y) -> Double.compare(priceOf(x), priceOf(y)));
+        double offered = 0;
+        int idx = 0;
+        while (idx < stack.size() && offered < demand) {
+            double price = priceOf(stack.get(idx));
+            int end = idx;
+            double capSamePrice = 0;
+            while (end < stack.size() && priceOf(stack.get(end)) == price) capSamePrice += capOf(stack.get(end++));
+            double share = (offered + capSamePrice > demand && capSamePrice > 0) ? (demand - offered) / capSamePrice : 1.0;
+            String groupLink = "";
+            for (int k = idx; k < end; k++) {
+                Object e = stack.get(k);
+                if (e instanceof Bid) {
+                    Bid b = (Bid) e;
+                    b.capacity = b.capacity * share;
+                    offered += b.capacity;
+                    successfulBids.add(b);
+                } else {
+                    ImportOffer io = (ImportOffer) e;
+                    double take = io.mw * share;
+                    if (take <= 0) continue;
+                    importedMW += take;
+                    offered += take;
+                    groupLink = io.link;
+                }
+                marketPrice = price;
+            }
+            //importSetter names the link when an import block is in the price-setting (last) group, else ""
+            importSetter = groupLink;
+            idx = end;
+        }
+        for (ImportOffer io : reserve) {
+            double gap = demand - offered;
+            if (gap <= 0) break;
+            double take = Math.min(gap, io.mw);
+            if (take <= 0) continue;
+            importedMW += take;
+            offered += take;
+            importSetter = io.link;
+            marketPrice = Math.max(marketPrice, io.priceMWh);
+        }
+        if (Math.ceil(offered) < Math.floor(demand)) {
+            unmetDemand = demand - offered;
+            double shortfallPrice = data.getShortfallPriceMWh(currentTime);
+            if (shortfallPrice >= 0) { marketPrice = shortfallPrice; importSetter = "unserved"; }
+            else if (currentYear < data.settings.getBaseYearConsumptionForecast())
+                marketPrice *= 1.0 + data.settings.getImportPriceFactor();
+            else
+                marketPrice *= 1.0 + data.settingsAfterBaseYear.getImportPriceFactor();
+        }
+        finishClearing(data, currentTime, currentYear);
+    }
+
+    private static double priceOf(Object e) {
+        return e instanceof Bid ? ((Bid) e).dollarMWh : ((ImportOffer) e).priceMWh;
+    }
+
+    private static double capOf(Object e) {
+        return e instanceof Bid ? ((Bid) e).capacity : ((ImportOffer) e).mw;
+    }
+
+    //Price-setter log and each dispatched generator's energy and revenue, after either clearing rule
+    private void finishClearing(Gr4spSim data, Date currentTime, int currentYear) {
         if (PRICE_SETTER_LOG != null && currentYear >= PRICE_SETTER_FROM && currentYear <= PRICE_SETTER_TO)
             logPriceSetter(currentTime, data.hasInterconnectors() || data.settings.getShortfallPriceFile() != null);
 
