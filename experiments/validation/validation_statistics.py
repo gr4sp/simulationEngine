@@ -126,6 +126,36 @@ def renewable_share_simulated(month, opennem):
     return annual[SIM_RENEWABLE].sum(axis=1) / annual.sum(axis=1) * 100.0
 
 
+# Monthly generation by fuel (R6, 19 Nov 2026): model column -> OpenNEM columns, GWh per month. Utility solar is left
+# out: the record covers only the five semi-scheduled farms, and the monthly summary has no per-unit columns
+# (the annual comparison uses utility_solar_in_record). Hydro follows each month's recorded energy (an input since the
+# 8 Nov shortfall repair) and rooftop PV follows the CER installation record, so both test the inputs more than the
+# market rules.
+FUEL_MONTHLY = {
+    "Coal generation (monthly)": ("System Production Coal", ["Brown Coal - GWh"]),
+    "Gas generation (monthly)": ("System Production Gas", ["Gas (OCGT) - GWh", "Gas (Steam) - GWh"]),
+    "Wind generation (monthly)": ("System Production Wind", ["Wind - GWh"]),
+    "Hydro generation (monthly, input)": ("System Production Water", ["Hydro - GWh"]),
+    "Rooftop PV generation (monthly, input)": ("System Production Rooftop PV", ["Solar (Rooftop) - GWh"]),
+}
+
+
+def fuel_series(month, opennem):
+    """Monthly generation by fuel and the monthly renewable share against OpenNEM, April 2005 to June 2020.
+
+    Same tuple form as series(). The model writes MWh; the record is GWh.
+    """
+    m = month.loc[month.index.isin(opennem.index)]
+    o = opennem.loc[m.index]
+    out = {}
+    for name, (col, rec) in FUEL_MONTHLY.items():
+        out[name] = ((m[col] / 1000.0).values, o[rec].sum(axis=1).values, "2005-04 to 2020-06", "GWh")
+    sim_re = m[SIM_RENEWABLE].sum(axis=1) / m[SIM_GENERATION].sum(axis=1) * 100.0
+    obs_re = o[RENEWABLE].sum(axis=1) / o[GENERATION].sum(axis=1) * 100.0
+    out["RE share (monthly)"] = (sim_re.values, obs_re.values, "2005-04 to 2020-06", "pp")
+    return out
+
+
 def utility_solar_in_record(year):
     """Annual GWh of the utility solar the record covers: the AEMO-registered (scheduled or semi-scheduled) farms.
 
@@ -227,17 +257,22 @@ def statistics(simulated, observed):
     }
 
 
+MAIN_METRICS = ("NSE", "Bias", "RMSE")          # reported in the article (Angela, 19 Nov 2026)
+SUPPLEMENT_METRICS = ("MAE", "NRMSE")           # supplement only
+
+
 def print_table(indicators):
-    """Print the Section 5 summary table."""
-    header = (f"{'Indicator':30s}{'Period':22s}{'n':>5}{'Units':>8}"
-              f"{'MAE':>9}{'RMSE':>9}{'Bias':>9}{'NRMSE':>9}{'NSE':>9}")
+    """Print the summary table: NSE, bias and RMSE, then MAE and NRMSE for the supplement."""
+    header = f"{'Indicator':40s}{'Period':34s}{'n':>5}{'Units':>8}{'NSE':>9}{'Bias':>9}{'RMSE':>9}"
     print(header)
     print("-" * len(header))
     for name, (simulated, observed, period, unit) in indicators.items():
-        result = statistics(simulated, observed)
-        print(f"{name:30s}{period:22s}{result['n']:>5}{unit:>8}"
-              f"{result['MAE']:>9.2f}{result['RMSE']:>9.2f}{result['Bias']:>+9.2f}"
-              f"{result['NRMSE']:>8.1f}%{result['NSE']:>9.2f}")
+        r = statistics(simulated, observed)
+        print(f"{name:40s}{period:34s}{r['n']:>5}{unit:>8}{r['NSE']:>9.2f}{r['Bias']:>+9.2f}{r['RMSE']:>9.2f}")
+    print(f"\nSupplement\n{'Indicator':40s}{'MAE':>9}{'NRMSE':>9}")
+    for name, (simulated, observed, period, unit) in indicators.items():
+        r = statistics(simulated, observed)
+        print(f"{name:40s}{r['MAE']:>9.2f}{r['NRMSE']:>8.1f}%")
 
 
 def wholesale_annual_windows(year, month):
@@ -464,6 +499,8 @@ def main():
 
     year, month, ghge, opennem, tariffs = load_inputs(args.run)
     indicators = series(year, month, ghge, opennem, tariffs)
+    if SIM_GENERATION[0] in month.columns:
+        indicators.update(fuel_series(month, opennem))
     print_table(indicators)
     wholesale_annual_windows(year, month)
     tariff_comparators(year, tariffs)

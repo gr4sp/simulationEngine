@@ -9,7 +9,9 @@ reference seed (42) beside the median and the 5-95 % range over the seeds. Param
 Usage: python seed_ensemble.py OUT_DIR [N_SEEDS=100] [PARALLEL=10]   (build first: ./gradlew compileJava)
   OUT_DIR/run_s<seed>/csv/VIC/*.csv   each run's year and monthly summaries (the other outputs are deleted)
   OUT_DIR/seed_statistics.csv         one row per seed and indicator: n, MAE, RMSE, Bias, NRMSE, NSE, r
-  OUT_DIR/seed_summary.csv / .md      per indicator: seed 42, median, 5 % and 95 % over the seeds
+  OUT_DIR/seed_summary.csv / .md      per indicator: seed 42, median, 5 % and 95 % over the seeds (md: main table
+                                      NSE, Bias, RMSE; monthly generation by fuel; supplement MAE, NRMSE)
+  OUT_DIR/seed_fuel_months.csv        per seed and month: simulated generation by fuel (GWh), RE share (%)
   OUT_DIR/seed_years.csv              per seed and year: price, RE share (full year and over the record's months),
                                       tariff, GHGE (for the figures' spread)
 Runs already finished are not repeated, so the script can be restarted.
@@ -46,6 +48,8 @@ def stats_for(out, seed):
     d = os.path.join(out, f"run_s{seed}")
     year, month, ghge, opennem, tariffs = vs.load_inputs(d)
     ind = vs.series(year, month, ghge, opennem, tariffs)
+    fuel = vs.fuel_series(month, opennem)
+    ind.update(fuel)
     rows = [{"seed": seed, "indicator": k, **vs.statistics(s, o)} for k, (s, o, _, _) in ind.items()]
     ghge_total = (year["System GHG Emissions (tCO2-e)"] / 1e6 if "System GHG Emissions (tCO2-e)" in year.columns
                   else year["GHG Emissions (tCO2-e) per household"]
@@ -57,7 +61,10 @@ def stats_for(out, seed):
     # the renewable share over the months the record covers (2005: April-December, 2020: January-June), as compared
     re_rec = vs.renewable_share_simulated(month, opennem)
     yr["re_pct_record_months"] = pd.Series(re_rec.values, index=re_rec.index.year).reindex(year.index)
-    return rows, yr
+    months = month.index[month.index.isin(opennem.index)]
+    fm = pd.DataFrame({k: v[0] for k, v in fuel.items()}, index=months).round(3)
+    fm.insert(0, "seed", seed)
+    return rows, yr, fm
 
 
 def main():
@@ -75,30 +82,46 @@ def main():
         for seed, msg in ex.map(lambda s: run(out, s, cls), seeds):
             print(f"seed {seed}: {msg}", flush=True)
 
-    rows, years = [], []
+    rows, years, fuel_months = [], [], []
     for s in seeds:
-        r, y = stats_for(out, s)
+        r, y, fm = stats_for(out, s)
         rows += r
         years.append(y)
+        fuel_months.append(fm)
+    pd.concat(fuel_months).rename_axis("month").to_csv(os.path.join(out, "seed_fuel_months.csv"))
     st = pd.DataFrame(rows)
+    y42, m42, g42, o42, t42 = vs.load_inputs(os.path.join(out, f"run_s{REFERENCE_SEED}"))
+    ind_units = {**vs.series(y42, m42, g42, o42, t42), **vs.fuel_series(m42, o42)}
     st.to_csv(os.path.join(out, "seed_statistics.csv"), index=False)
     pd.concat(years).rename_axis("year").to_csv(os.path.join(out, "seed_years.csv"))
     summ = []
     for ind, g in st.groupby("indicator", sort=False):
         ref = g[g.seed == REFERENCE_SEED].iloc[0]
-        for m in ("MAE", "RMSE", "Bias", "NRMSE", "NSE"):
+        for m in ("NSE", "Bias", "RMSE", "MAE", "NRMSE"):
             summ.append({"indicator": ind, "metric": m, "seed42": ref[m], "median": g[m].median(),
                          "p05": g[m].quantile(0.05), "p95": g[m].quantile(0.95), "seeds": len(g)})
     sm = pd.DataFrame(summ)
     sm.to_csv(os.path.join(out, "seed_summary.csv"), index=False)
-    piv = sm.assign(cell=sm.apply(lambda r: f"{r.seed42:.2f} ({r.p05:.2f} to {r.p95:.2f})", axis=1)).pivot(
-        index="indicator", columns="metric", values="cell")[["MAE", "RMSE", "Bias", "NRMSE", "NSE"]]
-    piv = piv.reindex(list(dict.fromkeys(sm.indicator)))
+    sm["cell"] = sm.apply(lambda r: f"{r['median']:.2f} ({r.p05:.2f} to {r.p95:.2f})", axis=1)
+    piv = sm.pivot(index="indicator", columns="metric", values="cell").reindex(list(dict.fromkeys(sm.indicator)))
+    units = {k: v[3] for k, v in ind_units.items()}
+    fuel_names = [k for k in piv.index if k in vs.FUEL_MONTHLY or k == "RE share (monthly)"]
+    main_names = [k for k in piv.index if k not in fuel_names]
+
+    def table(f, names, metrics):
+        f.write("| Indicator | Unit | " + " | ".join(metrics) + " |\n|---|---|" + "---|" * len(metrics) + "\n")
+        for k in names:
+            f.write(f"| {k} | {units.get(k, '')} | " + " | ".join(piv.loc[k, metrics].values) + " |\n")
+
     with open(os.path.join(out, "seed_summary.md"), "w", encoding="utf-8") as f:
-        f.write(f"Repaired base case, seed {REFERENCE_SEED} (5-95 % range over {len(seeds)} seeds)\n\n")
-        f.write("| Indicator | " + " | ".join(piv.columns) + " |\n|---|" + "---|" * len(piv.columns) + "\n")
-        for ind, r in piv.iterrows():
-            f.write(f"| {ind} | " + " | ".join(r.values) + " |\n")
+        f.write(f"Base case over {len(seeds)} seeds: median (5th to 95th percentile over the seeds). NSE has no unit; "
+                "Bias, RMSE and MAE are in the indicator's unit, NRMSE in % of the observed mean. Seed "
+                f"{REFERENCE_SEED} is in seed_summary.csv.\n\n## Main table\n\n")
+        table(f, main_names, ["NSE", "Bias", "RMSE"])
+        f.write("\n## Monthly generation by fuel (OpenNEM, April 2005 to June 2020)\n\n")
+        table(f, fuel_names, ["NSE", "Bias", "RMSE"])
+        f.write("\n## Supplement\n\n")
+        table(f, main_names + fuel_names, ["MAE", "NRMSE"])
     print(open(os.path.join(out, "seed_summary.md"), encoding="utf-8").read())
 
 

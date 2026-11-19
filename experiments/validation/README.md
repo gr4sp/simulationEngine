@@ -550,3 +550,72 @@ replace the +/-1 and +/-2 RMSE bands of `--figures`, which drew a constant-width
 (`renewable_share_simulated`, generation-weighted as the year column; complete years unchanged to the cent). 2020:
 simulated 31.4 % full year against 26.9 % January-June (record 23.0 %). Effect: repaired ensemble NSE 0.88 -> 0.97
 (5-95 %: 0.97-0.97), bias +0.40 -> +0.12 pp; pinned BAU 0.74 -> 0.72. No other row changed.
+
+## Monthly generation by fuel, and what is happening with gas (R6, 19 Nov 2026)
+
+`fuel_series()` compares the model's monthly output by fuel with OpenNEM, April 2005 to June 2020 (183 months), and
+`seed_ensemble.py` reports it over the 100 seeds (`seed_fuel_months.csv`, figure `fuelSeedValidation`: monthly series
+and mean by calendar month in GWh per day). Median NSE (5-95 %): coal 0.89 (0.88-0.90), gas -1.31 (-1.66 to -1.05),
+wind 0.84, hydro 0.97 and rooftop PV 0.98 (both largely inputs: recorded monthly hydro energy, CER installations),
+monthly renewable share 0.94. Utility solar is left out (the record covers only the five semi-scheduled farms, and the
+monthly summary has no per-unit columns; the annual like-for-like comparison stays).
+
+Record gaps: the extract has no wind before 2009, while five farms of 134 MW ran (Codrington, Toora, Challicum Hills,
+Wonthaggi, Yambuk); the likely reason is that they had no AEMO dispatch data before the semi-scheduled category (to
+check). The model's wind runs at a constant capacity factor (0.30, `VIC.yaml` Wind `maxCapacityFactor` and
+`maxCapacityFactorSummer`), so it has no seasonal or weather shape; the record peaks in winter (July 7.0 against
+April 4.7 GWh/day). New wind farms produce at that factor from their start date (2020 well above the record), as utility
+solar did before N27.
+
+**Gas.** Gas is the residual fuel in the merit order: it supplies what coal, hydro, wind, solar and imports leave.
+Its errors trace to two mechanisms, both visible in the data (100 seeds, energy balance by month):
+
+1. **Imports are a last resort.** The demand is calibrated to local generation plus recorded imports
+   (`generation_consumption_historic.total_consumption_gwh`; 2019: 46,393 + 1,937 = 48,330 GWh). The model imports
+   only when Victorian capacity runs out (about 26 GWh/yr, step 4 of 9 Nov), while the record imported 0.05-1.9 TWh/yr
+   whenever the neighbours were cheaper, most in winter (May-August 2.5-3.2 GWh/day against 0.9-1.3 in October-December, 2005-2016). Each
+   year 2006-2019 the model's extra local generation equals the recorded imports (r = 0.999, within 68 GWh), and gas
+   makes most of it: 2006 +1.4 TWh, 2018 +0.8.
+2. **Coal availability is flat through the year.** Recorded brown coal output dips in April-May and September-November
+   (122-124 GWh/day against 128-131 in summer and winter, April 2005 to June 2020), consistent with planned maintenance in the
+   low-demand seasons; the model's coal availability is one constant (0.90) with random breakdowns, so its coal dips
+   less. Model gas therefore follows demand peaks (summer and winter, 7 GWh/day) and almost stops in autumn and spring
+   (2.5), while recorded gas is nearly flat (3.6-5.7 GWh/day).
+
+Not explained yet: 2012-2014, when the model's coal is 1.4-1.9 TWh/yr above the record and its gas 1.3 TWh/yr below.
+The carbon price (2012-14) is an input, and gas sets the model price in only 3 % of 2013's half-hours. Candidate events,
+not checked: the Yallourn mine flood (June 2012) and how Mortlake was run. 2019 coal (+2.8 TWh) includes the long Loy
+Yang A unit 2 outage (May-December 2019), which random breakdowns cannot reproduce (to check against AEMO's records).
+
+Repair options (Angela's decision; each changes results): imports offered in the merit order at the neighbour's cost
+up to each link's limit, not only at shortfall; a seasonal coal availability (planned maintenance) from AEMO's
+availability data; or both stated as limitations, since gas and imports carry a small share of energy (gas 1-7 % of generation) but
+set the price at the margin.
+
+Sources for the practice followed: `VALIDATION_PRACTICE.md`.
+
+## Price duration curves (R6, 19 Nov 2026)
+
+`seed_price_duration.py` reruns the 100 seeds with the half-hourly diagnostic log (`-Dgr4sp.priceSetterLog`), using the
+compiled classes and settings kept with the ensemble (`b796f64`; seed 42 reproduces the ensemble's monthly summary byte
+for byte), and keeps only summaries: `seed_price_duration.csv` (price exceeded in a given % of half-hours, by period),
+`seed_halfhour_years.csv` (per seed and year: mean price, share of half-hours above 300 $/MWh, imported GWh, share of
+half-hours each fuel sets the price). The record is AEMO's half-hourly VIC1 price in the database
+(`total_demand_halfhour`, 368,146 of 368,160 half-hours 1999-2019; `record_price_duration.csv`). Figure
+`priceDurationSeedValidation` (linear axis to 300 $/MWh; the share above it is printed in each panel).
+
+| Period | Half-hours below 15 $/MWh, model / record | Median half-hour price, model / record ($/MWh) | Half-hours above 300 $/MWh, model / record |
+|---|---|---|---|
+| 1999-2008 | 71 % / 15 % | 10 / 25 | 0.03 % / 0.27 % |
+| 2009-2016 | 42 % / 6 % | 25 / 33 | 0.09 % / 0.12 % |
+| 2017-2019 | 36 % / 2 % | 83 / 88 | 0.20 % / 0.35 % |
+| 1999-2019 | 55 % / 10 % | 13 / 31 | 0.09 % / 0.22 % |
+
+Reading: the middle of the distribution (roughly the 10th to 40th percentile from the top) is reproduced in every period;
+the model's errors sit at both ends. (1) A floor: in a large share of half-hours the model's price is brown coal's
+short-run cost (about 8-12 $/MWh), while recorded prices at low demand stay at 15-30 $/MWh; brown coal sets the model
+price in 37-51 % of half-hours. This floor is most of the annual price bias (-17 $/MWh). It is what a cost-based
+competitive benchmark gives (withholding is off by design); the record's low-demand prices carry offers above cost.
+(2) Too few spikes, worst in 1999-2008 (0.03 against 0.27 %), the same gap as the imports and gas above. The model also
+has no negative prices (record 0.13 % of half-hours, 0.36 % in 2017-2019), as AMIRIS (Nitsch et al. 2021). Model imports
+over the 100 seeds: median 13-26 GWh/yr.

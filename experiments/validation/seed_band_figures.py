@@ -145,7 +145,7 @@ def main():
     g = stats[stats.indicator == "Tariffs vs St Vincent de Paul"].Bias
     ax.legend(handles=handles(nse_label(stats, "Tariffs vs Oakley Greenwood") + " vs Oakley Greenwood",
                               [rec("Record, Oakley Greenwood"), rec("Record, St Vincent de Paul", "--", "s")])
-              + [Line2D([], [], lw=0, label=f"Bias {g.median():+.1f} c/kWh vs St Vincent de Paul (2 years)")],
+              + [Line2D([], [], lw=0, label=f"NSE {stats[stats.indicator == 'Tariffs vs St Vincent de Paul'].NSE.median():.0f}, bias {g.median():+.1f} c/kWh vs St Vincent de Paul")],
               loc="lower right", fontsize=8.5)
     save(fig, "tariffsSeedValidation")
 
@@ -173,6 +173,81 @@ def main():
                loc="upper left", fontsize=8.5)
     fig.tight_layout()
     save(fig, "wholesaleSeedValidation")
+
+    # Figure 6: monthly generation by fuel, April 2005 to June 2020 (left) and the mean by calendar month (right).
+    # Hydro and rooftop PV are largely inputs (recorded monthly hydro energy, CER installations): labelled as such.
+    fm_file = os.path.join(a.ensemble, "seed_fuel_months.csv")
+    if os.path.exists(fm_file):
+        fm = pd.read_csv(fm_file, parse_dates=["month"])
+        rows = [("Coal generation (monthly)", "Brown coal", ["Brown Coal - GWh"]),
+                ("Gas generation (monthly)", "Gas", ["Gas (OCGT) - GWh", "Gas (Steam) - GWh"]),
+                ("Wind generation (monthly)", "Wind", ["Wind - GWh"]),
+                ("Hydro generation (monthly, input)", "Hydro (recorded monthly energy, an input)", ["Hydro - GWh"]),
+                ("Rooftop PV generation (monthly, input)", "Rooftop PV (recorded installations)",
+                 ["Solar (Rooftop) - GWh"])]
+        fig, axs = plt.subplots(len(rows), 2, figsize=(10, 2.3 * len(rows)),
+                                gridspec_kw={"width_ratios": [3, 1]})
+        months = sorted(fm.month.unique())
+        for i, (ind, title, rec_cols) in enumerate(rows):
+            w = fm.pivot(index="month", columns="seed", values=ind)
+            obs = opennem.loc[w.index, rec_cols].sum(axis=1)
+            ax = axs[i, 0]
+            draw_sim(ax, w.index, w)
+            ax.plot(obs.index, obs.values, color=RECORD, lw=1.0)
+            axes_style(ax, "GWh per month")
+            ax.set_title(f"{title}: {nse_label(stats, ind)}", fontsize=9.5, loc="left")
+            # mean by calendar month, per seed then spread over the seeds
+            days = w.index.days_in_month.values
+            cw = w.div(days, axis=0).groupby(w.index.month).mean()   # GWh per day: February is not a dip
+            co = (obs / days).groupby(obs.index.month).mean()
+            ax = axs[i, 1]
+            draw_sim(ax, cw.index, cw)
+            ax.plot(co.index, co.values, color=RECORD, marker="o", ms=3, lw=1.0)
+            axes_style(ax, "GWh per day")
+            ax.set_xticks([1, 4, 7, 10])
+            ax.set_xticklabels(["Jan", "Apr", "Jul", "Oct"])
+            if i == 0:
+                ax.set_title("Mean by calendar month", fontsize=9.5, loc="left")
+        axs[2, 0].annotate("Record: no wind before 2009 in this extract\n(five early farms, 134 MW, missing; see README)",
+                           xy=(pd.Timestamp("2005-06-01"), 420), fontsize=7.5, color="#555555")
+        fig.tight_layout(rect=(0, 0, 1, 0.97))
+        fig.legend(handles=[rec("Record (OpenNEM)", m=""),
+                            Line2D([], [], color=SIM, lw=1.8, label=f"Simulated, median of {n_seeds} seeds"),
+                            Patch(color=SIM_BAND, alpha=0.7, label="Simulated, 5-95 % of seeds")],
+                   loc="upper center", fontsize=8.5, ncol=3, bbox_to_anchor=(0.5, 1.0))
+        save(fig, "fuelSeedValidation")
+
+    # Figure 7: price duration curves, every half-hour of the period ranked from the highest price to the lowest
+    pdc_file = os.path.join(a.ensemble, "seed_price_duration.csv")
+    if os.path.exists(pdc_file):
+        pdc = pd.read_csv(pdc_file)
+        rec_pdc = pd.read_csv(os.path.join(a.ensemble, "record_price_duration.csv"))
+        periods = ["1999-2008", "2009-2016", "2017-2019"]
+        # Linear axis to 300 $/MWh, where nearly all half-hours lie; the spike tail above it is given as a share
+        # (seed_halfhour_years.csv for the model; the record curve's own exceedance at 300)
+        hh = pd.read_csv(os.path.join(a.ensemble, "seed_halfhour_years.csv"))
+        fig, axs = plt.subplots(1, len(periods), figsize=(11, 3.9), sharey=True)
+        for ax, per in zip(axs, periods):
+            w = pdc[pdc.period == per].pivot(index="exceedance_pct", columns="seed", values="price")
+            r = rec_pdc[rec_pdc.period == per].set_index("exceedance_pct").price
+            draw_sim(ax, w.index, w)
+            ax.plot(r.index, r.values, color=RECORD, lw=1.2)
+            ax.set_ylim(-20, 300)
+            ax.set_xlim(0, 100)
+            y0, y1 = (int(v) for v in per.split("-"))
+            spikes = hh[(hh.year >= y0) & (hh.year <= y1)].groupby("seed").share_above_300.mean().median() * 100
+            rec_spikes = np.interp(300, r.values[::-1], r.index.values[::-1])
+            ax.text(98, 285, f"Above 300 $/MWh: record {rec_spikes:.2f} %,\nmodel {spikes:.2f} % of half-hours",
+                    ha="right", va="top", fontsize=8, color="#555555")
+            axes_style(ax, "Price ($/MWh)" if per == periods[0] else "")
+            ax.set_xlabel("Share of half-hours at or above the price (%)")
+            ax.set_title(per, fontsize=10, loc="left")
+        axs[0].legend(handles=[rec("Record (AEMO VIC1)", m=""),
+                               Line2D([], [], color=SIM, lw=1.8, label=f"Simulated, median of {n_seeds} seeds"),
+                               Patch(color=SIM_BAND, alpha=0.7, label="Simulated, 5-95 % of seeds")],
+                      loc="center right", fontsize=8)
+        fig.tight_layout()
+        save(fig, "priceDurationSeedValidation")
 
 
 if __name__ == "__main__":
