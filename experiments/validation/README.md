@@ -535,10 +535,10 @@ checks pass.
 
 ## Seed-band figures (R6, 19 Nov 2026)
 
-`seed_band_figures.py ensemble_2026-11-19` draws MethodsX Figures 2-5 from the 100-seed ensemble of
+`seed_band_figures.py ensemble_2026-11-20` draws MethodsX Figures 2-5 from the 100-seed ensemble of
 `seed_ensemble.py`: the record, the median over the seeds and the 5-95 % band of the seeds, year by year (month by
 month for the monthly price), with the median and 5-95 % range of the NSE in the legend. Outputs (PNG and PDF):
-`ensemble_2026-11-19/figures/` (`ghgeSeedValidation`, `reSeedValidation`, `tariffsSeedValidation`,
+`ensemble_2026-11-20/figures/` (`ghgeSeedValidation`, `reSeedValidation`, `tariffsSeedValidation`,
 `wholesaleSeedValidation`, the last with a monthly and an annual panel). The seeds differ only in the model's random
 draws (forced outages and other events), so the band is the model's stochastic spread, not parameter uncertainty. It
 is wide only for price; for emissions, RE share and tariffs it is under about 1 unit in most years. The figures
@@ -597,7 +597,7 @@ Sources for the practice followed: `VALIDATION_PRACTICE.md`.
 ## Price duration curves (R6, 19 Nov 2026)
 
 `seed_price_duration.py` reruns the 100 seeds with the half-hourly diagnostic log (`-Dgr4sp.priceSetterLog`), using the
-compiled classes and settings kept with the ensemble (`b796f64`; seed 42 reproduces the ensemble's monthly summary byte
+compiled classes and settings kept with the ensemble (`3165126`, the frozen model; seed 42 reproduces the ensemble's monthly summary byte
 for byte), and keeps only summaries: `seed_price_duration.csv` (price exceeded in a given % of half-hours, by period),
 `seed_halfhour_years.csv` (per seed and year: mean price, share of half-hours above 300 $/MWh, imported GWh, share of
 half-hours each fuel sets the price). The record is AEMO's half-hourly VIC1 price in the database
@@ -608,16 +608,27 @@ half-hours each fuel sets the price). The record is AEMO's half-hourly VIC1 pric
 |---|---|---|---|
 | 1999-2008 | 71 % / 15 % | 10 / 25 | 0.03 % / 0.27 % |
 | 2009-2016 | 42 % / 6 % | 25 / 33 | 0.09 % / 0.12 % |
-| 2017-2019 | 36 % / 2 % | 83 / 88 | 0.20 % / 0.35 % |
+| 2017-2019 | 36 % / 2 % | 83 / 88 | 0.21 % / 0.35 % |
 | 1999-2019 | 55 % / 10 % | 13 / 31 | 0.09 % / 0.22 % |
 
 Reading: the middle of the distribution is close in 2009-2016 and 2017-2019 (from about the 5th to the 40th percentile
 from the top), and only around the 20th percentile in 1999-2008; the largest errors sit at both ends. (1) A floor: in a large share of half-hours the model's price is brown coal's
 short-run cost (about 8-12 $/MWh), while recorded prices at low demand stay at 15-30 $/MWh; brown coal sets the model
-price in 32-77 % of half-hours (yearly medians over the seeds). Over 1999-2019 the model's unweighted half-hour mean
-is 12.3 $/MWh below the record's: the lowest 60 % of half-hours give 5.2 of it, the top 1 % 2.4, the rest 4.7. The floor
+price in 31-77 % of half-hours (yearly medians over the seeds). Over 1999-2019 the model's unweighted half-hour mean
+is 12.2 $/MWh below the record's: the lowest 60 % of half-hours give 5.2 of it, the top 1 % 2.3, the rest 4.7. The floor
 is what a cost-based
 competitive benchmark gives (withholding is off by design); the record's low-demand prices carry offers above cost.
 (2) Too few spikes, worst in 1999-2008 (0.03 against 0.27 %). The model also
 has no negative prices (record 0.13 % of half-hours, 0.36 % in 2017-2019), as AMIRIS (Nitsch et al. 2021). Model imports
 over the 100 seeds: median 13-26 GWh/yr.
+
+## Frozen model and the final 100-seed ensemble (20 Nov 2026)
+
+The model is frozen: Java code and `simulationSettings/` as at `3165126`, release tag `v0.3-methodsx` (the commit
+holding this ensemble). It is the base case of `07eedaf` (N27, Numurkah start date) with the N38 switches present but
+off (Angela, 20 Nov: keep the base case; imports as last resort, flat coal availability and constant wind are stated as
+limitations, tests in the notes `docs/n38_probes/`). The earlier ensemble (`b796f64`, before N27) was rerun on the
+frozen model, seeds 1-100: `ensemble_2026-11-20/` replaces `ensemble_2026-11-19/` (git history keeps it). Every
+median NSE moved by under 0.01 (annual price 0.24 -> 0.25, monthly price -0.07 -> -0.06; emissions, RE share, tariffs,
+coal, gas and wind unchanged to two decimals). In the price duration reading only the 2017-2019 share above
+300 $/MWh (0.20 -> 0.21 %), the mean gap (12.3 -> 12.2 $/MWh) and coal's price-setting share (32-77 -> 31-77 %) moved.

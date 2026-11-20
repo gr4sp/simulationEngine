@@ -8,7 +8,7 @@ seed_statistics.csv. These replace the +/-1 and +/-2 RMSE bands of make_figures(
 drew a band of constant width around one run.
 
 Usage: python seed_band_figures.py ENSEMBLE_DIR [OUT_DIR] [--runs RUNS_DIR]
-  ENSEMBLE_DIR   seed_years.csv and seed_statistics.csv of seed_ensemble.py (e.g. ensemble_2026-11-19)
+  ENSEMBLE_DIR   seed_years.csv and seed_statistics.csv of seed_ensemble.py (e.g. ensemble_2026-11-20)
   OUT_DIR        where the PNG and PDF figures go (default ENSEMBLE_DIR/figures)
   --runs         the seed_ensemble.py OUT_DIR holding run_s<seed>/; needed once, to write ENSEMBLE_DIR/seed_months.csv
                  (simulated monthly wholesale price, one column per seed), which the monthly price panel reads
