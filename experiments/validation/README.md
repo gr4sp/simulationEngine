@@ -668,7 +668,13 @@ emissions_year_basis.md`; median and 5-95 % over 100 seeds):
 
 The 2017 gap falls from -7.9 to -2.0 Mt, 2012 from -4.7 to -1.4 (carbon price start, July 2012) and 2014 from +3.1 to
 +1.0 (its end, June 2014). What remains is the 2000-2005 shortfall (-2.3 to -5.5 Mt), not yet explained. The July-June
-1999 year is dropped (July-December 1998 is spin-up). Adopting this basis in the validation tables is Angela's decision.
+1999 year is dropped (July-December 1998 is spin-up).
+
+Angela's decision (23 Nov 2026): the main table uses July-June years; the calendar-year rows move to a supplement
+table, kept for comparison with earlier versions. `seed_ensemble.py` now writes both (indicators `GHGE (annual,
+July-June)` and `GHGE (annual, July-June, full)` beside the calendar ones); `seed_summary.md` regenerated from the
+100-seed rerun, every other row identical. The emissions figure (`ghgeSeedValidation`) uses July-June years too. When
+reporting, state that the 2000-2005 shortfall remains, so the higher NSE does not read as a full fit.
 
 **Price gap.** The 12.2 $/MWh mean gap (record 45.69 $/MWh, unweighted half-hour mean 1999-2019) can now be recomputed
 without the database: `ensemble_2026-11-20/record_halfhour_years.csv` (record by year, `seed_price_duration.py record`)
