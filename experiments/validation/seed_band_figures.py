@@ -139,7 +139,7 @@ def main():
         # break the line across the years a source does not cover (Oakley Greenwood has none for 2003-2006)
         s = s.reindex(range(s.index.min(), s.index.max() + 1))
         ax.plot(s.index, s.values, color=RECORD, ls=ls, marker=m, ms=4, lw=1.2)
-    axes_style(ax, "Residential tariff (c/kWh, nominal)")
+    axes_style(ax, "Residential tariff (c/kWh, real January 2019 dollars)")
     ax.set_xticks(range(1999, 2020, 2))
     ax.set_ylim(bottom=0)
     g = stats[stats.indicator == "Tariffs vs St Vincent de Paul"].Bias
@@ -160,13 +160,13 @@ def main():
     else:
         print(f"no {months_file}: monthly panel shows the record only (run once with --runs)")
     top.plot(price.index, price.values, color=RECORD, lw=1.0)
-    axes_style(top, "Monthly price ($/MWh)")
+    axes_style(top, "Monthly price (nominal $/MWh)")
     top.set_title("Monthly, January 1999 to June 2020", fontsize=10, loc="left")
     w = wide("price").loc[1999:2020]
     draw_sim(bot, w.index, w)
     obs = price.resample("YE").mean()
     bot.plot(obs.index.year, obs.values, color=RECORD, marker="o", ms=4, lw=1.2)
-    axes_style(bot, "Annual price ($/MWh)")
+    axes_style(bot, "Annual price (nominal $/MWh)")
     bot.set_xticks(range(1999, 2021, 2))
     bot.set_title("Annual mean of the months (2020: January to June)", fontsize=10, loc="left")
     bot.legend(handles=handles(nse_label(stats, "Wholesale price (annual)"), [rec("Record (AEMO VIC1)")]),
@@ -239,7 +239,7 @@ def main():
             rec_spikes = np.interp(300, r.values[::-1], r.index.values[::-1])
             ax.text(98, 285, f"Above 300 $/MWh: record {rec_spikes:.2f} %,\nmodel {spikes:.2f} % of half-hours",
                     ha="right", va="top", fontsize=8, color="#555555")
-            axes_style(ax, "Price ($/MWh)" if per == periods[0] else "")
+            axes_style(ax, "Price (nominal $/MWh)" if per == periods[0] else "")
             ax.set_xlabel("Share of half-hours at or above the price (%)")
             ax.set_title(per, fontsize=10, loc="left")
         axs[0].legend(handles=[rec("Record (AEMO VIC1)", m=""),

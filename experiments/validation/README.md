@@ -620,7 +620,9 @@ is what a cost-based
 competitive benchmark gives (withholding is off by design); the record's low-demand prices carry offers above cost.
 (2) Too few spikes, worst in 1999-2008 (0.03 against 0.27 %). The model also
 has no negative prices (record 0.13 % of half-hours, 0.36 % in 2017-2019), as AMIRIS (Nitsch et al. 2021). Model imports
-over the 100 seeds: median 13-26 GWh/yr.
+(`ensemble_2026-11-20`, corrected 23 Nov 2026): median over the seeds of each seed's 1999-2019 mean **20.4 GWh/yr**
+(5-95 % 16.4-25.9); by period 24.8 (1999-2008), 12.7 (2009-2016) and 25.8 (2017-2019). "13-26" was the range of those
+period medians, not stated as such. Recorded imports: 50-1,900 GWh/yr.
 
 ## Frozen model and the final 100-seed ensemble (20 Nov 2026)
 
@@ -632,3 +634,69 @@ frozen model, seeds 1-100: `ensemble_2026-11-20/` replaces `ensemble_2026-11-19/
 median NSE moved by under 0.01 (annual price 0.24 -> 0.25, monthly price -0.07 -> -0.06; emissions, RE share, tariffs,
 coal, gas and wind unchanged to two decimals). In the price duration reading only the 2017-2019 share above
 300 $/MWh (0.20 -> 0.21 %), the mean gap (12.3 -> 12.2 $/MWh) and coal's price-setting share (32-77 -> 31-77 %) moved.
+
+## Year basis, money basis and price events (23 Nov 2026, questions from the MethodsX draft)
+
+Model results unchanged: the code adds only output (a monthly `System GHG Emissions (tCO2-e)` column) and an opt-in
+generator parameter (`endYear`, used by the event runs only). The 100 seeds were rerun on it: every year, monthly and
+price file of every seed is identical to `ensemble_2026-11-20` (the summaries differ by 1e-14, from summation order).
+46 tests pass.
+
+**Money basis.** The simulated tariff is in real January-2019 c/kWh: `EndUserUnit` deflates the six-month mean
+wholesale price with the CPI table and adds the non-wholesale components, which `tariff_components_VIC.csv` gives in
+real January-2019 c/kWh; both comparators are in 2019 dollars. The tariff figure's axis said "nominal" (a label error,
+fixed). Wholesale prices are nominal on both sides: generator costs are set in `costPriceYear` dollars and moved to
+each year's dollars with `cpiFile`, the carbon and gas prices are nominal, and so is the AEMO record. The price axes now
+say so.
+
+**Emissions year basis.** The inventory reports financial years ("2017" = 1 July 2016 to 30 June 2017; Victorian
+Greenhouse Gas Emissions Reports 2022 and 2023 state the convention); the year summary is a calendar year. Hazelwood
+closed on 31 March 2017, so inventory 2017 has it for nine months and model 2017 for three: that is most of the 2017
+gap. `emissions_year_basis.py` sums the monthly emissions over July-June years (`ensemble_2026-11-20/
+emissions_year_basis.md`; median and 5-95 % over 100 seeds):
+
+| Basis | Window | NSE (-) | Bias (Mt CO2-e) | RMSE (Mt CO2-e) |
+|---|---|---|---|---|
+| Calendar (as reported so far) | 2005-2018 | 0.70 (0.68 to 0.71) | -0.64 | 2.85 |
+| July-June (the inventory's) | 2005-2018 | 0.93 (0.92 to 0.94) | -0.03 | 1.36 |
+| Calendar | 1999-2018 | 0.37 (0.35 to 0.38) | -1.73 | 3.50 |
+| July-June | 2000-2018 | 0.71 (0.69 to 0.71) | -1.10 | 2.45 |
+
+The 2017 gap falls from -7.9 to -2.0 Mt, 2012 from -4.7 to -1.4 (carbon price start, July 2012) and 2014 from +3.1 to
++1.0 (its end, June 2014). What remains is the 2000-2005 shortfall (-2.3 to -5.5 Mt), not yet explained. The July-June
+1999 year is dropped (July-December 1998 is spin-up). Adopting this basis in the validation tables is Angela's decision.
+
+**Price gap.** The 12.2 $/MWh mean gap (record 45.69 $/MWh, unweighted half-hour mean 1999-2019) can now be recomputed
+without the database: `ensemble_2026-11-20/record_halfhour_years.csv` (record by year, `seed_price_duration.py record`)
+with `seed_halfhour_years.csv`: median 12.2 (5-95 % 10.1-13.9) $/MWh over the seeds. Seed 42 ranks 89th of 100 on
+annual price NSE in this ensemble (87th was the 19 Nov ensemble).
+
+**Price events** (`price_events.py`, `price_events_2026-11-23/`; seeds 1-20 and 42, each paired with the same base
+seed, so the forced outages are identical; effect = base minus the run without the event, median over the seeds):
+
+| Event removed | Years | Price effect ($/MWh, nominal) | Emissions effect (Mt CO2-e) |
+|---|---|---|---|
+| Carbon price | 2012 / 2013 / 2014 | +15.3 / +30.2 / +4.2 | -0.1 each year |
+| Hazelwood closure (kept open to 2019) | 2017 / 2018 / 2019 | +61.5 / +66.6 / +61.0 | -3.3 / -3.4 / -3.0 |
+| Gas price rise (held at 4.15 $/GJ from 2016) | 2017 / 2018 / 2019 | +30.9 / +33.8 / +30.0 | 0.0 |
+| Closure and gas rise together | 2017 / 2018 / 2019 | +64.4 / +67.0 / +61.7 | -3.3 / -3.4 / -3.0 |
+
+Reading:
+- **Carbon price.** Full pass-through: about +30 $/MWh in every month it applied (23-24 $/t x brown coal at the
+  margin), 2012 and 2014 are half years. January 2014 (heatwave) is the exception: the run without the carbon price
+  has higher spikes (-96 $/MWh median that month), which pulls 2014 down; not yet explained (candidate: hydro offers
+  follow last month's price, `Arena` sets the reference price from it). No emissions effect: brown coal stays cheaper
+  than gas with the carbon price, so the model has no fuel switching. The recorded 2012-13 fall in emissions comes into
+  the model through the demand input (below).
+- **Hazelwood and gas interact.** With Hazelwood open, gas is almost never at the margin and the gas price adds about
+  3 $/MWh (joint minus Hazelwood alone); with Hazelwood closed it adds about 31. The closure adds about 33 $/MWh at
+  2015 gas prices (joint minus gas alone) and about 61 at recorded ones. The interaction (joint minus the sum of the
+  two single effects) is -28 to -33 $/MWh. Neither event alone gives the 2017 step: the closure puts gas at the
+  margin, the gas price sets how far prices rise.
+- **The demand input carries trade.** Demand is calibrated to recorded local generation plus imports, so it includes
+  exports. When Hazelwood closed, exports fell from 8.0 TWh (2016) to 3.9 (2017) and 2.0 (2018) and the demand input
+  fell with them (55.2 -> 49.4 -> 48.4 TWh). Kept open in the event run, Hazelwood (7.8-8.6 TWh/yr, seed 1) displaces other
+  Victorian coal (3.5-6 TWh) and gas instead of being exported, so the run measures "Hazelwood open at the demand
+  recorded after it closed": its emissions effect is a lower bound and its price effect an upper bound. The same holds
+  for the carbon price years: exports fell from 5.0 TWh (2011) to 3.5-3.7 (2012-13).
+

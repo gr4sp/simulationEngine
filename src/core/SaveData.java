@@ -62,6 +62,8 @@ public class SaveData implements Steppable, java.io.Serializable {
     HashMap<Integer, XYSeries> genCapacityFactorSeries;  // the data series that will be added to
     //Solar step 2: scope 1 emissions of every generator (monthly output x its emission factor), summed by calendar year
     TreeMap<Integer, Double> systemEmissionsByYear = new TreeMap<>();
+    //23 Nov 2026 (output only): the same emissions by month (yyyy-MM), so they can be summed over July-June years
+    TreeMap<String, Double> systemEmissionsByMonth = new TreeMap<>();
     HashMap<Integer, XYSeries> systemProductionSeries;  // the data series that will be added to
     public HashMap<Integer, XYSeries> PriceGenAvgSeries;  // the data series that will be added to
     HashMap<Integer, XYSeries> PriceGenMaxSeries;  // the data series that will be added to
@@ -748,6 +750,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                         {
                             int emYear = data.getSimCalendar().get(Calendar.YEAR);
                             systemEmissionsByYear.merge(emYear, gens.get(i).getMonthlyGeneratedMWh() * gens.get(i).getEmissionsFactor(emYear), Double::sum);
+                            systemEmissionsByMonth.merge(new SimpleDateFormat("yyyy-MM").format(data.getSimCalendar().getTime()),
+                                    gens.get(i).getMonthlyGeneratedMWh() * gens.get(i).getEmissionsFactor(emYear), Double::sum);
                         }
 
                         if (gens.elementAt(i).getTechTypeDescriptor().equals("Solar - Rooftop")) {
@@ -1961,7 +1965,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
                     "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
-                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
+                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)", "System GHG Emissions (tCO2-e)"};
 
             csvWriterMonthly.writeNext(headerRecordMonthly);
 
@@ -2186,7 +2190,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                         Double.toString(consumers), Double.toString(percentageRenwewable), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg),
                         Double.toString(MWhCoalSpotAgg), Double.toString(MWhWaterSpotAgg), Double.toString(MWhWindSpotAgg), Double.toString(MWhGasSpotAgg),
                         Double.toString(MWhSolSpotAgg), Double.toString(MWhBatSpotAgg), Double.toString(numActors), Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
-                        Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay)};
+                        Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay),
+                        Double.toString(systemEmissionsByMonth.getOrDefault(new SimpleDateFormat("yyyy-MM").format(c.getTime()), 0.0))};
                 if (data.isReported(c.getTime()))
                     csvWriterMonthly.writeNext(record);
 

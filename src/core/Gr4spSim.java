@@ -821,6 +821,15 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                 case "forcedOutageRate": g.forcedOutageRate = v; break;
                 case "outageHours": g.outageHours = v; break;
                 case "availabilityFactor": g.availabilityFactor = v; break;
+                //Counterfactual runs only (23 Nov 2026): the unit closes at the end of this year (31 December) instead of
+                //its recorded date. No base-case settings file uses it
+                case "endYear": {
+                    Calendar e = Calendar.getInstance();
+                    e.clear();
+                    e.set((int) v, Calendar.DECEMBER, 31);
+                    g.setEnd(e.getTime());
+                    break;
+                }
                 default: throw new IllegalArgumentException("Unknown generator parameter " + p[1]);
             }
         }

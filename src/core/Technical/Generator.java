@@ -674,6 +674,11 @@ public class Generator implements java.io.Serializable, Asset {
         return end;
     }
 
+    //Counterfactual runs only (generator parameter endYear): move the unit's closure
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
     public String getName() {
         return name;
     }

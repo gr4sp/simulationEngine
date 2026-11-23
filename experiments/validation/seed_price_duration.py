@@ -78,7 +78,18 @@ def record():
     return curves(df, "record").drop(columns="seed"), df
 
 
+def record_years(raw):
+    """Recorded half-hour price by year (unweighted mean, as the model's mean_price in seed_halfhour_years.csv)."""
+    g = raw.groupby("year").price
+    return pd.DataFrame({"mean_price": g.mean(), "halfhours": g.size(),
+                         "share_above_300": g.apply(lambda p: (p > 300).mean())}).reset_index()
+
+
 def main():
+    if sys.argv[1] == "record":
+        # python seed_price_duration.py record OUT: only the recorded side (record_halfhour_years.csv), no runs
+        record_years(record()[1]).to_csv(os.path.join(sys.argv[2], "record_halfhour_years.csv"), index=False)
+        return
     ens, out = sys.argv[1], sys.argv[2]
     n = int(sys.argv[3]) if len(sys.argv) > 3 else 100
     par = int(sys.argv[4]) if len(sys.argv) > 4 else 10
@@ -86,6 +97,7 @@ def main():
     os.makedirs(tmp, exist_ok=True)
     rec, raw = record()
     rec.to_csv(os.path.join(out, "record_price_duration.csv"), index=False)
+    record_years(raw).to_csv(os.path.join(out, "record_halfhour_years.csv"), index=False)
     print(f"record: {len(raw)} half-hours {FIRST}-{LAST}, share above 300 $/MWh {(raw.price > 300).mean():.4f}")
     pdcs, yrs = [], []
     with cf.ThreadPoolExecutor(par) as ex:
