@@ -15,7 +15,7 @@ authors:
     email: angel.rouges@gmail.com
     affiliation: The University of Melbourne
     orcid: 'https://orcid.org/0000-0003-4558-6423'
-repository-code: 'https://github.com/gr4sp/'
+repository-code: 'https://github.com/gr4sp/simulationEngine'
 abstract: >-
   This simulation model is the outcome of the
   analysis framework used to represent the
@@ -40,7 +40,16 @@ keywords:
   - Socio-technical systems
   - Simulation
 license: MIT
-date-released: '2022-08-03'
+version: 0.3.1-methodsx
+date-released: '2026-11-24'
+# Earlier scenario and sensitivity outputs (dataset, not this code): 10.5281/zenodo.4667996
+references:
+  - type: dataset
+    title: 'GR4SP Suite: Additional Data and Simulation Results'
+    authors:
+      - given-names: Angela Maria
+        family-names: Rojas-Arevalo
+    doi: 10.5281/zenodo.4667996
 
 # PENDING: the methods article describing the GR4SP suite is under review.
 # Uncomment and complete this block on acceptance, and mirror the same details

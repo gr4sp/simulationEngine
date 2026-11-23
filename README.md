@@ -326,6 +326,9 @@ fetching rather than citing:
 
 If you use GR4SP, please cite the software using the metadata in [`CITATION.cff`](CITATION.cff).
 
+The version used in the MethodsX article is the release `v0.3.1-methodsx` (Zenodo DOI added here once minted).
+Earlier scenario and sensitivity outputs are a separate dataset: <https://doi.org/10.5281/zenodo.4667996>.
+
 The model and its Victorian application are documented in full in:
 
 > Rojas Arévalo, A. M. (2022). *Sustainability transitions modelling and assessment of socio-technical energy systems: An Australian case.* PhD thesis, The University of Melbourne. <https://hdl.handle.net/11343/324500>

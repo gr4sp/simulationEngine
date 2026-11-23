@@ -1,0 +1,36 @@
+{
+  "upload_type": "software",
+  "title": "GR4SP, a Generic Recursive Simulation of Socio-technical Systems for Service Provision",
+  "version": "0.3.1-methodsx",
+  "creators": [
+    {
+      "name": "Rojas-Arevalo, Angela Maria",
+      "affiliation": "The University of Melbourne",
+      "orcid": "0000-0003-4558-6423"
+    }
+  ],
+  "description": "Agent-based simulation of the Victorian electricity system (Australia), 1998-2019 validation against the historical record. This release is the model version described in the MethodsX article: the base case frozen on 20 Nov 2026, the 100-seed validation ensemble, figures and tables (experiments/validation). Earlier scenario and sensitivity outputs are in the separate dataset 10.5281/zenodo.4667996.",
+  "license": "MIT",
+  "keywords": [
+    "Energy",
+    "Sustainability transitions",
+    "Socio-technical systems",
+    "Agent-based model",
+    "Electricity market",
+    "Simulation"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.4667996",
+      "relation": "isSupplementedBy",
+      "resource_type": "dataset",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://hdl.handle.net/11343/324500",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-thesis",
+      "scheme": "url"
+    }
+  ]
+}
