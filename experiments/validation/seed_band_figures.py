@@ -7,6 +7,8 @@ a confidence interval for the record. The legend box gives the median and 5-95 %
 seed_statistics.csv. These replace the +/-1 and +/-2 RMSE bands of make_figures() in validation_statistics.py, which
 drew a band of constant width around one run.
 
+Emissions (Figure 2) use the inventory's July-June year, from ENSEMBLE_DIR/emissions_year_basis.csv (emissions_year_basis.py).
+
 Usage: python seed_band_figures.py ENSEMBLE_DIR [OUT_DIR] [--runs RUNS_DIR]
   ENSEMBLE_DIR   seed_years.csv and seed_statistics.csv of seed_ensemble.py (e.g. ensemble_2026-11-20)
   OUT_DIR        where the PNG and PDF figures go (default ENSEMBLE_DIR/figures)
@@ -104,15 +106,20 @@ def main():
 
     rec = lambda label, ls="-", m="o": Line2D([], [], color=RECORD, ls=ls, marker=m, ms=4, lw=1.2, label=label)
 
-    # Figure 2: emissions, 1999-2018 (the 1998 spin-up year has no simulated emissions)
+    # Figure 2: emissions on the inventory's own year, July to June ("2017" = July 2016 to June 2017; 23 Nov 2026,
+    # emissions_year_basis.py). 2000 is the first whole July-June year after the 1998 spin-up; NSE over 2000-2018.
     fig, ax = plt.subplots(figsize=(7, 4.2))
-    w = wide("ghge_mt").loc[1999:2019]
+    fy = pd.read_csv(os.path.join(a.ensemble, "emissions_year_basis.csv"))
+    w = fy.pivot(index="year", columns="seed", values="july_june").loc[2000:2019]
     draw_sim(ax, w.index, w)
-    obs = ghge["Hist_GHGE_MtCO2e"].loc[1999:2018]
+    obs = ghge["Hist_GHGE_MtCO2e"].loc[2000:2018]
     ax.plot(obs.index, obs.values, color=RECORD, marker="o", ms=4, lw=1.2)
-    axes_style(ax, "Emissions (Mt CO$_2$-e per year)")
-    ax.set_xticks(range(1999, 2020, 2))
-    ax.legend(handles=handles(nse_label(stats, "GHGE (annual, full)"), [rec("Record (Victorian inventory, electricity generation)")]),
+    axes_style(ax, "Emissions (Mt CO$_2$-e per year to 30 June)")
+    ax.set_xlabel("Year ending 30 June")
+    ax.set_xticks(range(2000, 2020, 2))
+    nse = pd.Series([vs.statistics(w[s].loc[2000:2018], obs)["NSE"] for s in w.columns])
+    ax.legend(handles=handles(f"NSE {nse.median():.2f} ({nse.quantile(0.05):.2f} to {nse.quantile(0.95):.2f}), 2000-2018",
+                              [rec("Record (Victorian inventory, electricity generation)")]),
               loc="lower left", fontsize=8.5)
     save(fig, "ghgeSeedValidation")
 
