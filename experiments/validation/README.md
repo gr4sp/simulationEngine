@@ -650,7 +650,11 @@ each year's dollars with `cpiFile`, the carbon and gas prices are nominal, and s
 say so.
 
 **Emissions year basis.** The inventory reports financial years ("2017" = 1 July 2016 to 30 June 2017; Victorian
-Greenhouse Gas Emissions Reports 2022 and 2023 state the convention); the year summary is a calendar year. Hazelwood
+Greenhouse Gas Emissions Reports 2022 and 2023 state the convention: DEECA, *Victorian Greenhouse Gas Emissions
+Report 2022*, https://climatechange.vic.gov.au/__data/assets/pdf_file/0020/726203/victorian-greenhouse-gas-emissions-report-2022.pdf;
+*Victorian Greenhouse Gas Emissions Report 2023*,
+https://www.climatechange.vic.gov.au/__data/assets/pdf_file/0038/767855/Victorian-Greenhouse-Gas-Emissions-Report-2023.pdf;
+the site blocks automated downloads, open them in a browser); the year summary is a calendar year. Hazelwood
 closed on 31 March 2017, so inventory 2017 has it for nine months and model 2017 for three: that is most of the 2017
 gap. `emissions_year_basis.py` sums the monthly emissions over July-June years (`ensemble_2026-11-20/
 emissions_year_basis.md`; median and 5-95 % over 100 seeds):
