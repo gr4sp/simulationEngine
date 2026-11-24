@@ -378,6 +378,6 @@ new cohort attribute: decide against the simple-rules goal).
 
 **Limitation (Angela, 17 Nov 2026).** The household groups have no age or life stage. HECS 2012 shows life stage
 drives who adopts (older couples most), and age is also an energy vulnerability factor (bill stress, thermal comfort
-and health; low retailer switching and the loyalty tax). Stated as a limitation of the model for MethodsX and the
+and health; low retailer switching and the loyalty tax). Stated as a limitation of the model for the methods paper and the
 ERSS article, and as future work (ROADMAP 24); nothing added until step 4 shows the existing barriers cannot
 reproduce the HECS gaps and the sources listed in ROADMAP 24 are checked.

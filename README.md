@@ -27,7 +27,7 @@ cd simulationEngine
 ```
 
 The full history is about 1.3 GB and takes around ten minutes to clone. To reproduce a release you only need that
-release: `git clone --depth 1 --branch v0.3.2-methodsx https://github.com/gr4sp/simulationEngine.git`.
+release: `git clone --depth 1 --branch v0.3.2 https://github.com/gr4sp/simulationEngine.git`.
 
 > **Windows: enable long paths first.** A few data files in `experiments/assesmentData/` have descriptive names up to 139 characters. Combined with a deep clone location, these can exceed the legacy 260-character Windows path limit and the clone fails with `error: unable to create file ...: Filename too long`. Enable long-path support once (Administrator PowerShell):
 >
@@ -227,9 +227,9 @@ results move:
 
 The model pins its timezone to `Australia/Melbourne` (`Gr4spSim.TIMEZONE`), so results do not depend on your machine's regional settings. You do not need to change your system clock or locale to reproduce the article from anywhere in the world.
 
-### What regenerates what: the MethodsX validation (release `v0.3.2-methodsx`)
+### What regenerates what: the methods article's validation (release `v0.3.2`)
 
-The MethodsX article reports the base case over 100 random seeds (seeds 1-100): the median and the 5-95 % range of
+The methods article (in preparation) reports the base case over 100 random seeds (seeds 1-100): the median and the 5-95 % range of
 each validation statistic. The results are committed in `experiments/validation/ensemble_2026-11-20/`; the steps below
 regenerate them. Build first (`./gradlew build`), keep the shipped database, and run from the project root. Step 1 runs
 the model 100 times and takes several hours; the later steps read its output directory.
@@ -267,8 +267,8 @@ Reproducing the scenario ensembles from scratch is a much larger undertaking: th
 sampled scenarios run thousands of simulations and take hours. The published runs are on
 Zenodo (see [Data archives](#data-archives)) and are the practical starting point.
 
-GR4SP continues to be developed. The state of the model that reproduces the MethodsX article is
-fixed by the `v0.3.2-methodsx` tag together with the database snapshot the repository ships (the pre-repair
+GR4SP continues to be developed. The state of the model that reproduces the methods article is
+fixed by the `v0.3.2` tag together with the database snapshot the repository ships (the pre-repair
 results by the `v0.1-article` tag);
 see [Reproducing the Article's Results](#reproducing-the-articles-results).
 
@@ -350,7 +350,7 @@ fetching rather than citing:
 
 If you use GR4SP, please cite the software using the metadata in [`CITATION.cff`](CITATION.cff).
 
-The version used in the MethodsX article is the release `v0.3.2-methodsx` (Zenodo DOI added here once minted).
+The version used in the methods article (in preparation) is the release `v0.3.2` (Zenodo DOI added here once minted).
 Earlier scenario and sensitivity outputs are a separate dataset: <https://doi.org/10.5281/zenodo.4667996>.
 
 The model and its Victorian application are documented in full in:

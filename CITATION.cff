@@ -40,7 +40,7 @@ keywords:
   - Socio-technical systems
   - Simulation
 license: MIT
-version: 0.3.2-methodsx
+version: 0.3.2
 date-released: '2026-11-24'
 # Earlier scenario and sensitivity outputs (dataset, not this code): 10.5281/zenodo.4667996
 references:

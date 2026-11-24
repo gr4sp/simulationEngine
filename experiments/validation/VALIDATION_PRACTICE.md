@@ -37,7 +37,7 @@ Social Science 49, 41-52, doi:10.1016/j.erss.2018.10.021. 62 articles reviewed. 
   robustness and scale.
 - p. 48: inconsistent model descriptions; some studies use the ODD protocol, many do not, and its use varies.
 - It does **not** count how many reviewed models were validated against historical data. So it supports "validation
-  is a recurring difficulty for these models" (MethodsX draft l.48), but not "testing against the historical record
+  is a recurring difficulty for these models" (methods article draft l.48), but not "testing against the historical record
   ... remains rare" (ERSS revision queue, 29 Oct, Q15 and the options at l.622-623): that wording needs another source
   or a softer claim.
 

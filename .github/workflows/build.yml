@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     # Release tags are tested on the commit they mark, so a release is never cut
-    # from code CI has not seen (v0.3.1-methodsx was on a branch CI never ran).
+    # from code CI has not seen (an earlier release tag was on a branch CI never ran).
     tags: [ 'v*' ]
   pull_request:
     branches: [ master ]

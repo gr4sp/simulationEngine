@@ -1,4 +1,4 @@
-"""Validation figures with the spread over random seeds (request R6, MethodsX Figures 2-5).
+"""Validation figures with the spread over random seeds (request R6, methods article Figures 2-5).
 
 Each figure shows the record, the median over the seed ensemble of seed_ensemble.py, and the band holding 90 % of the
 seeds (5th to 95th percentile, year by year or month by month). The seeds differ only in the random draws of the model

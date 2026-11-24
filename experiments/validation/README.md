@@ -535,7 +535,7 @@ checks pass.
 
 ## Seed-band figures (R6, 19 Nov 2026)
 
-`seed_band_figures.py ensemble_2026-11-20` draws MethodsX Figures 2-5 from the 100-seed ensemble of
+`seed_band_figures.py ensemble_2026-11-20` draws the methods article's Figures 2-5 from the 100-seed ensemble of
 `seed_ensemble.py`: the record, the median over the seeds and the 5-95 % band of the seeds, year by year (month by
 month for the monthly price), with the median and 5-95 % range of the NSE in the legend. Outputs (PNG and PDF):
 `ensemble_2026-11-20/figures/` (`ghgeSeedValidation`, `reSeedValidation`, `tariffsSeedValidation`,
@@ -635,7 +635,7 @@ median NSE moved by under 0.01 (annual price 0.24 -> 0.25, monthly price -0.07 -
 coal, gas and wind unchanged to two decimals). In the price duration reading only the 2017-2019 share above
 300 $/MWh (0.20 -> 0.21 %), the mean gap (12.3 -> 12.2 $/MWh) and coal's price-setting share (32-77 -> 31-77 %) moved.
 
-## Year basis, money basis and price events (23 Nov 2026, questions from the MethodsX draft)
+## Year basis, money basis and price events (23 Nov 2026, questions from the methods article draft)
 
 Model results unchanged: the code adds only output (a monthly `System GHG Emissions (tCO2-e)` column) and an opt-in
 generator parameter (`endYear`, used by the event runs only). The 100 seeds were rerun on it: every year, monthly and
