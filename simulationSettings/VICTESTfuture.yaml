@@ -30,6 +30,10 @@ forecast:
   # and "In Commissioning". This are all the projects that are on their way to be integrated in the generation pool but haven't
   # start operating
   generationRolloutPeriod: 6
+  # Commissioning delay d (years; fractions in whole months) of projects due after the base year: pipeline
+  # projects and the capacity path's steps arrive d later (> 0) or earlier (< 0, not before the base year).
+  # Realised 2019-list committed projects: median 1.3 years late (experiments/transition/README.md)
+  commissioningDelay: 0
 
   # Include subcategory of rooftop pv. (residential), (business) or (both)
   rooftopPV: both

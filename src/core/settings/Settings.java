@@ -10,6 +10,8 @@ class SimulationDatesSettings implements java.io.Serializable {
     public String startDate;
     public String endDate;
     public String startDateSpotMarket;
+    // Optional: first date written to the output CSVs. Earlier months still run as spin-up.
+    public String reportFrom;
 
 }
 
@@ -73,6 +75,41 @@ class SolarEfficiency implements java.io.Serializable {
 class GeneratorSettings implements java.io.Serializable {
     public double basePriceMWh;
     public double marketPriceCap;
+    //Offer price in the spot market at short-run marginal cost, $/MWh. Negative (the default) keeps the
+    //LCOE rule, basePriceMWh / historic capacity factor (ROADMAP item 3)
+    public double srmcMWh = -1;
+    //Storage offer: this factor times the previous month's mean primary spot price. Negative (the default)
+    //keeps the LCOE rule, which prices a rarely used battery at basePriceMWh / minCapacityFactor
+    public double storageOfferFactor = -1;
+    //Share of nameplate capacity offered in each half-hour. Negative (the default) offers nameplate x the capacity
+    //factor, so maxCapacityFactor limits power as well as energy. Read from the base settings only, like the capacity factors
+    public double availabilityFactor = -1;
+    //Energy-limited plant (hydro): at most nameplate x capacity factor x 24 h a day, offered as long as it lasts
+    public boolean dailyEnergyLimit = false;
+    //Storage that buys low and sells high each day when positive: the share of stored energy returned on discharge.
+    //Negative (the default) keeps the storage offer rules above
+    public double roundTripEfficiency = -1;
+    //Storage duration in hours, used when the database gives no energy capacity
+    public double storageHours = 1;
+    //Short-run cost offer (a): heat rate x fuel price + variable O&M + emission factor x carbon price, when heatRate > 0.
+    //The fuel price comes from fuelPriceFile (year,priceGJ,source in simulationSettings) or the constant fuelPriceGJ
+    public double heatRateGJperMWh = -1;
+    public double variableOMMWh = 0;
+    public String fuelPriceFile;
+    public double fuelPriceGJ = 0;
+    //Price bands (b): this share of the offered capacity is offered at mustRunPriceMWh (inflexible plant), the rest at the offer
+    public double mustRunShare = 0;
+    public double mustRunPriceMWh = 0;
+    //Energy-limited plant offers its daily energy only in the day's highest-demand half-hours (hydro water value)
+    public boolean peakOnly = false;
+    //Hydro: each month's energy is the recorded hydro generation (generation_consumption_historic.hydro_gwh), shared
+    //by capacity; the plant offers it at a water value, storageOfferFactor x last month's mean price, scaled by the
+    //share of the month left over the share of the energy left, so when it runs comes from the merit order.
+    //Replaces peakOnly and dailyEnergyLimit; months without a record keep them
+    public boolean monthlyEnergyFromRecord = false;
+    //Breakdowns (c): long-run share of time a unit is fully out, and the mean time to repair in hours
+    public double forcedOutageRate = 0;
+    public double outageHours = 168;
 
     public double minCapacityFactor;
     public double maxCapacityFactor;
@@ -128,6 +165,9 @@ class ForecastSetting implements java.io.Serializable {
     public double technologicalImprovement;
     public double learningCurve;
     public int generationRolloutPeriod;
+    //Years (fractions allowed, applied in whole months) by which projects due after the base year are commissioned
+    //later than planned (> 0) or earlier (< 0): pipeline projects of generationassets and the capacity path's additions
+    public double commissioningDelay;
     public double solarInstallCapacity;
     public double importPriceFactor;
 
@@ -146,6 +186,140 @@ public class Settings implements java.io.Serializable {
     public Map<String, GeneratorSettings> generators;
     public Map<String, TariffSettings> tariffs;
     public ForecastSetting forecast;
+    //Optional CSV in simulationSettings with corrections to the generationassets table (see LoadData.readGeneratorCorrections)
+    public String generatorCorrections;
+    //Optional CSV in simulationSettings with a capacity path by fuel (fy_end,fuel_type,...,capacity_mw,storage_hours,source):
+    //generic units top each fuel up to the path (see LoadData.addCapacityPath); null = generationassets only
+    public String capacityPathFile;
+    //Optional CSV in simulationSettings (year,wholesale,status,source): rows replace the wholesale share of the tariff
+    //(R_w) read from the historic_tariff_contribution table (see LoadData, tariff contribution)
+    public String tariffContributionFile;
+    //Years between the January tariff update and the register row it uses: 1 (default) = the previous year's row,
+    //0 = the row of the bills in force that year (rows are calendar years of bills)
+    public int tariffContributionLag = 1;
+    //Optional CSV in simulationSettings (year,network,environmental,retail,gst_rate,...; real January-2019 c/kWh excl.
+    //GST): when set, the tariff is additive, (simulated wholesale + network + environmental + retail) x (1 + gst_rate),
+    //instead of simulated wholesale / R_w. Row year - tariffContributionLag; years after the last row hold it.
+    public String tariffComponentsFile;
+    //Optional CSV in simulationSettings with monthly net exports (month,netExportsMWh,source), added to wholesale demand
+    public String netExportsFile;
+    //Optional CSV (month,slot,deviationMW,source): the half-hourly shape added to each month's mean net exports
+    public String netExportsShapeFile;
+    //When true (needs netExportsShapeFile, not netExportsFile): the monthly calibration of half-hourly demand to total
+    //generation adds the month's difference as a flat MW amount plus the net-export shape, instead of scaling every
+    //half-hour by the same factor. Monthly energy is unchanged; exports no longer grow with the demand peak
+    public boolean shapeDemandUplift = false;
+    //When true, a generator row with several units (no_units > 1, e.g. Murray 1 with 10) breaks down unit by unit,
+    //each with the fuel's forcedOutageRate and outageHours, instead of the whole row going out at once
+    public boolean outagesPerUnit = false;
+    //When true: before the monthly calibration, the output of the off-market solar fleet (rooftop PV and small solar
+    //farms, as Arena computes it) is added back to each historic half-hour at its own shape, so the calibration spreads
+    //only the remaining gap. AEMO's total demand is net of that fleet; without this its energy came back flat and Arena
+    //took it out again at its shape, so midday demand was taken out twice (N21)
+    public boolean solarShapeInDemand = false;
+    //When true: the half-hourly demand after the forecast start is grown from the calibrated base-year profile (total
+    //generation incl. exports, rooftop and non-scheduled output) instead of AEMO's operational demand, which lacks them
+    //while Arena still subtracts off-market and rooftop output (forward demand fell about 10 % in 2021)
+    public boolean forecastFromCalibratedDemand = false;
+    //N23 (14 Nov 2026). Optional CSV in simulationSettings (year,month,number_installations,aggregated_capacity_kw,
+    //system_capacity,source): rooftop PV installations that replace the database's for the months it lists
+    public String solarInstallationsFile;
+    //Tilt of rooftop arrays in degrees (0: rooftop PV gets the horizontal irradiance, as before) and their azimuth from
+    //north, clockwise. With a tilt, rooftop PV gets the irradiance on its plane (RooftopIrradiance); solar farms keep GHI
+    public double rooftopArrayTilt = 0;
+    public double rooftopArrayAzimuth = 0;
+    //Position of the irradiance station of solar_ghi (Melbourne Airport, BoM 086282), for the sun's position
+    public double solarStationLatitude = -37.67;
+    public double solarStationLongitude = 144.83;
+    //When true: the forward rooftop fleet follows the ISP rooftop energy path with the model's own yield per kW (base
+    //year irradiance, tilt and efficiency), counting from the recorded fleet and replacing systems that reach 30 years,
+    //instead of converting each year's energy increment at a 20 % capacity factor from 2021
+    public boolean rooftopForecastFromModelYield = false;
+    //N29 (14 Nov 2026): factor on AEMO's rooftop PV forecast (isp_annual_consumption). The thesis code raised it by 25 %
+    //"to reconcile the latest info in pv-map"; AEMO's FY2020 value is within 2 % of the recorded FY2020 output
+    public double rooftopForecastUplift = 1.25;
+    //N29: the ISP/ESOO annual registers (consumption, rooftop PV) are financial years (FY Y = July Y-1 to June Y, centred
+    //on 1 January Y). When true, calendar year Y is the mean of FY Y and FY Y+1 for the demand growth, and the rooftop
+    //fleet in service on 1 January Y follows FY Y's energy. False: the registers are read as calendar years
+    public boolean forecastFinancialYears = false;
+    //N28: fuel types (fuel, or fuel and technology joined by a space, separated by ";") whose output is in the monthly
+    //total the half-hourly demand is calibrated to (total_consumption_gwh, OpenElectricity fuel techs). Off-market units
+    //of other types (landfill gas, biogas, gas engines, diesel) are not: their output is added to the monthly target,
+    //so Arena's subtraction leaves the market demand as recorded. Unset: every off-market unit is taken as recorded
+    public String demandRecordFuels;
+    //Solar adoption step 2 (14 Nov 2026): CSV in simulationSettings with the recorded residential grid electricity by
+    //financial year (fy, residential_twh, ...: AES Table F3). With it, households' use is each calendar year's
+    //residential electricity (AES to its last year, then the ISP's residential grid demand for the consumption scenario,
+    //FY values turned into calendar years) over the households, and the residential share of the total becomes a yearly
+    //series; domesticConsumptionPercentage is then unused for household use. Unset: the constant share (thesis)
+    public String residentialConsumptionFile;
+    //N30 (16 Nov 2026): optional CSV in simulationSettings (year,households,source) of Victorian households on 1 January
+    //(census counts of occupied private dwellings, scripts/data/households_census_vic.py). Its years replace the
+    //database's (domestic_consumers, then Victoria in Future from 2016, which jumped 7 % in 2015); later years keep
+    //Victoria in Future's growth from the file's last value. Unset: the database series as before
+    public String householdsFile;
+    //Solar adoption step 3 (14 Nov 2026): "recorded" (default) builds the rooftop fleet from the installation register;
+    //"endogenous" lets household cohorts decide (core.Social.RooftopAdoption): the register then serves only the N21
+    //add-back of the historic demand and the non-household share, and is the calibration target (step 4)
+    public String rooftopAdoption = "recorded";
+    //CSVs in simulationSettings read in endogenous mode: cohort shares (build_cohorts.py), economics register, and the
+    //self-consumed share of a system's output by household type (type ALL for every type)
+    public String householdCohortsFile = "household_cohorts_VIC.csv";
+    public String rooftopEconomicsFile = "rooftop_pv_economics_VIC.csv";
+    public String rooftopSelfConsumptionFile = "rooftop_self_consumption_VIC.csv";
+    //Hazard h = e [a + b A] / (1 + exp(k (PB - PB0))), monthly: innovation a, imitation b, payback slope k (1/yr) and
+    //midpoint PB0 (yr); e multiplies the factors of renters, flats and income quintile 1. Initial values, calibrated in
+    //step 4 against the register 2007-2015
+    public double adoptionInnovation = 0.0005;
+    public double adoptionImitation = 0.03;
+    public double adoptionPaybackSlope = 0.8;
+    public double adoptionPaybackMidpoint = 8.0;
+    public double adoptionRenterFactor = 0.1;
+    public double adoptionFlatFactor = 0.1;
+    public double adoptionLowIncomeFactor = 0.5;
+    //Share of the register's monthly installations and kW owned by non-households (small businesses), kept as recorded
+    public double rooftopNonResidentialShare = 0.0;
+    //Optional CSV in simulationSettings (year,share_kw,share_installs,...): the year's non-household share of the register's
+    //kW and installations (systems of 14 kW and more, APVI size bands); replaces rooftopNonResidentialShare when set
+    public String rooftopNonResidentialShareFile;
+    //Optional CSV in simulationSettings with the carbon price by month (month,priceTonne,source)
+    public String carbonPriceFile;
+    //N38 (b, c) (19 Nov 2026, opt-in): CSV (fuel,month,factor,source) of monthly factors on the power a unit makes
+    //available, by fuel source descriptor (e.g. Brown Coal: recorded seasonal availability; Wind: recorded seasonal
+    //output shape). Months or fuels not listed keep 1. Unset: no seasonal factor
+    public String seasonalFactorsFile;
+    //Strategic withholding (d): when the offered capacity exceeds demand by less than withholdingMargin (a share of
+    //demand), each portfolio holding at least withholdingMinPortfolioShare of the offered capacity reprices
+    //withholdingShare of its dispatchable bids to withholdingPriceMWh. Negative margin (the default) turns it off.
+    //Stations map to portfolios through portfolioFile (name_prefix,portfolio,source); unmapped stations stand alone
+    public double withholdingMargin = -1;
+    public double withholdingShare = 0;
+    public double withholdingPriceMWh = 0;
+    public double withholdingMinPortfolioShare = 0;
+    public String portfolioFile;
+    //Optional CSV (name_prefix,parameter,value,source) of station parameters that override the generator-type settings:
+    //heatRateGJperMWh, variableOMMWh, fuelPriceGJ, forcedOutageRate, outageHours, availabilityFactor
+    public String generatorParametersFile;
+    //Variable O&M and constant fuel prices are in real dollars of costPriceYear; cpiFile (year,index,source) turns them
+    //into each year's dollars (nearest year outside its range). Unset: costs are used as given
+    public String cpiFile;
+    public int costPriceYear = 0;
+    //Imports (step 4): optional CSV of interconnector import blocks, one row per link and period
+    //(link,from,to,importMW,heatRateGJperMWh,fuel,variableOMMWh,emissionsTperMWh,waterValueFactor,lossFactor,source).
+    //When the region's own offers fall short, the blocks fill the gap cheapest first and the price is the dearer of the
+    //last regional offer and the last import block. A block offers at the neighbour's short-run cost
+    //(heat rate x fuel + VOM + emissions x carbon; fuel is a fuelPriceFile name or a constant in costPriceYear dollars)
+    //or, with waterValueFactor >= 0, at waterValueFactor x last month's mean primary price; times lossFactor.
+    //Unset: shortfalls keep the old rule (last offer x (1 + importPriceFactor)), unlimited in volume
+    public String interconnectorFile;
+    //N38 (a) (19 Nov 2026, opt-in): with interconnectorFile, the import blocks join the merit order beside the regional
+    //offers, so imports flow whenever a neighbour is cheaper than the marginal Victorian offer, not only at shortfall
+    public boolean importsInMeritOrder = false;
+    //With importsInMeritOrder: false keeps the water-value links (hydro neighbours) as last-resort supply after the stack
+    public boolean importsInMeritOrderWaterValue = true;
+    //Optional CSV (from,priceMWh,source): market price cap from each date on. When set, demand left unmet after the
+    //imports is priced at the cap instead of the importPriceFactor rule
+    public String shortfallPriceFile;
 
 
     /*
@@ -201,6 +375,7 @@ public class Settings implements java.io.Serializable {
     public void applyInflationToAllGenBasePrice( double inflation ){
         for (Map.Entry<String, GeneratorSettings> e : generators.entrySet()) {
             e.getValue().basePriceMWh *= inflation;
+            e.getValue().srmcMWh *= inflation;
         }
     }
 
@@ -220,6 +395,57 @@ public class Settings implements java.io.Serializable {
 
     public double getBasePriceMWh(String fuelType, String techType) {
         return getGenSettings(fuelType, techType).basePriceMWh;
+    }
+
+    public double getSrmcMWh(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).srmcMWh;
+    }
+
+    public double getStorageOfferFactor(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).storageOfferFactor;
+    }
+
+    public double getAvailabilityFactor(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).availabilityFactor;
+    }
+
+    public boolean getDailyEnergyLimit(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).dailyEnergyLimit;
+    }
+
+    public double getRoundTripEfficiency(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).roundTripEfficiency;
+    }
+
+    public double getStorageHours(String fuelType, String techType) {
+        return getGenSettings(fuelType, techType).storageHours;
+    }
+
+    public double getHeatRateGJperMWh(String f, String t) { return getGenSettings(f, t).heatRateGJperMWh; }
+
+    public double getVariableOMMWh(String f, String t) { return getGenSettings(f, t).variableOMMWh; }
+
+    public String getFuelPriceFile(String f, String t) { return getGenSettings(f, t).fuelPriceFile; }
+
+    public double getFuelPriceGJ(String f, String t) { return getGenSettings(f, t).fuelPriceGJ; }
+
+    public double getMustRunShare(String f, String t) { return getGenSettings(f, t).mustRunShare; }
+
+    public double getMustRunPriceMWh(String f, String t) { return getGenSettings(f, t).mustRunPriceMWh; }
+
+    public boolean getPeakOnly(String f, String t) { return getGenSettings(f, t).peakOnly; }
+
+    public boolean getMonthlyEnergyFromRecord(String f, String t) { return getGenSettings(f, t).monthlyEnergyFromRecord; }
+
+    public double getForcedOutageRate(String f, String t) { return getGenSettings(f, t).forcedOutageRate; }
+
+    public double getOutageHours(String f, String t) { return getGenSettings(f, t).outageHours; }
+
+    //Every fuelPriceFile named in the generator settings
+    public java.util.Set<String> getFuelPriceFiles() {
+        java.util.Set<String> files = new java.util.HashSet<>();
+        for (GeneratorSettings gs : generators.values()) if (gs.fuelPriceFile != null) files.add(gs.fuelPriceFile);
+        return files;
     }
 
     public double getMarketPriceCap(String fuelType, String techType) {
@@ -292,6 +518,10 @@ public class Settings implements java.io.Serializable {
 
     public String getStartDateSpotMarket() {
         return simulationDates.startDateSpotMarket;
+    }
+
+    public String getReportFrom() {
+        return simulationDates.reportFrom;
     }
 
     /**
@@ -419,11 +649,112 @@ public class Settings implements java.io.Serializable {
 
     public int getForecastGeneratorRetirement() { return forecast.generatorRetirement; }
 
+    public String getGeneratorCorrections() { return generatorCorrections; }
+
+    public String getCapacityPathFile() { return capacityPathFile; }
+
+    public String getTariffContributionFile() { return tariffContributionFile; }
+
+    public int getTariffContributionLag() { return tariffContributionLag; }
+
+    public String getTariffComponentsFile() { return tariffComponentsFile; }
+
+    public String getNetExportsFile() { return netExportsFile; }
+
+    public String getNetExportsShapeFile() { return netExportsShapeFile; }
+
+    public boolean getShapeDemandUplift() { return shapeDemandUplift; }
+
+    public boolean getOutagesPerUnit() { return outagesPerUnit; }
+
+    public boolean getSolarShapeInDemand() { return solarShapeInDemand; }
+
+    public boolean getForecastFromCalibratedDemand() { return forecastFromCalibratedDemand; }
+
+    public String getSolarInstallationsFile() { return solarInstallationsFile; }
+
+    public double getRooftopArrayTilt() { return rooftopArrayTilt; }
+
+    public double getRooftopArrayAzimuth() { return rooftopArrayAzimuth; }
+
+    public double getSolarStationLatitude() { return solarStationLatitude; }
+
+    public double getSolarStationLongitude() { return solarStationLongitude; }
+
+    public boolean getRooftopForecastFromModelYield() { return rooftopForecastFromModelYield; }
+
+    public double getRooftopForecastUplift() { return rooftopForecastUplift; }
+
+    public boolean getForecastFinancialYears() { return forecastFinancialYears; }
+
+    public String getDemandRecordFuels() { return demandRecordFuels; }
+
+    public String getResidentialConsumptionFile() { return residentialConsumptionFile; }
+
+    public String getHouseholdsFile() { return householdsFile; }
+
+    public boolean isRooftopAdoptionEndogenous() { return "endogenous".equalsIgnoreCase(rooftopAdoption); }
+
+    public String getHouseholdCohortsFile() { return householdCohortsFile; }
+
+    public String getRooftopEconomicsFile() { return rooftopEconomicsFile; }
+
+    public String getRooftopSelfConsumptionFile() { return rooftopSelfConsumptionFile; }
+
+    public double getAdoptionInnovation() { return adoptionInnovation; }
+
+    public double getAdoptionImitation() { return adoptionImitation; }
+
+    public double getAdoptionPaybackSlope() { return adoptionPaybackSlope; }
+
+    public double getAdoptionPaybackMidpoint() { return adoptionPaybackMidpoint; }
+
+    public double getAdoptionRenterFactor() { return adoptionRenterFactor; }
+
+    public double getAdoptionFlatFactor() { return adoptionFlatFactor; }
+
+    public double getAdoptionLowIncomeFactor() { return adoptionLowIncomeFactor; }
+
+    public double getRooftopNonResidentialShare() { return rooftopNonResidentialShare; }
+
+    public String getRooftopNonResidentialShareFile() { return rooftopNonResidentialShareFile; }
+
+    public String getCarbonPriceFile() { return carbonPriceFile; }
+
+    public String getSeasonalFactorsFile() { return seasonalFactorsFile; }
+
+    public String getPortfolioFile() { return portfolioFile; }
+
+    public String getGeneratorParametersFile() { return generatorParametersFile; }
+
+    public String getCpiFile() { return cpiFile; }
+
+    public int getCostPriceYear() { return costPriceYear; }
+
+    public String getInterconnectorFile() { return interconnectorFile; }
+
+    public String getShortfallPriceFile() { return shortfallPriceFile; }
+
+    public boolean getImportsInMeritOrder() { return importsInMeritOrder; }
+
+    public boolean getImportsInMeritOrderWaterValue() { return importsInMeritOrderWaterValue; }
+
+    public double getWithholdingMargin() { return withholdingMargin; }
+
+    public double getWithholdingShare() { return withholdingShare; }
+
+    public double getWithholdingPriceMWh() { return withholdingPriceMWh; }
+
+    public double getWithholdingMinPortfolioShare() { return withholdingMinPortfolioShare; }
+
     public double getForecastTechnologicalImprovement() { return forecast.technologicalImprovement; }
 
     public double getLearningCurve() { return forecast.learningCurve; }
 
     public int getForecastGenerationRolloutPeriod() { return forecast.generationRolloutPeriod; }
+    public int getForecastCommissioningDelayMonths() { return (int) Math.round(forecast.commissioningDelay * 12.0); }
+    public double getForecastCommissioningDelay() { return forecast.commissioningDelay; }
+    public void setForecastCommissioningDelay(double years) { forecast.commissioningDelay = years; }
 
     public double getForecastSolarInstallCapacity() { return forecast.solarInstallCapacity; }
 

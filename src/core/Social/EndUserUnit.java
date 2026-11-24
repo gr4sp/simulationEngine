@@ -143,7 +143,9 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
 
                 c.setTime(today);
                 c.set(Calendar.MONTH, 0);
-                int year = c.get(Calendar.YEAR)-1;
+                //Register row for the January update of year Y: Y - tariffContributionLag (1 = previous year's row, the
+                //original rule; 0 = the row of the bills in force in year Y)
+                int year = c.get(Calendar.YEAR) - data.settings.getTariffContributionLag();
 
                 //If wholesale contribution is given by historic data (DB table historic_tariff_contribution)
                 if( data.getTariff_contribution_wholesale_register().containsKey(year) ) {
@@ -160,7 +162,13 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 if(wholesalePriceComponent < 0.01) wholesalePriceComponent = (float)0.01;
                 if(wholesalePriceComponent > 1.00) wholesalePriceComponent = (float)1.0;
 
-                //Get CPI conversion
+                //Get CPI conversion. Prices of the six months before are turned into January-2019 dollars with this
+                //January's factor. With cost-based offers (cpiFile) costs stop inflating after the CPI file's last year, so
+                //later prices are in that year's dollars and the factor is held at the January after it (it kept falling
+                //by annualCpi, deflating forward wholesale prices a second time)
+                int lastPriceYear = data.getCostPriceLastYear();
+                if (lastPriceYear < Integer.MAX_VALUE && c.get(Calendar.YEAR) > lastPriceYear + 1)
+                    c.set(Calendar.YEAR, lastPriceYear + 1);
                 Date cpiDate = c.getTime();
                 float conversion_rate = data.getCpi_conversion().get(cpiDate);
 
@@ -185,7 +193,13 @@ public class EndUserUnit extends Actor implements EndUserActor, java.io.Serializ
                 }
                 avgWholesalePrice /= nmonths;
 
-                this.currentTariff = (float) avgWholesalePrice / wholesalePriceComponent;
+                if (data.hasTariffComponents()) {
+                    //Additive tariff: simulated wholesale plus the recorded network, environmental and retail
+                    //components (real January-2019 c/kWh excl. GST), plus GST
+                    double[] k = data.getTariffComponents(year);
+                    this.currentTariff = (float) ((avgWholesalePrice + k[0] + k[1] + k[2]) * (1.0 + k[3]));
+                } else
+                    this.currentTariff = (float) avgWholesalePrice / wholesalePriceComponent;
 
 
             }

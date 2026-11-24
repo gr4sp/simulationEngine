@@ -60,6 +60,10 @@ public class SaveData implements Steppable, java.io.Serializable {
 
 
     HashMap<Integer, XYSeries> genCapacityFactorSeries;  // the data series that will be added to
+    //Solar step 2: scope 1 emissions of every generator (monthly output x its emission factor), summed by calendar year
+    TreeMap<Integer, Double> systemEmissionsByYear = new TreeMap<>();
+    //23 Nov 2026 (output only): the same emissions by month (yyyy-MM), so they can be summed over July-June years
+    TreeMap<String, Double> systemEmissionsByMonth = new TreeMap<>();
     HashMap<Integer, XYSeries> systemProductionSeries;  // the data series that will be added to
     public HashMap<Integer, XYSeries> PriceGenAvgSeries;  // the data series that will be added to
     HashMap<Integer, XYSeries> PriceGenMaxSeries;  // the data series that will be added to
@@ -733,22 +737,22 @@ public class SaveData implements Steppable, java.io.Serializable {
                         genCapacityFactorSeries.get(integer).add(floatDate, gens.get(i).getHistoricCapacityFactor(), false);
                         systemProductionSeries.get(integer).add(floatDate, gens.get(i).getMonthlyGeneratedMWh(), false);
 
-                        if( currentDate.before(data.getBaseYearForecastDate()) )
-                            if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ){
-                                MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                            } else if( data.settings.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ) {
-                                MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                            } else {
-                                MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
-                            }
-                        else
-                            if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"primary", gens.elementAt(i).getMaxCapacity() ) ){
-                                MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                            } else if( data.settingsAfterBaseYear.isMarketPaticipant( gens.elementAt(i).getDispatchTypeDescriptor(),"secondary", gens.elementAt(i).getMaxCapacity() ) ) {
-                                MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
-                            } else {
-                                MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
-                            }
+                        //Market output follows the market the unit dispatches in (Generator.getInPrimaryMarket / Secondary),
+                        //which SimPolicies updates after the base year. Classifying again by dispatch type and size put
+                        //storage under 30 MW, which always dispatches in the primary market, under off-market output
+                        if( gens.get(i).getInPrimaryMarket() ){
+                            MWhPrimarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                        } else if( gens.get(i).getInSecondaryMarket() ) {
+                            MWhSecondarySpot += gens.get(i).getMonthlyGeneratedMWh();
+                        } else {
+                            MWhOffSpot += gens.get(i).getMonthlyGeneratedMWh();
+                        }
+                        {
+                            int emYear = data.getSimCalendar().get(Calendar.YEAR);
+                            systemEmissionsByYear.merge(emYear, gens.get(i).getMonthlyGeneratedMWh() * gens.get(i).getEmissionsFactor(emYear), Double::sum);
+                            systemEmissionsByMonth.merge(new SimpleDateFormat("yyyy-MM").format(data.getSimCalendar().getTime()),
+                                    gens.get(i).getMonthlyGeneratedMWh() * gens.get(i).getEmissionsFactor(emYear), Double::sum);
+                        }
 
                         if (gens.elementAt(i).getTechTypeDescriptor().equals("Solar - Rooftop")) {
                             MWhRooftopPV += gens.get(i).getMonthlyGeneratedMWh();
@@ -780,13 +784,16 @@ public class SaveData implements Steppable, java.io.Serializable {
                             numGas ++;
                         }
 
-                        if (gens.elementAt(i).getTechTypeDescriptor().equals("Solar PV - Fixed")) {
+                        //All utility solar (fixed, single-axis tracking, TBA), not only "Solar PV - Fixed".
+                        //Rooftop PV is counted separately above.
+                        if (gens.elementAt(i).getfuelSourceDescriptor().equals("Solar")
+                                && !gens.elementAt(i).getTechTypeDescriptor().equals("Solar - Rooftop")) {
                             MWhSolar += gens.get(i).getMonthlyGeneratedMWh();
                             PriceAvgSolar += gens.get(i).priceMWhLCOE();
                             numSolar ++;
                         }
 
-                        if (gens.elementAt(i).getTechTypeDescriptor().equals("Battery")) {
+                        if (gens.elementAt(i).getfuelSourceDescriptor().equals("Battery")) {
                             MWhBattery += gens.get(i).getMonthlyGeneratedMWh();
                             PriceAvgBattery += gens.get(i).priceMWhLCOE();
                             numBattery ++;
@@ -1247,7 +1254,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                                 ((XYDataItem) series.getItems().get(t - shift)).getYValue()));
                     }
                 }
-                csvWriterPrices.writeNext(record.toArray(new String[0]));
+                if (data.isReported(c.getTime()))
+                    csvWriterPrices.writeNext(record.toArray(new String[0]));
                 c.add(Calendar.MONTH, 1);
             }
             csvWriterPrices.close();
@@ -1274,6 +1282,8 @@ public class SaveData implements Steppable, java.io.Serializable {
 
         // Prices are recomputed monthly but were never persisted; see savePriceSeries.
         savePriceSeries(simState, folderName);
+        if (data.getRooftopAdoption() != null)
+            data.getRooftopAdoption().write(folderName + "/" + data.yamlFileName + "RooftopAdoption" + data.outputID + ".csv");
 
         try (
 
@@ -1541,7 +1551,9 @@ public class SaveData implements Steppable, java.io.Serializable {
                     SimpleDateFormat dateToString = new SimpleDateFormat("yyyy-MM-dd");
 
                     //First series starts from beginning simulation, the rest follows a consumtionUnit, which has a creationDate
-                    if (i == 0) {
+                    if (!data.isReported(c.getTime())) {
+                        // spin-up month: nothing written
+                    } else if (i == 0) {
                         String[] record = {dateToString.format(c.getTime()), Double.toString(kwh / consumers), Double.toString(tariffPrice), Double.toString(wholesale), Double.toString(emissions / consumers),
                                 Double.toString(consumers), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg), Double.toString(numActors),
                                 Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
@@ -1749,6 +1761,8 @@ public class SaveData implements Steppable, java.io.Serializable {
             Arrays.sort(years, Collections.reverseOrder());
             for (int i = years.length - 1; i >= 0; i--) {
                 String year = (String) years[i];
+                if (!data.isReportedYear(year))
+                    continue;
                 ArrayList<Double> yearDataGHG = datasetGHGsummary.get(year);
                 ArrayList<Double> yearDataPrice = datasetPriceSummary.get(year);
                 ArrayList<Double> yearDataWholesale = datasetWholesaleSummary.get(year);
@@ -1887,6 +1901,8 @@ public class SaveData implements Steppable, java.io.Serializable {
 
         // Prices are recomputed monthly but were never persisted; see savePriceSeries.
         savePriceSeries(simState, folderName);
+        if (data.getRooftopAdoption() != null)
+            data.getRooftopAdoption().write(folderName + "/" + data.yamlFileName + "RooftopAdoption" + data.outputID + ".csv");
 
         try (
 
@@ -1917,7 +1933,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
                     "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
-                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"));
+                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)",
+                    "System GHG Emissions (tCO2-e)", "Residential Share of Consumption"));
             TreeMap<Integer, Vector<Generator>> treeMap = new TreeMap<>(data.gen_register);
 
             for (Integer integer : treeMap.keySet()) {
@@ -1948,7 +1965,7 @@ public class SaveData implements Steppable, java.io.Serializable {
                     "Percentage Renewable Production", "System Production Primary Spot", "System Production Secondary Spot", "System Production Off Spot",
                     "System Production Rooftop PV", "System Production Coal", "System Production Water", "System Production Wind", "System Production Gas",
                     "System Production Solar", "System Production Battery", "Number of Active Actors", "Primary Total Unmet Demand (MWh)", "Primary Total Unmet Demand (Hours)", "Primary Total Unmet Demand (Days)", "Primary Max Unmet Demand Per Hour (MWh)",
-                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)"};
+                    "Secondary Total Unmet Demand (MWh)", "Secondary Total Unmet Demand (Hours)", "Secondary Total Unmet Demand (Days)", "Secondary Max Unmet Demand Per Hour (MWh)", "System GHG Emissions (tCO2-e)"};
 
             csvWriterMonthly.writeNext(headerRecordMonthly);
 
@@ -2142,7 +2159,8 @@ public class SaveData implements Steppable, java.io.Serializable {
                     MWhSolSpotAgg = spsolaggitem.getYValue();
                     MWhBatSpotAgg = spbataggitem.getYValue();
 
-                    MWhRenewable = MWhRoofSpotAgg + MWhWaterSpotAgg + MWhWindSpotAgg + MWhSolSpotAgg + MWhBatSpotAgg;
+                    //Storage only returns energy it took from the grid, so it is not a renewable source
+                    MWhRenewable = MWhRoofSpotAgg + MWhWaterSpotAgg + MWhWindSpotAgg + MWhSolSpotAgg;
                     MWhFossil = MWhCoalSpotAgg + MWhGasSpotAgg;
                     percentageRenwewable = MWhRenewable / (MWhRenewable + MWhFossil);
 
@@ -2172,8 +2190,10 @@ public class SaveData implements Steppable, java.io.Serializable {
                         Double.toString(consumers), Double.toString(percentageRenwewable), Double.toString(MWhPrimarySpotAgg), Double.toString(MWhSecondarySpotAgg), Double.toString(MWhOffSpotAgg), Double.toString(MWhRoofSpotAgg),
                         Double.toString(MWhCoalSpotAgg), Double.toString(MWhWaterSpotAgg), Double.toString(MWhWindSpotAgg), Double.toString(MWhGasSpotAgg),
                         Double.toString(MWhSolSpotAgg), Double.toString(MWhBatSpotAgg), Double.toString(numActors), Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
-                        Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay)};
-                csvWriterMonthly.writeNext(record);
+                        Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay),
+                        Double.toString(systemEmissionsByMonth.getOrDefault(new SimpleDateFormat("yyyy-MM").format(c.getTime()), 0.0))};
+                if (data.isReported(c.getTime()))
+                    csvWriterMonthly.writeNext(record);
 
                 /***
                  * Generators Production Data
@@ -2387,6 +2407,8 @@ public class SaveData implements Steppable, java.io.Serializable {
             Arrays.sort(years, Collections.reverseOrder());
             for (int i = years.length - 1; i >= 0; i--) {
                 String year = (String) years[i];
+                if (!data.isReportedYear(year))
+                    continue;
                 ArrayList<Double> yearDataGHG = datasetGHGsummary.get(year);
                 ArrayList<Double> yearDataPrice = datasetPriceSummary.get(year);
                 ArrayList<Double> yearDataWholesale = datasetWholesaleSummary.get(year);
@@ -2561,6 +2583,9 @@ public class SaveData implements Steppable, java.io.Serializable {
                         Double.toString(spcoalagg), Double.toString(spwateragg), Double.toString(spwindagg), Double.toString(spgasagg), Double.toString(spsolagg),
                         Double.toString(spbatagg), Double.toString(maxNumActors), Double.toString(primaryunmetDemandMwh), Double.toString(primaryunmetDemandHours), Double.toString(primaryunmetDemandDays), Double.toString(primarymaxUnmetDemandMwhPerDay),
                         Double.toString(secondaryunmetDemandMwh), Double.toString(secondaryunmetDemandHours), Double.toString(secondaryunmetDemandDays), Double.toString(secondarymaxUnmetDemandMwhPerDay) ));
+                int yInt = Integer.parseInt(year.trim());
+                record.add(Double.toString(systemEmissionsByYear.getOrDefault(yInt, 0.0)));
+                record.add(Double.toString(data.getResidentialShareByYear().getOrDefault(yInt, 0.0)));
 
                 for( Double spg : spgenprodagg){
                     record.add(Double.toString(spg));

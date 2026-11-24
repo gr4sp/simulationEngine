@@ -88,6 +88,8 @@ public class SimPolicies implements java.io.Serializable, Steppable {
 //                        System.out.println(g.getFuelSourceDescriptor());
 
                     g.setBasePriceMWh( newBasePrice );
+                    g.setSrmcMWh( data.settingsAfterBaseYear.getSrmcMWh(g.getFuelSourceDescriptor(), g.getTechTypeDescriptor()) );
+                    g.setStorageOfferFactor( data.settingsAfterBaseYear.getStorageOfferFactor(g.getFuelSourceDescriptor(), g.getTechTypeDescriptor()) );
 
                     g.setMaxCapacity( g.getMaxCapacity() * data.settingsAfterBaseYear.getNameplateCapacityChange(g.getFuelSourceDescriptor(), g.getTechTypeDescriptor()) );
 
@@ -191,9 +193,18 @@ public class SimPolicies implements java.io.Serializable, Steppable {
         }
 
         Date date = data.getCurrentSimDate();
-        if (data.getSolar_number_installs().containsKey(date) == true) {
+        //Solar step 3: in endogenous mode the household cohorts decide this month's installations (RooftopAdoption);
+        //the recorded register is left as it is for the demand add-back (N21)
+        boolean endogenous = data.getRooftopAdoption() != null;
+        if (endogenous) data.getRooftopAdoption().step(data, date);
+        boolean newRooftop = endogenous ? data.getRooftopAdoption().kwAt(date) != null && data.getRooftopAdoption().kwAt(date) > 0
+                : data.getSolar_number_installs().containsKey(date);
+        if (newRooftop) {
 
-            float solar_capacity_agg = data.getSolar_aggregated_kw().get(date) / (float) 1000.0; //to MW
+            float solar_capacity_agg = endogenous ? (float) (data.getRooftopAdoption().kwAt(date) / 1000.0)
+                    : data.getSolar_aggregated_kw().get(date) / (float) 1000.0; //to MW
+            int monthInstalls = endogenous ? (int) Math.round(data.getRooftopAdoption().installsAt(date))
+                    : data.getSolar_number_installs().get(date);
 
             //Create the end date 30 years after
             c.setTime(date);
@@ -214,7 +225,7 @@ public class SimPolicies implements java.io.Serializable, Steppable {
                 double solar_cap_per_spm = (double) solar_capacity_agg /  (double)  num_subdistribution_spms;
 
                 //Divide num_installations by num of SPMs
-                int num_installs = data.getSolar_number_installs().get(date) / num_subdistribution_spms;
+                int num_installs = monthInstalls / num_subdistribution_spms;
 
                 Generator gen = new Generator(idGen, "VIC1", "Rooftop Solar PV",
                                 "Solar Rooftop", "Household", "Solar - Rooftop",
@@ -224,6 +235,8 @@ public class SimPolicies implements java.io.Serializable, Steppable {
                 if(currentYear >= data.settings.getBaseYearConsumptionForecast() ) {
                     gen.setBasePriceMWh(data.settingsAfterBaseYear.getBasePriceMWh(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
                     gen.setMarketPriceCap(data.settingsAfterBaseYear.getMarketPriceCap(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
+                    gen.setSrmcMWh(data.settingsAfterBaseYear.getSrmcMWh(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
+                    gen.setStorageOfferFactor(data.settingsAfterBaseYear.getStorageOfferFactor(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
 
                     gen.setMaxCapacity(gen.getMaxCapacity() * data.settingsAfterBaseYear.getNameplateCapacityChange(gen.getFuelSourceDescriptor(), gen.getTechTypeDescriptor()));
 

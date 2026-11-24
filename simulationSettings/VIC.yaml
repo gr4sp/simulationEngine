@@ -7,6 +7,102 @@ folderOutput: "auto"
 # "full": generates all csv data ~8MB, and all the plots 2.5MB per simulation
 # "light": generates only the SimDataYearSummary.csv and SimDataMonthlySummary.csv ~75KB
 reportGeneration: "light"
+# R3 merit order (4 Nov 2026, docs/r3_offer_tests_30oct): coal and gas offer at short-run cost (heatRateGJperMWh x fuel
+# price + variableOMMWh + emission factor x carbon price), coal offers a must-run share at 0 $/MWh, hydro offers its daily
+# energy in peak half-hours at last month's mean price, coal and gas units break down at random (forcedOutageRate), and
+# storage buys low and sells high. Station heat rates, variable O&M and coal prices are in generator_parameters_VIC.csv
+# (AEMO 2020 IASR workbook; ACIL Tasman 2009 for stations closed before 2020); outage rates and repair times per type
+# are the IASR's (partial outages as a constant derating in availabilityFactor). Costs are real 2020 dollars, turned into
+# each year's dollars with the Melbourne CPI. Net exports are already in the demand, which is calibrated to total generation
+# (generation_consumption_historic), so netExportsFile stays unset. Withholding (withholdingMargin) is off: the model is
+# a cost-based competitive benchmark.
+carbonPriceFile: carbon_price_AU.csv
+generatorCorrections: generator_corrections.csv
+generatorParametersFile: generator_parameters_VIC.csv
+cpiFile: cpi_melbourne.csv
+costPriceYear: 2020
+# R3 shortfall repair (8 Nov 2026): the demand uplift to total generation follows the 2015-20 net-export shape,
+# multi-unit rows break down unit by unit, and hydro gets each month's recorded energy (an input, not a validation result).
+shapeDemandUplift: true
+netExportsShapeFile: net_exports_shape_VIC.csv
+outagesPerUnit: true
+# N21 (13 Nov 2026): AEMO's half-hourly demand is net of rooftop PV and small solar; their recorded output is added back
+# at its own shape before the calibration, so Arena's subtraction no longer takes midday demand out twice.
+solarShapeInDemand: true
+# Forward period (13 Nov 2026): demand after the forecast start grows the calibrated base-year profile (total generation),
+# not AEMO's operational demand, which lacks exports, non-scheduled and rooftop output (2021 demand was 10 % low).
+forecastFromCalibratedDemand: true
+# N23 (14 Nov 2026): rooftop PV was 10 % below the record. Three causes, each repaired:
+# (1) the installation register (APVI) stops in September 2019; the CER postcode record replaces it for 2011-2019
+#     (scripts/data/cer_solar_vic_csv.py; 2011-2018 agree within 0.5 %, 2019 adds 191 MW);
+# (2) missing solar_ghi half-hours gave no output; they are filled from the same half-hour on nearby days (always on);
+# (3) the yield formula's de-rating factors (CEC design guidelines, Issue 6.0, 2012, s. 8.1) apply to the irradiation on
+#     the tilted array, not to horizontal irradiance: rooftop arrays face north at 16 degrees, the Australian mean tilt
+#     (Killinger, Lingfors and Saint-Drenan 2018, Solar Energy 173). Solar farms keep the horizontal irradiance.
+solarInstallationsFile: solar_installation_cer_VIC.csv
+rooftopArrayTilt: 16
+rooftopArrayAzimuth: 0
+# Forward rooftop fleet: the ISP energy path (x 1.25, LoadData) divided by the model's own yield per kW, from the
+# recorded 2019 fleet and replacing 30-year-old systems; before, energy increments were converted at a 20 % capacity
+# factor from 2021 (the model's yield is about 14 %), and nothing was added in 2020
+rooftopForecastFromModelYield: true
+# N29 (14 Nov 2026, your decision): no uplift on AEMO's 2019 rooftop forecast (its FY2020 value, 2,485 GWh, is within 2 %
+# of the recorded FY2020 output, 2,439 GWh; the thesis's x 1.25 reflected installations seen after 2020), and the
+# ISP/ESOO registers read as financial years: calendar year Y = mean of FY Y and FY Y+1 for demand growth; the rooftop
+# fleet on 1 January Y follows FY Y's energy.
+rooftopForecastUplift: 1.0
+forecastFinancialYears: true
+# N28 (14 Nov 2026): fuel types in the monthly total the demand is calibrated to (OpenElectricity fuel techs of
+# scripts/data/fetch_openelectricity.py; solar is handled by solarShapeInDemand). Off-market units of other types
+# (landfill gas, biogas, gas engines, diesel) are left out of that total: their output is added to the monthly target,
+# so subtracting it in the market no longer removes demand the record never had. Non-scheduled wind and hydro are taken
+# as recorded (OpenElectricity counts registered non-scheduled units).
+demandRecordFuels: "Brown Coal; Water; Wind; Battery; Gas Pipeline Turbine - OCGT; Gas Pipeline Turbine - Steam Sub Critical"
+# Solar adoption step 2 (14 Nov 2026, decision D3): household electricity use is the recorded residential grid
+# electricity (Australian Energy Statistics 2020, Table F3, FY1974-FY2019), then AEMO's residential grid demand forecast
+# for the consumption scenario (ISP/ESOO 2019), turned into calendar years, over the households. The residential share
+# of the total becomes a yearly series (0.19-0.26 in 1999-2019, reported in the year summary) instead of
+# domesticConsumptionPercentage (0.3, against a total that includes losses and power stations' own use).
+residentialConsumptionFile: residential_electricity_VIC.csv
+# N30 (16 Nov 2026, your decision): households are the census counts of occupied private dwellings (2001-2021, linear
+# between census nights, scripts/data/households_census_vic.py) from 2007; before, domestic_consumers (equal to the
+# census in 2006); after 2021, Victoria in Future's growth from the 2021 census. Removes the 7 % jump of 2015 (the
+# database switched from domestic_consumers to Victoria in Future in 2016).
+householdsFile: households_VIC.csv
+# Solar adoption step 3 (14 Nov 2026): recorded = rooftop PV from the installation register (base case until the step 4
+# calibration is accepted); endogenous = 720 household cohorts decide (core.Social.RooftopAdoption, hazard
+# e [a + b A] / (1 + exp(k (PB - PB0))) on the simple payback), the register then serves the N21 add-back and is the
+# calibration target. Inputs: householdCohortsFile, rooftopEconomicsFile, rooftopSelfConsumptionFile (defaults in
+# Settings). The hazard parameters below are initial guesses, not sourced values; step 4 calibrates them.
+rooftopAdoption: recorded
+adoptionInnovation: 0.0005
+adoptionImitation: 0.03
+adoptionPaybackSlope: 0.8
+adoptionPaybackMidpoint: 8.0
+adoptionRenterFactor: 0.1
+adoptionFlatFactor: 0.1
+adoptionLowIncomeFactor: 0.5
+rooftopNonResidentialShare: 0.0
+# Non-household share of the register by year (systems of 14 kW and more, APVI size bands, Australia; 1.8-3.3 % of kW
+# in 2010-12, 15-24 % in 2014-19): replaces the constant when set (scripts/data/rooftop_nonresidential_share.py)
+rooftopNonResidentialShareFile: rooftop_nonresidential_share_VIC.csv
+# R3 step 4 (9 Nov 2026): shortfalls are met by interconnector imports up to each link's peak import capability,
+# offered at the neighbour's short-run cost or a water value; demand left unmet is priced at the market price cap.
+# Read from this file only and applied in every year (VICfuture.yaml needs no copy).
+interconnectorFile: interconnectors_VIC.csv
+shortfallPriceFile: market_price_cap_NEM.csv
+# R3 step 3 (9 Nov 2026): the wholesale share of the tariff (R_w) comes from sourced rows (Oakley Greenwood 2014/2017,
+# AEMC price trends; 1999-2000 constructed), one row per calendar year of bills, used without a lag by the January update.
+tariffContributionFile: tariff_contribution_VIC.csv
+tariffContributionLag: 0
+# Forward period (12 Nov 2026): additive tariff for the whole run, (simulated wholesale + network + environmental +
+# retail) x (1 + GST), replacing wholesale / R_w (R_w above is then unused). Components from Oakley Greenwood 2014/2017
+# and AEMC price trends 2018-2020 (forecasts to 2022/23, then held in real terms), AEMC years on the Oakley Greenwood
+# basis (scripts/data/tariff_components_vic.py). The 2019/20 information set: no later data.
+tariffComponentsFile: tariff_components_VIC.csv
+# Forward period (12 Nov 2026): utility wind, solar, battery and gas follow the AEMO 2020 ISP Central DP1 path to
+# FY2042, then hold (scripts/data/capacity_path_isp2020.py). Closures stay the database's, which agree with the ISP's.
+capacityPathFile: capacity_path_VIC.csv
 
 #ON:
 #OFF: no logging at all
@@ -25,6 +121,11 @@ simulationDates:
 
   # Spot Market Start Date. Cannot be earlier than 1999-1-1, as there is no 30min demand data before
   startDateSpotMarket: 1999-01-01
+
+  # Optional: first month written to the output CSVs (yyyy-MM-dd). The run still starts at startDate and
+  # the months before reportFrom act as spin-up, so generator histories and adoption are in place.
+  # A year summary is written from the year that contains reportFrom. Leave it out to write the whole run.
+  #reportFrom: 2019-01-01
 
 population:
   # Max number of Dwellings represented in a single ConsumerUnit, attached to a SPM
@@ -78,6 +179,10 @@ forecast:
   # and "In Commissioning". This are all the projects that are on their way to be integrated in the generation pool but haven't
   # start operating
   generationRolloutPeriod: 1
+  # Commissioning delay d (years; fractions in whole months) of projects due after the base year: pipeline
+  # projects and the capacity path's steps arrive d later (> 0) or earlier (< 0, not before the base year).
+  # Realised 2019-list committed projects: median 1.3 years late (experiments/transition/README.md)
+  commissioningDelay: 0
 
   # Include subcategory of rooftop pv. (residential), (business) or (both)
   rooftopPV: both
@@ -89,7 +194,9 @@ forecast:
   #improves capacity factors of renewable technologies by adding a constant factor every year (not compounded)
   # Works only for Wind, added to cap factor [0,0.5], and Solar by increasing the solarEfficiency  [0.7,1])
 
-  technologicalImprovement: 0.01
+  # 0 up to the base year: from 1999 it raised historical wind farms to CF 0.49 and solar efficiency by
+  # 0.01/yr (R3, 30 Oct 2026, docs/r3_offer_tests_30oct). VICfuture.yaml keeps 0.01 after the base year.
+  technologicalImprovement: 0.0
 
   # Learning curve for solar and wind technologies.
   # Improve price LCOE (compounded) according to learning curve.
@@ -242,14 +349,22 @@ generators:
     nameplateCapacityChange: 1.0
 
   Brown Coal:
+    outageHours: 94
+    forcedOutageRate: 0.0551 
+    availabilityFactor: 0.980 
+    mustRunPriceMWh: 0
+    mustRunShare: 0.6
+    fuelPriceGJ: 0.638 
+    variableOMMWh: 4.265 
+    heatRateGJperMWh: 13.0
     #LCOE Price Parameters
     basePriceMWh: 4.75 # option 2: 14.25
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.47
-    maxCapacityFactor: 0.85
-    # BROWN COAL summer CF equalised to annual for now (TODO: set the right % - divergent value was 0.9)
-    maxCapacityFactorSummer: 0.85
+    # Availability (nameplate x this, every half-hour): 0.90, the record implies ~0.89 for 2006-2018 (was 0.85; R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    maxCapacityFactor: 0.90
+    maxCapacityFactorSummer: 0.90
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -265,6 +380,12 @@ generators:
     nameplateCapacityChange: 1.0
 
   Gas Pipeline Turbine - OCGT:
+    outageHours: 9
+    forcedOutageRate: 0.0242 
+    fuelPriceFile: fuel_price_gas_VIC.csv
+    variableOMMWh: 10.663 
+    heatRateGJperMWh: 12.0
+    availabilityFactor: 1.0 
     #LCOE Price Parameters
     basePriceMWh: 7.9  #option 2: 5.06
     marketPriceCap: 8000
@@ -283,6 +404,12 @@ generators:
     nameplateCapacityChange: 1.0
 
   Gas Pipeline Turbine - CCGT:
+    outageHours: 41
+    forcedOutageRate: 0.0253
+    fuelPriceFile: fuel_price_gas_VIC.csv
+    variableOMMWh: 4
+    heatRateGJperMWh: 7.5
+    availabilityFactor: 0.9
     #LCOE Price Parameters
     basePriceMWh: 16.41 # option 2:13.95
     marketPriceCap: 8000
@@ -306,10 +433,13 @@ generators:
     # also from CSRIO report from 2018 on Generation Costs
     basePriceMWh: 10.45 #option 2:6.27
     marketPriceCap: 8000
+    # Spot offer at short-run marginal cost instead of the LCOE rule (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    srmcMWh: 0
     # Capacity Factor
     minCapacityFactor: 0.28
-    maxCapacityFactor: 0.4 # in LCOE report this is truncated at 50% assuming improvements in technology and costs
-    maxCapacityFactorSummer: 0.4   # equalised to annual for now (TODO: was 0.43)
+    # 0.30 tracks observed wind output year by year with the SRMC offer (was 0.4; LCOE report truncates at 50%)
+    maxCapacityFactor: 0.30
+    maxCapacityFactorSummer: 0.30
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -321,13 +451,21 @@ generators:
     nameplateCapacityChange: 1.0
 
   Water:
+    monthlyEnergyFromRecord: true # recorded monthly hydro energy, water-value offers; peakOnly/dailyEnergyLimit only for months without a record
+    outageHours: 27
+    forcedOutageRate: 0.0252
+    storageOfferFactor: 1.0
+    peakOnly: true
+    dailyEnergyLimit: true
+    availabilityFactor: 1.0 
     #LCOE Price Parameters
     basePriceMWh: 2.06 #option 2:5.06
     marketPriceCap: 8000
     # Capacity Factor
     minCapacityFactor: 0.03
-    maxCapacityFactor: 0.3
-    maxCapacityFactorSummer: 0.3
+    # 0.20: hydro output matches the record at ~0.18 (2006-2019 mean 2,551 GWh/yr); was 0.3 (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    maxCapacityFactor: 0.20
+    maxCapacityFactorSummer: 0.20
     # Emission Factor, by increasing start year
     emissionFactors:
       - startYear: 1850
@@ -343,6 +481,8 @@ generators:
     #LCOE Price Parameters
     basePriceMWh: 7.05 #6.71 #option 2:7.05
     marketPriceCap: 8000 #250
+    # Spot offer at short-run marginal cost instead of the LCOE rule (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    srmcMWh: 0
     # Capacity Factor
     minCapacityFactor: 0.12
     maxCapacityFactor: 0.26 #0.26
@@ -376,9 +516,13 @@ generators:
 
     # LCOS min and max from Lazard's Leverage Cost of Storage Analysis v 4.0 (2018) pg. 11
   Battery:
+    roundTripEfficiency: 0.85
     #LCOE Price Parameters
     basePriceMWh: 23.57 #option 2: 42.43
     marketPriceCap: 8000
+    # Spot offer at 1.2 x last month's mean spot price. The LCOE rule with minCapacityFactor 0.01 offered up to
+    # ~2,350 $/MWh and set most of the 2019 price (R3, 30 Oct 2026, docs/r3_offer_tests_30oct)
+    storageOfferFactor: 1.2
     # Capacity Factor for simplicity but in storage systems is better referred as usage factor, as it is based on gross
     # generation rather than net generation. This tech uses more energy than the energy it stored (resulting always
     # in negative net generation)

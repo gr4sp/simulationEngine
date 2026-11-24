@@ -30,6 +30,22 @@ class MySecurityManager extends SecurityManager {
     @Override public void checkPermission(Permission perm) {
         // Allow other activities by default
     }
+
+    /**
+     * Installs the guard that turns System.exit into a SecurityException, so a caller
+     * (MASON's doLoop, or Python via EMA) keeps its JVM. Java 18+ refuses
+     * System.setSecurityManager unless started with -Djava.security.manager=allow, and
+     * Java 24 removed it altogether: there the guard is skipped and the run goes on.
+     * The only difference is that MASON's doLoop then ends the JVM with System.exit
+     * when the run finishes, which a command-line run does anyway.
+     */
+    static void installExitGuard() {
+        try {
+            System.setSecurityManager(new MySecurityManager());
+        } catch (UnsupportedOperationException e) {
+            // Security Manager not available on this JVM (Java 18+); run without the guard.
+        }
+    }
 }
 
 public class Gr4spSim extends SimState implements java.io.Serializable {
@@ -122,6 +138,21 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     //Solar Exposure in KWh/m^2 30min mean
     HashMap<Date, Float> halfhour_solar_exposure;
+    //N23: irradiance on the rooftop array plane (null: rooftop PV uses the horizontal irradiance), with a one-entry
+    //cache, since every rooftop generator asks for the same half-hour in turn
+    RooftopIrradiance rooftopIrradiance;
+    private Date rooftopExposureTime;
+    private float rooftopExposureValue;
+    //N23: rooftop installations from solarInstallationsFile (year, month, installations, kW; system capacity kW)
+    List<double[]> solarInstallationsOverride = new ArrayList<>();
+    //Solar step 2: recorded and forecast residential grid electricity by financial year (GWh), and the residential share
+    //of the total used in each calendar year (reported in the year summary)
+    HashMap<Integer, Float> residentialFyGwh = new HashMap<>();
+    TreeMap<Integer, Double> residentialShareByYear = new TreeMap<>();
+    //N30: households on 1 January by year from householdsFile (empty: database series)
+    TreeMap<Integer, Integer> householdsOverride = new TreeMap<>();
+    //Solar step 3: household rooftop PV adoption (rooftopAdoption: endogenous only; null otherwise)
+    core.Social.RooftopAdoption rooftopAdoption;
 
     // Solar installation in kw per month in Australia
     HashMap<Date, Integer> solar_number_installs;
@@ -158,6 +189,28 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     private Date endSimDate;
     private Date startSpotMarketDate;
     private Date baseYearForecastDate;
+    //First date written to the outputs; null writes the whole run
+    private Date reportFromDate;
+    //Net exports by month (yyyy-MM) as a flat MW rate over the month; empty without the netExportsFile setting
+    private Map<String, Double> netExportsMW = new HashMap<>();
+    //Deviation from the monthly mean by calendar month (1-12) and half-hour of day (0-47), MW
+    private double[][] netExportsShapeMW;
+    //Fuel price by year for each fuelPriceFile, carbon price by month, and station name prefixes -> portfolio
+    private Map<String, TreeMap<Integer, Double>> fuelPrices = new HashMap<>();
+    private Map<String, Double> carbonPriceTonne = new HashMap<>();
+    //seasonalFactorsFile: fuel source descriptor -> factor by month (index 1-12)
+    private Map<String, double[]> seasonalFactors = new HashMap<>();
+    private List<String[]> portfolios = new ArrayList<>();
+    private Map<String, String> portfolioOf = new HashMap<>();
+    //Station parameter overrides (name prefix, parameter, value) and the consumer price index by year
+    private List<String[]> generatorParameters = new ArrayList<>();
+    private TreeMap<Integer, Double> cpi = new TreeMap<>();
+    //Additive tariff components by calendar year of bills: {network, environmental, retail, gst_rate} (tariffComponentsFile)
+    private TreeMap<Integer, double[]> tariffComponents = new TreeMap<>();
+    //Interconnector import blocks (link,from,to,importMW,heatRate,fuel,VOM,emissions,waterValueFactor,lossFactor)
+    //and the market price cap by start date (yyyy-MM-dd); both empty unless set
+    private List<String[]> interconnectors = new ArrayList<>();
+    private TreeMap<String, Double> shortfallPriceMWh = new TreeMap<>();
 
     //Policies used for the simulation
     private SimPolicies policies;
@@ -288,6 +341,150 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
             this.startSpotMarketDate = stringToDate.parse(settings.getStartDateSpotMarket());
             this.baseYearForecastDate = stringToDate.parse(settings.getBaseYearConsumptionForecast() + "-01-01");
+            this.reportFromDate = settings.getReportFrom() == null ? null : stringToDate.parse(settings.getReportFrom());
+            if (settings.getNetExportsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getNetExportsFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    String[] f = line.split(",", 3);
+                    double hours = java.time.YearMonth.parse(f[0]).lengthOfMonth() * 24.0;
+                    netExportsMW.put(f[0], Double.parseDouble(f[1]) / hours);
+                }
+            }
+            if (settings.getNetExportsShapeFile() != null) {
+                netExportsShapeMW = new double[13][48];
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getNetExportsShapeFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    String[] f = line.split(",", 4);
+                    netExportsShapeMW[Integer.parseInt(f[0])][Integer.parseInt(f[1])] = Double.parseDouble(f[2]);
+                }
+            }
+            if (settings.getShapeDemandUplift() && (netExportsShapeMW == null || settings.getNetExportsFile() != null))
+                throw new IllegalArgumentException("shapeDemandUplift needs netExportsShapeFile and no netExportsFile (exports are already in the calibrated demand)");
+            if (settings.getCarbonPriceFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getCarbonPriceFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    carbonPriceTonne.put(f[0].trim(), Double.parseDouble(f[1].trim()));
+                }
+            }
+            if (settings.getSeasonalFactorsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getSeasonalFactorsFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 4);
+                    double[] byMonth = seasonalFactors.computeIfAbsent(f[0].trim(), k -> {
+                        double[] a = new double[13];
+                        java.util.Arrays.fill(a, 1.0);
+                        return a;
+                    });
+                    byMonth[Integer.parseInt(f[1].trim())] = Double.parseDouble(f[2].trim());
+                }
+            }
+            if (settings.getPortfolioFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getPortfolioFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    portfolios.add(new String[]{f[0].trim(), f[1].trim()});
+                }
+            }
+            if (settings.getSolarInstallationsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getSolarInstallationsFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 6);
+                    solarInstallationsOverride.add(new double[]{Double.parseDouble(f[0].trim()), Double.parseDouble(f[1].trim()),
+                            Double.parseDouble(f[2].trim()), Double.parseDouble(f[3].trim()), Double.parseDouble(f[4].trim())});
+                }
+            }
+            if (settings.getHouseholdsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getHouseholdsFile()));
+                boolean head = true;
+                for (String line : lines) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    if (head) { head = false; continue; }
+                    String[] f = line.split(",");
+                    householdsOverride.put(Integer.parseInt(f[0].trim()), Integer.parseInt(f[1].trim()));
+                }
+            }
+            if (settings.getResidentialConsumptionFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getResidentialConsumptionFile()));
+                List<String> head = null;
+                for (String line : lines) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",");
+                    if (head == null) { head = Arrays.asList(f); continue; }
+                    int iFy = head.indexOf("fy"), iRes = head.indexOf("residential_twh");
+                    residentialFyGwh.put(Integer.parseInt(f[iFy].trim()), Float.parseFloat(f[iRes].trim()) * 1000f);
+                }
+            }
+            if (settings.getRooftopArrayTilt() > 0)
+                rooftopIrradiance = new RooftopIrradiance(settings.getSolarStationLatitude(), settings.getSolarStationLongitude(),
+                        settings.getRooftopArrayTilt(), settings.getRooftopArrayAzimuth(), 0.2, 10.0);
+            if (settings.getGeneratorParametersFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getGeneratorParametersFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 4);
+                    generatorParameters.add(new String[]{f[0].trim(), f[1].trim(), f[2].trim()});
+                }
+            }
+            if (settings.getTariffComponentsFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getTariffComponentsFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 6);
+                    tariffComponents.put(Integer.parseInt(f[0].trim()), new double[]{Double.parseDouble(f[1].trim()),
+                            Double.parseDouble(f[2].trim()), Double.parseDouble(f[3].trim()), Double.parseDouble(f[4].trim())});
+                }
+            }
+            if (settings.getCpiFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getCpiFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    cpi.put(Integer.parseInt(f[0].trim()), Double.parseDouble(f[1].trim()));
+                }
+            }
+            for (String fuelFile : settings.getFuelPriceFiles()) {
+                TreeMap<Integer, Double> series = new TreeMap<>();
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(fuelFile));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    series.put(Integer.parseInt(f[0].trim()), Double.parseDouble(f[1].trim()));
+                }
+                fuelPrices.put(fuelFile, series);
+            }
+            if (settings.getInterconnectorFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getInterconnectorFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 11);
+                    String fuel = f[5].trim();
+                    if (!fuel.isEmpty() && !fuel.matches("[-0-9.eE+]+") && !fuelPrices.containsKey(fuel)) {
+                        TreeMap<Integer, Double> series = new TreeMap<>();
+                        List<String> fl = Files.readAllLines(settingsFolder.resolve(fuel));
+                        for (String l : fl.subList(1, fl.size())) {
+                            if (l.isBlank() || l.startsWith("#")) continue;
+                            String[] g = l.split(",", 3);
+                            series.put(Integer.parseInt(g[0].trim()), Double.parseDouble(g[1].trim()));
+                        }
+                        fuelPrices.put(fuel, series);
+                    }
+                    interconnectors.add(new String[]{f[0].trim(), f[1].trim(), f[2].trim(), f[3].trim(), f[4].trim(),
+                            fuel, f[6].trim(), f[7].trim(), f[8].trim(), f[9].trim()});
+                }
+            }
+            if (settings.getShortfallPriceFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getShortfallPriceFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    shortfallPriceMWh.put(f[0].trim(), Double.parseDouble(f[1].trim()));
+                }
+            }
 
 
 
@@ -299,7 +496,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             // for example, 0.01 represents 1% per month, around 12% a year
             policies.setEndConsumerTariffs(settings.getEndConsumerTariff());
 
-        } catch (ParseException | com.esotericsoftware.yamlbeans.YamlException | java.io.FileNotFoundException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Problems reading the YAML settings in "
                     + Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings")
@@ -433,6 +630,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         LoadData.selectDemandHalfHour(this, startDate, endDate);
         LoadData.selectForecastConsumption(this);
+        LoadData.selectResidentialForecast(this);
         LoadData.selectForecastSolarUptake(this);
         LoadData.selectForecastEnergyEfficency(this);
         LoadData.selectForecastOnsiteGeneration(this);
@@ -604,6 +802,142 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         return baseYearForecastDate;
     }
 
+    //CPI(year) / CPI(costPriceYear): turns real cost settings into the year's dollars (1 without cpiFile)
+    public double getCostFactor(int year) {
+        if (cpi.isEmpty() || settings.getCostPriceYear() <= 0) return 1.0;
+        return cpiAt(year) / cpiAt(settings.getCostPriceYear());
+    }
+
+    //Last year in which cost settings follow the CPI file (later years hold its last value); MAX_VALUE without cpiFile
+    public int getCostPriceLastYear() {
+        if (cpi.isEmpty() || settings.getCostPriceYear() <= 0) return Integer.MAX_VALUE;
+        return cpi.lastKey();
+    }
+
+    private double cpiAt(int year) {
+        Map.Entry<Integer, Double> e = cpi.floorEntry(year);
+        return (e != null ? e : cpi.firstEntry()).getValue();
+    }
+
+    //Apply the station parameters whose name prefix matches (later rows win)
+    public void applyGeneratorParameters(Generator g) {
+        for (String[] p : generatorParameters) {
+            //a name ending in $ must match exactly (e.g. "Ballarat$", the landfill unit, not the battery or the hospital)
+            boolean exact = p[0].endsWith("$");
+            if (exact ? !g.getName().equals(p[0].substring(0, p[0].length() - 1)) : !g.getName().startsWith(p[0])) continue;
+            double v = Double.parseDouble(p[2]);
+            switch (p[1]) {
+                //N25: station scope 1 intensity (t CO2-e/MWh), constant over the unit's life
+                case "emissionFactorTonnesMWh": g.minEF = v; g.linRateEF = 0; g.expRateEF = 0; break;
+                //N25: capacity factor of an off-market unit, all months (its output when outside the market)
+                case "capacityFactor": g.maxCapacityFactor = v; g.maxCapacityFactorSummer = v; break;
+                case "heatRateGJperMWh": g.heatRateGJperMWh = v; break;
+                case "variableOMMWh": g.variableOMMWh = v; break;
+                case "fuelPriceGJ": g.fuelPriceGJ = v; break;
+                case "forcedOutageRate": g.forcedOutageRate = v; break;
+                case "outageHours": g.outageHours = v; break;
+                case "availabilityFactor": g.availabilityFactor = v; break;
+                //Counterfactual runs only (23 Nov 2026): the unit closes at the end of this year (31 December) instead of
+                //its recorded date. No base-case settings file uses it
+                case "endYear": {
+                    Calendar e = Calendar.getInstance();
+                    e.clear();
+                    e.set((int) v, Calendar.DECEMBER, 31);
+                    g.setEnd(e.getTime());
+                    break;
+                }
+                default: throw new IllegalArgumentException("Unknown generator parameter " + p[1]);
+            }
+        }
+    }
+
+    //Fuel price in $/GJ for a year: the file's value, or its nearest year outside the range it covers
+    public double getFuelPriceGJ(String file, int year) {
+        TreeMap<Integer, Double> series = fuelPrices.get(file);
+        Map.Entry<Integer, Double> e = series.floorEntry(year);
+        return (e != null ? e : series.firstEntry()).getValue();
+    }
+
+    public boolean hasInterconnectors() { return !interconnectors.isEmpty(); }
+
+    //Import blocks open on this date, each offering at the neighbour's short-run cost or a water value (see
+    //Settings.interconnectorFile). lastMonthPriceMWh is last month's mean primary price
+    public List<core.Relationships.SpotMarket.ImportOffer> getImportOffers(Date day, int year, double lastMonthPriceMWh) {
+        List<core.Relationships.SpotMarket.ImportOffer> offers = new ArrayList<>();
+        String d = new SimpleDateFormat("yyyy-MM-dd").format(day);
+        double costFactor = getCostFactor(year), carbon = getCarbonPriceTonne(day);
+        for (String[] r : interconnectors) {
+            if (d.compareTo(r[1]) < 0 || (!r[2].isEmpty() && d.compareTo(r[2]) > 0)) continue;
+            double mw = Double.parseDouble(r[3]);
+            double waterValue = r[8].isEmpty() ? -1 : Double.parseDouble(r[8]);
+            double loss = r[9].isEmpty() ? 1.0 : Double.parseDouble(r[9]);
+            double price;
+            if (waterValue >= 0) price = waterValue * lastMonthPriceMWh;
+            else {
+                double fuel = r[5].isEmpty() ? 0.0 : r[5].matches("[-0-9.eE+]+")
+                        ? Double.parseDouble(r[5]) * costFactor : getFuelPriceGJ(r[5], year);
+                price = Double.parseDouble(r[4]) * fuel + Double.parseDouble(r[6]) * costFactor
+                        + Double.parseDouble(r[7]) * carbon;
+            }
+            offers.add(new core.Relationships.SpotMarket.ImportOffer(r[0], price * loss, mw, waterValue >= 0));
+        }
+        return offers;
+    }
+
+    //Market price cap on this date, or -1 without shortfallPriceFile (or before its first row)
+    public double getShortfallPriceMWh(Date time) {
+        Map.Entry<String, Double> e = shortfallPriceMWh.floorEntry(new SimpleDateFormat("yyyy-MM-dd").format(time));
+        return e == null ? -1.0 : e.getValue();
+    }
+
+    //Carbon price in $/t CO2-e for the month of this date (0 outside the file)
+    //Seasonal factor of a fuel in a month (1-12), 1 without seasonalFactorsFile or a row for the fuel
+    public double getSeasonalFactor(String fuel, int month) {
+        double[] f = seasonalFactors.get(fuel);
+        return f == null ? 1.0 : f[month];
+    }
+
+    public double getCarbonPriceTonne(Date time) {
+        if (carbonPriceTonne.isEmpty()) return 0.0;
+        return carbonPriceTonne.getOrDefault(new SimpleDateFormat("yyyy-MM").format(time), 0.0);
+    }
+
+    //Portfolio of a station: the first name prefix in portfolioFile that matches, otherwise the station itself
+    public String getPortfolio(String stationName) {
+        return portfolioOf.computeIfAbsent(stationName, n -> {
+            for (String[] p : portfolios) if (n.startsWith(p[0])) return p[1];
+            return n;
+        });
+    }
+
+    //MW of net exports to add to wholesale demand in this half-hour (0 for months the file does not cover)
+    public double getNetExportsMW(Date time) {
+        if (netExportsMW.isEmpty()) return 0.0;
+        Double monthly = netExportsMW.get(new SimpleDateFormat("yyyy-MM").format(time));
+        if (monthly == null) return 0.0;
+        return monthly + getNetExportsShapeMW(time);
+    }
+
+    //Net-export shape (deviation from the month's mean, MW) for the half-hour ending at time; 0 without the file.
+    //Model times are period ends (AEMO SETTLEMENTDATE); the shape file is indexed by interval start
+    public double getNetExportsShapeMW(Date time) {
+        if (netExportsShapeMW == null) return 0.0;
+        Calendar c = Calendar.getInstance();
+        c.setTime(time);
+        c.add(Calendar.MINUTE, -30);
+        return netExportsShapeMW[c.get(Calendar.MONTH) + 1][c.get(Calendar.HOUR_OF_DAY) * 2 + c.get(Calendar.MINUTE) / 30];
+    }
+
+    //Months before reportFrom run as spin-up and are left out of the output CSVs
+    public boolean isReported(Date date) {
+        return reportFromDate == null || !date.before(reportFromDate);
+    }
+
+    //A year is reported from the year that contains reportFrom
+    public boolean isReportedYear(String year) {
+        return reportFromDate == null || Integer.parseInt(year) >= reportFromDate.getYear() + 1900;
+    }
+
 
     public Date getStartSimDate() {
         return startSimDate;
@@ -643,6 +977,14 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public HashMap<Date, Float> getCpi_conversion() { return cpi_conversion; }
 
+    public boolean hasTariffComponents() { return !tariffComponents.isEmpty(); }
+
+    //Row of the bills of `year`; years after the last row hold it, years before the first take the first
+    public double[] getTariffComponents(int year) {
+        Map.Entry<Integer, double[]> e = tariffComponents.floorEntry(year);
+        return (e != null ? e : tariffComponents.firstEntry()).getValue();
+    }
+
     public HashMap<Integer, Float> getAnnual_inflation() { return annual_inflation; }
 
     public HashMap<Integer, Float> getTariff_contribution_wholesale_register() { return tariff_contribution_wholesale_register; }
@@ -672,6 +1014,36 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     public HashMap<Date, Float> getHalfhour_solar_exposure() {
         return halfhour_solar_exposure;
     }
+
+    //Irradiance (kW/m2) a rooftop array receives in the half-hour stamped t: on its plane when rooftopArrayTilt is set,
+    //the horizontal irradiance otherwise; 0 where the register has no value
+    public float getRooftopExposure(Date t) {
+        float ghi = getSolarExposure(t);
+        if (rooftopIrradiance == null || ghi <= 0f) return ghi;
+        if (rooftopExposureTime == null || t.getTime() != rooftopExposureTime.getTime()) {
+            rooftopExposureValue = (float) rooftopIrradiance.planeOfArray(ghi, t);
+            rooftopExposureTime = new Date(t.getTime());
+        }
+        return rooftopExposureValue;
+    }
+
+    //Horizontal irradiance (kW/m2) of the half-hour stamped t, 0 where the register has none. The key is looked up as a
+    //java.util.Date: the register holds java.sql.Timestamp keys (database rows) and Date keys (filled and forecast
+    //half-hours), and Timestamp.equals(Date) is false, so a Timestamp argument would miss the Date keys
+    public float getSolarExposure(Date t) {
+        Float v = halfhour_solar_exposure.get(t.getClass() == Date.class ? t : new Date(t.getTime()));
+        return v == null ? 0f : v;
+    }
+
+    public List<double[]> getSolarInstallationsOverride() { return solarInstallationsOverride; }
+
+    public HashMap<Integer, Float> getResidentialFyGwh() { return residentialFyGwh; }
+
+    public TreeMap<Integer, Double> getResidentialShareByYear() { return residentialShareByYear; }
+
+    public TreeMap<Integer, Integer> getHouseholdsOverride() { return householdsOverride; }
+
+    public core.Social.RooftopAdoption getRooftopAdoption() { return rooftopAdoption; }
 
     public HashMap<Date, Integer> getSolar_aggregated_kw() {
         return solar_aggregated_kw;
@@ -798,6 +1170,15 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
         loadData();
         generateHouseholds();
+        //Deferred demand calibration (solarShapeInDemand / forecastFromCalibratedDemand) needs the SPMs created above
+        LoadData.finishDemandCalibration(this);
+        if (settings.isRooftopAdoptionEndogenous()) {
+            try {
+                rooftopAdoption = new core.Social.RooftopAdoption(this);
+            } catch (java.io.IOException e) {
+                throw new RuntimeException("rooftopAdoption: " + e, e);
+            }
+        }
 
         saveData.plotSeries(this);
         this.schedule.scheduleRepeating(policies);
@@ -816,8 +1197,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public void runFromPythonEMA() {
         //Before running the external Command
-        MySecurityManager secManager = new MySecurityManager();
-        System.setSecurityManager(secManager);
+        MySecurityManager.installExitGuard();
 
         NumberFormat rateFormat = NumberFormat.getInstance();
         rateFormat.setMaximumFractionDigits(5);
@@ -889,8 +1269,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     public static void main(String[] args) {
 
         //Before running the external Command
-        MySecurityManager secManager = new MySecurityManager();
-        System.setSecurityManager(secManager);
+        MySecurityManager.installExitGuard();
 
         try {
 

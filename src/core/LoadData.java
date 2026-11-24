@@ -214,7 +214,7 @@ public class LoadData implements java.io.Serializable {
 
                 // solar pv installations has been higher than predicted
                 //Increase rooftopPV by 25% to concile the latest info in pv-map. ISP used solar forecast from CSRIO model and real data on
-                gwh *= 1.25;
+                gwh *= data.settings.getRooftopForecastUplift();   //N29: 1.25 in the thesis, 1.0 in the base case
                 float rooftopPvGwh = gwh;
 
                 if(data.settingsAfterBaseYear.getRooftopPVForecast().equals("both") == true){
@@ -379,7 +379,7 @@ public class LoadData implements java.io.Serializable {
                 " FROM tariffshistoric WHERE" +
                 " casestudy_area_code SIMILAR TO '" + areaCode + "%' " +
                 " AND date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
+                " AND date >= '" + startDate + "' ORDER BY date;";
 
         //If areaCode is at state scale, do not filter tariffs by smaller areacodes, take all tariffs available
         //Agent will select a tariff according to simulation policy. For more details See SimulParameters()
@@ -387,7 +387,7 @@ public class LoadData implements java.io.Serializable {
             sql = "SELECT id, casestudy_area, casestudy_area_code, date, organisation_tariff_name, average_dckwh" +
                     " FROM tariffshistoric WHERE" +
                     " date <= '" + endDate + "'" +
-                    " AND date >= '" + startDate + "';";
+                    " AND date >= '" + startDate + "' ORDER BY date;";
 
 
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -470,6 +470,22 @@ public class LoadData implements java.io.Serializable {
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
         }
+
+        //Optional CSV (year,wholesale,status,source) whose rows replace the database register's wholesale share
+        String overrideFile = data.settings.getTariffContributionFile();
+        if (overrideFile != null) {
+            try {
+                java.util.List<String> lines = java.nio.file.Files.readAllLines(
+                        java.nio.file.Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings").resolve(overrideFile));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 3);
+                    data.getTariff_contribution_wholesale_register().put(Integer.parseInt(f[0].trim()), Float.parseFloat(f[1].trim()));
+                }
+            } catch (java.io.IOException e) {
+                throw new RuntimeException("Cannot read tariffContributionFile " + overrideFile, e);
+            }
+        }
     }
 
 
@@ -484,7 +500,7 @@ public class LoadData implements java.io.Serializable {
         String sql = "SELECT settlement_date, total_demand, price" +
                 " FROM  total_demand_halfhour WHERE " +
                 " settlement_date <= '" + endDate + "'" +
-                " AND settlement_date >= '" + startDate + "';";
+                " AND settlement_date >= '" + startDate + "' ORDER BY settlement_date, total_demand, price;";
 
         try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
@@ -513,8 +529,18 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
+    //N29: a calendar-year value from a financial-year register: FY Y (July Y-1 to June Y) and FY Y+1 each cover half of
+    //calendar year Y; the register's last year is held
+    static float calendarFromFinancial(HashMap<Integer, Float> fy, int year) {
+        Float a = fy.get(year), b = fy.get(year + 1);
+        if (a == null) return b == null ? 0f : b;
+        return b == null ? a : (a + b) / 2f;
+    }
+
     //Select Consumption
-    public static void createDemandForecast(Gr4spSim data) {
+    //fromDate null: write every forecast year (original). Otherwise rewrite only half-hours from fromDate, from the
+    //register as it now stands (the calibrated base year)
+    public static void createDemandForecast(Gr4spSim data, Date fromDate) {
 
         //Set Base Date
         Date baseDate = null;
@@ -540,6 +566,11 @@ public class LoadData implements java.io.Serializable {
         while (baseYear < endYear) {
             float baseConsumption = data.getAnnual_forecast_consumption_register().get(baseYear);
             float nextConsumption = data.getAnnual_forecast_consumption_register().get(baseYear + 1);
+            if (data.settings.getForecastFinancialYears()) {
+                //N29: calendar year Y = mean of FY Y and FY Y+1 (the last FY is held)
+                baseConsumption = calendarFromFinancial(data.getAnnual_forecast_consumption_register(), baseYear);
+                nextConsumption = calendarFromFinancial(data.getAnnual_forecast_consumption_register(), baseYear + 1);
+            }
             float percentageChange = (nextConsumption-baseConsumption) / baseConsumption;
 
             //Leap year day
@@ -577,7 +608,8 @@ public class LoadData implements java.io.Serializable {
                     c.add(Calendar.DAY_OF_MONTH, -1);
                     Date yesterdayDate = c.getTime();
                     double yesterdayMw = data.getHalfhour_demand_register().get(yesterdayDate);
-                    data.getHalfhour_demand_register().put(baseDate, yesterdayMw );
+                    if (fromDate == null || !baseDate.before(fromDate))
+                        data.getHalfhour_demand_register().put(baseDate, yesterdayMw );
                     c.add(Calendar.DAY_OF_MONTH, 1);
                 }
                 else {
@@ -588,7 +620,8 @@ public class LoadData implements java.io.Serializable {
                     fc.add(Calendar.YEAR, 1);
                     Date forecastedDate = fc.getTime();
 
-                    data.getHalfhour_demand_register().put(forecastedDate, forecastedMw);
+                    if (fromDate == null || !forecastedDate.before(fromDate))
+                        data.getHalfhour_demand_register().put(forecastedDate, forecastedMw);
                 }
 
                 //Set the month for the forecast
@@ -640,8 +673,75 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
+    /**
+     * N23 (14 Nov 2026), rooftopForecastFromModelYield. The ISP gives rooftop PV as energy (GWh a year). The original
+     * forecast turned each year's energy increment into capacity at a 20 % capacity factor and started in 2021, so the
+     * fleet grew by about two thirds of the ISP's energy path (the model's own rooftop yield is about 14 %), nothing was
+     * added between the last recorded month and 2021, and systems that reached 30 years were not replaced.
+     * Here the fleet in service at the end of each forecast year is the ISP energy divided by the model's own yield of
+     * one kW in the base year (its irradiance, tilt and efficiency; forward years repeat the base year's irradiance), so
+     * the model's rooftop energy follows the ISP path. Each year adds, in twelve equal monthly steps, what the fleet
+     * still in service (installed in the 29 years before) lacks; years before the ISP's first are left as recorded.
+     */
+    static void createSolarInstallationForecastFromYield(Gr4spSim data) {
+        HashMap<Integer, Float> isp = data.getAnnual_forecast_rooftopPv_register();
+        if (isp.isEmpty()) return;
+        int baseYear = data.settings.getBaseYearConsumptionForecast();
+        double efficiency = data.settings.getSolarEfficiency("Solar", "Solar - Rooftop");
+        Calendar c = Calendar.getInstance();
+        double yieldKwhPerKw = 0.0;
+        for (Date t : data.getHalfhour_solar_exposure().keySet()) {
+            c.setTime(t);
+            if (c.get(Calendar.YEAR) == baseYear) yieldKwhPerKw += data.getRooftopExposure(t) * 0.5 * efficiency;
+        }
+        if (yieldKwhPerKw <= 0) {
+            data.LOGGER.warning("rooftopForecastFromModelYield: no irradiance in the base year " + baseYear);
+            return;
+        }
+        TreeMap<Integer, Double> kwByYear = new TreeMap<>();
+        for (Map.Entry<Date, Integer> e : data.getSolar_aggregated_kw().entrySet()) {
+            c.setTime(e.getKey());
+            kwByYear.merge(c.get(Calendar.YEAR), (double) e.getValue(), Double::sum);
+        }
+        int lastRecorded = kwByYear.isEmpty() ? baseYear : kwByYear.lastKey();
+        int lastIsp = Collections.max(isp.keySet());
+        float systemKw = (float) data.settings.getForecastSolarInstallCapacity();
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        boolean fy = data.settings.getForecastFinancialYears();
+        for (int y = lastRecorded + 1; y <= lastIsp; y++) {
+            //the fleet in service at the end of calendar year y: calendar-year reading, FY y's energy; financial-year
+            //reading (N29), FY y+1's energy, as FY y+1 is centred on 1 January y+1 (the last FY is held)
+            Integer key = fy ? (isp.containsKey(y + 1) ? y + 1 : (isp.containsKey(y) ? y : null)) : (isp.containsKey(y) ? y : null);
+            if (key == null) continue;
+            double targetKw = isp.get(key) * 1.0e6 / yieldKwhPerKw;
+            double inService = 0.0;
+            for (Map.Entry<Integer, Double> e : kwByYear.entrySet())
+                if (e.getKey() > y - 30 && e.getKey() < y) inService += e.getValue();
+            double add = Math.max(0.0, targetKw - inService);
+            kwByYear.put(y, add);
+            int monthlyKw = (int) Math.round(add / 12.0);
+            for (int month = 1; month <= 12; month++) {
+                try {
+                    Date d = f.parse(y + "-" + month + "-01");
+                    data.getSolar_aggregated_kw().put(d, monthlyKw);
+                    data.getSolar_number_installs().put(d, (int) (monthlyKw / systemKw));
+                    data.getSolar_system_capacity_kw().put(d, systemKw);
+                } catch (ParseException e) {
+                    data.LOGGER.warning(e.toString());
+                }
+            }
+            data.LOGGER.info("rooftop forecast " + y + ": target " + Math.round(targetKw / 1000) + " MW, in service "
+                    + Math.round(inService / 1000) + " MW, added " + Math.round(add / 1000) + " MW (yield "
+                    + Math.round(yieldKwhPerKw) + " kWh/kW)");
+        }
+    }
+
     //Increase solar capacity from forecast, dividing the increased amount of KW across 12 months every year
     public static void createSolarInstallationForecast(Gr4spSim data) {
+        if (data.settings.getRooftopForecastFromModelYield()) {
+            createSolarInstallationForecastFromYield(data);
+            return;
+        }
 
         //Set Base Date
         Date baseDate = null;
@@ -700,6 +800,34 @@ public class LoadData implements java.io.Serializable {
         }
     }
 
+    /**
+     * N30 (16 Nov 2026), householdsFile: the file's 1 January values replace the register's for its years; the
+     * register's later years (Victoria in Future, createForecastDomesticConsumers) are multiplied by the ratio of the
+     * file's last value to the register's value that year, so they keep the forecast's growth without a jump.
+     */
+    static void applyHouseholdsFile(Gr4spSim data) {
+        TreeMap<Integer, Integer> file = data.getHouseholdsOverride();
+        if (file.isEmpty()) return;
+        HashMap<Date, Integer> reg = data.getMonthly_domestic_consumers_register();
+        Calendar c = Calendar.getInstance();
+        int last = file.lastKey();
+        c.clear();
+        c.set(last, Calendar.JANUARY, 1);
+        Integer atLast = reg.get(c.getTime());
+        double ratio = (atLast == null || atLast == 0) ? 1.0 : file.get(last) / (double) atLast;
+        for (Date d : new ArrayList<>(reg.keySet())) {
+            c.setTime(d);
+            if (c.get(Calendar.MONTH) == Calendar.JANUARY && c.get(Calendar.DAY_OF_MONTH) == 1 && c.get(Calendar.YEAR) > last)
+                reg.put(d, (int) Math.round(reg.get(d) * ratio));
+        }
+        for (Map.Entry<Integer, Integer> e : file.entrySet()) {
+            c.clear();
+            c.set(e.getKey(), Calendar.JANUARY, 1);
+            reg.put(c.getTime(), e.getValue());
+        }
+        data.LOGGER.info("householdsFile: " + file.size() + " years replaced; later years x " + ratio);
+    }
+
     public static void createForecastDomesticConsumers(Gr4spSim data){
 
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -709,7 +837,7 @@ public class LoadData implements java.io.Serializable {
          * */
         String sql = "SELECT year, all_household_types" +
                 " FROM  household_forecast_victoria WHERE " +
-                " region = '" + data.settings.getAreaCode() + "';";
+                " region = '" + data.settings.getAreaCode() + "' ORDER BY year, all_household_types;";
 
 
         ArrayList< Map.Entry<Integer,Integer> > forecast = new ArrayList<>();
@@ -959,7 +1087,8 @@ public class LoadData implements java.io.Serializable {
 
                 //save demand data. From MW 30min -> GWh
                 double TotalDemandGWh = TotalMw / 2000;
-                double TotalConsumptionGWh = data.getMonthly_consumption_register().get(dateConsumption);
+                double TotalConsumptionGWh = data.getMonthly_consumption_register().get(dateConsumption)
+                        + unrecordedOffMarketGWh(data, dateConsumption);   //N28 (0 unless demandRecordFuels is set)
                 double calibrationDemand = TotalConsumptionGWh / TotalDemandGWh;
 
                 //Calibrate Demand of for the past month
@@ -974,11 +1103,35 @@ public class LoadData implements java.io.Serializable {
                 //Date printDate = c.getTime();
                 //double TotalDemandGwhCorrected = 0.0;
 
+                //shapeDemandUplift: add the month's gap to total generation as a flat MW amount plus the net-export
+                //shape (centred on the half-hours with data), so the monthly energy matches as with the factor
+                boolean shaped = data.settings.getShapeDemandUplift();
+                double upliftMW = 0.0, meanShapeMW = 0.0;
+                if (shaped) {
+                    Calendar s = (Calendar) c.clone();
+                    int n = 0;
+                    double shapeSum = 0.0;
+                    while (currentMonth == s.get(Calendar.MONTH)) {
+                        if (data.getHalfhour_demand_register().containsKey(s.getTime())) {
+                            n++;
+                            shapeSum += data.getNetExportsShapeMW(s.getTime());
+                        }
+                        s.add(Calendar.MINUTE, 30);
+                    }
+                    if (n > 0) {
+                        upliftMW = (TotalConsumptionGWh - TotalDemandGWh) * 2000.0 / n;
+                        meanShapeMW = shapeSum / n;
+                    }
+                }
+
                 while( currentMonth == c.get(Calendar.MONTH) ){
                     currentDate = c.getTime();
                     //Calibrate Demand Half Hour
                     if(data.getHalfhour_demand_register().containsKey(currentDate)) {
-                        double demand = data.getHalfhour_demand_register().get(currentDate) * calibrationDemand;
+                        double demand = shaped
+                                ? Math.max(0.0, data.getHalfhour_demand_register().get(currentDate) + upliftMW
+                                        + data.getNetExportsShapeMW(currentDate) - meanShapeMW)
+                                : data.getHalfhour_demand_register().get(currentDate) * calibrationDemand;
                         //TotalDemandGwhCorrected+=demand;
                         data.getHalfhour_demand_register().put(currentDate, demand );
                     }
@@ -1026,7 +1179,7 @@ public class LoadData implements java.io.Serializable {
         String sql = "SELECT date, total_consumption_gwh, hydro_gwh" +
                 " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
+                " AND date >= '" + startDate + "' ORDER BY date;";
 
         try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
@@ -1065,19 +1218,23 @@ public class LoadData implements java.io.Serializable {
          * Create Consumption Forecast
          * */
 
-        createDemandForecast(data);
+        createDemandForecast(data, null);
+
+        //With solarShapeInDemand or forecastFromCalibratedDemand the calibration and the steps that depend on it run at
+        //the end of loading (finishDemandCalibration), once the generators exist
+        boolean deferred = deferredDemandCalibration(data);
 
         /**
          * Calibrate historic 30min Spot Demand to match consumption
          * */
 
-        calibrate30minHistoricDemandFromConsumption(data);
+        if (!deferred) calibrate30minHistoricDemandFromConsumption(data);
 
         /**
          * Create Consumption Forecast from 30min Spot Demand Forecast
          * */
 
-        createForecastConsumptionFromDemand(data);
+        if (!deferred) createForecastConsumptionFromDemand(data);
 
 
         /**
@@ -1086,7 +1243,7 @@ public class LoadData implements java.io.Serializable {
         sql = "SELECT date, domesticconsumers" +
                 " FROM  domestic_consumers WHERE " +
                 " date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
+                " AND date >= '" + startDate + "' ORDER BY date;";
 
 
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -1114,6 +1271,7 @@ public class LoadData implements java.io.Serializable {
         }
 
         createForecastDomesticConsumers(data);
+        applyHouseholdsFile(data);
 
         /**
          * Compute linear Monthly growth from Yearly data
@@ -1159,10 +1317,180 @@ public class LoadData implements java.io.Serializable {
             data.getMonthly_domestic_consumers_register().put(entry.getKey(), entry.getValue());
         }
 
-        /**
-         * Update Total Consumption with monthly domestic consumers
-         * and Percentage of domestic usage
-         * */
+        if (!deferred) convertConsumptionToPerHousehold(data);
+    }
+
+    static boolean deferredDemandCalibration(Gr4spSim data) {
+        return data.settings.getSolarShapeInDemand() || data.settings.getForecastFromCalibratedDemand();
+    }
+
+    /**
+     * Deferred end of selectConsumption (solarShapeInDemand / forecastFromCalibratedDemand), called by Gr4spSim.start()
+     * after generateHouseholds (the SPMs and their generators exist then): add back the off-market solar fleet's output at
+     * its shape, calibrate the half-hourly demand to total generation, grow the forward period from the calibrated base
+     * year, then derive the monthly consumption.
+     */
+    public static void finishDemandCalibration(Gr4spSim data) {
+        if (!deferredDemandCalibration(data)) return;
+        if (data.settings.getSolarShapeInDemand()) addOffMarketSolarToHistoricDemand(data);
+        calibrate30minHistoricDemandFromConsumption(data);
+        if (data.settings.getForecastFromCalibratedDemand()) {
+            try {
+                createDemandForecast(data, new SimpleDateFormat("yyyy-MM-dd").parse(data.settings.getStartDemandForecast()));
+            } catch (ParseException e) {
+                data.LOGGER.warning(e.toString());
+            }
+        }
+        createForecastConsumptionFromDemand(data);
+        convertConsumptionToPerHousehold(data);
+    }
+
+    /**
+     * AEMO's half-hourly total demand is net of rooftop PV and small solar farms. For every historic half-hour of the
+     * calibration window, add back the output of the off-market solar generators active that month, computed as Arena
+     * computes it (Generator.solarOutputMW, same generators via the SPMs; rooftop PV rebuilt from the installation
+     * register as SimPolicies creates it), so Arena's subtraction cancels it while the fleet is the recorded one.
+     */
+    static void addOffMarketSolarToHistoricDemand(Gr4spSim data) {
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        Date from, to;
+        try {
+            from = f.parse(data.settings.getStartDateSpotMarket());
+            to = f.parse(data.settings.getStartDemandForecast());
+        } catch (ParseException e) {
+            data.LOGGER.warning(e.toString());
+            return;
+        }
+        if (to.after(data.getEndSimDate())) to = data.getEndSimDate();
+        HashMap<Date, Double> register = data.getHalfhour_demand_register();
+        //Off-market solar generators active in each month (Arena: active on the month's first day, not in a market)
+        HashMap<Date, ArrayList<Generator>> byMonth = new HashMap<>();
+        HashMap<Date, ArrayList<Double>> rooftopFleet = new HashMap<>();
+        Vector<Spm> subdistribution = data.getSpm_register().get(6);
+        int rooftopSpms = subdistribution == null ? 0 : subdistribution.size();
+        double rooftopEfficiency = data.settings.getSolarEfficiency("Solar", "Solar - Rooftop");
+        Calendar c = Calendar.getInstance();
+        for (Map.Entry<Date, Double> e : new ArrayList<>(register.entrySet())) {
+            Date t = e.getKey();
+            if (t.before(from) || !t.before(to)) continue;
+            c.setTime(t);
+            c.set(Calendar.DAY_OF_MONTH, 1);
+            c.set(Calendar.HOUR_OF_DAY, 0);
+            c.set(Calendar.MINUTE, 0);
+            c.set(Calendar.SECOND, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            Date month = c.getTime();
+            ArrayList<Generator> solar = byMonth.computeIfAbsent(month, m -> {
+                ArrayList<Generator> active = new ArrayList<>();
+                for (Vector<Spm> spms : data.getSpm_register().values())
+                    for (Spm s : spms) s.getActiveGensThisSPM(m, active);
+                ArrayList<Generator> out = new ArrayList<>();
+                for (Generator g : active)
+                    if (g.getFuelSourceDescriptor().equalsIgnoreCase("Solar") && !g.getInPrimaryMarket() && !g.getInSecondaryMarket())
+                        out.add(g);
+                return out;
+            });
+            double mw = 0.0;
+            for (Generator g : solar) mw += g.solarOutputMW(data, t);
+            //Rooftop PV: SimPolicies creates its generators during the run, so they are not in the SPMs yet; rebuild the
+            //recorded fleet from the same installation register
+            float exposure = data.getRooftopExposure(t);   //as Generator.solarOutputMW gives rooftop PV
+            for (double capPerSpm : rooftopFleet.computeIfAbsent(month, m -> rooftopCapacitiesPerSpm(data, m)))
+                mw += rooftopSpms * Generator.getSolarGeneration(exposure, (float) capPerSpm * (float) 1000.0, rooftopEfficiency) / (float) 1000.0;
+            register.put(t, e.getValue() + mw);
+        }
+    }
+
+    /**
+     * N28 (14 Nov 2026): energy (GWh) in the month starting `monthStart` of the off-market units whose fuel type is not
+     * in the recorded monthly total (setting demandRecordFuels): landfill gas, biogas, gas engines, diesel. The total the
+     * demand is calibrated to (OpenElectricity fuel techs) leaves them out, while Arena subtracts their output from the
+     * demand; adding it to the month's target keeps the market demand as recorded. Off-market units run at capacity x
+     * the month's capacity factor in every half-hour (Generator.computeAvailableCapacity, Arena); solar is handled by
+     * addOffMarketSolarToHistoricDemand. Needs the generators, so it acts in finishDemandCalibration only.
+     */
+    static double unrecordedOffMarketGWh(Gr4spSim data, Date monthStart) {
+        String fuels = data.settings.getDemandRecordFuels();
+        Vector<Spm> any = data.getSpm_register().get(6);
+        if (fuels == null || fuels.isBlank() || any == null || any.isEmpty()) return 0.0;
+        Set<String> recorded = new HashSet<>();
+        for (String f : fuels.split(";")) recorded.add(f.trim());
+        ArrayList<Generator> active = new ArrayList<>();
+        for (Vector<Spm> spms : data.getSpm_register().values())
+            for (Spm s : spms) s.getActiveGensThisSPM(monthStart, active);
+        Calendar c = Calendar.getInstance();
+        c.setTime(monthStart);
+        int month = c.get(Calendar.MONTH);
+        double mw = 0.0;
+        for (Generator g : active) {
+            if (g.getInPrimaryMarket() || g.getInSecondaryMarket() || g.getFuelSourceDescriptor().equalsIgnoreCase("Solar")) continue;
+            String fuel = g.getFuelSourceDescriptor();
+            if (recorded.contains(fuel) || recorded.contains(fuel + " " + g.getTechTypeDescriptor())) continue;
+            mw += g.getMaxCapacity() * g.getCapacityFactor(month + 1);
+        }
+        int halfHours = 0;
+        while (c.get(Calendar.MONTH) == month) {
+            if (data.getHalfhour_demand_register().containsKey(c.getTime())) halfHours++;
+            c.add(Calendar.MINUTE, 30);
+        }
+        return mw * halfHours / 2000.0;
+    }
+
+    //Capacity per subdistribution SPM of each rooftop PV generator SimPolicies has created and not retired by `month`
+    //(one generator per SPM and installation month, the month's aggregated capacity split equally, 30-year life)
+    private static ArrayList<Double> rooftopCapacitiesPerSpm(Gr4spSim data, Date month) {
+        ArrayList<Double> caps = new ArrayList<>();
+        Vector<Spm> spms = data.getSpm_register().get(6);
+        if (spms == null || spms.isEmpty()) return caps;
+        Calendar c = Calendar.getInstance();
+        for (Map.Entry<Date, Integer> e : data.getSolar_aggregated_kw().entrySet()) {
+            Date start = e.getKey();
+            if (start.after(month) || !data.getSolar_number_installs().containsKey(start)) continue;
+            c.setTime(start);
+            c.add(Calendar.YEAR, 30);
+            if (!c.getTime().after(month)) continue;
+            float solarCapacityAgg = e.getValue() / (float) 1000.0;
+            caps.add((double) solarCapacityAgg / (double) spms.size());
+        }
+        return caps;
+    }
+
+    /**
+     * Solar step 2: AEMO's residential grid demand forecast (isp_annual_consumption, category Residential, subcategory
+     * "Res grid demand", the consumption scenario; financial years) for the years after the recorded series
+     * (residentialConsumptionFile) ends. Only read when that file is set.
+     */
+    public static void selectResidentialForecast(Gr4spSim data) {
+        if (data.getResidentialFyGwh().isEmpty()) return;
+        int lastRecorded = Collections.max(data.getResidentialFyGwh().keySet());
+        String sql = "SELECT year, sum(annual_consumption) AS gwh FROM isp_annual_consumption WHERE category = 'Residential'" +
+                " AND subcategory = 'Res grid demand' AND region = '" + data.settings.getAreaCode() + "'" +
+                " AND scenario = '" + data.settingsAfterBaseYear.getForecastScenarioConsumption() + "' GROUP BY year;";
+        try (Connection conn = DriverManager.getConnection(data.url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next())
+                if (rs.getInt("year") > lastRecorded) data.getResidentialFyGwh().put(rs.getInt("year"), rs.getFloat("gwh"));
+        } catch (SQLException e) {
+            data.LOGGER.warning(e.getMessage());
+        }
+    }
+
+    /**
+     * Update Total Consumption with monthly domestic consumers and Percentage of domestic usage.
+     * Solar step 2 (residentialConsumptionFile): the residential share of each calendar year is the recorded (then
+     * forecast) residential grid electricity of that year over the year's total, instead of the constant
+     * domesticConsumptionPercentage. The month's household use keeps the shape of the month's total.
+     */
+    static void convertConsumptionToPerHousehold(Gr4spSim data) {
+        HashMap<Integer, Double> yearTotalGwh = new HashMap<>();
+        Calendar cy = Calendar.getInstance();
+        for (Map.Entry<Date, Double> e : data.getMonthly_consumption_register().entrySet()) {
+            cy.setTime(e.getKey());
+            yearTotalGwh.merge(cy.get(Calendar.YEAR), e.getValue(), Double::sum);
+        }
+        HashMap<Integer, Float> residential = data.getResidentialFyGwh();
+        SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
         //Set Base Date
         Date baseDate = null;
@@ -1190,6 +1518,15 @@ public class LoadData implements java.io.Serializable {
 
             if( month.after(baseDate) )
                 domesticConsumptionPercentage = data.settingsAfterBaseYear.getDomesticConsumptionPercentage();
+
+            cy.setTime(month);
+            int y = cy.get(Calendar.YEAR);
+            if (!residential.isEmpty()) {
+                float res = calendarFromFinancial(residential, y);
+                Double tot = yearTotalGwh.get(y);
+                if (res > 0 && tot != null && tot > 0) domesticConsumptionPercentage = res / tot;
+            }
+            data.getResidentialShareByYear().put(y, domesticConsumptionPercentage);
 
             //convert to MWh and only domestic demand
             double newMwh = (gwh * 1000.0 * domesticConsumptionPercentage) / (double) consumers;
@@ -1220,7 +1557,7 @@ public class LoadData implements java.io.Serializable {
                 "imports_gwh, exports_dollargwh, exports_gwh" +
                 " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
-                " AND date >= '" + startDate + "';";
+                " AND date >= '" + startDate + "' ORDER BY date;";
 
 
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -1255,8 +1592,11 @@ public class LoadData implements java.io.Serializable {
 
     public static void selectHalfHourSolarExposure(Gr4spSim data) {
 
-        String sql = "SELECT time , ghi" +
-                " FROM solar_ghi;";
+        //One value per timestamp. solar_ghi repeats every half-hour (identical copies), and each day's 00:00 also holds
+        //that day's hourly values with the time cut off (about 50 rows), so taking any one row put daytime irradiance at
+        //midnight. A conflicting 00:00 is night in Victoria (0); other conflicts (two series in May 2015) take the mean.
+        String sql = "SELECT time, CASE WHEN count(DISTINCT ghi) > 1 AND time::time = '00:00' THEN 0.0 ELSE avg(ghi) END AS ghi" +
+                " FROM solar_ghi GROUP BY time ORDER BY time;";
 
         //Loading Solar Exposure data
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -1281,6 +1621,53 @@ public class LoadData implements java.io.Serializable {
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
         }
+        fillSolarExposureGaps(data);
+    }
+
+    /**
+     * N23 (14 Nov 2026): half-hours missing from solar_ghi (445 in 2019, 4 % of that year's irradiance) gave solar PV no
+     * output. Each missing daylight half-hour (05:00-20:30) between the first and last record takes the mean of the same
+     * half-hour on the three days either side that have a value (recorded values only), or 0 when none has.
+     */
+    static void fillSolarExposureGaps(Gr4spSim data) {
+        HashMap<Date, Float> m = data.getHalfhour_solar_exposure();
+        if (m.isEmpty()) return;
+        Date first = Collections.min(m.keySet()), last = Collections.max(m.keySet());
+        Calendar day = Calendar.getInstance();
+        day.setTime(first);
+        day.set(Calendar.HOUR_OF_DAY, 0);
+        day.set(Calendar.MINUTE, 0);
+        day.set(Calendar.SECOND, 0);
+        day.set(Calendar.MILLISECOND, 0);
+        HashMap<Date, Float> fills = new HashMap<>();
+        while (!day.getTime().after(last)) {
+            for (int slot = 10; slot < 42; slot++) {
+                Date t = slotTime(day, 0, slot);
+                if (t.before(first) || t.after(last) || m.containsKey(t)) continue;
+                double sum = 0.0;
+                int n = 0;
+                for (int k = 1; k <= 3; k++)
+                    for (int offset : new int[]{-k, k}) {
+                        Float v = m.get(slotTime(day, offset, slot));
+                        if (v != null) {
+                            sum += v;
+                            n++;
+                        }
+                    }
+                fills.put(t, n > 0 ? (float) (sum / n) : 0f);
+            }
+            day.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        m.putAll(fills);
+        data.LOGGER.info("solar_ghi: filled " + fills.size() + " missing daylight half-hours");
+    }
+
+    private static Date slotTime(Calendar day, int dayOffset, int slot) {
+        Calendar c = (Calendar) day.clone();
+        c.add(Calendar.DAY_OF_MONTH, dayOffset);
+        c.set(Calendar.HOUR_OF_DAY, slot / 2);
+        c.set(Calendar.MINUTE, slot % 2 * 30);
+        return c.getTime();
     }
 
     public static void selectSolarInstallation(Gr4spSim data) {
@@ -1288,7 +1675,7 @@ public class LoadData implements java.io.Serializable {
         SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd");
 
         String sql = "SELECT year, month, number_installations, aggregated_capacity_kw, system_capacity" +
-                " FROM solar_installation_monthly;";
+                " FROM solar_installation_monthly ORDER BY year, month, system_capacity, number_installations, aggregated_capacity_kw;";
 
         //Loading Solar installation data
         try (Connection conn = DriverManager.getConnection(data.url);
@@ -1326,6 +1713,18 @@ public class LoadData implements java.io.Serializable {
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
         }
+        //N23: months listed in solarInstallationsFile (CER, 2011-2019) replace the database's (APVI, which stops in
+        //September 2019)
+        for (double[] r : data.getSolarInstallationsOverride()) {
+            try {
+                Date date = stringToDate.parse((int) r[0] + "-" + (int) r[1] + "-1");
+                data.getSolar_number_installs().put(date, (int) r[2]);
+                data.getSolar_aggregated_kw().put(date, (int) r[3]);
+                data.getSolar_system_capacity_kw().put(date, (float) r[4]);
+            } catch (ParseException e) {
+                data.LOGGER.warning(e.toString());
+            }
+        }
     }
 
     //Select actors function
@@ -1335,7 +1734,7 @@ public class LoadData implements java.io.Serializable {
 
 
         String sql = "SELECT id, name, registration_date, change_date, reg_number, region, role, business_structure"  +
-                " FROM  actors  WHERE region = '" + data.settings.getAreaCode() + "';";
+                " FROM  actors  WHERE region = '" + data.settings.getAreaCode() + "' ORDER BY id;";
 
         try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
@@ -1389,7 +1788,7 @@ public class LoadData implements java.io.Serializable {
             Actor actor = entry.getValue();
 
             String sql = "SELECT actorid, assetid, reltype, assettype, percentage" +
-                    " FROM " + tableName + " WHERE actorid = " + actor.getId();
+                    " FROM " + tableName + " WHERE actorid = " + actor.getId() + " ORDER BY assetid, reltype, assettype, percentage";
 
 
             try (Connection conn = DriverManager.getConnection(data.url);
@@ -1470,6 +1869,123 @@ public class LoadData implements java.io.Serializable {
     /**
      * select all rows in the Generation Technologies table
      */
+    /**
+     * Corrections to the generationassets table, read from the CSV named by the generatorCorrections setting
+     * (simulationSettings folder): asset_id,action,value,source with action exclude, start or close (yyyy-MM-dd).
+     * The database snapshot stays as shipped; the corrections and their sources are versioned with the settings.
+     */
+    static Map<Integer, Map<String, String>> readGeneratorCorrections(Gr4spSim data) {
+        Map<Integer, Map<String, String>> corrections = new HashMap<>();
+        String name = data.settings.getGeneratorCorrections();
+        if (name == null) return corrections;
+        java.nio.file.Path file = java.nio.file.Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings").resolve(name);
+        try {
+            List<String> lines = java.nio.file.Files.readAllLines(file);
+            for (String line : lines.subList(1, lines.size())) {
+                if (line.isBlank() || line.startsWith("#")) continue;
+                String[] f = line.split(",", 4);
+                corrections.computeIfAbsent(Integer.parseInt(f[0].trim()), k -> new HashMap<>()).put(f[1].trim(), f[2].trim());
+            }
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Cannot read generator corrections " + file, e);
+        }
+        return corrections;
+    }
+
+    /**
+     * Commissioning date of a project planned for {@code planned}, shifted by the commissioning delay
+     * (settingsAfterBaseYear forecast.commissioningDelay, whole months). Only projects planned after the base year move,
+     * and an earlier date (negative delay) stops at the base year, or at {@code floor} when that is later.
+     */
+    static Date commissioningDate(Gr4spSim data, Date planned, Date floor) {
+        int months = data.settingsAfterBaseYear == null ? 0 : data.settingsAfterBaseYear.getForecastCommissioningDelayMonths();
+        Date base = data.getBaseYearForecastDate();
+        if (months == 0 || planned == null || base == null || !planned.after(base)) return planned;
+        Calendar c = Calendar.getInstance();
+        c.setTime(planned);
+        c.add(Calendar.MONTH, months);
+        Date min = (floor != null && floor.after(base)) ? floor : base;
+        return c.getTime().before(min) ? min : c.getTime();
+    }
+
+    static Date commissioningDate(Gr4spSim data, Date planned) {
+        return commissioningDate(data, planned, null);
+    }
+
+    /**
+     * Capacity path (opt-in capacityPathFile, e.g. capacity_path_VIC.csv from the AEMO 2020 ISP): for each fuel in the
+     * file and each year from its first row to the end of the run, if the large generators in service on 1 July of
+     * (fy_end - 1) add up to less than the path's capacity for that fuel, a generic unit with the difference starts that
+     * day and runs to the end of the simulation. After the file's last year its last capacity holds, so retirements are
+     * replaced. Capacity is never removed. Generic units take the row's technology, dispatch type and fuel bucket, so the
+     * fuel's generator parameters (offer rule, availability) apply as to any other unit; storage gets capacity x hours.
+     * Each step is sized on its planned date (by the planned start of every unit) and arrives commissioningDelay later.
+     */
+    public static void addCapacityPath(Gr4spSim data, ArrayList<Generator> gens) {
+        String name = data.settings.getCapacityPathFile();
+        if (name == null) return;
+        java.nio.file.Path file = java.nio.file.Paths.get("").toAbsolutePath().normalize().resolve("simulationSettings").resolve(name);
+        //fuel -> (fy_end -> row fields)
+        Map<String, TreeMap<Integer, String[]>> path = new LinkedHashMap<>();
+        try {
+            List<String> lines = java.nio.file.Files.readAllLines(file);
+            boolean header = true;
+            for (String line : lines) {
+                if (line.isBlank() || line.startsWith("#")) continue;
+                if (header) { header = false; continue; }
+                String[] f = line.split(",", 8);
+                path.computeIfAbsent(f[1].trim(), k -> new TreeMap<>()).put(Integer.parseInt(f[0].trim()), f);
+            }
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Cannot read capacity path " + file, e);
+        }
+        Calendar end = Calendar.getInstance();
+        end.setTime(data.getEndSimDate());
+        int lastYear = end.get(Calendar.YEAR);
+        int fuelIndex = 0;
+        ArrayList<Generator> added = new ArrayList<>();
+        for (Map.Entry<String, TreeMap<Integer, String[]>> e : path.entrySet()) {
+            String fuel = e.getKey();
+            TreeMap<Integer, String[]> rows = e.getValue();
+            fuelIndex++;
+            Calendar c0 = Calendar.getInstance();
+            c0.clear();
+            c0.set(rows.firstKey() - 1, Calendar.JULY, 1);
+            Date firstDay = c0.getTime();
+            for (int fy = rows.firstKey(); fy <= lastYear; fy++) {
+                String[] r = rows.floorEntry(fy).getValue();
+                double target = Double.parseDouble(r[5].trim());
+                Calendar c = Calendar.getInstance();
+                c.clear();
+                c.set(fy - 1, Calendar.JULY, 1);
+                //The step is sized on its planned date (capacity planned to be in service then) and arrives after the
+                //commissioning delay, never before the path's first day
+                Date day = c.getTime();
+                Date arrival = commissioningDate(data, day, firstDay);
+                double inService = 0.0;
+                for (Generator g : gens) {
+                    if (!g.getFuelSourceDescriptor().equalsIgnoreCase(fuel)) continue;
+                    if (!g.getPlannedStart().after(day) && g.getEnd() != null && g.getEnd().after(day)) inService += g.getMaxCapacity();
+                }
+                double deficit = target - inService;
+                if (deficit < 1.0 || arrival.after(data.getEndSimDate())) continue;
+                double hours = Double.parseDouble(r[6].trim());
+                int idGen = 900000000 + fuelIndex * 10000 + fy;
+                Generator gen = new Generator(idGen, data.settings.getAreaCode(), "Capacity path",
+                        "Capacity path " + fuel + " FY" + fy, "Capacity path", r[2].trim(), fuel, deficit, r[3].trim(),
+                        arrival, data.getEndSimDate(), null, "PATH" + idGen, 1, deficit * hours, r[4].trim(),
+                        "Capacity path", data.settings);
+                gen.setPlannedStart(day);
+                data.getGen_register().computeIfAbsent(idGen, k -> new Vector<>()).add(gen);
+                data.setNumGenerators(data.getNumGenerators() + 1);
+                gens.add(gen);
+                added.add(gen);
+            }
+        }
+        for (Generator g : added) data.applyGeneratorParameters(g);
+        data.LOGGER.info("Capacity path " + name + ": " + added.size() + " generic units added");
+    }
+
     public static ArrayList<Generator> selectGenTech(Gr4spSim data, String min_nameplate_capacity, String max_nameplate_capacity) {
 
 
@@ -1489,7 +2005,11 @@ public class LoadData implements java.io.Serializable {
             sql += "AND unit_status != 'Publically Announced'";
         }
 
+        //A fixed row order keeps runs reproducible when several read the table at once (synchronised scans)
+        sql += " ORDER BY asset_id";
+
         ArrayList<Generator> gens = new ArrayList<Generator>();
+        Map<Integer, Map<String, String>> corrections = readGeneratorCorrections(data);
         try (Connection conn = DriverManager.getConnection(data.url);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -1516,8 +2036,19 @@ public class LoadData implements java.io.Serializable {
 
                 );*/
 
+                Map<String, String> correction = corrections.getOrDefault(rs.getInt("asset_id"), Collections.emptyMap());
+                if (correction.containsKey("exclude")) continue;
+                Date startDateDB = rs.getDate("full_commercial_use_date");
+                Date closureDate = rs.getDate("closure_date");
+                try {
+                    if (correction.containsKey("start")) startDateDB = DateToString.parse(correction.get("start"));
+                    if (correction.containsKey("close")) closureDate = DateToString.parse(correction.get("close"));
+                } catch (ParseException e) {
+                    throw new RuntimeException("Bad date in generator corrections for asset " + rs.getInt("asset_id"), e);
+                }
+
                 //Shift forecast for Coal generators retirement
-                Date expectedEndDate = rs.getDate("expected_closure_date");
+                Date expectedEndDate = correction.containsKey("close") ? closureDate : rs.getDate("expected_closure_date");
                 Calendar cEndDate = Calendar.getInstance();
                 if(expectedEndDate != null && rs.getString("fuel_type").equals("Brown Coal")){
                     cEndDate.setTime(expectedEndDate);
@@ -1537,12 +2068,15 @@ public class LoadData implements java.io.Serializable {
 
                         Calendar cStartDate = Calendar.getInstance();
                         try {
-                            Date startDate = DateToString.parse(rs.getString("full_commercial_use_date"));
+                            Date startDate = DateToString.parse(DateToString.format(startDateDB));
                             cStartDate.setTime(startDate);
                         } catch (ParseException e) {
                             System.err.println("Cannot parse Start Date: " + e.toString());
                         }
                         cStartDate.add(Calendar.YEAR, year);
+                        //Planned date of this tranche, and the date it arrives after the commissioning delay
+                        Date plannedStart = cStartDate.getTime();
+                        cStartDate.setTime(commissioningDate(data, plannedStart));
 
 
                         int idGen = (rs.getInt("asset_id") *1000) +year;
@@ -1559,7 +2093,7 @@ public class LoadData implements java.io.Serializable {
                                 rs.getString("dispatch_type"),
                                 cStartDate.getTime(),
                                 expectedEndDate,
-                                rs.getDate("closure_date"),
+                                closureDate,
                                 rs.getString("duid"),
                                 rs.getInt("no_units"),
                                 rs.getFloat("storage_capacity_mwh"),
@@ -1577,6 +2111,7 @@ public class LoadData implements java.io.Serializable {
                         data.setNumGenerators(data.getNumGenerators() + 1);
 
                         //Add gen to ArrayList<Generator>. This will be used in the constructor of SPM
+                        gen.setPlannedStart(plannedStart);
                         gens.add(gen);
                     }
                 }
@@ -1591,9 +2126,9 @@ public class LoadData implements java.io.Serializable {
                             rs.getString("fuel_type"),
                             nameplateCapacity,
                             rs.getString("dispatch_type"),
-                            rs.getDate("full_commercial_use_date"),
+                            startDateDB,
                             expectedEndDate,
-                            rs.getDate("closure_date"),
+                            closureDate,
                             rs.getString("duid"),
                             rs.getInt("no_units"),
                             rs.getFloat("storage_capacity_mwh"),
@@ -1621,6 +2156,7 @@ public class LoadData implements java.io.Serializable {
         } catch (SQLException e) {
             data.LOGGER.warning(e.getMessage());
         }
+        for (Generator g : gens) data.applyGeneratorParameters(g);
         return gens;
     }
 
@@ -1825,6 +2361,7 @@ public class LoadData implements java.io.Serializable {
                 switch (idSpmActor) {
                     case 9: //ID for Generators connected at the large gen unit SPM (generators with minimum 30 MW inclusive)
                         gens = LoadData.selectGenTech(data, "30", "100000");
+                        LoadData.addCapacityPath(data, gens);
                         break;
                     case 5: //ID for Generators connected at the Distribution SPM. Generators with minimum 100KW inclusive and max 30 MW non inclusive.
                         gens = LoadData.selectGenTech(data, "0.1", "30");

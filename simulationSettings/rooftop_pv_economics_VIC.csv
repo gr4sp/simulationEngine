@@ -1,0 +1,67 @@
+# Rooftop PV economics for a Victorian household, 1997-2019: the inputs of the adoption decision (experiments/solarAdoption/DESIGN.md, section 3).
+# One row per value; a value holds from date_from until the next row of the same item. Money in current (nominal) AUD.
+# status: recorded = primary or official source; secondary = industry source citing the official one; assumed = model assumption, to vary in the sensitivity runs.
+# Source PDFs: Sandbox/papers/GR4SPArticle_ERSS/data/pv_economics/ (README there).
+item,date_from,value,unit,note,source,status
+system_price,1997-01-01,11,AUD/W,typical small residential grid-connected system before incentives,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,1998-01-01,12,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,1999-01-01,12,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2000-01-01,14,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2001-01-01,14,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2002-01-01,13,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2003-01-01,10,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2004-01-01,12,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2005-01-01,12,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2006-01-01,12.5,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2007-01-01,12,AUD/W,,IEA PVPS NSR Australia 2013 Table 11,recorded
+system_price,2008-01-01,12,AUD/W,residential BAPV 5-10 kW from 2008 (Solar Choice data from 2012); excl. GST and incentives,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2009-01-01,9,AUD/W,,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2010-01-01,6,AUD/W,,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2011-01-01,3.9,AUD/W,,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2012-01-01,3,AUD/W,,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2013-01-01,3.1,AUD/W,NSR 2013 gave 2.5; the later series is used,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2014-01-01,2.77,AUD/W,,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2015-01-01,2.45,AUD/W,,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2016-01-01,2.42,AUD/W,,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2017-01-01,2.22,AUD/W,,IEA PVPS NSR Australia 2019 Table 10,recorded
+system_price,2018-01-01,1.72,AUD/W,,IEA PVPS NSR Australia 2019 Table 10 and NSR 2018 Table 9,recorded
+system_price,2019-01-01,1.6,AUD/W,,IEA PVPS NSR Australia 2019 Table 9,recorded
+rebate_rate,2000-01-01,5,AUD/W,Photovoltaic Rebate Programme (federal; administered by the states),PV in Australia 2004 (IEA PVPS national report) section PVRP,recorded
+rebate_cap,2000-01-01,7500,AUD/system,residential,PV in Australia 2004,recorded
+rebate_rate,2003-07-01,4,AUD/W,programme extended in 2003 with residential grants reduced; month of the change not stated (mid-2003 assumed),PV in Australia 2004 and 2005,recorded
+rebate_cap,2003-07-01,4000,AUD/system,,PV in Australia 2004 and 2005,recorded
+rebate_rate,2007-07-01,8,AUD/W,rebate doubled (renamed Solar Homes and Communities Plan in Nov 2007); first 1 kW,IEA policies database (Solar Homes and Communities Plan),recorded
+rebate_cap,2007-07-01,8000,AUD/system,,IEA policies database,recorded
+rebate_income_limit,2008-05-13,100000,AUD/yr taxable household income,means test from the 2008-09 Budget (13 May 2008),IEA policies database; Senate Environment and Communications Committee inquiry 2008-10,recorded
+rebate_rate,2009-06-09,0,AUD/W,rebate closed and replaced by Solar Credits (June 2009),IEA policies database,recorded
+rebate_cap,2009-06-09,0,AUD/system,,IEA policies database,recorded
+rebate_income_limit,2009-06-09,0,AUD/yr,,,recorded
+certificate_multiplier,2001-04-01,1,,RECs under the Mandatory Renewable Energy Target from 2001; small systems deemed,assumed start of creation,assumed
+certificate_multiplier,2009-06-09,5,,Solar Credits: multiplier on the first 1.5 kW,pv magazine 2 Dec 2010 and 5 May 2011 (government announcements),secondary
+certificate_multiplier,2011-07-01,3,,,pv magazine 5 May 2011 (Minister Combet),secondary
+certificate_multiplier,2012-07-01,2,,,pv magazine 5 May 2011,secondary
+certificate_multiplier,2013-01-01,1,,brought forward from 1 July 2013,Minister Combet media release 307/12 (16 Nov 2012),secondary
+certificate_multiplied_kw,2009-06-09,1.5,kW,multiplier applies to the first 1.5 kW,pv magazine 2 Dec 2010,secondary
+certificate_deeming_years,2001-04-01,15,years,up-front deeming; falls by one year a year from 2017,IEA PVPS NSR Australia 2013 section SRES,recorded
+certificate_deeming_years,2017-01-01,14,years,,IEA PVPS NSR Australia 2013 section SRES,recorded
+certificate_deeming_years,2018-01-01,13,years,,IEA PVPS NSR Australia 2013 section SRES,recorded
+certificate_deeming_years,2019-01-01,12,years,,IEA PVPS NSR Australia 2013 section SRES,recorded
+certificate_zone_rating,2001-04-01,1.185,MWh/kW/yr,Melbourne (zone 4) deeming rating,Clean Energy Regulator zone ratings (to confirm against the regulation),assumed
+certificate_price,2001-04-01,35,AUD/certificate,market price assumed constant before the clearing-house price was set,assumption between market prices of the period (to check against REC price records),assumed
+certificate_price,2011-01-01,40,AUD/certificate,clearing-house price; the market traded at or below it,IEA PVPS NSR Australia 2013 section SRES,recorded
+certificate_value_per_w,2016-01-01,0.65,AUD/W,incentives reduce the price by 60-70 c/W depending on insolation (check on the computed value),IEA PVPS NSR Australia 2016 section 2.2,recorded
+certificate_value_per_w,2019-01-01,0.5,AUD/W,41-57 c/W depending on insolation (check on the computed value),IEA PVPS NSR Australia 2019 section on system prices,recorded
+fit_export,1997-01-01,retail,c/kWh,before the Victorian schemes: net metering at the retail rate where retailers offered it,assumption,assumed
+fit_export,2009-11-01,60,c/kWh,Premium FiT: net; up to 5 kW; residential; paid until 2024 (15 years),IEA PVPS NSR Australia 2013 Table 6; energy.vic.gov.au,recorded
+fit_export,2012-01-01,25,c/kWh,Transitional FiT: net; up to 5 kW; paid until 31 Dec 2016 then the minimum FiT; premium closed to new applicants 1 Jan 2012 (some sources give 30 Sep 2011),IEA PVPS NSR Australia 2013 Table 6,recorded
+fit_export,2012-10-01,8,c/kWh,New Standard (minimum) FiT,IEA PVPS NSR Australia 2013 Table 6; ESC final decision for 2014 (8.0 c/kWh),recorded
+fit_export,2015-01-01,6.2,c/kWh,ESC minimum FiT,Solar Choice table citing the ESC (to confirm with the ESC decision),secondary
+fit_export,2016-01-01,5,c/kWh,ESC minimum FiT,Solar Choice table citing the ESC (to confirm with the ESC decision),secondary
+fit_export,2017-07-01,11.3,c/kWh,ESC minimum FiT (adds avoided social cost of carbon),ESC final decision 28 Feb 2017,recorded
+fit_export,2018-07-01,9.9,c/kWh,ESC minimum FiT,ESC final decision 27 Feb 2018 and 2019 final decision,recorded
+fit_export,2019-07-01,12,c/kWh,ESC minimum FiT single rate,ESC final decision 28 Feb 2019,recorded
+fit_term_years,2009-11-01,15,years,Premium FiT paid until 2024,IEA PVPS NSR Australia 2013 Table 6,recorded
+vic_rebate_rate,2018-08-19,0.5,share of system cost,Solar Homes: owner-occupiers with household income below 180000 AUD; cap below,IEA PVPS NSR Australia 2018 and 2019 section 3.2.5,secondary
+vic_rebate_cap,2018-08-19,2225,AUD/system,,Solar Victoria (to confirm),secondary
+vic_rebate_cap,2019-07-01,1850,AUD/system,plus an interest-free loan of the same value,IEA PVPS NSR Australia 2019 section 3.2.5.1,recorded
+vic_rebate_income_limit,2018-08-19,180000,AUD/yr combined household taxable income,,Solar Victoria (to confirm),secondary
