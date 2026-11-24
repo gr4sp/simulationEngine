@@ -21,13 +21,13 @@ case). Small off-market solar farms are left out (they are not rooftop).
 Output: data/midday_double_count.csv (per year) and the printed table.
 Usage: python midday_double_count.py [--years 2010-2019]
 """
-import argparse, io, os, subprocess
+import argparse, io, os, shutil, subprocess
 
 import numpy as np
 import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PSQL = r"C:\Program Files\PostgreSQL\18\bin\psql.exe"
+PSQL = os.environ.get("PSQL") or shutil.which("psql") or r"C:/Program Files/PostgreSQL/18/bin/psql.exe"  # PSQL env var, then PATH, then the Windows default
 EFF = 0.97 * 0.95 * 0.9 * 0.97 * 0.9 * 0.99
 
 

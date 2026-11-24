@@ -7,10 +7,10 @@ capacity factor (0.30); this only shapes it through the year.
 Caveat: Mt Mercer is one of about ten farms in the Victorian wind record (OpenNEM), so the shape is not independent of
 the comparator for 2015-2017, though it is one farm's shape applied to the whole fleet for 1999-2019.
 Usage: python scripts/data/wind_season_vic.py"""
-import io, os, subprocess
+import io, os, shutil, subprocess
 import pandas as pd
 
-PSQL = r"C:/Program Files/PostgreSQL/18/bin/psql.exe"
+PSQL = os.environ.get("PSQL") or shutil.which("psql") or r"C:/Program Files/PostgreSQL/18/bin/psql.exe"  # PSQL env var, then PATH, then the Windows default
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, os.pardir)
 q = "select date, wind_cleared from wind30min_mtmercer where date >= '2015-01-01' and date < '2018-01-01' order by 1"
 txt = subprocess.run([PSQL, "-h", "localhost", "-U", "postgres", "-d", "gr4spdb", "-A", "-F,", "-P", "footer=off", "-c", q],

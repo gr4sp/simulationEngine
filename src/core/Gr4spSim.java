@@ -30,6 +30,22 @@ class MySecurityManager extends SecurityManager {
     @Override public void checkPermission(Permission perm) {
         // Allow other activities by default
     }
+
+    /**
+     * Installs the guard that turns System.exit into a SecurityException, so a caller
+     * (MASON's doLoop, or Python via EMA) keeps its JVM. Java 18+ refuses
+     * System.setSecurityManager unless started with -Djava.security.manager=allow, and
+     * Java 24 removed it altogether: there the guard is skipped and the run goes on.
+     * The only difference is that MASON's doLoop then ends the JVM with System.exit
+     * when the run finishes, which a command-line run does anyway.
+     */
+    static void installExitGuard() {
+        try {
+            System.setSecurityManager(new MySecurityManager());
+        } catch (UnsupportedOperationException e) {
+            // Security Manager not available on this JVM (Java 18+); run without the guard.
+        }
+    }
 }
 
 public class Gr4spSim extends SimState implements java.io.Serializable {
@@ -1181,8 +1197,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
 
     public void runFromPythonEMA() {
         //Before running the external Command
-        MySecurityManager secManager = new MySecurityManager();
-        System.setSecurityManager(secManager);
+        MySecurityManager.installExitGuard();
 
         NumberFormat rateFormat = NumberFormat.getInstance();
         rateFormat.setMaximumFractionDigits(5);
@@ -1254,8 +1269,7 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     public static void main(String[] args) {
 
         //Before running the external Command
-        MySecurityManager secManager = new MySecurityManager();
-        System.setSecurityManager(secManager);
+        MySecurityManager.installExitGuard();
 
         try {
 

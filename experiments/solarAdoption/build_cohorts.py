@@ -182,8 +182,8 @@ def main():
                                   "lo": (d.income_lo * d.share).sum() / d.share.sum(),
                                   "hi": (d.income_hi * d.share).sum() / d.share.sum()})).to_numpy()])
     if a.model_households:
-        import subprocess
-        psql = r"C:\Program Files\PostgreSQL\18\bin\psql.exe"
+        import shutil, subprocess
+        psql = os.environ.get("PSQL") or shutil.which("psql") or r"C:/Program Files/PostgreSQL/18/bin/psql.exe"  # PSQL env var, then PATH, then the Windows default
         r = subprocess.run([psql, "-U", "postgres", "-d", "gr4spdb", "-A", "-t", "-c",
                             "select extract(year from date)::int, domesticconsumers from domestic_consumers "
                             "where extract(month from date) = 1 and date between '2006-01-01' and '2021-12-31'"],

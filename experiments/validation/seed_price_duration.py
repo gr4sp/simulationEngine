@@ -19,7 +19,7 @@ import numpy as np, pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, os.pardir, os.pardir))
-PSQL = r"C:/Program Files/PostgreSQL/18/bin/psql.exe"
+PSQL = os.environ.get("PSQL") or shutil.which("psql") or r"C:/Program Files/PostgreSQL/18/bin/psql.exe"  # PSQL env var, then PATH, then the Windows default
 FIRST, LAST = 1999, 2019
 # exceedance levels, % of half-hours with a price at or above the value: fine steps in the spike tail
 EXCEED = np.round(np.concatenate([np.arange(0, 1, 0.01), np.arange(1, 100.01, 0.5)]), 2)
