@@ -350,7 +350,9 @@ fetching rather than citing:
 
 If you use GR4SP, please cite the software using the metadata in [`CITATION.cff`](CITATION.cff).
 
-The version used in the methods article (in preparation) is the release `v0.3.2` (Zenodo DOI added here once minted).
+The version used in the methods article (in preparation) is the release `v0.3.2`, archived on Zenodo:
+[10.5281/zenodo.24487970](https://doi.org/10.5281/zenodo.24487970). To cite the software regardless of version, use the
+concept DOI [10.5281/zenodo.24487969](https://doi.org/10.5281/zenodo.24487969), which always resolves to the latest release.
 Earlier scenario and sensitivity outputs are a separate dataset: <https://doi.org/10.5281/zenodo.4667996>.
 
 The model and its Victorian application are documented in full in:
@@ -359,12 +361,12 @@ The model and its Victorian application are documented in full in:
 
 ### Methods article — **PENDING**
 
-A methods article describing the GR4SP suite is currently under review. The details
+A methods article describing the GR4SP suite is in preparation. The details
 below will be filled in once it is available; until then, please cite the thesis above
 and the software metadata in `CITATION.cff`.
 
 <!-- PENDING: fill in on acceptance, and mirror into CITATION.cff -->
-> Rojas Arévalo, A. M., et al. (year). *Title.* **Journal** — *under review*.
+> Rojas Arévalo, A. M., et al. (year). *Title.* **Journal** — *in preparation*.
 > DOI: `<pending>` · Preprint: `<pending>`
 
 The version of the code that produces the article's results is marked by a git tag and
