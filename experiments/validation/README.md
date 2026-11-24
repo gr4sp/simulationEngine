@@ -630,7 +630,7 @@ period medians, not stated as such. Recorded imports: 50-1,900 GWh/yr.
 
 ## Frozen model and the final 100-seed ensemble (20 Nov 2026)
 
-The model is frozen: Java code and `simulationSettings/` as at `3165126`, release tag `v0.3-methodsx` (the commit
+The model is frozen: Java code and `simulationSettings/` as at `3165126`, release tag `v0.3` (the commit
 holding this ensemble). It is the base case of `07eedaf` (N27, Numurkah start date) with the N38 switches present but
 off (Angela, 20 Nov: keep the base case; imports as last resort, flat coal availability and constant wind are stated as
 limitations, tests in the notes `docs/n38_probes/`). The earlier ensemble (`b796f64`, before N27) was rerun on the
