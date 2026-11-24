@@ -194,6 +194,9 @@ public class Settings implements java.io.Serializable {
     //Optional CSV in simulationSettings (year,wholesale,status,source): rows replace the wholesale share of the tariff
     //(R_w) read from the historic_tariff_contribution table (see LoadData, tariff contribution)
     public String tariffContributionFile;
+    //Optional CSV (spm_id,level,from,loss,source): network losses of each SPM level from each date on, as a fraction of the
+    //energy entering that level (24 Nov 2026). Without it, each SPM takes the mean loss of its active network assets (DB)
+    public String networkLossesFile;
     //Years between the January tariff update and the register row it uses: 1 (default) = the previous year's row,
     //0 = the row of the bills in force that year (rows are calendar years of bills)
     public int tariffContributionLag = 1;
@@ -654,6 +657,7 @@ public class Settings implements java.io.Serializable {
     public String getCapacityPathFile() { return capacityPathFile; }
 
     public String getTariffContributionFile() { return tariffContributionFile; }
+    public String getNetworkLossesFile() { return networkLossesFile; }
 
     public int getTariffContributionLag() { return tariffContributionLag; }
 

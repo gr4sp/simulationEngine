@@ -211,6 +211,8 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
     //and the market price cap by start date (yyyy-MM-dd); both empty unless set
     private List<String[]> interconnectors = new ArrayList<>();
     private TreeMap<String, Double> shortfallPriceMWh = new TreeMap<>();
+    //networkLossesFile: SPM id -> (from date yyyy-MM-dd -> loss fraction)
+    private HashMap<Integer, TreeMap<String, Double>> networkLosses = new HashMap<>();
 
     //Policies used for the simulation
     private SimPolicies policies;
@@ -483,6 +485,15 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
                     if (line.isBlank() || line.startsWith("#")) continue;
                     String[] f = line.split(",", 3);
                     shortfallPriceMWh.put(f[0].trim(), Double.parseDouble(f[1].trim()));
+                }
+            }
+            if (settings.getNetworkLossesFile() != null) {
+                List<String> lines = Files.readAllLines(settingsFolder.resolve(settings.getNetworkLossesFile()));
+                for (String line : lines.subList(1, lines.size())) {
+                    if (line.isBlank() || line.startsWith("#")) continue;
+                    String[] f = line.split(",", 5);
+                    networkLosses.computeIfAbsent(Integer.parseInt(f[0].trim()), k -> new TreeMap<>())
+                            .put(f[2].trim(), Double.parseDouble(f[3].trim()));
                 }
             }
 
@@ -882,6 +893,15 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
             offers.add(new core.Relationships.SpotMarket.ImportOffer(r[0], price * loss, mw, waterValue >= 0));
         }
         return offers;
+    }
+
+    //Network loss of an SPM on this date from networkLossesFile (its row in force, or its first row before that);
+    //the given fallback (the SPM's own network assets) when the file is not set or has no row for the SPM
+    public double getNetworkLoss(int spmId, Date time, double fallback) {
+        TreeMap<String, Double> m = networkLosses.get(spmId);
+        if (m == null || m.isEmpty()) return fallback;
+        Map.Entry<String, Double> e = m.floorEntry(new SimpleDateFormat("yyyy-MM-dd").format(time));
+        return e == null ? m.firstEntry().getValue() : e.getValue();
     }
 
     //Market price cap on this date, or -1 without shortfallPriceFile (or before its first row)

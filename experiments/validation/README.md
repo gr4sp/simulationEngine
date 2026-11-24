@@ -779,7 +779,43 @@ quantity the index stands for. The trend is right (r 0.93-0.95); the level is 7 
   about 1.19 (19 %), with an unsourced 10 % transmission loss; NGA's losses part is 7-12 % of scope 2 for Victoria (2000-2019).
 
 The index feeds only the household emissions output (`EndUserUnit.currentEmissions`, `SaveData`): prices, tariffs and
-the validated system emissions do not depend on it. Repair options (results change for that output only; not done):
-mean over active assets, with loss values sourced (AEMO transmission and AER distribution loss factors); and a
-sent-out denominator (auxiliary use per technology). NGA scope 2 matching the index (+1.4 %) is partly the two
+the validated system emissions do not depend on it. Repair options (results change for that output only):
+mean over active assets, with loss values sourced (AEMO transmission and AER distribution loss factors), done below; and a
+sent-out denominator (auxiliary use per technology), not done. NGA scope 2 matching the index (+1.4 %) is partly the two
 differences offsetting each other, so it should not be reported as a validation on its own.
+
+## Network losses repaired and sourced (24 Nov 2026, v0.3.3)
+
+Model results change for one output only: household emissions (`GHG Emissions (tCO2-e) per household`, and the index
+behind it). Prices, generation, tariffs, system emissions and every statistic of the validation table are identical
+(100 seeds, `ensemble_2026-11-24/seed_statistics.csv` equals `ensemble_2026-11-20/seed_statistics.csv`).
+
+- *Code.* `Spm.computeNetworksLosses` averages over the active assets only (test
+  `SpmTest.retiredNetworksAreLeftOutOfTheAverage`). New setting `networkLossesFile` (`Settings`, `Gr4spSim.getNetworkLoss`):
+  a loss per SPM and date; an SPM with rows uses the row in force (its first row before that), the others keep their
+  network assets.
+- *Data* (`simulationSettings/network_losses_VIC.csv`, built by `scripts/data/network_losses_vic.py`):
+  - Transmission (SPM 7): AER economic benchmarking RIN of AusNet Services (ET), TQS03 / ET_QOS3630_00001 "System
+    losses" = (inflows - outflows) / inflows, revenue meters of all terminal stations (Basis of Preparation 2014,
+    D14 120101, Table 3.6.3); April-March regulatory years 2006-2026: 2.56 % (2005-06 to 2008-09, back-cast), 2.37-2.85 %
+    to 2016-17, 1.79-2.33 % from 2018-19. 2017-18 has no response in the download, so 2016-17 (2.62 %) carries on.
+    Recent files label the year "Calendar Year" though AusNet's regulatory year runs April-March; the three months
+    make no visible difference at this size.
+  - Distribution (SPM 5): AER EB RIN DQS03 / ED_QOS730_00001 system losses of the five DNSPs, weighted by energy
+    delivered: 6.00 % (2006) to 4.69 % (2019).
+  - 400 V (SPM 6) and customer wiring (SPM 1): 0 (inside the distribution system losses; behind the meter).
+  - The database values (transmission 10 %, the others 2-3 %) are no longer used for these SPMs.
+- *Effect* (100 seeds, `ensemble_2026-11-24/emissions_index.*`). Index / system intensity: 1.091 in 1999, 1.062 in
+  2019 (rooftop PV, at the household level, carries no losses), the same in every seed to 1.3e-4 (before: 1.053-1.066).
+
+| Model series vs comparator | Years | NSE before (5-95 %) | NSE now (5-95 %) | Mean relative bias before | Mean relative bias now | r now |
+|---|---|---|---|---|---|---|
+| Index vs NGA scope 2 + losses (per kWh delivered) | 2000-2019 (16 years) | 0.03 (0.01 to 0.05) | 0.43 (0.41 to 0.45) | -7.3 % | -5.3 % | 0.93 |
+| Index, 3-yr mean vs NGA scope 2 + losses | 2005-2019 (15 years) | | 0.62 (0.60 to 0.64) | | -3.4 % | 0.93 |
+| Index vs NGA scope 2 (per kWh sent out) | 2000-2019 (16 years) | 0.88 (0.87 to 0.89) | 0.73 (0.72 to 0.74) | +1.4 % | +3.6 % | 0.96 |
+
+Scope 2 + losses is the comparator for the index (emissions per kWh delivered); NGA scope 2 is not (no losses), and
+its better fit before the repair was the two errors offsetting each other. The remaining -5 % is the as-generated
+basis of the generator factors (system intensity vs NGA scope 2: -4.0 %; vs CDEII: -7.8 %), left as it is.
+Household emissions per household rise by 1-2.5 % (golden baseline `VICSimDataYearSummary_seed_42_to_2030.csv`,
+regenerated; seed 42, 2000: 8.18 -> 8.35 t CO2-e).
