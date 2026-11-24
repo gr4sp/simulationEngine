@@ -177,7 +177,8 @@ what the script does.
 **Update, Nov 2026:** the extension is now applied (request R2), with the demand-weighted price that the article
 uses (Angela, option G8 a). `wholesale_annual_windows()` also prints the monthly statistics against AEMO's
 time-weighted mean, so the cost of the weighting stays visible (pinned BAU: RMSE 32.62 demand weighted, 28.37 time
-weighted; bias -7.72 and -3.67).
+weighted; bias -7.72 and -3.67). **Superseded 24 Nov 2026:** the table now uses the time-weighted comparator (section "Price basis and the
+recursive emission index" below).
 
 Comparing directly to the AER's figure 2.3 would stack three mismatches at once —
 demand weighted, financial year, and weighted against *native* demand (initial
@@ -713,3 +714,72 @@ Reading:
   recorded after it closed": its emissions effect is a lower bound and its price effect an upper bound. The same holds
   for the carbon price years: exports fell from 5.0 TWh (2011) to 3.5-3.7 (2012-13).
 
+
+## Price basis and the recursive emission index (24 Nov 2026, questions from the methods article draft)
+
+Model results unchanged: no Java code or setting changed. Only the price comparator of the validation table changed,
+and two checks were added.
+
+**Price basis (case B in the main table, case C as a supplement; Angela, 24 Nov 2026).** The simulated monthly price is
+a plain (time-weighted) mean of the half-hourly primary-spot prices (`Arena`); the table compared it with AEMO's
+demand-weighted price (option G8 a, above), so it charged the model with the price-demand covariance it does not
+report. `validation_statistics.load_price_comparator()` now returns AEMO's time-weighted monthly mean (column `mean` of
+`aemo_VIC1_monthly_vwp_199812_202006.csv`); `load_price_comparator("demand")` keeps the demand-weighted one, and
+`wholesale_annual_windows()` prints it as the cross-check. Statistics recomputed on the 23 Nov runs
+(`ensemble_2026-11-20/seed_summary.*`, `seed_statistics.csv`; only the two price rows change; figure
+`wholesaleSeedValidation` redrawn, record labelled time-weighted):
+
+| Wholesale price, median (5-95 %) | NSE | Bias ($/MWh) | RMSE ($/MWh) |
+|---|---|---|---|
+| Monthly, demand-weighted comparator (before) | -0.06 (-0.45 to 0.19) | -16.51 (-18.09 to -14.56) | 37.99 (33.15 to 44.41) |
+| Monthly, time-weighted comparator (now) | -0.29 (-0.96 to 0.05) | -12.46 (-14.04 to -10.51) | 33.48 (28.71 to 41.27) |
+| Annual, demand-weighted comparator (before) | 0.25 (0.11 to 0.44) | -17.00 (-18.71 to -14.81) | 22.24 (19.20 to 24.27) |
+| Annual, time-weighted comparator (now) | 0.39 (0.26 to 0.54) | -12.66 (-14.38 to -10.47) | 17.91 (15.47 to 19.62) |
+
+About 4 of the 17 $/MWh bias was the basis. The monthly NSE falls although bias and RMSE improve: the time-weighted
+record varies less from month to month, so the same errors weigh more against its variance.
+
+Case C (`seed_price_duration.py` now also writes `seed_halfhour_months.csv`, each seed's monthly price on both bases
+from the half-hourly log, and `price_basis.md`; `python seed_price_duration.py basis OUT_DIR` rewrites the report):
+both sides demand weighted, 1999-2019 (the log's years), 100 seeds: monthly NSE -0.45 (-1.37 to 0.05), bias -12.52,
+RMSE 42.88; annual NSE 0.39 (0.25 to 0.55), RMSE 20.10. Case B on the same window: monthly NSE -0.23, annual 0.42.
+Weighting raises the simulated price by 3.46 (2.63 to 4.55) $/MWh, the record's by 3.75: the model's price-demand
+covariance is about right on average, but its spikes fall in different months (January 2009: the model's heatwave
+spike, weighted, adds 18.7 $/MWh to seed 42's 2009 against 7.0 in the record), which is why the monthly NSE drops
+further. The log's monthly mean equals the output column within 0.24 $/MWh (seed 42, 252 months).
+
+**Recursive emission intensity index** (`emissions_index.py`, `ensemble_2026-11-20/emissions_index.*`). The validated
+emissions are the system total (generator MWh x factor); the index (`Spm.computeIndicators`, tonnes per MWh consumed,
+written as household emissions / household consumption) was not tested. Two tests:
+
+1. *Consistency.* Index / system intensity (System GHG Emissions / system generation, month by month) is
+   1.053-1.066 over 1999-2020, the same in every seed to 1.3e-4: the recursion neither loses nor adds emissions; it
+   only scales them by the network losses.
+2. *Independent comparators.* NGA Factors (DISER, August 2021, Table 46, Victoria, July-June years; the last edition
+   with the time series; `simulationData/nga_factors_2021_table46_vic.csv`, from the kg/GJ columns because the
+   kg/kWh column reads 0.102 for 2017/18, a typo for 1.02) and AEMO's CDEII for VIC1 (daily, from 2011-12):
+
+| Model series vs comparator | Years | NSE (5-95 % over seeds) | Mean relative bias | r |
+|---|---|---|---|---|
+| Index vs NGA scope 2 (per kWh sent out) | 2000-2019 (16 years) | 0.88 (0.87 to 0.89) | +1.4 % | 0.95 |
+| Index vs NGA scope 2 + losses (per kWh delivered) | 2000-2019 (16 years) | 0.03 (0.01 to 0.05) | -7.3 % | 0.93 |
+| System intensity vs AEMO CDEII VIC1 (per MWh sent out) | 2012-2020 (9 years) | 0.23 (0.20 to 0.25) | -7.8 % | 0.95 |
+
+"Scope 2 + losses" = scope 2 + end-user scope 3 - 0.01 (the network operators' scope 3, fuel supply only), the
+quantity the index stands for. The trend is right (r 0.93-0.95); the level is 7 % low, for two reasons found here:
+
+- *As-generated basis.* The generator factors are NGER scope 1 / NGER electricity production, which is as generated
+  (Acil Allen 2016, report to AEMO, s. 2.5, 3.1). The model's generation (rooftop excluded) is 7-11 % above AEMO's
+  sent-out energy in 2011-12 to 2019-20 while its emissions agree within about 5 % (2012-2018): the stations' own use
+  is inside the model's MWh, so every intensity per MWh is low against a sent-out comparator.
+- *Network losses (a code defect).* `Spm.computeNetworksLosses` sums the losses of the network assets active on the
+  date but divides by the number of all the SPM's assets, past owners included (transmission: 2 active of 12 rows,
+  (0.1 + 0.1) / 12 = 1.7 %; 400 V and distribution: 2-3 of 7 rows, 0.6-0.9 % each; customer 3 %). Chained, this gives
+  1.0666 in 1999 and 1.0605 from 2016, which is the ratio in test 1. The intended mean over active assets would give
+  about 1.19 (19 %), with an unsourced 10 % transmission loss; NGA's losses part is 7-12 % of scope 2 for Victoria (2000-2019).
+
+The index feeds only the household emissions output (`EndUserUnit.currentEmissions`, `SaveData`): prices, tariffs and
+the validated system emissions do not depend on it. Repair options (results change for that output only; not done):
+mean over active assets, with loss values sourced (AEMO transmission and AER distribution loss factors); and a
+sent-out denominator (auxiliary use per technology). NGA scope 2 matching the index (+1.4 %) is partly the two
+differences offsetting each other, so it should not be reported as a validation on its own.

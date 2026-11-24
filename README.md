@@ -239,7 +239,8 @@ the model 100 times and takes several hours; the later steps read its output dir
 | 100-seed runs and the validation table (NSE, Bias, RMSE; MAE and NRMSE in the supplement) | `python experiments/validation/seed_ensemble.py OUT_DIR 100 10` (100 seeds, 10 in parallel; writes `seed_summary.md`) |
 | Emissions on the inventory's July-June year | `python experiments/validation/emissions_year_basis.py OUT_DIR` |
 | Validation figures with the seed band | `python experiments/validation/seed_band_figures.py OUT_DIR --runs OUT_DIR` (from the committed results alone: `python experiments/validation/seed_band_figures.py experiments/validation/ensemble_2026-11-20 ./out`) |
-| Price duration curves | `python experiments/validation/seed_price_duration.py OUT_DIR OUT_DIR 100 10` (reruns the seeds with a half-hourly log; needs `psql` on the PATH, or its path in the `PSQL` environment variable) |
+| Price duration curves; monthly price on both bases (`price_basis.md`) | `python experiments/validation/seed_price_duration.py OUT_DIR OUT_DIR 100 10` (reruns the seeds with a half-hourly log; needs `psql` on the PATH, or its path in the `PSQL` environment variable) |
+| Recursive emission index: consistency and comparison with NGA Factors and AEMO CDEII | `python experiments/validation/emissions_index.py OUT_DIR OUT_DIR` |
 | Price events (no carbon price, Hazelwood open, gas at its 2015 price) | `python experiments/validation/price_events.py OUT_DIR EVENTS_DIR` (event runs as listed in `experiments/validation/price_events_2026-11-23/settings_changes.md`) |
 
 `experiments/validation/README.md` explains each comparison, the record behind it and the choices made.

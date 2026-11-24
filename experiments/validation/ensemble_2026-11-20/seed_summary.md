@@ -4,8 +4,8 @@ Base case over 100 seeds: median (5th to 95th percentile over the seeds). NSE ha
 
 | Indicator | Unit | NSE | Bias | RMSE |
 |---|---|---|---|---|
-| Wholesale price (monthly) | $/MWh | -0.06 (-0.45 to 0.19) | -16.51 (-18.09 to -14.56) | 37.99 (33.15 to 44.41) |
-| Wholesale price (annual) | $/MWh | 0.25 (0.11 to 0.44) | -17.00 (-18.71 to -14.81) | 22.24 (19.20 to 24.27) |
+| Wholesale price (monthly) | $/MWh | -0.29 (-0.96 to 0.05) | -12.46 (-14.04 to -10.51) | 33.48 (28.71 to 41.27) |
+| Wholesale price (annual) | $/MWh | 0.39 (0.26 to 0.54) | -12.66 (-14.38 to -10.47) | 17.91 (15.47 to 19.62) |
 | RE share (annual) | pp | 0.97 (0.97 to 0.97) | 0.10 (0.08 to 0.12) | 1.09 (1.04 to 1.11) |
 | Tariffs vs Oakley Greenwood | c/kWh | 0.51 (0.48 to 0.56) | -3.35 (-3.51 to -3.00) | 3.85 (3.67 to 3.97) |
 | Tariffs vs St Vincent de Paul | c/kWh | -52.68 (-56.63 to -50.20) | 11.18 (10.87 to 11.62) | 11.49 (11.23 to 11.91) |
@@ -27,8 +27,8 @@ Base case over 100 seeds: median (5th to 95th percentile over the seeds). NSE ha
 
 | Indicator | Unit | MAE | NRMSE |
 |---|---|---|---|
-| Wholesale price (monthly) | $/MWh | 23.16 (21.72 to 24.86) | 75.85 (66.18 to 88.65) |
-| Wholesale price (annual) | $/MWh | 18.46 (16.18 to 20.02) | 43.89 (37.89 to 47.89) |
+| Wholesale price (monthly) | $/MWh | 20.53 (19.26 to 22.49) | 72.72 (62.36 to 89.63) |
+| Wholesale price (annual) | $/MWh | 15.02 (12.93 to 16.48) | 38.64 (33.39 to 42.34) |
 | RE share (annual) | pp | 0.62 (0.59 to 0.64) | 10.11 (9.68 to 10.27) |
 | Tariffs vs Oakley Greenwood | c/kWh | 3.37 (3.11 to 3.52) | 11.94 (11.39 to 12.32) |
 | Tariffs vs St Vincent de Paul | c/kWh | 11.18 (10.87 to 11.62) | 54.05 (52.79 to 56.00) |

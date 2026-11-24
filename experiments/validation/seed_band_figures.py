@@ -162,7 +162,7 @@ def main():
     if os.path.exists(months_file):
         m = pd.read_csv(months_file, index_col="month", parse_dates=["month"])
         draw_sim(top, m.index, m)
-        top.legend(handles=handles(nse_label(stats, "Wholesale price (monthly)"), [rec("Record (AEMO VIC1)", m="")]),
+        top.legend(handles=handles(nse_label(stats, "Wholesale price (monthly)"), [rec("Record (AEMO VIC1, time-weighted)", m="")]),
                    loc="upper left", fontsize=8.5)
     else:
         print(f"no {months_file}: monthly panel shows the record only (run once with --runs)")
@@ -176,7 +176,7 @@ def main():
     axes_style(bot, "Annual price (nominal $/MWh)")
     bot.set_xticks(range(1999, 2021, 2))
     bot.set_title("Annual mean of the months (2020: January to June)", fontsize=10, loc="left")
-    bot.legend(handles=handles(nse_label(stats, "Wholesale price (annual)"), [rec("Record (AEMO VIC1)")]),
+    bot.legend(handles=handles(nse_label(stats, "Wholesale price (annual)"), [rec("Record (AEMO VIC1, time-weighted)")]),
                loc="upper left", fontsize=8.5)
     fig.tight_layout()
     save(fig, "wholesaleSeedValidation")
