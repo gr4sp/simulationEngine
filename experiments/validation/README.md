@@ -104,10 +104,13 @@ its band, because the panel spans every year either source covers.
 
 The 2018 emissions comparator (46.4 Mt) is the inventory value, not an estimate. Corrected 19 Nov 2026: this note
 used to say it was the 2017 figure less 11.8 Mt for Hazelwood, which would give 44.3 Mt. The Victorian Greenhouse
-Gas Emissions Report 2018 (State and Territory Greenhouse Gas Inventories, May 2020) gives 2018 net emissions of
-102.2 Mt with 45.4 % from electricity generation (46.4 Mt), and a fall of 17.1 Mt in electricity generation since
-2005 (63.5 - 17.1 = 46.4). Both match the file. The later reports (2019, 2020) would extend the record to 2020 and
-show any revisions; they were not downloaded.
+Gas Emissions Report 2018 (DELWP 2020; data from the State and Territory Greenhouse Gas Inventories released in
+May 2020) prints it in Table 1 (p. 18): electricity generation 63.5 Mt CO2-e in 2005, 46.4 Mt in 2018, change -17.1 Mt;
+net emissions 102.2 Mt, of which electricity generation 45.4 %. Checked against the PDF on 24 Nov 2026. The same
+report's other figures match the file too: the 12.8 Mt fall over 2016-2018 (p. 20) is 59.2 - 46.4, and its
+Appendix A, Table 3, shows no revision to electricity generation for 2005 or 2017 since the 2017 report. The PDF is
+kept in `Sandbox/papers/GR4SPArticle_ERSS/` (`2018 Victorian-Greenhouse-Gas-Emissions-Report-2018a.pdf`). The
+later reports (2019, 2020) would extend the record to 2020 and show any revisions; they were not downloaded.
 
 ## Resolution: what a weighted comparator can and cannot ask of the model
 
