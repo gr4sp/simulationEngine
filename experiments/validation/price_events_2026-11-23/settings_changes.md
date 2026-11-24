@@ -1,6 +1,6 @@
 # Settings of the event runs (23 Nov 2026)
 
-Each run copies `simulationSettings/` as at `v0.3-methodsx` and changes only the lines below. Code: the frozen model plus
+Each run copies `simulationSettings/` as at `v0.3` and changes only the lines below. Code: the frozen model plus
 the opt-in generator parameter `endYear` (used only by the Hazelwood runs) and the monthly emissions column, neither of
 which changes a base-case output (100 seeds rerun: every run file identical to `ensemble_2026-11-20`).
 

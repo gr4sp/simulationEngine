@@ -27,7 +27,7 @@ cd simulationEngine
 ```
 
 The full history is about 1.3 GB and takes around ten minutes to clone. To reproduce a release you only need that
-release: `git clone --depth 1 --branch v0.3.2 https://github.com/gr4sp/simulationEngine.git`.
+release: `git clone --depth 1 --branch v0.3.3 https://github.com/gr4sp/simulationEngine.git`.
 
 > **Windows: enable long paths first.** A few data files in `experiments/assesmentData/` have descriptive names up to 139 characters. Combined with a deep clone location, these can exceed the legacy 260-character Windows path limit and the clone fails with `error: unable to create file ...: Filename too long`. Enable long-path support once (Administrator PowerShell):
 >
@@ -227,7 +227,7 @@ results move:
 
 The model pins its timezone to `Australia/Melbourne` (`Gr4spSim.TIMEZONE`), so results do not depend on your machine's regional settings. You do not need to change your system clock or locale to reproduce the article from anywhere in the world.
 
-### What regenerates what: the methods article's validation (release `v0.3.2`)
+### What regenerates what: the methods article's validation (release `v0.3.3`)
 
 The methods article (in preparation) reports the base case over 100 random seeds (seeds 1-100): the median and the 5-95 % range of
 each validation statistic. The results are committed in `experiments/validation/ensemble_2026-11-20/`; the steps below
@@ -236,10 +236,12 @@ the model 100 times and takes several hours; the later steps read its output dir
 
 | Article artefact | Command |
 |---|---|
-| 100-seed runs and the validation table (NSE, Bias, RMSE; MAE and NRMSE in the supplement) | `python experiments/validation/seed_ensemble.py OUT_DIR 100 10` (100 seeds, 10 in parallel; writes `seed_summary.md`) |
+| 100-seed runs and the validation table (NSE, Bias, RMSE; MAE and NRMSE in the supplement) | `python experiments/validation/seed_ensemble.py OUT_DIR 100 10` (100 seeds, 10 in parallel; writes `seed_summary.md`; give OUT_DIR as an absolute path) |
 | Emissions on the inventory's July-June year | `python experiments/validation/emissions_year_basis.py OUT_DIR` |
 | Validation figures with the seed band | `python experiments/validation/seed_band_figures.py OUT_DIR --runs OUT_DIR` (from the committed results alone: `python experiments/validation/seed_band_figures.py experiments/validation/ensemble_2026-11-20 ./out`) |
-| Price duration curves | `python experiments/validation/seed_price_duration.py OUT_DIR OUT_DIR 100 10` (reruns the seeds with a half-hourly log; needs `psql` on the PATH, or its path in the `PSQL` environment variable) |
+| Price duration curves; monthly price on both bases (`price_basis.md`) | `python experiments/validation/seed_price_duration.py OUT_DIR OUT_DIR 100 10` (reruns the seeds with a half-hourly log; needs `psql` on the PATH, or its path in the `PSQL` environment variable) |
+| Recursive emission index: consistency and comparison with NGA Factors and AEMO CDEII | `python experiments/validation/emissions_index.py OUT_DIR OUT_DIR` |
+| Network losses per SPM level (`simulationSettings/network_losses_VIC.csv`) from the AER economic benchmarking RINs | `python scripts/data/network_losses_vic.py DNSP_RIN_DIR TNSP_RIN_DIR simulationSettings/network_losses_VIC.csv` (AER downloads of the five Victorian DNSPs and of AusNet Services (ET)) |
 | Price events (no carbon price, Hazelwood open, gas at its 2015 price) | `python experiments/validation/price_events.py OUT_DIR EVENTS_DIR` (event runs as listed in `experiments/validation/price_events_2026-11-23/settings_changes.md`) |
 
 `experiments/validation/README.md` explains each comparison, the record behind it and the choices made.
@@ -268,7 +270,7 @@ sampled scenarios run thousands of simulations and take hours. The published run
 Zenodo (see [Data archives](#data-archives)) and are the practical starting point.
 
 GR4SP continues to be developed. The state of the model that reproduces the methods article is
-fixed by the `v0.3.2` tag together with the database snapshot the repository ships (the pre-repair
+fixed by the `v0.3.3` tag together with the database snapshot the repository ships (the pre-repair
 results by the `v0.1-article` tag);
 see [Reproducing the Article's Results](#reproducing-the-articles-results).
 
@@ -350,8 +352,9 @@ fetching rather than citing:
 
 If you use GR4SP, please cite the software using the metadata in [`CITATION.cff`](CITATION.cff).
 
-The version used in the methods article (in preparation) is the release `v0.3.2`, archived on Zenodo:
-[10.5281/zenodo.24487970](https://doi.org/10.5281/zenodo.24487970). To cite the software regardless of version, use the
+The version used in the methods article (in preparation) is the release `v0.3.3` (network losses repaired and
+sourced; otherwise the results of `v0.3.2`, [10.5281/zenodo.24487970](https://doi.org/10.5281/zenodo.24487970)), archived
+on Zenodo under the concept DOI below; its version DOI is added here once Zenodo mints it. To cite the software regardless of version, use the
 concept DOI [10.5281/zenodo.24487969](https://doi.org/10.5281/zenodo.24487969), which always resolves to the latest release.
 Earlier scenario and sensitivity outputs are a separate dataset: <https://doi.org/10.5281/zenodo.4667996>.
 

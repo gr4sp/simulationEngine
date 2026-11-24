@@ -123,19 +123,17 @@ public class Spm implements Steppable, Asset, java.io.Serializable  {
     public double computeNetworksLosses(Date today) {
         double networkLoss = 0.0;
 
-        //Compute average loss across networks of current SPM
-        if (network_assets.size() > 0) {
-            for (NetworkAssets n : network_assets) {
-                //Has started today or earlier?
-                if (n.getStart().before(today) || n.getStart().equals(today)) {
-                    //Has not finished operations?
-                    if (n.getEnd().after(today)) {
-                        networkLoss += n.getGridLosses();
-                    }
-                }
+        //Mean loss over the network assets active on this date. 24 Nov 2026: the sum used to be divided by all the
+        //SPM's assets, retired owners included (transmission: 2 active of 12 rows, 10 % read as 1.7 %)
+        int active = 0;
+        for (NetworkAssets n : network_assets) {
+            //Has started today or earlier, and has not finished operations?
+            if ((n.getStart().before(today) || n.getStart().equals(today)) && n.getEnd().after(today)) {
+                networkLoss += n.getGridLosses();
+                active++;
             }
-            networkLoss /= network_assets.size();
         }
+        if (active > 0) networkLoss /= active;
 
         return networkLoss;
     }
@@ -323,7 +321,8 @@ public class Spm implements Steppable, Asset, java.io.Serializable  {
 
 
         //Compute network losses
-        double networkLosses = computeNetworksLosses(today);
+        //Sourced losses per SPM level (networkLossesFile) when set, otherwise the SPM's network assets
+        double networkLosses = data.getNetworkLoss(this.id, today, computeNetworksLosses(today));
 
         //Base Case, when an SPM doesn't contain any other SPM but contains generators
         this.genEmissionIntensityIndex = (1 / (1 - networkLosses)) * this.genEmissionIntensityIndex;

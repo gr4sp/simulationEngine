@@ -19,12 +19,15 @@ Mirrors ``experiments/notebookGr4sp/legacy/ema_gr4sp_EET-3RegimeValidation.ipynb
 which is the authoritative source for the published numbers.
 
 Wholesale price comparator (request R2, Nov 2026): AEMO's aggregated price and
-demand data for VIC1, the monthly demand-weighted price sum(RRP x TOTALDEMAND) /
-sum(TOTALDEMAND), each half-hour in the month it starts, January 1999 to June
+demand data for VIC1, each half-hour in the month it starts, January 1999 to June
 2020 (``aemo_VIC1_monthly_vwp_199812_202006.csv``, built by
 ``scripts/data/aemo_vic1_monthly_price.py`` from the raw AEMO files). It replaces
 the OpenNEM extract (April 2005 on), which agrees with it over 2005-2020
-(correlation 0.999). The annual row resamples both sides from the same months;
+(correlation 0.999). Since 24 Nov 2026 (Angela) the tabled comparator is the
+time-weighted monthly mean (column ``mean``), the same basis as the simulated
+monthly price (a plain mean of the half-hourly primary-spot prices); the
+demand-weighted price sum(RRP x TOTALDEMAND) / sum(TOTALDEMAND) (column ``vwp``,
+option G8 a before) is kept as a cross-check, ``load_price_comparator("demand")``. The annual row resamples both sides from the same months;
 ``wholesale_annual_windows()`` prints it next to the simulated annual output
 column, so the two routes can be compared.
 
@@ -85,17 +88,24 @@ def load_inputs(run=None):
     return year, month, ghge, opennem, tariffs
 
 
-def load_price_comparator():
-    """AEMO VIC1 monthly demand-weighted price, January 1999 to June 2020."""
+PRICE_BASIS = {"time": "mean", "demand": "vwp"}
+
+
+def load_price_comparator(basis="time"):
+    """AEMO VIC1 monthly price, January 1999 to June 2020.
+
+    basis "time" (tabled since 24 Nov 2026): plain mean of the half-hourly prices, the basis of the simulated monthly
+    price. "demand": demand-weighted price (tabled before, option G8 a), kept as a cross-check.
+    """
     aemo = pd.read_csv(os.path.join(DATA, "aemo_VIC1_monthly_vwp_199812_202006.csv"),
                        index_col="m", parse_dates=["m"])
-    return aemo.loc[PRICE_FIRST:PRICE_LAST, "vwp"].rename("observed")
+    return aemo.loc[PRICE_FIRST:PRICE_LAST, PRICE_BASIS[basis]].rename("observed")
 
 
-def monthly_prices(month):
+def monthly_prices(month, basis="time"):
     """Simulated and observed monthly price on the months both cover."""
     return pd.merge(month["Primary Wholesale ($/MWh)"].rename("simulated"),
-                    load_price_comparator(), left_index=True, right_index=True)
+                    load_price_comparator(basis), left_index=True, right_index=True)
 
 
 def renewable_share(opennem):
@@ -307,11 +317,10 @@ def wholesale_annual_windows(year, month):
         print(f"    {label:<36}MAE {result['MAE']:6.2f}  RMSE {result['RMSE']:6.2f}"
               f"  Bias {result['Bias']:+6.2f}  NRMSE {result['NRMSE']:5.1f}%  NSE {result['NSE']:5.2f}")
 
-    # Cross-check: the simulated monthly price is a time-weighted mean of half-hours, so also compare it with the
-    # observed time-weighted mean (column `mean`), which carries no price-demand covariance (README, Resolution)
-    aemo = pd.read_csv(os.path.join(DATA, "aemo_VIC1_monthly_vwp_199812_202006.csv"),
-                       index_col="m", parse_dates=["m"]).loc[monthly.index, "mean"]
-    for label, obs in (("demand weighted (tabled)", monthly.observed), ("time weighted (cross-check)", aemo)):
+    # Cross-check: the tabled comparator is time weighted, as the simulated monthly price is (24 Nov 2026); the
+    # demand-weighted price (tabled before, option G8 a) adds the price-demand covariance the simulation does not carry
+    aemo = load_price_comparator("demand").loc[monthly.index]
+    for label, obs in (("time weighted (tabled)", monthly.observed), ("demand weighted (cross-check)", aemo)):
         r = statistics(monthly.simulated.values, obs.values)
         print(f"  Monthly vs AEMO {label:<28}MAE {r['MAE']:6.2f}  RMSE {r['RMSE']:6.2f}"
               f"  Bias {r['Bias']:+6.2f}  NSE {r['NSE']:5.2f} (not comparable across rows)")

@@ -40,17 +40,16 @@ public class SpmTest {
     }
 
     @Test
-    void retiredNetworksContributeNothingButStillCountInTheAverage() {
+    void retiredNetworksAreLeftOutOfTheAverage() {
         ArrayList<NetworkAssets> nets = new ArrayList<>();
         nets.add(net(1, 0.10, 1990, 2100));
         nets.add(net(2, 0.20, 1990, 2100));
         nets.add(net(3, 0.30, 1990, 2000)); // retired well before 2020
         Spm s = spm(new ArrayList<Spm>(), nets);
 
-        // Pins CURRENT behaviour: the divisor is network_assets.size(), which includes
-        // inactive assets, so a retired network dilutes the average rather than being
-        // excluded from it: (0.10 + 0.20) / 3.
-        assertEquals(0.10, s.computeNetworksLosses(date(2020)), EPS);
+        // 24 Nov 2026: the mean is over the active assets only, (0.10 + 0.20) / 2. Before, the divisor
+        // included retired assets, (0.10 + 0.20) / 3, which diluted the Victorian transmission loss to 1.7 %.
+        assertEquals(0.15, s.computeNetworksLosses(date(2020)), EPS);
     }
 
     @Test

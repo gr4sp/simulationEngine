@@ -1,0 +1,37 @@
+spm_id,level,from,loss,source
+7,transmission,1990-01-01,0.0256,AER EB RIN AusNet (ET) TQS03 system losses, regulatory year 2006 (Apr 2005 to Mar 2006), back-cast (earliest; used before)
+7,transmission,2006-04-01,0.0256,AER EB RIN AusNet (ET) TQS03 system losses, regulatory year 2007 (Apr 2006 to Mar 2007), back-cast
+7,transmission,2007-04-01,0.0256,AER EB RIN AusNet (ET) TQS03 system losses, regulatory year 2008 (Apr 2007 to Mar 2008), back-cast
+7,transmission,2008-04-01,0.0256,AER EB RIN AusNet (ET) TQS03 system losses, regulatory year 2009 (Apr 2008 to Mar 2009), back-cast
+7,transmission,2009-04-01,0.0237,AER EB RIN AusNet (ET) TQS03 system losses, regulatory year 2010 (Apr 2009 to Mar 2010), back-cast
+7,transmission,2010-04-01,0.0244,AER EB RIN AusNet (ET) TQS03 system losses, regulatory year 2011 (Apr 2010 to Mar 2011), back-cast
+7,transmission,2011-04-01,0.0257,AER EB RIN AusNet (ET) TQS03 system losses, regulatory year 2012 (Apr 2011 to Mar 2012), back-cast
+7,transmission,2012-04-01,0.0243,AER EB RIN AusNet (ET) TQS03 system losses, regulatory year 2013 (Apr 2012 to Mar 2013), back-cast
+7,transmission,2013-04-01,0.0285,AER EB RIN AusNet (ET) TQS03 system losses, 2013-14 (Apr 2013 to Mar 2014)
+7,transmission,2014-04-01,0.0246,AER EB RIN AusNet (ET) TQS03 system losses, 2014-15 (Apr 2014 to Mar 2015)
+7,transmission,2015-04-01,0.0250,AER EB RIN AusNet (ET) TQS03 system losses, 2015-16 (Apr 2015 to Mar 2016)
+7,transmission,2016-04-01,0.0262,AER EB RIN AusNet (ET) TQS03 system losses, 2016-17 (Apr 2016 to Mar 2017)
+7,transmission,2018-04-01,0.0192,AER EB RIN AusNet (ET) TQS03 system losses, 2018-19 (Apr 2018 to Mar 2019)
+7,transmission,2019-04-01,0.0179,AER EB RIN AusNet (ET) TQS03 system losses, 2019-20 (Apr 2019 to Mar 2020)
+7,transmission,2020-04-01,0.0199,AER EB RIN AusNet (ET) TQS03 system losses, 2020-21 (Apr 2020 to Mar 2021)
+7,transmission,2021-04-01,0.0214,AER EB RIN AusNet (ET) TQS03 system losses, 2021-22 (Apr 2021 to Mar 2022)
+7,transmission,2022-04-01,0.0233,AER EB RIN AusNet (ET) TQS03 system losses, 2022-23 (Apr 2022 to Mar 2023)
+7,transmission,2023-04-01,0.0229,AER EB RIN AusNet (ET) TQS03 system losses, 2023-24 (Apr 2023 to Mar 2024)
+7,transmission,2024-04-01,0.0222,AER EB RIN AusNet (ET) TQS03 system losses, 2024-25 (Apr 2024 to Mar 2025)
+7,transmission,2025-04-01,0.0218,AER EB RIN AusNet (ET) TQS03 system losses, 2025-26 (Apr 2025 to Mar 2026)
+5,distribution,1990-01-01,0.0600,AER EB RIN DQS03 system losses 2006 (earliest; used before), energy weighted over the five Victorian DNSPs
+5,distribution,2007-01-01,0.0605,AER EB RIN DQS03 system losses 2007, energy weighted: AND 0.0961 CIT 0.0377 JEN 0.0370 PCR 0.0695 UED 0.0459
+5,distribution,2008-01-01,0.0519,AER EB RIN DQS03 system losses 2008, energy weighted: AND 0.0650 CIT 0.0360 JEN 0.0381 PCR 0.0603 UED 0.0477
+5,distribution,2009-01-01,0.0581,AER EB RIN DQS03 system losses 2009, energy weighted: AND 0.0711 CIT 0.0331 JEN 0.0377 PCR 0.0750 UED 0.0534
+5,distribution,2010-01-01,0.0559,AER EB RIN DQS03 system losses 2010, energy weighted: AND 0.0750 CIT 0.0326 JEN 0.0375 PCR 0.0711 UED 0.0452
+5,distribution,2011-01-01,0.0473,AER EB RIN DQS03 system losses 2011, energy weighted: AND 0.0675 CIT 0.0145 JEN 0.0378 PCR 0.0580 UED 0.0445
+5,distribution,2012-01-01,0.0536,AER EB RIN DQS03 system losses 2012, energy weighted: AND 0.0750 CIT 0.0406 JEN 0.0383 PCR 0.0603 UED 0.0427
+5,distribution,2013-01-01,0.0510,AER EB RIN DQS03 system losses 2013, energy weighted: AND 0.0633 CIT 0.0353 JEN 0.0396 PCR 0.0632 UED 0.0410
+5,distribution,2014-01-01,0.0506,AER EB RIN DQS03 system losses 2014, energy weighted: AND 0.0554 CIT 0.0308 JEN 0.0416 PCR 0.0656 UED 0.0460
+5,distribution,2015-01-01,0.0453,AER EB RIN DQS03 system losses 2015, energy weighted: AND 0.0320 CIT 0.0436 JEN 0.0377 PCR 0.0596 UED 0.0439
+5,distribution,2016-01-01,0.0514,AER EB RIN DQS03 system losses 2016, energy weighted: AND 0.0676 CIT 0.0400 JEN 0.0365 PCR 0.0600 UED 0.0411
+5,distribution,2017-01-01,0.0512,AER EB RIN DQS03 system losses 2017, energy weighted: AND 0.0468 CIT 0.0498 JEN 0.0405 PCR 0.0657 UED 0.0426
+5,distribution,2018-01-01,0.0507,AER EB RIN DQS03 system losses 2018, energy weighted: AND 0.0629 CIT 0.0422 JEN 0.0340 PCR 0.0564 UED 0.0463
+5,distribution,2019-01-01,0.0469,AER EB RIN DQS03 system losses 2019, energy weighted: AND 0.0636 CIT 0.0326 JEN 0.0301 PCR 0.0503 UED 0.0455
+6,400V,1990-01-01,0.0,included in the AER distribution system losses (high voltage to the meter)
+1,customer,1990-01-01,0.0,behind the meter: metered household consumption already includes it
