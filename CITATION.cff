@@ -42,9 +42,12 @@ keywords:
 license: MIT
 version: 0.3.3
 date-released: '2026-11-25'
-# Concept DOI (resolves to the latest release); the version DOI of v0.3.3 is added once Zenodo mints it.
-doi: 10.5281/zenodo.24487969
+# DOI of this version (v0.3.3); the concept DOI 10.5281/zenodo.24487969 resolves to the latest release.
+doi: 10.5281/zenodo.24520093
 identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24520093
+    description: This version (v0.3.3)
   - type: doi
     value: 10.5281/zenodo.24487970
     description: Version v0.3.2
