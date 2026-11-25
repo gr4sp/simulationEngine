@@ -352,9 +352,9 @@ fetching rather than citing:
 
 If you use GR4SP, please cite the software using the metadata in [`CITATION.cff`](CITATION.cff).
 
-The version used in the methods article (in preparation) is the release `v0.3.3` (network losses repaired and
-sourced; otherwise the results of `v0.3.2`, [10.5281/zenodo.24487970](https://doi.org/10.5281/zenodo.24487970)), archived
-on Zenodo under the concept DOI below; its version DOI is added here once Zenodo mints it. To cite the software regardless of version, use the
+The version used in the methods article (in preparation) is the release `v0.3.3`, archived on Zenodo:
+[10.5281/zenodo.24520093](https://doi.org/10.5281/zenodo.24520093) (network losses repaired and sourced; otherwise the
+results of `v0.3.2`, [10.5281/zenodo.24487970](https://doi.org/10.5281/zenodo.24487970)). To cite the software regardless of version, use the
 concept DOI [10.5281/zenodo.24487969](https://doi.org/10.5281/zenodo.24487969), which always resolves to the latest release.
 Earlier scenario and sensitivity outputs are a separate dataset: <https://doi.org/10.5281/zenodo.4667996>.
 
