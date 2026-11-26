@@ -239,3 +239,6 @@ docs/versioning.md
 
 # Claude Code local settings and worktrees (per machine, not published)
 .claude/
+
+# Run logs of the sensitivity experiments (morris_aby_run.log is 676 MB)
+experiments/sensitivity/results/*.log
