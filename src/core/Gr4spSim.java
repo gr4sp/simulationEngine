@@ -1201,12 +1201,20 @@ public class Gr4spSim extends SimState implements java.io.Serializable {
         }
 
         saveData.plotSeries(this);
-        this.schedule.scheduleRepeating(policies);
+        //Test switch (26 Nov 2026, not used by the base case): -Dgr4sp.policiesOrder=before|after runs SimPolicies always
+        //before or always after the arenas. Unset: SimPolicies and the arenas share ordering 0 and MASON shuffles them
+        String policiesOrder = System.getProperty("gr4sp.policiesOrder", "");
+        int policiesOrdering = 0, arenaOrdering = 0;
+        if (policiesOrder.equals("before")) policiesOrdering = -1;
+        else if (policiesOrder.equals("after")) arenaOrdering = -1;
+        else if (!policiesOrder.isEmpty()) throw new IllegalArgumentException("gr4sp.policiesOrder: before or after");
+        if (policiesOrder.isEmpty()) this.schedule.scheduleRepeating(policies);
+        else this.schedule.scheduleRepeating(0.0, policiesOrdering, policies);
         this.schedule.scheduleRepeating(0.0, 2, saveData);
 
         for (Map.Entry<Integer, Arena> entry : arena_register.entrySet()) {
             Arena a = entry.getValue();
-            this.schedule.scheduleRepeating(0.0, 0, a);
+            this.schedule.scheduleRepeating(0.0, arenaOrdering, a);
         }
 
 
