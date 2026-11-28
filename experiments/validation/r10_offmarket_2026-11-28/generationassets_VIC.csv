@@ -1,0 +1,536 @@
+asset_id,site_name,owner_name,technology_type,fuel_type,duid,no_units,nameplate_capacity_mw,unit_status,dispatch_type,full_commercial_use_date,closure_date,expected_closure_date
+1,East Market,Victorian Electric Light Co.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1881-01-01,1921-01-01,
+2,Elizabeth St,Australian Electric Light Co Ltd.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1881-01-01,1921-01-01,
+3,Atheneum Hall,Victorian Electric Light Co.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1882-01-01,1922-01-01,
+4,Public Library,Victorian Electric Light Co.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1882-01-01,1922-01-01,
+5,Corrs Lane,A.U. Alcock Electric Light and Motive Power Ltd.,GEDynamo_Arc&IncandLamps,Oil,N/A,,0.11,Decomissioned,NS,1886-01-01,1900-01-01,
+6,Princess Theater,Victorian Electric Light Co.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1886-01-01,1926-01-01,
+7,Bourke Swanston Lighting,Victorian Electric Light Co./Australian Electric Light Co Ltd.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1887-01-01,1928-01-01,
+8,Her Majesty Theater,Victorian Electric Light Co.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1887-01-01,1926-01-01,
+9,Parliament,Victorian Electric Light Co.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1889-01-01,1929-01-01,
+10,Burnley St 1,A.U. Alcock Electric Light & Motive Power Company Ltd /Electric Lighting and Traction Company of Australia Limited,Ganz&Co_ACGenerators,Oil,N/A,,0.35,Decomissioned,NS,1891-01-01,1900-01-01,
+11,Heffernan Lane,Union Electric Co. of Australia Ltd.,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1891-01-01,1931-01-01,
+12,Opera House,Victorian electric light co,SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1891-01-01,1931-01-01,
+13,Richmond,(New) Australasian Electric Co. Ltd./New Australian Electric Co. Ltd.,SiemensDynamo_Arclamps,Oil,N/A,,1.11,Decomissioned,NS,1892-01-01,1900-01-01,
+14,Spencer St old,Corporation of the City of Melbourne,Turbine - Steam Sub Critical,Gas,N/A,,0.77,Decomissioned,NS,1894-01-01,1926-01-01,
+15,Ballarat lighting 1,Ballarat Electric Supply Co. Limited,SiemensDynamo_Arclamps,Oil,N/A,,0.1,Decomissioned,NS,1897-01-01,1901-01-01,
+16,Bendigo lighting 1,Bendigo Electric Co.,SiemensDynamo_Arclamps,Oil,N/A,,0.08,Decomissioned,NS,1897-01-01,1901-01-01,
+17,Melbourne Lighting Drapper 1,"Thos. T. Draper and Co., Melbourne",SiemensDynamo_Arclamps,Oil,N/A,,0.32,Decomissioned,NS,1897-01-01,1900-01-01,
+18,Melbourne lighting New Australian Electric 1,New Australian Electric Co. Ltd.,SiemensDynamo_Arclamps,Oil,N/A,,0.98,Decomissioned,NS,1897-01-01,1900-01-01,
+19,Ballarat lighting 2,Ballarat Electric Supply Co. Limited,SiemensDynamo_Arclamps,Oil,N/A,,0.12,Decomissioned,NS,1898-01-01,1901-01-01,
+20,Bendigo lighting 2,Bendigo Electric Co,SiemensDynamo_Arclamps,Oil,N/A,,0.16,Decomissioned,NS,1898-01-01,1901-01-01,
+21,James Nhill pw,"James Colin Lockley, Nhill area",SiemensDynamo_Arclamps,Oil,N/A,,0.02,Decomissioned,NS,1898-01-01,1901-01-01,
+22,Melbourne Lighting Drapper 2,"Thos. T. Draper and Co., Melbourne",SiemensDynamo_Arclamps,Oil,N/A,,0.32,Decomissioned,NS,1898-01-01,1900-01-01,
+23,Melbourne lighting New Australian Electric 2,Electric Lighting and Traction Company of Australia Limited,SiemensDynamo_Arclamps,Oil,N/A,,0.98,Decomissioned,NS,1898-01-01,1900-01-01,
+24,Metropolitan 1,Electric Lighting and Traction Company of Australia Limited,SiemensDynamo_Arclamps,Oil,N/A,,0.11,Decomissioned,NS,1905-01-01,1935-01-01,
+25,Geelong old1,Electric Lighting and Traction Company of Australia Limited,SiemensDynamo_Arclamps,Oil,N/A,,0.05,Decomissioned,NS,1905-03-19,1935-03-19,
+26,Geelong old2,Electric Lighting and Traction Company of Australia Limited (4/09/1908)/Melbourne Electric Supply Co. Ltd. (4/08/1930)/State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Gas,N/A,,0.87,Decomissioned,NS,1906-01-01,1936-01-01,
+27,Metropolitan 2,Electric Lighting and Traction Company of Australia Limited(1908-09-04) (/Melbourne Electric Supply Co. Ltd.(4/08/1930)/State Electricity Commission Victoria (SECV),SiemensDynamo_Arclamps,Oil,N/A,,0.87,Decomissioned,NS,1906-01-01,1936-01-01,
+28,Melbourne City system,Corporation of the City of Melbourne,SiemensDynamo_Arclamps,Oil,N/A,,1.57,Decomissioned,NS,1906-03-20,1936-03-20,
+29,Ballarat 5 (DC),Electric Supply Company of Victoria Limited,Turbine - Steam Sub Critical,Brown Coal,N/A,,0.3,Decomissioned,NS,1912-01-01,1942-01-01,
+30,Newport A1 (25 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,12.5,Decomissioned,NS,1918-04-01,1948-04-01,
+31,Geelong A1,Electric Lighting and Traction Company of Australia Limited (1908/09/04)/Melbourne Electric Supply Co. Ltd.(1930-08-04)/State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,1.5,Decomissioned,NS,1921-01-01,1951-01-01,
+32,Newport A5 (25 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,12.5,Decomissioned,NS,1921-04-01,1951-04-01,
+33,Geelong A2,Electric Lighting and Traction Company of Australia Limited (1908/09/04)/Melbourne Electric Supply Co. Ltd.(1930-08-04)/State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,3,Decomissioned,NS,1922-01-01,1952-01-01,
+34,Newport A3 (25 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,14,Decomissioned,NS,1922-04-01,1952-04-01,
+35,Geelong A3,Electric Lighting and Traction Company of Australia Limited (1908/09/04)/Melbourne Electric Supply Co. Ltd.(1930-08-04)/State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,3,Decomissioned,NS,1923-01-01,1953-01-01,
+36,Newport A6 (25 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,14,Decomissioned,NS,1923-04-01,1953-04-01,
+37,"Newport B 1,2  (AC 3 phase 50 cycle)",State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1923-04-01,1953-04-01,
+38,"Yallourn 1,2,3,4 (AC 3 phase 50 cycle)",State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,50,Decomissioned,S,1924-06-15,1954-05-05,
+39,"Ballarat 1, 2 (AC 3 phase 50 cycle)",State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,1.4,Decomissioned,NS,1925-01-01,1955-01-01,
+40,Geelong A4,Electric Lighting and Traction Company of Australia Limited (1908/09/04)/Melbourne Electric Supply Co. Ltd.(1930-08-04)/State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,3,Decomissioned,NS,1925-01-01,1955-01-01,
+41,Yallourn 5 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,12.5,Decomissioned,NS,1925-05-05,1955-05-05,
+42,Rubicon Falls Power Station,State Electricity Commission Victoria (SECV) (1995-06-18)/Southern Hydro Pty Ltd (1997-01-01),Hydro - Gravity,Water,RUBICON,,0.28,Upgrade,NS,1928-01-01,2027-01-01,1997-01-01
+43,Spencer St 1,Corporation of the City of Melbourne,Turbine - Steam Sub Critical,Brown Coal,N/A,,5.5,Decomissioned,NS,1927-01-01,1957-01-01,
+44,Royston,State Electricity Commission Victoria (SECV) (1995-06-18)/Southern Hydro Pty Ltd (1997-01-01),Hydro - Gravity,Water,RUBICON,,0.84,Upgrade,NS,1928-01-01,2027-01-01,1997-01-01
+45,Rubicon (Lower) Power Station,State Electricity Commission Victoria (SECV) (1995-06-18)/Southern Hydro Pty Ltd (1997-01-01),Hydro - Gravity,Water,RUBICON,,2.7,Upgrade,NS,1928-01-01,2027-01-01,1997-01-01
+46,"Rubicon Power Station (1,2)",State Electricity Commission Victoria (SECV) (1995-06-18)/Southern Hydro Pty Ltd (1997-01-01),Hydro - Gravity,Water,RUBICON,,9.1,Upgrade,NS,1928-01-01,2027-01-01,1997-01-01
+47,Yallourn 6 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,12.5,Decomissioned,NS,1928-05-05,1958-05-05,
+48,Sugarloaf Power Station,State Electricity Commission Victoria (SECV),Hydro - Gravity,Water,N/A,,13.5,Decomissioned,NS,1929-01-01,1954-01-01,
+49,Richmond 1 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,15,Decomissioned,NS,1929-04-01,1959-04-01,
+50,Mildura 1,Mildura City Council (1954). State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,1,Decomissioned,NS,1932-01-01,1962-01-01,
+51,Yalllourn 7 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,25,Decomissioned,S,1932-05-05,1962-05-05,
+52,Mildura 2,Mildura City Council,Turbine - Steam Sub Critical,Brown Coal,N/A,,1,Decomissioned,NS,1934-01-01,1964-01-01,
+53,Spencer St 6,Corporation of the City of Melbourne,Turbine - Steam Sub Critical,Brown Coal,N/A,,5.5,Decomissioned,NS,1935-01-01,1965-01-01,
+54,Yalllourn 8 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,25,Decomissioned,S,1935-05-05,1965-05-05,
+55,Ballarat 3 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,1.4,Decomissioned,NS,1937-01-01,1967-01-01,
+56,"Hamilton 5,6",State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Dry Wood,N/A,,0.71,Decomissioned,NS,1937-01-01,1967-01-01,
+57,Redcliffs A1,Mildura City Council (1954). State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,1,Decomissioned,S,1937-01-01,1967-01-01,
+58,"Yalllourn 9, 10 (AC 3 phase 50 cycle)",State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,50,Decomissioned,S,1938-05-05,1968-05-05,
+59,Spencer St 7 & 8,Corporation of the City of Melbourne,Turbine - Steam Sub Critical,Brown Coal,N/A,,6.9,Decomissioned,S,1939-01-01,1969-01-01,
+60,Newport B 3 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1939-04-01,1969-04-01,
+61,Ballarat 4 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,1.4,Decomissioned,S,1940-01-01,1970-01-01,
+62,Mildura 3,Mildura City Council,Turbine - Steam Sub Critical,Brown Coal,N/A,,2.5,Decomissioned,S,1940-01-01,1970-01-01,
+63,"Horsham 5,6",Mildura City Council (1955-01-01)/State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,0.82,Decomissioned,NS,1943-01-01,1973-01-01,
+64,Redcliffs A2,Mildura City Council (1954). State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,1,Decomissioned,S,1943-01-01,1973-01-01,
+65,Newport A4 (25 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1943-04-01,1973-04-01,
+66,Clover,State Electricity Commission Victoria (SECV) (1994/01/01) / Southern Hydro Pty Ltd ? (2010-01-17) / AGL Hydro Partnership,Hydro - Dam,Water,CLOVER,1,13,Upgrade,NS,1944-01-01,2057-01-01,2057-01-01
+67,Newport B 8 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,22,Decomissioned,S,1944-04-01,1974-04-01,
+68,Clover,State Electricity Commission Victoria (SECV) (1994/01/01) / Southern Hydro Pty Ltd ? (2010-01-17) / AGL Hydro Partnership,Hydro - Dam,Water,CLOVER,1,16,Upgrade,NS,1945-01-01,2057-01-01,2057-01-01
+69,Newport C 4 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1945-04-01,1975-04-01,
+70,Hamilton 4,State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Dry Wood,N/A,,0.2,Decomissioned,NS,1946-01-01,1976-01-01,
+71,Newport C 5 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1946-04-01,1976-04-01,
+72,Hamilton 2,State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Dry Wood,N/A,,0.55,Decomissioned,NS,1947-01-01,1977-01-01,
+73,Newport C 6 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1948-04-01,1978-04-01,
+74,"Horsham 1,2",Mildura City Council (1955). State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,0.26,Decomissioned,NS,1949-01-01,1979-01-01,
+75,Hamilton 7,State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Dry Wood,N/A,,0.7,Decomissioned,NS,1950-01-01,1980-01-01,
+76,Horsham 4,Mildura City Council (1955)/State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,0.4,Decomissioned,NS,1950-01-01,1980-01-01,
+77,Mildura 4,Mildura City Council,Turbine - Steam Sub Critical,Brown Coal,N/A,,2.5,Decomissioned,NS,1950-01-01,1980-01-01,
+78,Newport C 7 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1950-04-01,1981-04-01,
+79,Hamilton 8,State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Dry Wood,N/A,,0.7,Decomissioned,NS,1951-01-01,1981-01-01,
+80,Horsham 3,Mildura City Council (1955-01-01)/State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,0.22,Decomissioned,NS,1951-01-01,1981-01-01,
+81,"Shepparton 1,2,3",State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,2.49,Decomissioned,NS,1951-01-01,1981-01-01,
+82,Newport A2 (25 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1951-04-01,1981-04-01,
+83,Horsham 7,Mildura City Council (1955). State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,0.56,Decomissioned,NS,1952-01-01,1982-01-01,
+84,"Murtoa 2,3,4,5",Mildura City Council (1956) / State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,0.43,Decomissioned,NS,1952-01-01,1982-01-01,
+85,Richmond 2 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,38,Decomissioned,S,1952-01-01,1982-01-01,
+86,"Shepparton 4,5,6",State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,2.49,Decomissioned,NS,1952-01-01,1982-01-01,
+87,"Warrnambool 1,2",State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,2.49,Decomissioned,NS,1952-01-01,1982-01-01,
+88,"Ballarat B1, B2",State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,10,Decomissioned,NS,1953-01-01,1983-01-01,
+89,Geelong B1,Electric Lighting and Traction Company of Australia Limited (1908/09/04)/Melbourne Electric Supply Co. Ltd.(1930-08-04)/State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,10,Decomissioned,NS,1953-01-01,1983-01-01,
+90,"Shepparton 7,8,9",State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,5.5,Decomissioned,NS,1953-01-01,1983-01-01,
+91,Spencer St 11,Corporation of the City of Melbourne,Turbine - Steam Sub Critical,Brown Coal,N/A,,30,Decomissioned,S,1953-01-01,1982-01-01,
+92,"Warrnambool 3,4,5,6",State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,3.32,Decomissioned,NS,1953-01-01,1983-01-01,
+93,"Ballarat B3, B4",State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,10,Decomissioned,S,1954-01-01,1984-01-01,
+94,Eildon Power Station 3-4,State Electricity Commission Victoria (SECV)(18/06/1995)/Southern Hydro Pty Ltd (1/01/1996),Hydro - Gravity,Water,N/A,2,32,Upgrade,S,1954-01-01,2046-01-01,1996-01-01
+95,Eildon Power Station 1-2 SECV,State Electricity Commission Victoria (SECV)(18/06/1995)/Southern Hydro Pty Ltd (1/01/1996),Hydro - Gravity,Water,N/A,2,149,Upgrade,S,1954-01-01,,1996-01-01
+96,"Geelong B2, B3",Electric Lighting and Traction Company of Australia Limited (1908/09/04)/Melbourne Electric Supply Co. Ltd.(1930-08-04)/State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,20,Decomissioned,S,1954-01-01,1984-01-01,
+97,"Redcliffs C1, C2",Mildura City Counci (1954). State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,10,Decomissioned,S,1954-01-01,1984-01-01,
+98,Spencer St 10,Corporation of the City of Melbourne,Turbine - Steam Sub Critical,Brown Coal,N/A,,7.5,Decomissioned,S,1954-01-01,1982-01-01,
+99,Yallourn C2 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,50,Decomissioned,S,1954-05-05,1984-05-05,
+100,Mt Gellibrand Wind Farm,ACCIONA Energy,Wind Turbine - Onshore,Wind,MTGELWF1,22,69.3,In Commissioning,SS,2018-08-01,,2043-01-01
+101,Murtoa 1 ,Mildura City Council (1955-01-01)/State Electricity Commission Victoria (SECV),Spark Ignition Reciprocating Engine,Diesel,N/A,,0.16,Decomissioned,NS,1955-01-01,1956-01-01,
+102,West Kiewa,State Electricity Commission Victoria (SECV) (1994) / AGL Hydro Partnership,Hydro - Dam,Water,WKIEWA1,2,34,In Service,S,1955-01-01,,2057-01-01
+103,Yallourn C1 (AC 3 phase 50 cycle),State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,50,Decomissioned,S,1955-05-05,1985-05-05,
+104,West Kiewa,State Electricity Commission Victoria (SECV) (1994) / AGL Hydro Partnership,Hydro - Dam,Water,WKIEWA2,2,57,In Service,S,1956-01-01,,2057-01-01
+105,Yallourn C3,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,6,Decomissioned,NS,1956-05-05,1986-05-05,
+106,Yallourn D2,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,25,Decomissioned,S,1957-05-05,1987-05-05,
+107,Hume Dam VIC,GSP Energy Pty Ltd,Hydro - Dam,Water,HUMEV,1,29,In Service,S,1957-05-10,2057-01-01,2057-01-01
+108,Morwell 1,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,20,Decomissioned,S,1958-01-01,1988-01-01,
+109,"Morwell 3,4",State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,20,Decomissioned,S,1958-01-01,1988-01-01,
+110,Yallourn D1,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,25,Decomissioned,S,1958-05-05,1988-05-05,
+111,Morwell 2,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,10,Decomissioned,S,1959-01-01,1989-01-01,
+112,Spencer St 12,Corporation of the City of Melbourne,Turbine - Steam Sub Critical,Brown Coal,N/A,,15,Decomissioned,S,1959-01-01,1982-01-01,
+113,Dartmouth,State Electricity Commission Victoria (SECV) (18/06/1995) / Southern Hydro Pty Ltd (1999-11-01) / another owner until 2011? Then AGL Hydro Partnership,Hydro - Gravity,Water,DARTM1,1,158,Upgrade,S,1960-01-01,2041-01-01,2011-06-03
+114,McKay Creek Power Station,State Electricity Commission Victoria (SECV) (18/06/1995) / Southern Hydro Pty Ltd (1999-11-01) / another owner until 2009 then AGL upgraded it and constructed another one?,Hydro - Gravity,Water,N/A,,150,Upgrade,S,1960-01-01,2041-01-01,2009-01-01
+115,Yallourn E2,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,60,Decomissioned,S,1961-05-05,1989-05-05,
+116,Morwell 5,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,60,Decomissioned,S,1962-01-01,1992-01-01,
+117,Yallourn E1,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,60,Decomissioned,S,1962-05-05,1989-05-05,
+118,Hazelwood 1 & 2,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,400,Decomissioned,S,1964-01-01,2017-03-01,
+119,Hazelwood 8,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,200,Decomissioned,S,1964-01-01,2017-03-01,
+120,Hazelwood 3,State Electricity Commission Victoria (SECV) (18/06/1995) / Hazelwood Power Co. Pty Ltd (1/08/1996)/Hazelwood Power (partnership) (1/01/2003)/International Power Hazelwood (IPRH) (1/01/2011)/IPR-GDF SUEZ Hazelwood,Turbine - Steam Sub Critical,Brown Coal,N/A,,200,Decomissioned,S,1966-01-01,2017-03-01,
+121,Hazelwood 4,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,200,Decomissioned,S,1967-01-01,2017-03-01,
+122,Murray 1,State Electricity Commission Victoria (SECV) (1997)/Snowy Hydro Ltd,Hydro - Gravity,Water,MURRAY,10,950,In Service,S,1967-01-01,,2070-01-01
+123,Hazelwood 5,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,200,Decomissioned,S,1968-01-01,2017-03-01,
+124,Angelsea,State Electricity Commission Victoria (SECV) (15/06/1993)/ Generation Victoria (1/01/1999),Turbine - Steam Sub Critical,Brown Coal,N/A,,150,Decomissioned,S,1969-01-01,2015-08-31,
+125,Hazelwood 6,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,200,Decomissioned,S,1969-01-01,2017-03-01,
+126,Longford,Longford Gas Plant,Turbine - OCGT,Gas Pipeline,,8,46.4,In Service,NS,1969-01-01,2024-01-01,2024-01-01
+127,Murray 2,State Electricity Commission Victoria (SECV) (1999-01-01)/Snowy Hydro Ltd,Hydro - Gravity,Water,MURRAY,4,552,In Service,S,1969-01-01,2070-01-01,2070-01-01
+128,Hazelwood 7,State Electricity Commission Victoria (SECV),Turbine - Steam Sub Critical,Brown Coal,N/A,,200,Decomissioned,S,1970-01-01,2017-03-01,
+129,Jeeralang A,State Electricity Commission Victoria (SECV) (18/06/1995) / Generation Victoria (1/01/1999) /AES Transpower Holding Pty Ltd. (1/01/2002) / Babcock & Brown Power (1/01/2008) / Industry Funds Management - INDUSTRY FUNDS MANAGEMENT PTY LTD (1/07/2017),Turbine - OCGT,Gas Pipeline,N/A,4,220,Upgrade,S,1978-01-01,2017-07-01,2017-07-01
+130,Jeeralang B,State Electricity Commission Victoria (SECV) (18/06/1995) / Generation Victoria (1/01/1999) /AES Transpower Holding Pty Ltd. (1/01/2002) / Babcock & Brown Power (1/01/2008) / Industry Funds Management - INDUSTRY FUNDS MANAGEMENT PTY LTD (1/07/2017),Turbine - OCGT,Gas Pipeline,N/A,3,240,Upgrade,S,1979-01-01,2017-07-01,2017-07-01
+131,Newport,State Electricity Commission Victoria (SECV) (15/06/1993)/ Generation Victoria (1/01/1999)/AES Transpower Holding Pty Ltd. (2002-01-01)/Babcock & Brown Power (2008-01-01)/Industry Funds Management - INDUSTRY FUNDS MANAGEMENT PTY LTD(2017-07-01)/EnergyAustralia Ecogen Pty Ltd,Turbine - OCGT,Gas Pipeline,NPS,1,500,In Service,S,1980-01-01,,2039-01-01
+132,Yallourn W,State Electricity Commission Victoria (SECV) /EnergyAustralia Yallourn Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,N/A,1,350,In Service,S,1982-01-01,,2029-01-01
+133,Yallourn W,State Electricity Commission Victoria (SECV)/EnergyAustralia Yallourn Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,YWPS2,1,350,In Service,S,1982-01-01,,2030-01-01
+134,Yallourn W,State Electricity Commission Victoria (SECV)/EnergyAustralia Yallourn Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,YWPS3,1,375,In Service,S,1982-01-01,,2031-01-01
+135,Yallourn W,State Electricity Commission Victoria (SECV)/EnergyAustralia Yallourn Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,YWPS4,1,375,In Service,S,1982-01-01,,2032-01-01
+136,Loy Yang A Power Station,State Electricity Commission Victoria (SECV) (18/06/1995) / Loy Yang Power Co. Pty Ltd (1997-03-25)/LOY YANG POWER MANAGEMENT PTY LTD (2003-12-01)/ AGL Loy Yang Marketing Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,LYA1,1,560,In Service,S,1984-01-01,,2048-01-01
+137,Loy Yang A Power Station,State Electricity Commission Victoria (SECV) (18/06/1995) / Loy Yang Power Co. Pty Ltd (1997-03-25)/LOY YANG POWER MANAGEMENT PTY LTD (2003-12-01)/ AGL Loy Yang Marketing Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,LYA2,1,530,In Service,S,1986-01-01,,2048-01-01
+138,Loy Yang A Power Station,State Electricity Commission Victoria (SECV) (18/06/1995) / Loy Yang Power Co. Pty Ltd (1997-03-25)/LOY YANG POWER MANAGEMENT PTY LTD (2003-12-01)/ AGL Loy Yang Marketing Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,LYA3,1,560,In Service,S,1987-01-01,,2048-01-01
+139,Loy Yang A Power Station,State Electricity Commission Victoria (SECV) (18/06/1995) / Loy Yang Power Co. Pty Ltd (1997-03-25)/LOY YANG POWER MANAGEMENT PTY LTD (2003-12-01)/ AGL Loy Yang Marketing Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,LYA4,1,560,In Service,S,1989-01-01,,2048-01-01
+140,Ballarat Base Hospital Plant,Ballarat Health Services,Reciprocating Engine - Compression ignition,Diesel,BBASEHOS,2,2.68,In Service,NS,2003-06-12,,2038-06-12
+141,Ballarat Base Hospital Plant,Ballarat Health Services,Reciprocating Engine - Compression ignition,Diesel,BBASEHOS,2,1.6,In Service,NS,2004-06-12,,2039-06-12
+142,Ballarat Energy Storage System,Ausnet Transmission Group Pty Ltd,Storage - Battery,Battery,BALBG1,1,30,In Service,S,2018-10-23,,2033-01-01
+143,Crown Melbourne,Crown Resorts,Reciprocating Engine - Spark ignition,Gas Pipeline,N/A,6,0.2999,In Service,NS,2004-06-12,,2039-06-12
+144,Dandenong PEP,Cogent Energy Pty Ltd,Reciprocating Engine - Compression ignition,Gas Pipeline,N/A,1,2,In Service,NS,2004-06-12,,2039-06-12
+145,Berwick,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,N/A,4,4.12,In Service,NS,2004-06-12,,2039-06-12
+146,Berwick,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,N/A,1,0.45,In Service,NS,2004-06-12,,2039-06-12
+147,Corio,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Gas,CORIO1,1,1,In Service,NS,2004-06-12,,2029-01-01
+148,Loy Yang B Power Station,IPM AUSTRALIA LIMITED (2009-10-16)Loy Yang Power Co. Pty Ltd (3/03/2011)/Gippsland Power Pty Ltd ABN 30 077 851 079 / LYB Ventures Australia Pty Ltd ABN 57 055 984 499 / Traralgon Power Pty Ltd ABN 64 056 292 623 / Latrobe Power Pty Ltd ABN 42 055 983 563 / LYB Australia Limited ABN 87 055 563 785,Turbine - Steam Sub Critical,Brown Coal,LOYYB1,1,500,In Service,S,1993-01-01,,2047-01-01
+149,Loy Yang B Power Station,IPM AUSTRALIA LIMITED (2009-10-16)Loy Yang Power Co. Pty Ltd (3/03/2011)/Gippsland Power Pty Ltd ABN 30 077 851 079 / LYB Ventures Australia Pty Ltd ABN 57 055 984 499 / Traralgon Power Pty Ltd ABN 64 056 292 623 / Latrobe Power Pty Ltd ABN 42 055 983 563 / LYB Australia Limited ABN 87 055 563 785,Turbine - Steam Sub Critical,Brown Coal,LOYYB2,1,500,In Service,S,1993-01-01,,2047-01-01
+150,Broadmeadows,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,BROADMDW,6,6.18,In Service,NS,1993-06-01,,2029-01-01
+151,Morwell Power Station Energy Brix,Energy Brix,Turbine - Steam Sub Critical,Brown Coal,N/A,,165,Decomissioned,S,1993-06-15,1996-01-01,
+152,Glenmaggie Hydro,Pacific Hydro Investments Pty Ltd,Hydro - Dam,Water,GLENMAG1,1,1.9,In Service,NS,2001-04-01,,2029-02-01
+153,Clayton,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Gas,CLAYTON,12,12,In Service,NS,2001-04-01,,2025-01-01
+154,Crowlands Wind Farm,Pacific Hydro Crowlands Pty Ltd,Wind Turbine - Onshore,Wind,CROWLWF1,39,79.95,In Commissioning,SS,2020-01-01,,2050-01-01
+155,Springvale,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Gas,SVALE1,4,4.2,In Service,NS,2001-04-01,,2025-01-01
+156,Eildon Pondage Power Station (EPPS),Pacific Hydro Investments Pty Ltd,Hydro - Run of River,Water,EILDON3,1,4.5,In Service,NS,1995-06-18,,2024-02-01
+157,Eildon,AGL Hydro Partnership,Hydro - Dam,Water,EILDON1,1,60,In Service,S,1996-01-01,,2057-01-01
+158,Eildon,AGL Hydro Partnership,Hydro - Dam,Water,EILDON1,1,7.5,In Service,NS,1996-01-01,,2057-01-01
+159,Eildon,AGL Hydro Partnership,Hydro - Dam,Water,EILDON2,1,60,In Service,S,1996-01-01,,2057-01-01
+160,Eildon,AGL Hydro Partnership,Hydro - Dam,Water,EILDON2,1,7.5,In Service,NS,1996-01-01,,2057-01-01
+161,Morwell Power Station,EnergyAustralia,Turbine - Steam Sub Critical,Brown Coal,N/A,,165,Decomissioned,S,1996-01-01,2014-08-01,
+162,Shepparton,LMS ENERGY Pty Ltd,Reciprocating Engine - Spark ignition,Municipal Solid Waste,N/A,1,0.78,In Service,NS,2009-02-20,,2044-02-20
+163,Rubicon Mountain Streams,AGL Hydro Partnership,Hydro - Dam,Water,RUBICON,5,13.5,In Service,NS,1997-01-01,,2037-01-01
+164,Bairnsdale,Alinta DEBO,Turbine - OCGT,Gas Pipeline,BDL01,1,47,In Service,S,2001-01-01,,2042-01-01
+165,Bairnsdale,Alinta DEBO,Turbine - OCGT,Gas Pipeline,BDL02,1,47,In Service,S,2001-01-01,,2042-01-01
+166,Codrington Wind Farm,Energy Pacific (Vic) Pty Ltd,Wind Turbine - Onshore,Wind,CODRNGTON,14,18.2,In Service,NS,2001-05-24,,2036-05-24
+167,321 Exhibition Street Trigen,Cogent Energy,Reciprocating Engine - Spark ignition,Gas Pipeline,N/A,1,1.2,In Service,NS,2001-11-01,,2031-11-01
+168,Brooklyn,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Gas,BROOKLYN,1,1.15,In Service,NS,2002-05-15,,2022-01-01
+169,Brooklyn,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Gas,BROOKLYN,1,1.03,In Service,NS,2002-05-15,,2022-01-01
+170,Brooklyn,EDL LFG Vic Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Gas,BROOKLYN,1,0.65,In Service,NS,2002-05-15,,2022-01-01
+171,Mornington Waste Disposal Facility,LMS Energy Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,MORNW,1,0.789,In Service,NS,2002-06-04,,2037-06-04
+172,Valley Power,Snowy Hydro Ltd,Turbine - OCGT,Gas Pipeline,VPGS1,1,50,In Service,S,2002-04-01,,2070-01-01
+173,Valley Power,Snowy Hydro Ltd,Turbine - OCGT,Gas Pipeline,VPGS2,1,50,In Service,S,2002-04-01,,2070-01-01
+174,Valley Power,Snowy Hydro Ltd,Turbine - OCGT,Gas Pipeline,VPGS3,1,50,In Service,S,2002-04-01,,2070-01-01
+175,Valley Power,Snowy Hydro Ltd,Turbine - OCGT,Gas Pipeline,VPGS4,1,50,In Service,S,2002-04-01,,2070-01-01
+176,Valley Power,Snowy Hydro Ltd,Turbine - OCGT,Gas Pipeline,VPGS5,1,50,In Service,S,2002-04-01,,2070-01-01
+177,Valley Power,Snowy Hydro Ltd,Turbine - OCGT,Gas Pipeline,VPGS6,1,50,In Service,S,2002-04-01,,2070-01-01
+178,Challicum Hills,Pacific Hydro Challicum Hills Pty Ltd,Wind Turbine - Onshore,Wind,CHALLHWF,35,52.5,In Service,SS,2002-12-13,,2037-12-13
+179,Banimboola,AGL Hydro Partnership,Hydro - Dam,Water,BAPS,1,10,In Service,NS,2005-11-23,,2045-11-23
+180,Banimboola,AGL Hydro Partnership,Hydro - Dam,Water,BAPS,1,2.2,In Service,NS,2005-11-23,,2045-11-23
+181,Laverton North,Snowy Hydro Ltd,Turbine - OCGT,Gas Pipeline,LNGS1,1,156,In Service,S,2006-01-01,,2070-01-01
+182,Laverton North,Snowy Hydro Ltd,Turbine - OCGT,Gas Pipeline,LNGS2,1,156,In Service,S,2006-01-01,,2070-01-01
+183,Hallam Road,LMS Energy Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,HALAMRD1,8,8.984,In Service,NS,2007-05-01,,2042-05-01
+184,Symex,Symex Holding Ltd,Turbine - OCGT,Gas Pipeline,N/A,1,0,In Service,NS,2007-01-01,,2037-01-01
+185,Ballarat,LMS ENERGY Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,N/A,1,0.789,In Service,NS,2008-06-30,,2038-06-30
+186,Bendigo,LMS ENERGY Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,N/A,1,0.5,In Service,NS,2008-06-30,,2043-06-30
+187,Bogong / Mackay,AGL,Hydro - Dam,Water,MCKAY1,6,162,In Service,S,2009-10-05,,2057-01-01
+188,Bogong / Mackay,AGL,Hydro - Dam,Water,MCKAY1,2,140,In Service,S,2009-10-05,,2057-01-01
+189,Shepparton Wastewater Treatment Facility,Diamond Energy Pty Ltd,Reciprocating Engine - Spark ignition,Biogas,SHEP1,1,1.1,In Service,NS,2009-02-20,,2038-01-01
+190,200 Victoria St,Cogent Energy Pty Ltd,Reciprocating Engine - Compression ignition,Gas Pipeline,N/A,1,0.386,In Service,NS,2009-12-01,,2039-12-01
+191,Mortlake,Origin Energy Power Limited,Turbine - OCGT,Gas Pipeline,MORTLK11,1,283,In Service,S,2010-01-01,,2046-01-01
+192,Mortlake,Origin Energy Power Limited,Turbine - OCGT,Gas Pipeline,MORTLK12,1,283,In Service,S,2010-01-01,,2046-01-01
+193,Todae Solar - Nillumbik,TBA,Solar PV - Fixed,Solar,N/A,1,0.1245,In service,NS,2017-12-21,,2047-12-21
+194,Tatura Biomass Generator,Diamond Energy Pty Ltd,Reciprocating Engine - Spark ignition,Biogas,TATURA01,1,1.1,In Service,NS,2007-02-21,,2038-01-01
+195,Toora,Ratch Australia,Wind Turbine - Onshore,Wind,TOORAWF,12,21,In Service,NS,2002-05-28,,2032-01-01
+196,Wantirna Mini Hydro,TBA,Hydro - Dam,Water,N/A,1,0.132,In service,NS,2018-02-12,,2053-02-12
+197,Waubra,Pyrenees Wind Energy Developments,Wind Turbine - Onshore,Wind,WAUBRAWF,62,93,In Service,SS,2009-03-10,,2044-03-10
+198,Waubra,Pyrenees Wind Energy Developments,Wind Turbine - Onshore,Wind,WAUBRAWF,51,76.5,In Service,SS,2009-03-10,,2044-03-10
+199,Waubra,Pyrenees Wind Energy Developments,Wind Turbine - Onshore,Wind,WAUBRAWF,15,22.5,In Service,SS,2009-03-10,,2044-03-10
+200,William Hovel,Pacific Hydro Investments Pty Ltd,Hydro - Run of River,Water,WILLHOV1,1,1.8,In Service,NS,2001-04-01,,2036-04-01
+201,Murra Warra Wind Farm - stage 1,Murra Warra Project Co Pty Ltd,Wind Turbine - Onshore,Wind,MUWAWF1,61,225.7,Committed,SS,2020-01-01,,2049-01-01
+202,Wollert,LMS Energy Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,WOLLERT1,6,6.738,In Service,NS,2020-01-01,,2050-01-01
+203,Wonthaggi Wind Farm,Vision Super Pty Ltd,Wind Turbine - Onshore,Wind,WONWP,6,12,In Service,NS,2005-11-14,,2040-11-14
+204,Wyndham Renewable Energy Facility,LMS Energy Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,WYNDW,1,1.123,In Service,NS,2002-06-04,,2037-06-04
+205,Wyndham Renewable Energy Facility,LMS Energy Pty Ltd,Reciprocating Engine - Spark ignition,Landfill Methane / Landfill Gas,WYNDW,1,0.78,In Service,NS,2002-06-04,,2037-06-04
+206,Yambuk,Energy Pacific Vic Pty Ltd,Wind Turbine - Onshore,Wind,YAMBUKWF,20,30,In Service,SS,2007-01-01,,2042-01-01
+207,Yarrawonga,AGL Hydro Partnership,Hydro - Dam,Water,-,2,9.5,In Service,NS,2001-10-04,,2041-10-04
+208,Aeroten Leongatha Solar,TBA,Solar PV - Fixed,Solar,N/A,1,0.1996,In service,NS,2017-11-27,,2040-01-12
+209,Bannerton Solar Park,Foresight Solar Australia Pty Ltd,Solar PV - Single axis tracking,Solar,BANN1,40,100,In service,SS,2018-10-23,,2049-01-01
+210,Bayswood Timber Hallam VIC,Bayswood Timber,Solar PV - Fixed,Solar,N/A,1,0.1502,In service,NS,2017-10-23,,2052-10-23
+211,Beaconhills College Berwick,TBA,Solar PV - Fixed,Solar,N/A,1,0.2002,In service,NS,2017-11-27,,2052-11-27
+212,Bunurong 260 kW Solar PV Bangholme,TBA,Solar PV - Fixed,Solar,N/A,1,0.26,In service,NS,2017-02-10,,2052-02-10
+213,Cedar Meats Solar Geelong,Cedar Meats,Solar PV - Fixed,Solar,N/A,1,0.1998,In service,NS,2017-02-22,,2052-02-22
+214,Flavorite Marketing,TBA,Solar PV - Fixed,Solar,N/A,1,0.1494,In service,NS,2017-08-21,,2052-08-21
+215,Jessica Way Truganina Solar,TBA,Solar PV - Fixed,Solar,N/A,1,0.365,In service,NS,2017-03-16,,2052-03-16
+216,JL King & Co 150kW- Solar-,TBA,Solar PV - Fixed,Solar,N/A,1,0.15,In service,NS,2017-01-18,,2052-01-18
+217,Maroona Wind Farm,Myamba Developments Pty Ltd,Wind Turbine - Onshore,Wind,MAROOWF1,2,7.2,In Service,NS,2018-01-10,,2053-01-10
+218,Midland Highway Orrvale,TBA,Solar PV - Fixed,Solar,N/A,1,0.509,In service,NS,2017-06-22,,2052-06-22
+219,Newhaven College,TBA,Solar PV - Fixed,Solar,N/A,1,0.2432,In service,NS,2017-06-01,,2052-06-01
+220,REWASTE WOLLERT,TBA,Reciprocrating engine - Spark ignition,Landfill Methane / Landfill Gas,N/A,1,1.06,In service,NS,2006-05-15,,2041-05-15
+221,SALE HOSPITAL - SOLAR,TBA,Solar PV - Fixed,Solar,N/A,1,0.2636,In service,NS,2017-09-27,,2052-09-27
+222,SCS Shepparton,TBA,Solar PV - Fixed,Solar,N/A,1,0.3,In service,NS,2017-06-07,,2052-06-07
+223,Shamic Sheetmetal,TBA,Solar PV - Fixed,Solar,N/A,1,0.3052,In service,NS,2017-09-28,,2052-09-28
+224,Todae Solar – La Trobe University Bendigo,TBA,Solar PV - Fixed,Solar,N/A,1,0.3498,In service,NS,2017-11-15,,2052-11-15
+225,Todae Solar – La Trobe University Wodonga,TBA,Solar PV - Fixed,Solar,N/A,1,0.223,In service,NS,2017-11-15,,2052-11-15
+226,Todae Solar SV - Eltham,TBA,Solar PV - Fixed,Solar,N/A,1,0.1842,In service,NS,2017-09-27,,2052-09-27
+227,University of Melbourne Archives Brunswick,TBA,Solar PV - Fixed,Solar,N/A,1,0.0916,In service,NS,2017-10-10,,2052-10-10
+228,University of Melbourne McCoy Carlton,TBA,Solar PV - Fixed,Solar,N/A,1,0.0733,In service,NS,2017-10-10,,2052-10-10
+229,University of Melbourne Performing Arts Centre Southbank,TBA,Solar PV - Fixed,Solar,N/A,1,0.1365,In service,NS,2017-10-10,,2052-10-10
+230,University of Melbourne Peter Hall Parkville,TBA,Solar PV - Fixed,Solar,N/A,1,0.0478,In service,NS,2017-10-13,,2052-10-13
+231,University of Melbourne Sports Centre Parkville,TBA,Solar PV - Fixed,Solar,N/A,1,0.1608,In service,NS,2017-10-10,,2052-10-10
+232,University of Melbourne The Spot Carlton,TBA,Solar PV - Fixed,Solar,N/A,1,0.0588,In service,NS,2017-10-19,,2052-10-19
+233,Vawdrey Manufacturing,TBA,Solar PV - Fixed,Solar,N/A,1,0.7526,In service,NS,2017-10-20,,2052-10-20
+234,Zilzie Winery Solar System,TBA,Solar PV - Fixed,Solar,N/A,1,0.1134,In service,NS,2017-06-13,,2052-06-13
+235,Leonards Hill,Hepburn Community Wind Park Co-operative Limited,Wind Turbine - Onshore,Wind,HEPWIND1,2,4.1,In Service,NS,2011-06-22,,2046-06-22
+236,Dartmouth,AGL Hydro Partnership,Hydro - Dam,Water,N/A,1,185,In Service,S,2001-06-20,,2057-01-01
+237,Oaklands Hill Wind Farm,Oaklands Hill Wind farm pty ltd,Wind Turbine - Onshore,Wind,OAKLAND1,32,67.2,In Service,SS,2012-02-08,,2037-02-02
+238,990 Latrobe St,Cogent Energy Pty Ltd,Reciprocating Engine - Compression ignition,Gas Pipeline,N/A,1,0.386,In Service,NS,2012-07-06,,2042-07-06
+239,Mortons Lane Wind Farm,Mortons Lane Windfarm Pty Ltd,Wind Turbine - Onshore,Wind,MLWF1,13,19.5,In Service,NS,2012-11-01,,2047-11-01
+240,Bridgewater,Ceramet,Solar PV - Fixed,Solar,N/A,1,1.3,In service,NS,2013-10-09,,2043-01-01
+241,HYMIVC06 Belgrave-Hallam Rd Micro Hydro,South East Water,Hydro - Dam,Water,HLMSEW01,1,0.25,In Service,NS,2008-07-28,,2043-07-28
+242,Macarthur Wind Farm,Macarthur Wind Farm Pty Ltd and Meridian Wind Macarthur Pty Ltd,Wind Turbine - Onshore,Wind,MACARTH1,140,420,In Service,SS,2013-01-09,,2038-01-01
+243,Somerton,AGL Hydro partnership,Turbine - OCGT,Gas Pipeline,AGLSOM,4,170,In Service,S,2013-01-01,,2033-01-01
+244,Qenos Cogeneration Facility,SUSTAINABLE ENERGY INFRASTRUCTURE,Turbine - CCGT,Gas Pipeline,N/A,1,21,In Service,NS,2013-05-24,,2048-05-24
+245,Inverleigh Solar Farm,TBA,Solar PV - Fixed,Solar,N/A,1,22,Publically Announced,SS,2021-09-15,,2051-09-15
+246,Mt Mercer Wind Farm,Mt Mercer Windfarm Pty Ltd,Wind Turbine - Onshore,Wind,MERCER01,64,131.2,In Service,SS,2014-07-30,,2043-01-01
+247,Portland Wind Farm,Pacific Hydro Portland Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,N/A,29,59.45,In Service,SS,2011-02-02,,2050-02-02
+248,Portland Wind Farm,Pacific Hydro Portland Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,N/A,23,47.15,In Service,SS,2015-02-02,,2050-02-02
+249,Portland Wind Farm,Pacific Hydro Portland Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,N/A,22,45.1,In Service,SS,2011-02-02,,2050-02-02
+250,Chepstowe Wind Farm - VIC,Chepstowe Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,CHPSTWF1,3,6.15,In Service,NS,2015-03-01,,2050-03-01
+251,Bald Hills Wind Farm,Infrastructure Capital Group,Wind Turbine - Onshore,Wind,BALDHWF1,52,106.6,In Service,SS,2015-02-24,,2040-01-01
+252,Coonooer Bridge Wind Farm,Coonooer Bridge Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,CBWF1,6,19.8,In Service,NS,2016-02-29,,2036-01-01
+253,CARINA WEST H2E,TBA,Turbine - Steam Sub Critical,Bagasse,N/A,1,3.1,In service,NS,2018-06-04,,2053-06-04
+254,Ararat Wind Farm,Ararat Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,ARWF1,75,240,In Service,SS,2016-08-15,,2047-01-01
+255,Boronia Mini Hydro,TBA,Hydro - Dam,Water,N/A,1,0.11,In service,NS,2018-02-12,,2053-02-12
+256,Cardinia Creek Mini-Hydro,TBA,Hydro - Dam,Water,N/A,1,0.09,In service,NS,2018-02-12,,2053-02-12
+257,Mount Waverley Mini Hydro,TBA,Hydro - Dam,Water,N/A,1,0.355,In service,NS,2018-02-12,,2053-02-12
+258,Jeeralang A,EnergyAustralia Ecogen Py Ltd,Turbine - OCGT,Gas Pipeline,JLA02,1,53,In Service,S,2017-07-01,,2039-01-01
+259,Jeeralang A,EnergyAustralia Ecogen Py Ltd,Turbine - OCGT,Gas Pipeline,JLA01,1,53,In Service,S,2017-07-01,,2039-01-01
+260,Jeeralang A,EnergyAustralia Ecogen Py Ltd,Turbine - OCGT,Gas Pipeline,JLA03,1,53,In Service,S,2017-07-01,,2039-01-01
+261,Jeeralang A,EnergyAustralia Ecogen Py Ltd,Turbine - OCGT,Gas Pipeline,JLA04,1,53,In Service,S,2017-07-01,,2039-01-01
+262,Jeeralang B,EnergyAustralia Ecogen Pty Ltd,Turbine - OCGT,Gas Pipeline,JLB01,1,76,In Service,S,2017-07-01,,2039-01-01
+263,Jeeralang B,EnergyAustralia Ecogen Pty Ltd,Turbine - OCGT,Gas Pipeline,JLB02,1,76,In Service,S,2017-07-01,,2039-01-01
+264,Jeeralang B,EnergyAustralia Ecogen Pty Ltd,Turbine - OCGT,Gas Pipeline,JLB03,1,76,In Service,S,2017-07-01,,2039-01-01
+265,Kiata Wind Farm,Kiata Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,KIATAWF1,9,31.05,In Service,SS,2017-10-23,,2042-01-01
+266,Karadoc Solar Farm,Iraak Sun Farm Pty Ltd,Solar PV - Single axis tracking,Solar,KARSF1,38,96.9,In Service,SS,2018-10-24,,2048-01-01
+267,Gannawarra Solar Farm,Gannawarra Solar Farm Pty Ltd,Solar PV - Single axis tracking,Solar,GANNSF1,22,55,In Service,SS,2018-03-21,,2048-01-01
+268,Salt Creek Wind Farm,Salt Creek Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,SALTCRK1,15,54,In Service,SS,2018-06-06,,2043-01-01
+269,Yaloak South Wind Farm,Pacific Hydro Yaloak South Pty Ltd,Wind Turbine - Onshore,Wind,YSWF1,14,28.7,In Service,NS,2017-12-01,,2052-12-01
+270,Timboon West Wind Farm,Epic Energy South Australia Pty Ltd,Wind Turbine - Onshore,Wind,TIMWEST,2,7.2,In Service,NS,2018-10-18,,2048-08-01
+271,Yawong Wind Farm,Epic Energy South Australia Pty Ltd,Wind Turbine - Onshore,Wind,YAWWF1,2,7.2,In Service,NS,2018-11-22,,2048-08-01
+272,Swan Hill Solar Farm 1 Unit 1,Solar Powerstations Victoria Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,3,7.2,In Service,NS,2018-10-17,,2053-10-17
+273,Swan Hill Solar Farm 2 Unit 1,Solar Powerstations Victoria Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,3,7.2,In Service,NS,2018-10-17,,2053-10-17
+274,Wemen Solar Farm,Wemen Asset Co Pty Ltd as Trustee to Wemen Solar Unit Trust,Solar PV - Fixed,Solar,WEMENSF1,39,87.5,In Service,SS,2018-12-14,,2049-02-01
+275,Lal Lal Wind Energy Facility - Elaine end,Northleaf /InfraRed/Macquarie Capital,Wind Turbine - Onshore,Wind,N/A,22,83.6,Committed,SS,2020-02-01,,2049-02-01
+276,Lal Lal Wind Energy Facility - Yendon end,Northleaf /InfraRed/Macquarie Capital,Wind Turbine - Onshore,Wind,YENDWF1,38,144.4,Committed,SS,2019-12-01,,2049-12-01
+277,Bulgana Green Power Hub - BESS,Bulgana Wind Farm Pty Ltd,Storage - Battery,Battery,N/A,1,20,Committed,S,2020-02-08,,2050-08-08
+278,Bulgana Green Power Hub - Wind Farm,Bulgana Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,N/A,56,204.4,Committed,SS,2021-01-08,,2049-01-08
+279,Ouyen Solar Farm,BayWa r.e. Solar Project Pty Ltd,Solar PV - Fixed,Solar,N/A,1,10,Publically Announced,NS,2020-10-08,,2050-10-08
+280,Kiamal Solar Farm - Stage 1,Total Eren S.A.,Solar PV - Single axis tracking,Solar,N/A,150,200,Committed*,SS,2020-03-08,,2049-03-08
+281,Cohuna Solar Farm,Cohuna Solar Farm Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,19,31.103,Committed*,SS,2020-04-01,,2045-04-01
+282,Yatpool Solar Farm,Yatpool Sun Farm Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,36,94,Committed,SS,2019-12-01,,2054-12-01
+283,Yatpool Solar Farm,Yatpool Sun Farm Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,16,44,Committed,SS,2021-03-01,,2056-03-01
+284,Congupna Solar Farm,X-Elios Australia Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,1,68,Publically Announced,SS,2020-01-01,,2050-01-01
+285,Gannawarra Energy Storage System,GESS ProjectCo,Storage - Battery,Battery,GANNBG1,1,25.33,In Commissioning,S,2020-01-01,,2033-01-01
+286,Mt Gellibrand Wind Farm,ACCIONA Energy,Wind Turbine - Onshore,Wind,MTGELWF1,22,138.6,In Service,SS,2018-08-08,,2043-01-01
+287,Numurkah Solar Farm,Numurkah Solar Farm Pty Ltd,Solar PV - Single axis tracking,Solar,NUMURSF1,56,107.52,In service,SS,2018-08-14,,2044-01-01
+288,Wangaratta Solar Farm,Countrywide Energy Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,11,22,Publically Announced,NS,2020-01-01,,2050-01-01
+289,Nowingi Solar Storage - Storage,Lyon Solar,Storage - Battery,Battery,N/A,1,80,Publically Announced,S,2020-01-02,,2050-01-02
+290,Murra Warra Solar Farm,RES Australia Pty Ltd,Solar PV - Fixed,Solar,N/A,1,200,Publically Announced,SS,2020-01-06,,2050-01-06
+291,Prairie,Pacific Hydro Australia Developments Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,40,250,Publically Announced,SS,2020-01-06,,2050-01-06
+292,Nhill Wind Farm,BayWa r.e.,Wind Turbine - Onshore,Wind,N/A,2,7.2,Publically Announced,NS,2020-02-06,,2050-02-06
+293,Berrybank Wind Farm,Berrbank Development Pty ltd,Wind Turbine - Onshore,Wind,N/A,43,180.6,Emerging,SS,2020-03-01,,2050-03-01
+294,Berrybank Wind Farm,Berrbank Development Pty ltd,Wind Turbine - Onshore,Wind,N/A,36,151.2,Publically Announced,SS,2020-03-01,,2050-03-01
+295,Moorabool Wind Farm,Moorabool Wind Farm Interface Company Pty Ltd,Wind Turbine - Onshore,Wind,N/A,104,320.32,Committed,SS,2020-06-01,,2044-06-01
+296,Mortlake,Origin Energy Power Limited,Turbine - OCGT,Gas Pipeline,N/A,4,200,Publically Announced,S,2020-04-01,,2050-04-01
+297,Stockyard Hill Wind Farm,Stockyard Hill Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,N/A,149,531.93,Committed,SS,2020-05-01,,2045-05-01
+298,Glenrowan Sun Farm,Overland Sun Farming Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,1,110,Publically Announced,SS,2020-05-12,,2050-05-12
+299,Loy Yang A Power Station,AGL Loy Yang Marketing Pty Ltd,Turbine - Steam Sub Critical,Brown Coal,LYA2,1,15,Upgrade,S,2020-05-12,,2050-05-12
+300,Loy Yang B Upgrade,Alinta,Turbine - Steam Sub Critical,Brown Coal,N/A,1,80,Upgrade,S,2020-05-12,,2050-05-12
+301,Cherry Tree Wind Farm,Cherry Tree Wind Farm Pty Limited A.T.F. Cherry Tree Project Trust,Wind Turbine - Onshore,Wind,N/A,16,57.6,Committed,SS,2020-06-01,,2050-06-01
+302,Carisbrook Solar Farm,ib vogt GmbH,Solar PV - Single axis tracking,Solar,N/A,1,90,Publically Announced,SS,2020-06-12,,2050-06-12
+303,Carwarp Solar Farm - Stage I,Canadian Solar (Australia) Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,1,100,Emerging,SS,2020-06-12,,2050-06-12
+304,AusNet Services Deakin University Victoria Geelong PV Plant,AusNet Services Ltd,Solar PV - Single axis tracking,Solar,N/A,1,7.25,Publically Announced,SS,2020-07-01,,2050-07-01
+305,Dundonnell Wind Farm,Tilt Renewables,Wind Turbine - Onshore,Wind,N/A,80,336,Committed,SS,2020-07-01,,2045-07-01
+306,Naring Solar Farm,Lightsource,Solar PV - Fixed,Solar,N/A,1,60,Publically Announced,SS,2020-07-01,,2050-07-01
+307,Shepparton Solar Farm,Neoen,Solar PV - Fixed,Solar,N/A,1,100,Publically Announced,SS,2020-08-01,,2050-08-01
+308,Mortlake South Wind Farm,ACCIONA Energy,Wind Turbine - Onshore,Wind,N/A,35,157.5,Emerging,SS,2020-08-04,,2050-08-04
+309,Alberton Wind Farm,Synergy Wind Pty Ltd,Wind Turbine - Onshore,Wind,N/A,34,122.4,Publically Announced,SS,2021-01-01,,2051-01-01
+310,Ben More,Ratch Australia,Wind Turbine - Onshore,Wind,N/A,15,90,Publically Announced,SS,2021-01-01,,2051-01-01
+311,Ferguson Wind Farm,Future Energy Pty Ltd,Wind Turbine - Onshore,Wind,N/A,1,9,Publically Announced,NS,2021-01-01,,2051-01-01
+312,Girgarre Solar Farm,Leeson Group,TBA - TBA,Solar,N/A,1,118,Publically Announced,SS,2021-01-01,,2051-01-01
+313,Glenrowan Solar Farm,ESCO Pacific,Solar PV - Fixed,Solar,N/A,1,102,Publically Announced,SS,2021-01-01,,2051-01-01
+314,Horsham Solar Farm,ESCO Pacific,Solar PV - Fixed,Solar,N/A,1,130,Publically Announced,SS,2021-01-01,,2051-01-01
+315,Warracknabeal Wind Farm,WestWind Energy Pty Ltd,Wind Turbine - Onshore,Wind,N/A,15,49.995,Publically Announced,SS,2021-01-01,,2051-01-01
+316,Willatook,Wind Prospect WA Pty Ltd,Wind Turbine - Onshore,Wind,N/A,51,284.988,Publically Announced,SS,2021-01-01,,2051-01-01
+317,Winton Asset Co. Pty Ltd as Trustee of the Winton Asset Trust,Winton Asset Co. Pty Ltd as Trustee of the Winton Asset Trust,Solar PV - Single axis tracking,Solar,N/A,1,85,Committed,SS,2021-03-01,,2051-01-01
+318,Wunghnu Solar Farm,ib vogt GmbH,Solar PV - Single axis tracking,Solar,N/A,1,102,Publically Announced,SS,2021-01-01,,2051-01-01
+319,Mount Fyans,Woolnorth Wind Farm Holding,Wind Turbine - Onshore,Wind,N/A,85,399.5,Publically Announced,SS,2021-01-05,,2051-01-05
+320,Murra Warra Wind Farm - stage 2,Murra Warra Project Co Pty Ltd,Wind Turbine - Onshore,Wind,N/A,55,209,Publically Announced,SS,2021-01-08,,2051-01-08
+321,Kerang Solar Farm,Acciona Energy Australia Global,Solar PV - Fixed,Solar,N/A,1,37.1,Publically Announced,SS,2021-01-25,,2051-01-25
+322,Mallee Solar Farm,juwi Renewable Energy Pty Ltd,Solar PV - Fixed,Solar,N/A,1,250,Publically Announced,SS,2021-02-02,,2051-02-02
+323,Mildura Power Station,Ceramet,Solar PV - Single axis tracking,Solar,N/A,1,9.6,Publically Announced,SS,2021-04-01,,2051-04-01
+324,Tarrone Wind Farm,Global Power Generation Australia Pty Ltd,Wind Turbine - Onshore,Wind,N/A,17,0,Publically Announced,SS,2021-06-01,,2051-06-01
+325,Carwarp Solar Farm - Stage II,Canadian Solar (Australia) Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,1,200,Publically Announced,SS,2021-06-03,,2051-06-03
+326,Star of The South,Offshore Energy,Wind Turbine - Offshore,Wind,N/A,1,2000,Publically Announced,SS,2021-06-06,,2051-06-06
+327,GV Community Energy,GV Community Energy,Solar PV - Fixed,Solar,N/A,1,12,Publically Announced,NS,2021-07-01,,2051-07-01
+328,Ryan Corner Wind Farm,Ryan Corner Development Pty Ltd,Wind Turbine - Onshore,Wind,N/A,56,235.2,Publically Announced,SS,2021-07-08,,2051-07-08
+329,Nowingi Solar Storage - Solar,Lyon Solar,Solar PV - Single axis tracking,Solar,N/A,1,250,Publically Announced,SS,2021-07-12,,2051-07-12
+330,Golden Plains Wind Farm,WestWind Energy Pty Ltd,Wind Turbine - Onshore,Wind,N/A,228,950.08,Publically Announced,SS,2022-01-01,,2052-01-01
+331,Kiamal Solar Farm - Stage 2,Total Eren S.A.,Solar PV - Single axis tracking,Solar,N/A,115,149.96,Emerging,SS,2022-01-01,,2052-01-01
+332,Port Phillip Heads Tidal Energy Project,Tenax Energy,Hydro - Tidal,Water,N/A,1,34,Publically Announced,NS,2022-01-01,,2052-01-01
+333,Tarrone GT,AGL Energy Limited,Turbine - OCGT,Gas Pipeline,N/A,1,550,Publically Announced,S,2022-01-01,,2052-01-01
+334,Hawkesdale Wind Farm,Ryan Corner Development Pty Ltd,Wind Turbine - Onshore,Wind,N/A,26,109.2,Publically Announced,SS,2022-02-01,,2052-02-01
+335,Woolsthorpe Wind Farm,Woolsthorpe Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,N/A,20,73,Publically Announced,SS,2022-02-02,,2052-02-02
+336,Rifle Butts Wind Farm ,NewEn,TBA - TBA,Wind,N/A,1,40,Publically Announced,SS,2022-02-03,,2052-02-03
+337,Moira Solar Farm,X-Elio Australia Pty Ltd,Solar PV - Single axis tracking,Solar,N/A,1,80,Publically Announced,SS,2022-04-01,,2052-04-01
+338,Berrimal Wind Farm,Acciona Energy Australia Global,Wind Turbine - Onshore,Wind,N/A,16,72,Publically Announced,SS,2022-06-06,,2052-06-06
+339,Darlington Wind Farm,Global Power Generation Australia Pty Ltd,Wind Turbine - Onshore,Wind,N/A,70,0,Publically Announced,SS,2022-10-10,,2052-10-10
+340,Hexham,Wind Prospect WA Pty Ltd,Confidential - Confidential,Wind,N/A,51,700,Publically Announced,SS,2024-01-01,,2054-01-01
+341,Inverleigh Wind Farm,Inverleigh Wind Farm Pty Ltd,Wind Turbine - Onshore,Wind,N/A,16,84.8,Publically Announced,SS,2024-01-01,,2054-01-01
+342,Inverliegh Wind Farm Storage,Inverleigh Wind Farm Pty Ltd,Storage - Battery,Battery,N/A,1,12,Publically Announced,SS,2024-01-01,,2054-01-01
+343,Naroghid,Alinta Energy Retail Sales Pty Ltd,Wind Turbine - Onshore,Wind,N/A,1,50,Publically Announced - cancelled?,SS,2024-01-01,,2054-01-01
+344,Penshurst,RES Australia Pty Ltd,Wind Turbine - Onshore,Wind,N/A,134,198.052,Publically Announced - cancelled?,SS,2024-01-01,,2054-01-01
+345,134-140 Fairbairn Road  ,Stilcon Scaffolding Pty.,Solar PV - Fixed,Solar,N/A,,0.199,In service,NS,2018-04-17,,2048-04-17
+346,31 Beverage Drive - Solar w SGU - VIC,SEW-EURODRIVE Pty Ltd,Solar PV - Fixed,Solar,N/A,,0.1466,In service,NS,2019-07-31,,2049-07-31
+348,Ahrens Group,Ahrens Group Pty Ltd.,Solar PV - Fixed,Solar,N/A,,0.1595,In service,NS,2018-03-09,,2048-03-09
+349,Alepat Taylor Preston Solar,Alepat Taylor Preston Solar,Solar PV - Fixed,Solar,N/A,,0.3844,In service,NS,2019-01-15,,2049-01-15
+350,Almax Bayswater North Solar - VIC,Almax Bayswater North Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.274,In service,NS,2019-07-26,,2049-07-26
+351,Altimate Foods Campbellfield Solar - VIC,Altimate Foods Campbellfield Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.2395,In service,NS,2019-06-21,,2049-06-21
+352,Aquapulse Solar,Aquapulse Solar,Solar PV - Fixed,Solar,N/A,,0.2249,In service,NS,2018-01-04,,2048-01-04
+353,Austco Polar - Solar - VIC,Austco Polar - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.4501,In service,NS,2019-06-28,,2049-06-28
+354,Australian Lamb Colac.  ,Australian Lamb Colac.  ,Solar PV - Fixed,Solar,N/A,,1.1998,In service,NS,2018-05-30,,2048-05-30
+355,Australian Lamb Company Sunshine  ,Australian Lamb Company Sunshine  ,Solar PV - Fixed,Solar,N/A,,0.2079,In service,NS,2018-05-28,,2048-05-28
+356,AW Bell Dandenong South Solar,AW Bell Dandenong South Solar,Solar PV - Fixed,Solar,N/A,,0.2842,In service,NS,2019-03-08,,2049-03-08
+357,Ballarat Golf Club,Ballarat Golf Club,Solar PV - Fixed,Solar,N/A,,0.1604,In service,NS,2018-10-11,,2048-10-11
+358,Ballarat Holden Solar,Ballarat Holden Solar,Solar PV - Fixed,Solar,N/A,,0.14,In service,NS,2015-12-23,,2045-12-23
+359,Ballarat Solar Park,Ballarat Solar Park,Solar PV - Fixed,Solar,N/A,,0.32,In service,NS,2009-12-04,,2039-12-04
+360,Banyule City Council Greensborough Solar,Banyule City Council Greensborough Solar,Solar PV - Fixed,Solar,N/A,,0.1924,In service,NS,2018-07-26,,2048-07-26
+361,Barwon Water - Torquay solar farm,Barwon Water - Torquay solar farm,Solar PV - Fixed,Solar,N/A,,0.2628,In service,NS,2018-11-23,,2048-11-23
+362,Baxter Laboratories - Solar - VIC,Baxter Laboratories - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.322,In service,NS,2019-07-05,,2049-07-05
+363,Bayswood Timber Hallam,Bayswood Timber Hallam,Solar PV - Fixed,Solar,N/A,,0.1502,In service,NS,2017-10-23,,2047-10-23
+364,Beaconhills Pakenham Year 9 Centre Solar,Beaconhills Pakenham Year 9 Centre Solar,Solar PV - Fixed,Solar,N/A,,0.141,In service,NS,2019-01-25,,2049-01-25
+365,Bendigo Solar Park,Bendigo Solar Park,Solar PV - Fixed,Solar,N/A,,0.336,In service,NS,2009-11-26,,2039-11-26
+366,Black Rock Solar Farm,Black Rock Solar Farm,Solar PV - Fixed,Solar,N/A,,3.047,In service,NS,2018-02-23,,2048-02-23
+367,Booth Strathmerton Solar,Booth Strathmerton Solar,Solar PV - Fixed,Solar,N/A,,0.391,In service,NS,2017-12-30,,2047-12-30
+368,Bridgewater Solar,Bridgewater Solar,Solar PV - Fixed,Solar,N/A,,0.5,In service,NS,2013-10-09,,2043-10-09
+369,Bupa Ballarat Extension - Solar w SGU - VIC,Bupa Ballarat Extension - Solar w SGU - VIC,Solar PV - Fixed,Solar,N/A,,0.2432,In service,NS,2019-08-14,,2049-08-14
+370,BUPA Bendigo,BUPA Bendigo,Solar PV - Fixed,Solar,N/A,,0.12,In service,NS,2016-03-18,,2046-03-18
+371,BUPA Mildura,BUPA Mildura,Solar PV - Fixed,Solar,N/A,,0.15,In service,NS,2016-03-15,,2046-03-15
+372,BUPA Templestowe,BUPA Templestowe,Solar PV - Fixed,Solar,N/A,,0.199,In service,NS,2016-03-18,,2046-03-18
+373,BUPA Traralgon,BUPA Traralgon,Solar PV - Fixed,Solar,N/A,,0.2,In service,NS,2016-03-15,,2046-03-15
+374,BUPA Wodonga,BUPA Wodonga,Solar PV - Fixed,Solar,N/A,,0.1,In service,NS,2016-03-15,,2046-03-15
+375,Callister St Shepparton,Callister St Shepparton,Solar PV - Fixed,Solar,N/A,,0.7506,In service,NS,2018-01-02,,2048-01-02
+376,Camberwell Grammar,Camberwell Grammar,Solar PV - Fixed,Solar,N/A,,0.8885,In service,NS,2018-09-27,,2048-09-27
+377,Casslis  ,Casslis  ,Solar PV - Fixed,Solar,N/A,,0.1622,In service,NS,2018-05-25,,2048-05-25
+378,Catholic Regional College Caroline Springs Solar,Catholic Regional College Caroline Springs Solar,Solar PV - Fixed,Solar,N/A,,0.2,In service,NS,2019-03-25,,2049-03-25
+379,Catholic Regional College Melton Solar,Catholic Regional College Melton Solar,Solar PV - Fixed,Solar,N/A,,0.2998,In service,NS,2019-03-14,,2049-03-14
+380,Catholic Regional College North Keilor Solar - VIC,Catholic Regional College North Keilor Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.2499,In service,NS,2019-04-23,,2049-04-23
+381,Catholic Regional College St Albans Solar,Catholic Regional College St Albans Solar,Solar PV - Fixed,Solar,N/A,,0.16,In service,NS,2018-09-27,,2048-09-27
+382,Catholic Regional College Sydenham Solar,Catholic Regional College Sydenham Solar,Solar PV - Fixed,Solar,N/A,,0.4998,In service,NS,2019-03-15,,2049-03-15
+383,Cedar Meats,Cedar Meats,Solar PV - Fixed,Solar,N/A,,0.1998,In service,NS,2017-02-22,,2047-02-22
+384,CEVA,CEVA,Solar PV - Fixed,Solar,N/A,,0.3,In service,NS,2016-11-11,,2046-11-11
+385,CHAH01 Laverton,CHAH01 Laverton,Solar PV - Fixed,Solar,N/A,,0.4501,In service,NS,2018-08-14,,2048-08-14
+386,Chempack Derrimut ,Chempack Derrimut ,Solar PV - Fixed,Solar,N/A,,0.1982,In service,NS,2018-06-06,,2048-06-06
+387,CMTP Solar Colac,CMTP Solar Colac,Solar PV - Fixed,Solar,N/A,,0.2902,In service,NS,2018-04-27,,2048-04-27
+388,CMTP Solar Dandenong,CMTP Solar Dandenong,Solar PV - Fixed,Solar,N/A,,0.2187,In service,NS,2018-04-06,,2048-04-06
+389,Complete Colour Cheltenham,Complete Colour Cheltenham,Solar PV - Fixed,Solar,N/A,,0.2002,In service,NS,2018-10-29,,2048-10-29
+390,Complete Food Services Preston Solar,Complete Food Services Preston Solar,Solar PV - Fixed,Solar,N/A,,0.2,In service,NS,2015-08-31,,2045-08-31
+391,Conga Foods Coburg,Conga Foods Coburg,Solar PV - Fixed,Solar,N/A,,0.46,In service,NS,2018-08-07,,2048-08-07
+392,Corringle Furniture  ,Corringle Furniture  ,Solar PV - Fixed,Solar,N/A,,0.1298,In service,NS,2018-05-21,,2048-05-21
+393,CRG Logistics,CRG Logistics,Solar PV - Fixed,Solar,N/A,,0.3,In service,NS,2016-03-02,,2046-03-02
+394,Culpan Industries Pty Ltd,Culpan Industries Pty Ltd,Solar PV - Fixed,Solar,N/A,,0.1518,In service,NS,2018-11-22,,2048-11-22
+395,Davies Bakery Broadmeadows Solar - VIC,Davies Bakery Broadmeadows Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.3502,In service,NS,2019-05-15,,2049-05-15
+396,Deakin University Waurn Ponds NP Solar Vic,Deakin University Waurn Ponds NP Solar Vic,Solar PV - Fixed,Solar,N/A,,0.1579,In service,NS,2019-06-13,,2049-06-13
+397,Della Rosa Campbellfield Solar - VIC,Della Rosa Campbellfield Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.525,In service,NS,2019-08-01,,2049-08-01
+398,Diocese of Sale St Francis Beaconsfield Solar - VIC,Diocese of Sale St Francis Beaconsfield Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.1997,In service,NS,2019-07-09,,2049-07-09
+399,Doncaster Secondary,Doncaster Secondary,Solar PV - Fixed,Solar,N/A,,0.299,In service,NS,2018-02-02,,2048-02-02
+400,Drouin Secondary College Solar - VIC,Drouin Secondary College Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.1848,In service,NS,2019-07-11,,2049-07-11
+401,DuluxGroup Mickleham - Solar - VIC,DuluxGroup Mickleham - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.3036,In service,NS,2019-04-04,,2049-04-04
+402,Easyrest Pty Ltd  ,Easyrest Pty Ltd  ,Solar PV - Fixed,Solar,N/A,,0.198,In service,NS,2018-06-13,,2048-06-13
+403,Fastrac Foodservices,Fastrac Foodservices,Solar PV - Fixed,Solar,N/A,,0.1748,In service,NS,2018-07-16,,2048-07-16
+404,Ferguson Plarre,Ferguson Plarre,Solar PV - Fixed,Solar,N/A,,0.4747,In service,NS,2018-08-25,,2048-08-25
+405,FJ Lenne Ardmona ,FJ Lenne Ardmona ,Solar PV - Fixed,Solar,N/A,,0.5,In service,NS,2018-05-09,,2048-05-09
+406,Flavorite Marketing ,Flavorite Marketing ,Solar PV - Fixed,Solar,N/A,,0.1494,In service,NS,2017-08-21,,2047-08-21
+407,FS Energy,FS Energy,Solar PV - Fixed,Solar,N/A,,0.2706,In service,NS,2018-04-23,,2048-04-23
+408,Future Bake Noble Park,Future Bake Noble Park,Solar PV - Fixed,Solar,N/A,,0.2002,In service,NS,2018-10-29,,2048-10-29
+409,Gemwood,Gemwood,Solar PV - Fixed,Solar,N/A,,0.2029,In service,NS,2018-08-20,,2048-08-20
+410,Genfac Plastics Solar,Genfac Plastics Solar,Solar PV - Fixed,Solar,N/A,,1.2462,In service,NS,2019-04-01,,2049-04-01
+411,Glenbarry Rd Campbellfield,Glenbarry Rd Campbellfield,Solar PV - Fixed,Solar,N/A,,0.3705,In service,NS,2018-11-09,,2048-11-09
+412,Glen Eira Sports and Aquatic Centre Bentleigh East wSGU VIC - Solar,Glen Eira Sports and Aquatic Centre Bentleigh East wSGU VIC - Solar,Solar PV - Fixed,Solar,N/A,,0.2295,In service,NS,2019-08-22,,2049-08-22
+413,Good News Lutheran College ,Good News Lutheran College ,Solar PV - Fixed,Solar,N/A,,0.2362,In service,NS,2018-04-19,,2048-04-19
+414,Greta Rd Wangaratta,Greta Rd Wangaratta,Solar PV - Fixed,Solar,N/A,,0.1145,In service,NS,2018-03-29,,2048-03-29
+415,Hickory Structures Laverton North,Hickory Structures Laverton North,Solar PV - Fixed,Solar,N/A,,0.2015,In service,NS,2018-04-11,,2048-04-11
+416,HMGEM Dandenong South Solar,HMGEM Dandenong South Solar,Solar PV - Fixed,Solar,N/A,,0.2999,In service,NS,2019-03-14,,2049-03-14
+417,HSV Clayton South,HSV Clayton South,Solar PV - Fixed,Solar,N/A,,0.8602,In service,NS,2018-10-22,,2048-10-22
+418,Hussey & Co Somerville wSGU Solar - VIC,Hussey & Co Somerville wSGU Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.5014,In service,NS,2019-09-12,,2049-09-12
+419,IKEA Richmond,IKEA Richmond,Solar PV - Fixed,Solar,N/A,,0.721,In service,NS,2015-04-17,,2045-04-17
+420,IKEA Springvale,IKEA Springvale,Solar PV - Fixed,Solar,N/A,,0.95,In service,NS,2015-04-17,,2045-04-17
+421,Interpack Solar System ,Interpack Solar System ,Solar PV - Fixed,Solar,N/A,,0.6048,In service,NS,2018-05-11,,2048-05-11
+422,Investec Elizabeth Street,Investec Elizabeth Street,Solar PV - Fixed,Solar,N/A,,0.1622,In service,NS,2014-09-04,,2044-09-04
+423,Ivanhoe Grammar Plenty Campus Solar - VIC,Ivanhoe Grammar Plenty Campus Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.2443,In service,NS,2019-04-29,,2049-04-29
+424,Jessica Way Truganina,Jessica Way Truganina,Solar PV - Fixed,Solar,N/A,,0.365,In service,NS,2017-03-16,,2047-03-16
+425,JL King & Co,JL King & Co,Solar PV - Fixed,Solar,N/A,,0.15,In service,NS,2017-01-18,,2047-01-18
+426,Kaisercraft,Kaisercraft,Solar PV - Fixed,Solar,N/A,,0.1987,In service,NS,2018-03-27,,2048-03-27
+427,Kane Road Wodonga,Kane Road Wodonga,Solar PV - Fixed,Solar,N/A,,0.198,In service,NS,2014-10-24,,2044-10-24
+428,Kerr St,Kerr St,Solar PV - Fixed,Solar,N/A,,0.3252,In service,NS,2016-10-25,,2046-10-25
+429,Kingspan Insulation,Kingspan Insulation,Solar PV - Fixed,Solar,N/A,,0.7543,In service,NS,2018-10-11,,2048-10-11
+430,Knight Court Kyneton,Knight Court Kyneton,Solar PV - Fixed,Solar,N/A,,1.491,In service,NS,2018-03-01,,2048-03-01
+431,Knox  ,Knox  ,Solar PV - Fixed,Solar,N/A,,0.6311,In service,NS,2018-04-18,,2048-04-18
+432,KOOWEERUP REGIONAL HEALTH SERVICES - Solar w SGU - VIC,KOOWEERUP REGIONAL HEALTH SERVICES - Solar w SGU - VIC,Solar PV - Fixed,Solar,N/A,,0.1554,In service,NS,2019-07-18,,2049-07-18
+433,Lago Smallgoods,Lago Smallgoods,Solar PV - Fixed,Solar,N/A,,0.3,In service,NS,2014-09-15,,2044-09-15
+434,Lamattina,Lamattina,Solar PV - Fixed,Solar,N/A,,0.3003,In service,NS,2018-09-06,,2048-09-06
+435,Lithocraft Graphics Truganina Solar - VIC,Lithocraft Graphics Truganina Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.2244,In service,NS,2019-04-29,,2049-04-29
+436,Lynbrook Village,Lynbrook Village,Solar PV - Fixed,Solar,N/A,,0.3764,In service,NS,2018-10-16,,2048-10-16
+437,Lyrebird Village Drouin Solar wSGU,Lyrebird Village Drouin Solar wSGU,Solar PV - Fixed,Solar,N/A,,0.1664,In service,NS,2019-01-08,,2049-01-08
+438,Manor Lakes CLC Solar,Manor Lakes CLC Solar,Solar PV - Fixed,Solar,N/A,,0.1375,In service,NS,2016-12-14,,2046-12-14
+439,Mars Chocolate Australia,Mars Chocolate Australia,Solar PV - Fixed,Solar,N/A,,0.21,In service,NS,2014-11-10,,2044-11-10
+440,Marshall Pine Products Solar - VIC,Marshall Pine Products Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.1501,In service,NS,2019-05-10,,2049-05-10
+441,Martin St Tatura,Martin St Tatura,Solar PV - Fixed,Solar,N/A,,0.148,In service,NS,2018-01-29,,2048-01-29
+442,Marymede Catholic College - Solar w SGU,Marymede Catholic College - Solar w SGU,Solar PV - Fixed,Solar,N/A,,0.2698,In service,NS,2019-02-13,,2049-02-13
+443,Masalki Cool Stores,Masalki Cool Stores,Solar PV - Fixed,Solar,N/A,,0.2325,In service,NS,2015-12-16,,2045-12-16
+444,Maxi Foods Ballarat Solar System ,Maxi Foods Ballarat Solar System ,Solar PV - Fixed,Solar,N/A,,0.219,In service,NS,2018-05-18,,2048-05-18
+445,Maxi SUPA IGA Castlemaine Solar System ,Maxi SUPA IGA Castlemaine Solar System ,Solar PV - Fixed,Solar,N/A,,0.238,In service,NS,2018-05-18,,2048-05-18
+446,Mazenod College,Mazenod College,Solar PV - Fixed,Solar,N/A,,0.1598,In service,NS,2015-12-18,,2045-12-18
+447,MC Herd Corio Solar,MC Herd Corio Solar,Solar PV - Fixed,Solar,N/A,,1.3563,In service,NS,2019-01-08,,2049-01-08
+448,Medical Developments-Solar-Vic,Medical Developments-Solar-Vic,Solar PV - Fixed,Solar,N/A,,0.2453,In service,NS,2019-07-15,,2049-07-15
+449,Melbourne Museum - Solar - VIC,Melbourne Museum - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.5333,In service,NS,2019-04-12,,2049-04-12
+450,Melbourne Truss Sumerton Solar,Melbourne Truss Sumerton Solar,Solar PV - Fixed,Solar,N/A,,0.1323,In service,NS,2019-03-27,,2049-03-27
+451,Mildura Solar Farm,Mildura Solar Farm,Solar PV - Fixed,Solar,N/A,,0.999,In service,NS,2013-08-05,,2043-08-05
+452,Mildura Solar Park 1,Mildura Solar Park 1,Solar PV - Fixed,Solar,N/A,,3.5244,In service,NS,2014-04-03,,2044-04-03
+453,Mirvac Energy - 664 Collins,Mirvac Energy - 664 Collins,Solar PV - Fixed,Solar,N/A,,0.1892,In service,NS,2018-10-29,,2048-10-29
+454,MMS Donvale,MMS Donvale,Solar PV - Fixed,Solar,N/A,,0.4522,In service,NS,2018-08-22,,2048-08-22
+455,Monash University Solar Power Station Clayton Vic,Monash University Solar Power Station Clayton Vic,Solar PV - Fixed,Solar,N/A,,0.6239,In service,NS,2019-06-26,,2049-06-26
+456,Moreland Annex Solar,Moreland Annex Solar,Solar PV - Fixed,Solar,N/A,,0.1718,In service,NS,2019-04-01,,2049-04-01
+457,Mt Derrimut Rd Derrimut,Mt Derrimut Rd Derrimut,Solar PV - Fixed,Solar,N/A,,0.4323,In service,NS,2018-09-17,,2048-09-17
+458,Natures Organics,Natures Organics,Solar PV - Fixed,Solar,N/A,,1.2995,In service,NS,2018-02-22,,2048-02-22
+459,Newbridge Solar Plant,Newbridge Solar Plant,Solar PV - Fixed,Solar,N/A,,0.69,In service,NS,2018-08-27,,2048-08-27
+460,NEXTDC M1,NEXTDC M1,Solar PV - Fixed,Solar,N/A,,0.4016,In service,NS,2016-06-15,,2046-06-15
+461,Nine Mile Fresh Tynong Solar - VIC,Nine Mile Fresh Tynong Solar - VIC,Solar PV - Fixed,Solar,N/A,,1.14,In service,NS,2019-07-11,,2049-07-11
+462,Numurkah Solar Farm,Numurkah Solar Farm,Solar PV - Single axis tracking,Solar,NUMURSF1,,5.98,In service,NS,2018-08-14,,2044-01-01
+463,O'Brien Group Docklands,O'Brien Group Docklands,Solar PV - Fixed,Solar,N/A,,0.4721,In service,NS,2018-09-25,,2048-09-25
+464,Oxley Stadium and College,Oxley Stadium and College,Solar PV - Fixed,Solar,N/A,,0.4,In service,NS,2014-05-20,,2044-05-20
+465,Piangil,Piangil,Solar PV - Fixed,Solar,N/A,,0.1709,In service,NS,2014-06-18,,2044-06-18
+466,Proform Solutions Swan Hill Solar w SGU,Proform Solutions Swan Hill Solar w SGU,Solar PV - Fixed,Solar,N/A,,0.532,In service,NS,2018-10-17,,2048-10-17
+467,Pureharvest Solar,Pureharvest Solar,Solar PV - Fixed,Solar,N/A,,0.8799,In service,NS,2019-03-04,,2049-03-04
+468,Pyramid Salt Pyramid Hill,Pyramid Salt Pyramid Hill,Solar PV - Fixed,Solar,N/A,,0.2996,In service,NS,2018-04-27,,2048-04-27
+469,Queen Victoria Market,Queen Victoria Market,Solar PV - Fixed,Solar,N/A,,0.1992,In service,NS,2002-11-29,,2032-11-29
+470,Radio Frequency Systems Kilsyth Solar - VIC,Radio Frequency Systems Kilsyth Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.3009,In service,NS,2019-05-30,,2049-05-30
+471,Replas - Solar - VIC,Replas - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.1799,In service,NS,2019-07-31,,2049-07-31
+472,Rollspack,Rollspack,Solar PV - Fixed,Solar,N/A,,0.1728,In service,NS,2018-04-30,,2048-04-30
+473,Ryan & Mcnulty - Solar - VIC,Ryan & Mcnulty - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.3201,In service,NS,2019-04-24,,2049-04-24
+474,SAFECORP GROUP LTD Solar Braeside,SAFECORP GROUP LTD Solar Braeside,Solar PV - Fixed,Solar,N/A,,0.3847,In service,NS,2019-03-22,,2049-03-22
+475,Sale Hospital,Sale Hospital,Solar PV - Fixed,Solar,N/A,,0.7574,In service,NS,2017-09-27,,2047-09-27
+476,San Carlo Home for the Aged - Solar - VIC,San Carlo Home for the Aged - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.2321,In service,NS,2019-05-10,,2049-05-10
+477,Scentre Group Plenty Valley,Scentre Group Plenty Valley,Solar PV - Fixed,Solar,N/A,,0.3024,In service,NS,2018-03-23,,2048-03-23
+478,Scienceworks - Solar - VIC,Scienceworks - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.3784,In service,NS,2019-05-08,,2049-05-08
+479,Sealane Heidelberg West Solar,Sealane Heidelberg West Solar,Solar PV - Fixed,Solar,N/A,,0.3764,In service,NS,2019-03-12,,2049-03-12
+480,Select Produce Korumburra,Select Produce Korumburra,Solar PV - Fixed,Solar,N/A,,0.2555,In service,NS,2018-04-27,,2048-04-27
+481,Southern Colour Keysborough Solar,Southern Colour Keysborough Solar,Solar PV - Fixed,Solar,N/A,,0.36,In service,NS,2019-03-08,,2049-03-08
+482,Specialised Breeders Australia Pty Ltd,Specialised Breeders Australia Pty Ltd,Solar PV - Fixed,Solar,N/A,,0.2973,In service,NS,2018-11-28,,2048-11-28
+483,Spence Doors,Spence Doors,Solar PV - Fixed,Solar,N/A,,0.2519,In service,NS,2018-08-16,,2048-08-16
+484,Springvale Botanical Cemetery,Springvale Botanical Cemetery,Solar PV - Fixed,Solar,N/A,,0.133,In service,NS,2014-10-14,,2044-10-14
+485,Staetite,Staetite,Solar PV - Fixed,Solar,N/A,,0.1749,In service,NS,2018-08-14,,2048-08-14
+486,St Kilda Town Hall,St Kilda Town Hall,Solar PV - Fixed,Solar,N/A,,0.172,In service,NS,2018-10-01,,2048-10-01
+487,St Laurence Community Services Nursing Home,St Laurence Community Services Nursing Home,Solar PV - Fixed,Solar,N/A,,0.1607,In service,NS,2019-01-09,,2049-01-09
+488,Stockland Mall Traralgon,Stockland Mall Traralgon,Solar PV - Fixed,Solar,N/A,,0.5001,In service,NS,2018-07-27,,2048-07-27
+489,Stockland Mall Wendouree Solar,Stockland Mall Wendouree Solar,Solar PV - Fixed,Solar,N/A,,1.2932,In service,NS,2019-03-14,,2049-03-14
+490,Stockland Point Cook - Solar - VIC,Stockland Point Cook - Solar - VIC,Solar PV - Fixed,Solar,N/A,,1.5126,In service,NS,2019-04-18,,2049-04-18
+491,Stockland - The Pines Shopping Centre - Solar - VIC,Stockland - The Pines Shopping Centre - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.6434,In service,NS,2019-05-01,,2049-05-01
+492,Sunshine Plaza,Sunshine Plaza,Solar PV - Fixed,Solar,N/A,,1.044,In service,NS,2016-10-13,,2046-10-13
+493,Swan Hill Abattoir Solar PV Vic,Swan Hill Abattoir Solar PV Vic,Solar PV - Fixed,Solar,N/A,,1.2727,In service,NS,2019-07-17,,2049-07-17
+494,Swan Hill Solar Farm,Swan Hill Solar Farm,Solar PV - Fixed,Solar,N/A,,19.2827,In service,NS,2018-05-22,,2048-05-22
+495,Synectix Dandenong South,Synectix Dandenong South,Solar PV - Fixed,Solar,N/A,,0.3042,In service,NS,2018-08-01,,2048-08-01
+496,Tanloden,Tanloden,Solar PV - Fixed,Solar,N/A,,0.2753,In service,NS,2018-07-30,,2048-07-30
+497,Tasty Trucks - Solar,Tasty Trucks - Solar,Solar PV - Fixed,Solar,N/A,,0.1598,In service,NS,2018-11-23,,2048-11-23
+498,"TIBALDI Centre Road, Clayton - Solar - VIC","TIBALDI Centre Road, Clayton - Solar - VIC",Solar PV - Fixed,Solar,N/A,,1.0663,In service,NS,2019-05-10,,2049-05-10
+499,Tip Top Butchers Solar - Laverton North,Tip Top Butchers Solar - Laverton North,Solar PV - Fixed,Solar,N/A,,0.2028,In service,NS,2014-01-21,,2044-01-21
+500,Todae Solar - AVL Merbein,Todae Solar - AVL Merbein,Solar PV - Fixed,Solar,N/A,,0.3005,In service,NS,2018-05-01,,2048-05-01
+501,Todae Solar Elsum Bayswater North 0.3MW,Todae Solar Elsum Bayswater North 0.3MW,Solar PV - Fixed,Solar,N/A,,0.3149,In service,NS,2018-11-15,,2048-11-15
+502,Todae Solar - La Trobe University Bendigo,Todae Solar - La Trobe University Bendigo,Solar PV - Fixed,Solar,N/A,,0.3498,In service,NS,2017-11-15,,2047-11-15
+503,Todae Solar - La Trobe University Wodonga Stage 1,Todae Solar - La Trobe University Wodonga Stage 1,Solar PV - Fixed,Solar,N/A,,0.1014,In service,NS,2017-11-15,,2047-11-15
+504,Todae Solar MDL Scoresby,Todae Solar MDL Scoresby,Solar PV - Fixed,Solar,N/A,,0.528,In service,NS,2018-03-02,,2048-03-02
+505,Todae Solar - NB Wandiligong 0.179 - Solar VIC,Todae Solar - NB Wandiligong 0.179 - Solar VIC,Solar PV - Fixed,Solar,N/A,,0.1791,In service,NS,2019-07-16,,2049-07-16
+506,Top Cat Installations,Top Cat Installations,Solar PV - Fixed,Solar,N/A,,0.3116,In service,NS,2018-02-09,,2048-02-09
+507,Toyota Motor Corporation Australia Altona,Toyota Motor Corporation Australia Altona,Solar PV - Fixed,Solar,N/A,,0.5,In service,NS,2015-09-02,,2045-09-02
+508,True Foods Maryborough Solar ,True Foods Maryborough Solar ,Solar PV - Fixed,Solar,N/A,,1.2402,In service,NS,2018-10-12,,2048-10-12
+509,TT Steel,TT Steel,Solar PV - Fixed,Solar,N/A,,0.5,In service,NS,2014-07-25,,2044-07-25
+510,Ultra Plas Springvale,Ultra Plas Springvale,Solar PV - Fixed,Solar,N/A,,0.282,In service,NS,2014-07-30,,2044-07-30
+511,University of Melbourne Dookie Campus,University of Melbourne Dookie Campus,Solar PV - Fixed,Solar,N/A,,0.1681,In service,NS,2018-10-05,,2048-10-05
+512,University of Melbourne Medical Building 181,University of Melbourne Medical Building 181,Solar PV - Fixed,Solar,N/A,,0.1299,In service,NS,2018-05-03,,2048-05-03
+513,"University of Melbourne Performing Arts Centre, Southbank ","University of Melbourne Performing Arts Centre, Southbank ",Solar PV - Fixed,Solar,N/A,,0.1365,In service,NS,2017-10-10,,2047-10-10
+514,"University of Melbourne Sports Centre, Parkville","University of Melbourne Sports Centre, Parkville",Solar PV - Fixed,Solar,N/A,,0.1608,In service,NS,2017-10-10,,2047-10-10
+515,University of Melbourne VCA Art Painting & Photography,University of Melbourne VCA Art Painting & Photography,Solar PV - Fixed,Solar,N/A,,0.2412,In service,NS,2018-06-25,,2048-06-25
+516,University of Melbourne VCA Film & TV BLDG 861,University of Melbourne VCA Film & TV BLDG 861,Solar PV - Fixed,Solar,N/A,,0.1068,In service,NS,2018-05-03,,2048-05-03
+517,University of Melbourne WEBS,University of Melbourne WEBS,Solar PV - Fixed,Solar,N/A,,0.1102,In service,NS,2018-12-20,,2048-12-20
+518,University of Melbourne Werribee Campus,University of Melbourne Werribee Campus,Solar PV - Fixed,Solar,N/A,,0.4029,In service,NS,2018-05-17,,2048-05-17
+519,Valley Park Farm,Valley Park Farm,Solar PV - Fixed,Solar,N/A,,0.2131,In service,NS,2018-05-08,,2048-05-08
+520,Van Wyk Flowers,Van Wyk Flowers,Solar PV - Fixed,Solar,N/A,,0.3409,In service,NS,2018-09-11,,2048-09-11
+521,VF Siciliano & Sons Woorinen Solar,VF Siciliano & Sons Woorinen Solar,Solar PV - Fixed,Solar,N/A,,0.297,In service,NS,2019-01-25,,2049-01-25
+522,"VICINITY Beach St, Frankston - Solar - VIC","VICINITY Beach St, Frankston - Solar - VIC",Solar PV - Fixed,Solar,N/A,,1.5019,In service,NS,2019-07-29,,2049-07-29
+523,VICINITY Hanover St Oakleigh - Solar - VIC,VICINITY Hanover St Oakleigh - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.6346,In service,NS,2019-04-17,,2049-04-17
+524,VICINITY Pascoe Vale Rd Broadmeadows - Solar - VIC,VICINITY Pascoe Vale Rd Broadmeadows - Solar - VIC,Solar PV - Fixed,Solar,N/A,,2.2075,In service,NS,2019-04-17,,2049-04-17
+525,VICINITY Somerton Road Roxburgh Park - Solar - VIC,VICINITY Somerton Road Roxburgh Park - Solar - VIC,Solar PV - Fixed,Solar,N/A,,1.4319,In service,NS,2019-05-03,,2049-05-03
+526,"VICINITY Victoria St, Richmond - Solar - VIC","VICINITY Victoria St, Richmond - Solar - VIC",Solar PV - Fixed,Solar,N/A,,0.6124,In service,NS,2019-08-02,,2049-08-02
+527,Warrnambool WTP Solar,Warrnambool WTP Solar,Solar PV - Fixed,Solar,N/A,,0.2527,In service,NS,2019-02-11,,2049-02-11
+529,Wentworth Court,Wentworth Court,Solar PV - Fixed,Solar,N/A,,0.2592,In service,NS,2018-11-07,,2048-11-07
+530,Western Health Sunshine Hospital - Solar - VIC,Western Health Sunshine Hospital - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.3147,In service,NS,2019-09-16,,2049-09-16
+531,"WILSON TRANSFORMER Springvale Rd, Glen Waverley - Solar - VIC","WILSON TRANSFORMER Springvale Rd, Glen Waverley - Solar - VIC",Solar PV - Fixed,Solar,N/A,,0.2546,In service,NS,2019-06-03,,2049-06-03
+532,Woolworths Lara,Woolworths Lara,Solar PV - Fixed,Solar,N/A,,0.1971,In service,NS,2018-10-12,,2048-10-12
+533,Woolworths MSRDC Dandenong South Solar,Woolworths MSRDC Dandenong South Solar,Solar PV - Fixed,Solar,N/A,,1.0032,In service,NS,2019-01-17,,2049-01-17
+534,W Ryan Abattoirs Pty Ltd - Solar - VIC,W Ryan Abattoirs Pty Ltd - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.1749,In service,NS,2019-04-11,,2049-04-11
+535,Wyndham Civic Centre,Wyndham Civic Centre,Solar PV - Fixed,Solar,N/A,,0.3374,In service,NS,2018-06-25,,2048-06-25
+536,Yarram District Health Service - Solar - VIC,Yarram District Health Service - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.1497,In service,NS,2019-05-20,,2049-05-20
+537,Yarra Valley Water - Solar - VIC,Yarra Valley Water - Solar - VIC,Solar PV - Fixed,Solar,N/A,,0.324,In service,NS,2019-06-19,,2049-06-19
