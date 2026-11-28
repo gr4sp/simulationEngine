@@ -9,7 +9,7 @@
       "orcid": "0000-0003-4558-6423"
     }
   ],
-  "description": "Agent-based simulation of the Victorian electricity system (Australia), 1998-2019 validation against the historical record. This release is the model version described in the methods article (in preparation): the base case with the network losses sourced from the AER benchmarking returns, wind added to the demand target in the months the record holds no wind (to November 2008), and scheduled and semi-scheduled units in central dispatch at any size (28 Nov 2026); the 100-seed validation ensemble (experiments/validation/ensemble_2026-11-28), figures and tables. Earlier scenario and sensitivity outputs are in the separate dataset 10.5281/zenodo.4667996.",
+  "description": "Agent-based simulation of the Victorian electricity system (Australia), 1999-2019 validation against the historical record. This release is the model version described in the methods article (in preparation): the base case with the network losses sourced from the AER benchmarking returns, wind added to the demand target in the months the record holds no wind (to November 2008), and scheduled and semi-scheduled units in central dispatch at any size (28 Nov 2026); the 100-seed validation ensemble (experiments/validation/ensemble_2026-11-28), figures and tables. Earlier scenario and sensitivity outputs are in the separate dataset 10.5281/zenodo.4667996.",
   "license": "MIT",
   "keywords": [
     "Energy",
