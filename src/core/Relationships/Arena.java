@@ -267,6 +267,45 @@ public class Arena implements Steppable,  java.io.Serializable  {
      * Capacity factors of each generator vary depending on the season.  Data on max capacity is obtained from
      * the "Generation_Information_VIC" (May 2019)
     */
+    //Diagnostic, off by default: -Dgr4sp.offerRuleLog=<csv> writes, per month and active generator, its market, the
+    //half-hours in which it offered under each rule of Generator.offerRule() and its generation. Output only.
+    private static final String OFFER_RULE_LOG = System.getProperty("gr4sp.offerRuleLog");
+    private static final String[] OFFER_RULES = {"arbitrage", "srmc", "shortRunCost", "waterValue", "storageMarkup", "lcoe"};
+    private static java.io.PrintWriter offerRuleLog;
+    private transient HashMap<Generator, int[]> offerRuleCounts;
+
+    private void countOfferRule(Generator g) {
+        if (offerRuleCounts == null) offerRuleCounts = new HashMap<>();
+        int[] n = offerRuleCounts.computeIfAbsent(g, k -> new int[OFFER_RULES.length]);
+        n[Arrays.asList(OFFER_RULES).indexOf(g.offerRule())]++;
+    }
+
+    private synchronized void writeOfferRuleLog(Date monthStart, ArrayList<Generator> activeGens) {
+        try {
+            if (offerRuleLog == null) {
+                offerRuleLog = new java.io.PrintWriter(new java.io.FileWriter(OFFER_RULE_LOG));
+                offerRuleLog.println("month,name,fuel,tech,dispatch,maxCapacity (MW),market,"
+                        + String.join(",", Arrays.stream(OFFER_RULES).map(r -> r + " (half-hours)").toArray(String[]::new))
+                        + ",generated (MWh),lcoePrice ($/MWh)");
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> offerRuleLog.close()));
+            }
+            String month = new java.text.SimpleDateFormat("yyyy-MM").format(monthStart);
+            for (Generator g : activeGens) {
+                int[] n = offerRuleCounts == null ? null : offerRuleCounts.get(g);
+                StringBuilder s = new StringBuilder(month).append(',').append(g.getName().replace(",", " ")).append(',')
+                        .append(g.getFuelSourceDescriptor()).append(',').append(g.getTechTypeDescriptor().replace(",", " "))
+                        .append(',').append(g.getDispatchTypeDescriptor()).append(',').append(g.getMaxCapacity()).append(',')
+                        .append(g.getInPrimaryMarket() ? "primary" : (g.getInSecondaryMarket() ? "secondary" : "off"));
+                for (int i = 0; i < OFFER_RULES.length; i++) s.append(',').append(n == null ? 0 : n[i]);
+                s.append(',').append(g.getMonthlyGeneratedMWh()).append(',').append(g.priceMWhLCOE());
+                offerRuleLog.println(s);
+            }
+            if (offerRuleCounts != null) offerRuleCounts.clear();
+        } catch (java.io.IOException e) {
+            System.err.println("Cannot write offer rule log: " + e);
+        }
+    }
+
     public void createBids(SimState state, Date currentTime, int currentMonth, ArrayList<Generator> activeGens){
 
         Gr4spSim data = (Gr4spSim) state;
@@ -304,6 +343,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
                         spot.addBidder(new Bid(null, g, dollarMWh, availableCapacity));
                     }
                     g.setBidsInSpot(g.getBidsInSpot() + 1, availableCapacity);
+                    if (OFFER_RULE_LOG != null) countOfferRule(g);
                 }
             }
         }
@@ -766,6 +806,7 @@ public class Arena implements Steppable,  java.io.Serializable  {
 //                //-------------------------------------------------
 
             }
+            if (OFFER_RULE_LOG != null) writeOfferRuleLog(today, activeGens);
 //            //CODE TO DEBUG and CHECK that GENERATORS PRODUCTION EQUALS THE TOTAL DEMAND after all 30min BIDDING
 //            monthDemand = monthDemand / 2000.0;
 //            monthDemandRemoved = monthDemandRemoved / 2000.0;

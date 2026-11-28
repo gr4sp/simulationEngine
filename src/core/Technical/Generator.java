@@ -456,6 +456,16 @@ public class Generator implements java.io.Serializable, Asset {
         return !isArbitrageStorage() && srmcMWh < 0 && heatRateGJperMWh <= 0 && !(storageOfferFactor >= 0 && referencePriceMWh > 0);
     }
 
+    //Name of the branch of offerPriceMWh() that prices this generator's offer now (diagnostic -Dgr4sp.offerRuleLog)
+    public String offerRule() {
+        if (isArbitrageStorage()) return "arbitrage";
+        if (srmcMWh >= 0) return "srmc";
+        if (heatRateGJperMWh > 0) return "shortRunCost";
+        if (storageOfferFactor >= 0 && referencePriceMWh > 0)
+            return (usesMonthlyBudget() && monthlyBudgetMWh > 0) ? "waterValue" : "storageMarkup";
+        return "lcoe";
+    }
+
     public boolean plansDay() {
         return isArbitrageStorage() || (peakOnly && dailyEnergyLimit && !usesMonthlyBudget());
     }
