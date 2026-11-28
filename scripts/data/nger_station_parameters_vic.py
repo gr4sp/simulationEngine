@@ -11,7 +11,8 @@ Station emission intensities and capacity factors of Victorian units from the NG
   2020, Electricity Demand Forecasting Methodology Information Paper, s. 4.1.2): each unit's mean annual output over
   the years with data / (its database capacity x 8,760 h); units without history take the total output of reported
   units of the same class in Victoria over their combined capacity; units embedded in an industrial or hospital load
-  (captured by net metering, which AEMO removes from the fleet) get 0.
+  (captured by net metering, which AEMO removes from the fleet) get 0. Which units are embedded (EMBEDDED) is a
+  judgement from owner and site names: AEMO does not publish its list.
 
 Inputs: the CER CSVs "Greenhouse and energy information for designated generation facilities" for 2013-14 to 2018-19
 (https://cer.gov.au/document/greenhouse-and-energy-information-designated-generation-facilities-<YYYY-YY>), in DIR as
@@ -120,7 +121,8 @@ def main(d):
     for unit in ALL_CLASS:
         out.append((unit, "capacityFactor", f"{all_cf:.3f}", "no Victorian class: average of all matched other non-scheduled units (AEMO 2020 s. 4.1.2)"))
     for unit, why in EMBEDDED.items():
-        out.append((unit, "capacityFactor", "0", f"embedded: {why}; AEMO 2020 s. 4.1.2 removes units captured by net metering, and the demand record (OpenElectricity) does not include them"))
+        out.append((unit, "capacityFactor", "0", f"embedded: {why}; judgement from its owner and site, applying AEMO's rule of removing units captured by net metering of "
+                    "the load they are embedded under (AEMO 2020 s. 4.1.2; AEMO does not publish its list); no NGER output"))
     print("# --- NGER block: scripts/data/nger_station_parameters_vic.py (N25, 14 Nov 2026); a name ending in $ matches exactly")
     for row in out:
         print(",".join([row[0], row[1], row[2], '"' + row[3] + '"']))
