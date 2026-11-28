@@ -40,14 +40,14 @@ keywords:
   - Socio-technical systems
   - Simulation
 license: MIT
-version: 0.3.3
-date-released: '2026-11-25'
-# DOI of this version (v0.3.3); the concept DOI 10.5281/zenodo.24487969 resolves to the latest release.
-doi: 10.5281/zenodo.24520093
+version: 0.3.4
+date-released: '2026-11-28'
+# Until Zenodo archives v0.3.4, the concept DOI (resolves to the latest release); then the DOI of this version.
+doi: 10.5281/zenodo.24487969
 identifiers:
   - type: doi
     value: 10.5281/zenodo.24520093
-    description: This version (v0.3.3)
+    description: Version v0.3.3
   - type: doi
     value: 10.5281/zenodo.24487970
     description: Version v0.3.2
