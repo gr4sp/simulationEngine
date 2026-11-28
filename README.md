@@ -229,18 +229,21 @@ results move:
 
 The model pins its timezone to `Australia/Melbourne` (`Gr4spSim.TIMEZONE`), so results do not depend on your machine's regional settings. You do not need to change your system clock or locale to reproduce the article from anywhere in the world.
 
-### What regenerates what: the methods article's validation (release `v0.3.3`)
+### What regenerates what: the methods article's validation (release `v0.3.4`)
 
 The methods article (in preparation) reports the base case over 100 random seeds (seeds 1-100): the median and the 5-95 % range of
-each validation statistic. The results are committed in `experiments/validation/ensemble_2026-11-20/`; the steps below
-regenerate them. Build first (`./gradlew build`), keep the shipped database, and run from the project root. Step 1 runs
+each validation statistic. The results of `v0.3.4` (R10 fixes 1 and 2: `windOutsideRecord`, `minCapMarketGen` 0 for
+scheduled and semi-scheduled units; see `ASSUMPTIONS.md` A39-A40) are committed in
+`experiments/validation/ensemble_2026-11-28/`; those of `v0.3.3` in `ensemble_2026-11-20/` and `ensemble_2026-11-24/`
+(identical statistics). The steps below regenerate them. Build first (`./gradlew build`), keep the shipped database, and run from the project root. Step 1 runs
 the model 100 times and takes several hours; the later steps read its output directory.
 
 | Article artefact | Command |
 |---|---|
 | 100-seed runs and the validation table (NSE, Bias, RMSE; MAE and NRMSE in the supplement) | `python experiments/validation/seed_ensemble.py OUT_DIR 100 10` (100 seeds, 10 in parallel; writes `seed_summary.md`; give OUT_DIR as an absolute path) |
 | Emissions on the inventory's July-June year | `python experiments/validation/emissions_year_basis.py OUT_DIR` |
-| Validation figures with the seed band | `python experiments/validation/seed_band_figures.py OUT_DIR --runs OUT_DIR` (from the committed results alone: `python experiments/validation/seed_band_figures.py experiments/validation/ensemble_2026-11-20 ./out`) |
+| Tariff's wholesale term against the primary price (`tariff_wholesale_basis.md`) | `python experiments/validation/tariff_wholesale_basis.py OUT_DIR` |
+| Validation figures with the seed band | `python experiments/validation/seed_band_figures.py OUT_DIR --runs OUT_DIR` (from the committed results alone: `python experiments/validation/seed_band_figures.py experiments/validation/ensemble_2026-11-28 ./out`) |
 | Price duration curves; monthly price on both bases (`price_basis.md`) | `python experiments/validation/seed_price_duration.py OUT_DIR OUT_DIR 100 10` (reruns the seeds with a half-hourly log; needs `psql` on the PATH, or its path in the `PSQL` environment variable) |
 | Recursive emission index: consistency and comparison with NGA Factors and AEMO CDEII | `python experiments/validation/emissions_index.py OUT_DIR OUT_DIR` |
 | Network losses per SPM level (`simulationSettings/network_losses_VIC.csv`) from the AER economic benchmarking RINs | `python scripts/data/network_losses_vic.py DNSP_RIN_DIR TNSP_RIN_DIR simulationSettings/network_losses_VIC.csv` (AER downloads of the five Victorian DNSPs and of AusNet Services (ET)) |
