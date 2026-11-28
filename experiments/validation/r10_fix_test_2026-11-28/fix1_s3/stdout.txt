@@ -1,0 +1,32 @@
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by core.MySecurityManager (file:/C:/Documents/gr4sp/build/classes/java/main/)
+WARNING: Please consider reporting this to the maintainers of core.MySecurityManager
+WARNING: System::setSecurityManager will be removed in a future release
+MASON Version 19.  For further options, try adding ' -help' at end.
+Job: 0 Seed: 3
+Job 0: Steps: 25 Time: 24 Rate: 24.108
+Job 0: Steps: 50 Time: 49 Rate: 18.99696
+Job 0: Steps: 75 Time: 74 Rate: 18.15541
+Job 0: Steps: 100 Time: 99 Rate: 25.85315
+Job 0: Steps: 125 Time: 124 Rate: 18.6846
+Job 0: Steps: 150 Time: 149 Rate: 14.85443
+Job 0: Steps: 175 Time: 174 Rate: 14.33486
+Job 0: Steps: 200 Time: 199 Rate: 14.35132
+Job 0: Steps: 225 Time: 224 Rate: 13.93534
+Job 0: Steps: 250 Time: 249 Rate: 10.75731
+Job 0: Steps: 275 Time: 274 Rate: 8.56751
+Job 0: Steps: 300 Time: 299 Rate: 7.84929
+Job 0: Steps: 325 Time: 324 Rate: 8.45166
+Job 0: Steps: 350 Time: 349 Rate: 7.17154
+Job 0: Steps: 375 Time: 374 Rate: 7.85176
+Job 0: Steps: 400 Time: 399 Rate: 5.96659
+Job 0: Steps: 425 Time: 424 Rate: 6.93289
+Job 0: Steps: 450 Time: 449 Rate: 6.35486
+Job 0: Steps: 475 Time: 474 Rate: 6.19579
+Job 0: Steps: 500 Time: 499 Rate: 6.44828
+Job 0: Steps: 525 Time: 524 Rate: 7.15922
+Job 0: Steps: 550 Time: 549 Rate: 6.73129
+Job 0: Steps: 575 Time: 574 Rate: 7.28438
+Job 0: Steps: 600 Time: 599 Rate: 7.07014
+Job 0: Steps: 625 Time: 624 Rate: 6.6313
+Job 0: Exhausted 0
