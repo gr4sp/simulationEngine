@@ -250,6 +250,11 @@ public class Settings implements java.io.Serializable {
     //of other types (landfill gas, biogas, gas engines, diesel) are not: their output is added to the monthly target,
     //so Arena's subtraction leaves the market demand as recorded. Unset: every off-market unit is taken as recorded
     public String demandRecordFuels;
+    //R10 fix 1 (28 Nov 2026): the monthly record (generation_consumption_historic.wind_gwh) holds no wind to November
+    //2008, while the model has wind rows from 2001. When true, in months where the record's wind is 0, the expected
+    //output of every wind row (market and off-market: capacity x the month's capacity factor) is added to the monthly
+    //target, as for the fuels outside demandRecordFuels. Months with recorded wind are unchanged. False: v0.3.3 behaviour
+    public boolean windOutsideRecord = false;
     //Solar adoption step 2 (14 Nov 2026): CSV in simulationSettings with the recorded residential grid electricity by
     //financial year (fy, residential_twh, ...: AES Table F3). With it, households' use is each calendar year's
     //residential electricity (AES to its last year, then the ISP's residential grid demand for the consumption scenario,
@@ -698,6 +703,8 @@ public class Settings implements java.io.Serializable {
     public boolean getForecastFinancialYears() { return forecastFinancialYears; }
 
     public String getDemandRecordFuels() { return demandRecordFuels; }
+
+    public boolean getWindOutsideRecord() { return windOutsideRecord; }
 
     public String getResidentialConsumptionFile() { return residentialConsumptionFile; }
 

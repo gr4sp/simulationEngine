@@ -67,13 +67,18 @@ policy:
 # market settings
 arena:
   #Regulation https://www.aemc.gov.au/sites/default/files/2020-06/NER%20-%20v142%20-%20Chapter%202.pdf
+  # R10 fix 2 (28 Nov 2026), registered classification: minCapMarketGen 0 for scheduled and semi-scheduled units (was 30
+  # per register row). NER 2.2.2(a)/(b1) and 2.2.7(a)/(e): the 30 MW threshold applies at the connection point through
+  # registration, and AEMO may approve smaller units as scheduled or semi-scheduled, so the registered dispatch type
+  # already applies it. Moves Hume Dam VIC (29 MW, S) and Waubra's 22.5 MW row into central dispatch. Non-scheduled
+  # units stay off-market (2.2.3(b), (f)). Measured: experiments/validation/r10_fix_test_2026-11-28 (test/r10-fixes)
   scheduled:
     # primary/secondary/none
     spotMarket: primary
-    minCapMarketGen: 30
+    minCapMarketGen: 0
   semiScheduled:
     spotMarket: primary
-    minCapMarketGen: 30 #0.1
+    minCapMarketGen: 0
   nonScheduled:
     spotMarket: none
     minCapMarketGen: 0.1
