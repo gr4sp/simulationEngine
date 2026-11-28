@@ -58,6 +58,12 @@ forecastFinancialYears: true
 # so subtracting it in the market no longer removes demand the record never had. Non-scheduled wind and hydro are taken
 # as recorded (OpenElectricity counts registered non-scheduled units).
 demandRecordFuels: "Brown Coal; Water; Wind; Battery; Gas Pipeline Turbine - OCGT; Gas Pipeline Turbine - Steam Sub Critical"
+# R10 fix 1 (28 Nov 2026): the monthly record holds no wind to November 2008 (17 GWh in 2008, from December), while the
+# model has wind rows from 2001. In months where the record's wind_gwh is 0, the expected output of every wind row
+# (market and off-market, capacity x the month's capacity factor) is added to the monthly target, as above for the
+# unrecorded fuels; months with recorded wind are unchanged. False (the default) gives v0.3.3.
+# Measured: experiments/validation/r10_fix_test_2026-11-28 (branch test/r10-fixes)
+windOutsideRecord: true
 # Solar adoption step 2 (14 Nov 2026, decision D3): household electricity use is the recorded residential grid
 # electricity (Australian Energy Statistics 2020, Table F3, FY1974-FY2019), then AEMO's residential grid demand forecast
 # for the consumption scenario (ISP/ESOO 2019), turned into calendar years, over the households. The residential share
@@ -230,13 +236,18 @@ policy:
 # market settings
 arena:
   #Regulation https://www.aemc.gov.au/sites/default/files/2020-06/NER%20-%20v142%20-%20Chapter%202.pdf
+  # R10 fix 2 (28 Nov 2026), registered classification: minCapMarketGen 0 for scheduled and semi-scheduled units (was 30
+  # per register row). NER 2.2.2(a)/(b1) and 2.2.7(a)/(e): the 30 MW threshold applies at the connection point through
+  # registration, and AEMO may approve smaller units as scheduled or semi-scheduled, so the registered dispatch type
+  # already applies it. Moves Hume Dam VIC (29 MW, S) and Waubra's 22.5 MW row into central dispatch. Non-scheduled
+  # units stay off-market (2.2.3(b), (f)). Measured: experiments/validation/r10_fix_test_2026-11-28 (test/r10-fixes)
   scheduled:
     # primary/secondary/none
     spotMarket: primary
-    minCapMarketGen: 30
+    minCapMarketGen: 0
   semiScheduled:
     spotMarket: primary
-    minCapMarketGen: 30 #0.1
+    minCapMarketGen: 0
   nonScheduled:
     spotMarket: none
     minCapMarketGen: 0.1

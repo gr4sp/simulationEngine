@@ -250,6 +250,11 @@ public class Settings implements java.io.Serializable {
     //of other types (landfill gas, biogas, gas engines, diesel) are not: their output is added to the monthly target,
     //so Arena's subtraction leaves the market demand as recorded. Unset: every off-market unit is taken as recorded
     public String demandRecordFuels;
+    //R10 fix 1 (28 Nov 2026): the monthly record (generation_consumption_historic.wind_gwh) holds no wind to November
+    //2008, while the model has wind rows from 2001. When true, in months where the record's wind is 0, the expected
+    //output of every wind row (market and off-market: capacity x the month's capacity factor) is added to the monthly
+    //target, as for the fuels outside demandRecordFuels. Months with recorded wind are unchanged. False: v0.3.3 behaviour
+    public boolean windOutsideRecord = false;
     //Solar adoption step 2 (14 Nov 2026): CSV in simulationSettings with the recorded residential grid electricity by
     //financial year (fy, residential_twh, ...: AES Table F3). With it, households' use is each calendar year's
     //residential electricity (AES to its last year, then the ISP's residential grid demand for the consumption scenario,
@@ -320,6 +325,12 @@ public class Settings implements java.io.Serializable {
     public boolean importsInMeritOrder = false;
     //With importsInMeritOrder: false keeps the water-value links (hydro neighbours) as last-resort supply after the stack
     public boolean importsInMeritOrderWaterValue = true;
+    //R9 (28 Nov 2026), output only: halfHourOutput true writes csv/<yaml>/<yaml>SimDataHalfHour<outputID>.csv, one row
+    //per market (primary, secondary if any, off-market output) and 30-minute period, for the calendar years
+    //halfHourOutputFrom to halfHourOutputTo (inclusive). Read from the base-year settings file only
+    public boolean halfHourOutput = false;
+    public int halfHourOutputFrom = 0;
+    public int halfHourOutputTo = 9999;
     //Optional CSV (from,priceMWh,source): market price cap from each date on. When set, demand left unmet after the
     //imports is priced at the cap instead of the importPriceFactor rule
     public String shortfallPriceFile;
@@ -693,6 +704,8 @@ public class Settings implements java.io.Serializable {
 
     public String getDemandRecordFuels() { return demandRecordFuels; }
 
+    public boolean getWindOutsideRecord() { return windOutsideRecord; }
+
     public String getResidentialConsumptionFile() { return residentialConsumptionFile; }
 
     public String getHouseholdsFile() { return householdsFile; }
@@ -740,6 +753,12 @@ public class Settings implements java.io.Serializable {
     public String getShortfallPriceFile() { return shortfallPriceFile; }
 
     public boolean getImportsInMeritOrder() { return importsInMeritOrder; }
+
+    public boolean getHalfHourOutput() { return halfHourOutput; }
+
+    public int getHalfHourOutputFrom() { return halfHourOutputFrom; }
+
+    public int getHalfHourOutputTo() { return halfHourOutputTo; }
 
     public boolean getImportsInMeritOrderWaterValue() { return importsInMeritOrderWaterValue; }
 

@@ -1,0 +1,112 @@
+table,row,indicator,metric,decimals,median,median_se,p05,p05_se,p95,p95_se,seeds,median_flag,p05_flag,p95_flag,decimals_supported,seeds_for_printed_decimal,seeds_for_se_0.05
+tbl:stats,"Wholesale price, monthly",Wholesale price (monthly),NSE,2,-0.266436,0.046626,-0.935436,0.12203,0.067013,0.036082,100,True,True,True,0,59566,596
+tbl:stats,"Wholesale price, monthly",Wholesale price (monthly),Bias,1,-12.318999,0.16201,-13.99646,0.285326,-10.420675,0.29678,100,True,True,True,0,3524,3524
+tbl:stats,"Wholesale price, monthly",Wholesale price (monthly),RMSE,1,33.174283,0.612658,28.473908,0.553786,41.010908,1.320868,100,True,True,True,-1,69788,69788
+tbl:stats,"Wholesale price, monthly",Wholesale price (monthly),r,2,0.563558,0.007279,0.46721,0.011336,0.670449,0.010943,100,True,True,True,1,514,6
+tbl:stats,"Wholesale price, annual",Wholesale price (annual),NSE,2,0.398519,0.010891,0.257528,0.013471,0.535571,0.019992,100,True,True,True,1,1599,16
+tbl:stats,"Wholesale price, annual",Wholesale price (annual),Bias,1,-12.602129,0.200401,-14.408079,0.319247,-10.36839,0.393733,100,True,True,True,0,6202,6202
+tbl:stats,"Wholesale price, annual",Wholesale price (annual),RMSE,1,17.738359,0.15714,15.586894,0.330785,19.707997,0.179106,100,True,True,True,0,4377,4377
+tbl:stats,"Wholesale price, annual",Wholesale price (annual),r,2,0.84955,0.005743,0.776988,0.01128,0.89906,0.006438,100,True,True,True,1,509,6
+tbl:stats,"Renewable energy share, annual",RE share (annual),NSE,2,0.969448,0.000112,0.968456,0.000136,0.971982,0.000517,100,False,False,False,2,2,1
+tbl:stats,"Renewable energy share, annual",RE share (annual),Bias,2,0.103633,0.001387,0.078845,0.004876,0.120198,0.00213,100,False,False,False,2,96,1
+tbl:stats,"Renewable energy share, annual",RE share (annual),RMSE,2,1.088067,0.002033,1.041965,0.009147,1.105592,0.002374,100,False,True,False,1,335,4
+tbl:stats,"Renewable energy share, annual",RE share (annual),r,2,0.987646,3.5e-05,0.987227,4.5e-05,0.988429,0.000165,100,False,False,False,3,1,1
+tbl:stats,"Tariff, against Oakley Greenwood",Tariffs vs Oakley Greenwood,NSE,2,0.514678,0.004223,0.484632,0.011782,0.55949,0.010908,100,False,True,True,1,556,6
+tbl:stats,"Tariff, against Oakley Greenwood",Tariffs vs Oakley Greenwood,Bias,1,-3.320106,0.021844,-3.488282,0.015185,-2.960313,0.052357,100,False,False,True,0,110,110
+tbl:stats,"Tariff, against Oakley Greenwood",Tariffs vs Oakley Greenwood,RMSE,1,3.845181,0.016828,3.663343,0.045846,3.96242,0.042766,100,False,False,False,1,85,85
+tbl:stats,"Tariff, against Oakley Greenwood",Tariffs vs Oakley Greenwood,r,2,0.939641,0.000987,0.913326,0.012625,0.948916,0.00095,100,False,True,False,1,638,7
+tbl:stats,"Tariff, against St Vincent de Paul",Tariffs vs St Vincent de Paul,NSE,2,-52.604313,0.301543,-56.479335,0.570843,-50.251139,0.213072,100,True,True,True,-1,1303447,13035
+tbl:stats,"Tariff, against St Vincent de Paul",Tariffs vs St Vincent de Paul,Bias,1,11.179626,0.032703,10.873576,0.025111,11.600476,0.072996,100,False,False,True,0,214,214
+tbl:stats,"Tariff, against St Vincent de Paul",Tariffs vs St Vincent de Paul,RMSE,1,11.48612,0.032425,11.231178,0.023635,11.894036,0.059195,100,False,False,True,0,141,141
+tbl:stats,"Tariff, against St Vincent de Paul",Tariffs vs St Vincent de Paul,r,2,0.284304,0.009552,0.17317,0.020518,0.468879,0.022159,100,True,True,True,1,1965,20
+tbl:stats,"Emissions, 2005-2018","GHGE (annual, July-June)",NSE,2,0.925567,0.000467,0.917115,0.001098,0.931869,0.00117,100,False,False,False,2,6,1
+tbl:stats,"Emissions, 2005-2018","GHGE (annual, July-June)",Bias,2,0.069665,0.006365,0.004123,0.011956,0.133725,0.006956,100,True,True,True,1,572,6
+tbl:stats,"Emissions, 2005-2018","GHGE (annual, July-June)",RMSE,2,1.409471,0.004554,1.348485,0.011669,1.487339,0.009357,100,False,True,True,1,545,6
+tbl:stats,"Emissions, 2005-2018","GHGE (annual, July-June)",r,2,0.968111,0.000217,0.964191,0.000866,0.970988,0.000334,100,False,False,False,2,3,1
+tbl:stats,"Emissions, 2000-2018","GHGE (annual, July-June, full)",NSE,2,0.710967,0.000784,0.699597,0.001434,0.717868,0.000892,100,False,False,False,2,9,1
+tbl:stats,"Emissions, 2000-2018","GHGE (annual, July-June, full)",Bias,2,-0.997073,0.004085,-1.050664,0.007777,-0.948086,0.00744,100,False,True,True,1,242,3
+tbl:stats,"Emissions, 2000-2018","GHGE (annual, July-June, full)",RMSE,2,2.432657,0.003306,2.403443,0.003916,2.480043,0.005839,100,False,False,True,1,137,2
+tbl:stats,"Emissions, 2000-2018","GHGE (annual, July-June, full)",r,2,0.895167,0.000448,0.891243,0.000583,0.89894,0.000228,100,False,False,False,2,2,1
+tbl:fuel,Brown coal,Coal generation (monthly),NSE,2,0.885056,0.001199,0.872961,0.000719,0.894787,0.001182,100,False,False,False,2,6,1
+tbl:fuel,Brown coal,Coal generation (monthly),Bias,1,61.000654,0.941363,50.71623,1.436114,70.281084,0.88709,100,True,True,True,-1,82497,82497
+tbl:fuel,Brown coal,Coal generation (monthly),RMSE,1,189.888501,0.989626,181.673007,1.051413,199.628629,0.577981,100,True,True,True,-1,44219,44219
+tbl:fuel,Brown coal,Coal generation (monthly),r,2,0.947403,0.000563,0.940936,0.000713,0.953232,0.001027,100,False,False,False,2,5,1
+tbl:fuel,Gas,Gas generation (monthly),NSE,2,-1.345516,0.024046,-1.713558,0.077361,-1.065247,0.044446,100,True,True,True,0,23939,240
+tbl:fuel,Gas,Gas generation (monthly),Bias,1,9.042253,0.951,0.379092,0.919436,19.5566,1.530732,100,True,True,True,-1,93726,93726
+tbl:fuel,Gas,Gas generation (monthly),RMSE,1,155.957638,0.79493,146.343521,1.541784,167.747355,2.412361,100,True,True,True,-1,232780,232780
+tbl:fuel,Gas,Gas generation (monthly),r,2,0.263636,0.003281,0.211746,0.003369,0.316787,0.008722,100,False,False,True,1,305,4
+tbl:fuel,Wind,Wind generation (monthly),NSE,2,0.838018,1.3e-05,0.837945,2e-06,0.838032,1e-06,100,False,False,False,4,1,1
+tbl:fuel,Wind,Wind generation (monthly),Bias,1,8.683024,0.002142,8.681415,0.000103,8.695285,0.000211,100,False,False,False,2,1,1
+tbl:fuel,Wind,Wind generation (monthly),RMSE,1,61.313885,0.00253,61.311262,0.00011,61.327639,0.000293,100,False,False,False,2,1,1
+tbl:fuel,Wind,Wind generation (monthly),r,2,0.920708,3e-06,0.92069,0.0,0.920713,0.0,100,False,False,False,5,1,1
+tbl:fuel,Hydro,"Hydro generation (monthly, input)",NSE,2,0.977257,0.000862,0.965001,0.002622,0.985749,0.000741,100,False,False,False,2,28,1
+tbl:fuel,Hydro,"Hydro generation (monthly, input)",Bias,1,-3.374165,0.059932,-4.327375,0.143762,-2.55668,0.066758,100,True,True,True,0,827,827
+tbl:fuel,Hydro,"Hydro generation (monthly, input)",RMSE,1,13.645168,0.25903,10.801613,0.287665,16.927115,0.625888,100,True,True,True,-1,15670,15670
+tbl:fuel,Hydro,"Hydro generation (monthly, input)",r,2,0.989249,0.000389,0.983409,0.001246,0.993259,0.00036,100,False,False,False,2,7,1
+tbl:fuel,Rooftop solar,"Rooftop PV generation (monthly, input)",NSE,2,0.980392,5.5e-05,0.979485,0.000117,0.981053,7.2e-05,100,False,False,False,3,1,1
+tbl:fuel,Rooftop solar,"Rooftop PV generation (monthly, input)",Bias,1,0.957075,0.011094,0.839559,0.024428,1.05771,0.01175,100,False,False,False,1,24,24
+tbl:fuel,Rooftop solar,"Rooftop PV generation (monthly, input)",RMSE,1,9.547416,0.013213,9.385051,0.017561,9.765721,0.028388,100,False,False,False,1,33,33
+tbl:fuel,Rooftop solar,"Rooftop PV generation (monthly, input)",r,2,0.990948,2.4e-05,0.990527,6.1e-05,0.991312,4e-05,100,False,False,False,3,1,1
+tbl:fuel,"Renewable energy share, monthly",RE share (monthly),NSE,2,0.938388,0.000116,0.936838,0.000326,0.939552,0.000185,100,False,False,False,3,1,1
+tbl:fuel,"Renewable energy share, monthly",RE share (monthly),Bias,2,-0.020135,0.001426,-0.042884,0.003642,-0.002711,0.001982,100,False,False,False,2,54,1
+tbl:fuel,"Renewable energy share, monthly",RE share (monthly),RMSE,2,1.543968,0.001452,1.529311,0.002319,1.56326,0.004254,100,False,False,False,2,73,1
+tbl:fuel,"Renewable energy share, monthly",RE share (monthly),r,2,0.9696,4.1e-05,0.968914,0.000175,0.970114,7.2e-05,100,False,False,False,3,1,1
+supplement,"Wholesale price, monthly",Wholesale price (monthly),MAE,1,20.437164,0.105082,19.093086,0.139287,22.492144,0.282251,100,True,True,True,0,3187,3187
+supplement,"Wholesale price, monthly",Wholesale price (monthly),NRMSE,2,72.054348,1.341787,61.845162,1.212492,89.075454,2.744617,100,True,True,True,-1,30131697,301317
+supplement,"Wholesale price, annual",Wholesale price (annual),MAE,1,14.821736,0.158688,12.888876,0.280888,16.360616,0.122822,100,True,True,True,0,3156,3156
+supplement,"Wholesale price, annual",Wholesale price (annual),NRMSE,2,38.275371,0.343941,33.632996,0.722352,42.525406,0.398678,100,True,True,True,-1,2087172,20872
+supplement,"Renewable energy share, annual",RE share (annual),MAE,2,0.615262,0.001416,0.590644,0.003382,0.632431,0.002125,100,False,False,False,2,46,1
+supplement,"Renewable energy share, annual",RE share (annual),NRMSE,2,10.098522,0.018245,9.670642,0.088799,10.261175,0.021909,100,True,True,True,0,31542,316
+supplement,"Tariff, against Oakley Greenwood",Tariffs vs Oakley Greenwood,MAE,1,3.334438,0.01889,3.087263,0.038886,3.499829,0.042858,100,False,False,False,1,74,74
+supplement,"Tariff, against Oakley Greenwood",Tariffs vs Oakley Greenwood,NRMSE,2,11.934428,0.051797,11.370051,0.145092,12.298308,0.137908,100,True,True,True,0,84208,843
+supplement,"Tariff, against St Vincent de Paul",Tariffs vs St Vincent de Paul,MAE,1,11.179626,0.032382,10.873576,0.024857,11.600476,0.071319,100,False,False,True,0,204,204
+supplement,"Tariff, against St Vincent de Paul",Tariffs vs St Vincent de Paul,NRMSE,2,54.009124,0.150425,52.810352,0.117015,55.927192,0.262471,100,True,True,True,0,275564,2756
+supplement,"Emissions, 2005-2018","GHGE (annual, July-June)",MAE,2,1.103328,0.00367,1.039111,0.005549,1.168132,0.006452,100,False,True,True,1,167,2
+supplement,"Emissions, 2005-2018","GHGE (annual, July-June)",NRMSE,2,2.306288,0.007164,2.206497,0.019025,2.433701,0.015642,100,True,True,True,1,1448,15
+supplement,"Emissions, 2000-2018","GHGE (annual, July-June, full)",MAE,2,1.858672,0.003608,1.81509,0.00532,1.913304,0.004806,100,False,True,False,1,114,2
+supplement,"Emissions, 2000-2018","GHGE (annual, July-June, full)",NRMSE,2,3.960285,0.005343,3.912725,0.006425,4.037428,0.00965,100,True,True,True,1,373,4
+supplement,Brown coal,Coal generation (monthly),MAE,1,142.442219,0.617859,136.130315,1.139746,150.513779,1.000303,100,True,True,True,-1,51961,51961
+supplement,Brown coal,Coal generation (monthly),NRMSE,2,4.941689,0.026053,4.727888,0.02763,5.195168,0.015108,100,True,True,True,1,3054,31
+supplement,Gas,Gas generation (monthly),MAE,1,120.720785,0.477597,114.467486,1.030754,129.113491,1.566596,100,True,True,True,-1,98169,98169
+supplement,Gas,Gas generation (monthly),NRMSE,2,105.894762,0.544984,99.366805,1.094848,113.899943,1.637147,100,True,True,True,-1,10721004,107211
+supplement,Wind,Wind generation (monthly),MAE,1,43.180405,0.002196,43.178475,9.7e-05,43.192308,0.000192,100,False,False,False,2,1,1
+supplement,Wind,Wind generation (monthly),NRMSE,2,35.047198,0.001443,35.045698,6.3e-05,35.05506,0.000168,100,False,False,False,2,9,1
+supplement,Hydro,"Hydro generation (monthly, input)",MAE,1,3.374165,0.061788,2.55668,0.068437,4.327375,0.142523,100,True,True,True,0,813,813
+supplement,Hydro,"Hydro generation (monthly, input)",NRMSE,2,6.380152,0.118204,5.050574,0.132117,7.914711,0.298711,100,True,True,True,0,356914,3570
+supplement,Rooftop solar,"Rooftop PV generation (monthly, input)",MAE,1,4.499558,0.007889,4.389217,0.011396,4.589226,0.011246,100,False,False,False,1,6,6
+supplement,Rooftop solar,"Rooftop PV generation (monthly, input)",NRMSE,2,16.909922,0.02377,16.622349,0.030243,17.296573,0.049753,100,True,True,True,1,9902,100
+supplement,"Renewable energy share, monthly",RE share (monthly),MAE,2,1.03529,0.001886,1.019091,0.00211,1.050755,0.003346,100,False,False,False,2,45,1
+supplement,"Renewable energy share, monthly",RE share (monthly),NRMSE,2,14.746055,0.013815,14.606069,0.021588,14.930316,0.039915,100,True,True,True,1,6373,64
+text (price basis),"B: time vs time (main table), monthly",price,NSE,2,-0.203046,0.041882,-0.905359,0.144409,0.08211,0.033023,100,True,True,True,0,83417,835
+text (price basis),"B: time vs time (main table), monthly",price,Bias,1,-12.161032,0.158176,-13.758404,0.194927,-10.109467,0.292455,100,True,True,True,0,3422,3422
+text (price basis),"B: time vs time (main table), monthly",price,RMSE,1,32.006169,0.558991,27.956724,0.491715,40.278927,1.441597,100,True,True,True,-1,83129,83129
+text (price basis),"B: time vs time (main table), annual",price,NSE,2,0.430107,0.008512,0.342799,0.007244,0.552797,0.015538,100,True,True,True,1,966,10
+text (price basis),"B: time vs time (main table), annual",price,Bias,1,-12.161032,0.153468,-13.758404,0.198677,-10.109467,0.291946,100,True,True,True,0,3410,3410
+text (price basis),"B: time vs time (main table), annual",price,RMSE,1,17.535162,0.130574,15.533287,0.278635,18.830521,0.105095,100,True,True,True,0,3106,3106
+text (price basis),"C: demand vs demand (supplement), monthly",price,NSE,2,-0.442511,0.057642,-1.39708,0.156244,0.021172,0.052664,100,True,True,True,0,97649,977
+text (price basis),"C: demand vs demand (supplement), monthly",price,Bias,1,-12.440641,0.166559,-15.124695,0.341756,-9.549251,0.463609,100,True,True,True,0,8598,8598
+text (price basis),"C: demand vs demand (supplement), monthly",price,RMSE,1,42.733368,0.837632,35.200504,0.97289,55.086777,1.819137,100,True,True,True,-1,132371,132371
+text (price basis),"C: demand vs demand (supplement), annual",price,NSE,2,0.398323,0.011728,0.257262,0.008693,0.55105,0.017059,100,True,True,True,1,1165,12
+text (price basis),"C: demand vs demand (supplement), annual",price,Bias,1,-12.440641,0.168899,-15.124695,0.337362,-9.549251,0.445948,100,True,True,True,0,7955,7955
+text (price basis),"C: demand vs demand (supplement), annual",price,RMSE,1,19.909273,0.199166,17.197755,0.336953,22.120343,0.128871,100,True,True,True,0,4542,4542
+tbl:duration,1999-2008,half-hourly price,below15,0,70.050715,0.134222,68.69371,0.212675,71.353599,0.107419,100,False,False,False,0,19,1810
+tbl:duration,1999-2008,half-hourly price,median_price,0,10.027692,0.0,9.889978,0.001578,10.027692,0.0,100,False,False,False,2,1,1
+tbl:duration,1999-2008,half-hourly price,above300,2,0.033648,0.001951,0.015883,0.002518,0.060025,0.007238,100,False,False,True,1,210,3
+tbl:duration,2009-2016,half-hourly price,below15,0,41.886227,0.207108,39.494255,0.177204,44.036602,0.214514,100,False,False,False,0,19,1841
+tbl:duration,2009-2016,half-hourly price,median_price,0,24.480191,0.232869,22.030539,0.37498,27.71654,0.367985,100,False,False,False,0,57,5625
+tbl:duration,2009-2016,half-hourly price,above300,2,0.079141,0.005811,0.039927,0.005395,0.190509,0.013481,100,True,True,True,1,727,8
+tbl:duration,2017-2019,half-hourly price,below15,0,35.656784,0.163919,33.516379,0.371921,37.588541,0.112638,100,False,False,False,0,56,5534
+tbl:duration,2017-2019,half-hourly price,median_price,0,83.135531,0.938239,72.343222,1.950849,92.696121,0.902286,100,True,True,True,-1,1523,152233
+tbl:duration,2017-2019,half-hourly price,above300,2,0.204528,0.005971,0.123573,0.009566,0.448535,0.044289,100,True,True,True,1,7847,79
+tbl:duration,1999-2019,half-hourly price,below15,0,54.40223,0.100267,53.292701,0.140047,55.578513,0.174951,100,False,False,False,0,13,1225
+tbl:duration,1999-2019,half-hourly price,median_price,0,13.250688,0.052878,12.970647,0.0,13.47275,0.032203,100,False,False,False,0,2,112
+tbl:duration,1999-2019,half-hourly price,above300,2,0.08461,0.003249,0.05867,0.001882,0.138011,0.009996,100,False,False,True,1,400,4
+tbl:index,Recursive intensity vs NGA scope 2 plus losses,intensity,NSE,2,0.433216,0.001087,0.412489,0.004716,0.449731,0.001494,100,False,False,False,2,89,1
+tbl:index,Recursive intensity vs NGA scope 2 plus losses,intensity (median series),mean relative bias (%),1,-5.313883,0.007455,,,,,100,False,,,1,3,3
+tbl:index,Recursive intensity vs NGA scope 2 plus losses,intensity (median series),r,2,0.932664,0.000334,,,,,100,False,,,3,1,1
+tbl:index,System intensity vs NGA scope 2,intensity,NSE,2,0.635103,0.000578,0.616388,0.003461,0.648257,0.001269,100,False,False,False,2,48,1
+tbl:index,System intensity vs NGA scope 2,intensity (median series),mean relative bias (%),1,-3.991801,0.007618,,,,,100,False,,,1,3,3
+tbl:index,System intensity vs NGA scope 2,intensity (median series),r,2,0.949361,0.000243,,,,,100,False,,,3,1,1
+tbl:index,System intensity vs AEMO CDEII,intensity,NSE,2,0.230102,0.002236,0.203761,0.002611,0.250525,0.003542,100,False,False,False,2,51,1
+tbl:index,System intensity vs AEMO CDEII,intensity (median series),mean relative bias (%),1,-7.773392,0.010544,,,,,100,False,,,1,5,5
+tbl:index,System intensity vs AEMO CDEII,intensity (median series),r,2,0.95381,0.000385,,,,,100,False,,,3,1,1

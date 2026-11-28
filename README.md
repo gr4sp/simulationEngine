@@ -27,7 +27,7 @@ cd simulationEngine
 ```
 
 The full history is about 1.3 GB and takes around ten minutes to clone. To reproduce a release you only need that
-release: `git clone --depth 1 --branch v0.3.3 https://github.com/gr4sp/simulationEngine.git`.
+release: `git clone --depth 1 --branch v0.3.4 https://github.com/gr4sp/simulationEngine.git`.
 
 > **Windows: enable long paths first.** A few data files in `experiments/assesmentData/` have descriptive names up to 139 characters. Combined with a deep clone location, these can exceed the legacy 260-character Windows path limit and the clone fails with `error: unable to create file ...: Filename too long`. Enable long-path support once (Administrator PowerShell):
 >
@@ -146,6 +146,8 @@ Key parameters:
 | `logLevel` | `"OFF"` / `"WARNING"` / `"ON"` | Simulation logging verbosity |
 | `simulationDates.startDate` | `YYYY-MM-DD` | Simulation start date |
 | `simulationDates.endDate` | `YYYY-MM-DD` | Simulation end date |
+| `halfHourOutput` | `false` (default) / `true` | Also write `csv/VIC/VICSimDataHalfHour_seed_<N>.csv`: per 30-minute period and market (`Primary`, a secondary market if any, `off` for off-market output) the system demand, market demand, unserved energy, imports and net exports (MW), price ($/MWh), price-setting fuel (or the import link, or `unserved`), output by fuel (MW), emissions (tCO2-e) and emissions intensity (tCO2-e/MWh). Output only: every other output is unchanged. About 346 MB for 1999-2050 |
+| `halfHourOutputFrom`, `halfHourOutputTo` | years (default: the whole run) | Calendar years written by `halfHourOutput` (inclusive), to keep the file small |
 
 > **Note:** `folderOutput` is auto-detected from the working directory — do not edit it.
 
@@ -227,18 +229,21 @@ results move:
 
 The model pins its timezone to `Australia/Melbourne` (`Gr4spSim.TIMEZONE`), so results do not depend on your machine's regional settings. You do not need to change your system clock or locale to reproduce the article from anywhere in the world.
 
-### What regenerates what: the methods article's validation (release `v0.3.3`)
+### What regenerates what: the methods article's validation (release `v0.3.4`)
 
 The methods article (in preparation) reports the base case over 100 random seeds (seeds 1-100): the median and the 5-95 % range of
-each validation statistic. The results are committed in `experiments/validation/ensemble_2026-11-20/`; the steps below
-regenerate them. Build first (`./gradlew build`), keep the shipped database, and run from the project root. Step 1 runs
+each validation statistic. The results of `v0.3.4` (R10 fixes 1 and 2: `windOutsideRecord`, `minCapMarketGen` 0 for
+scheduled and semi-scheduled units; see `ASSUMPTIONS.md` A39-A40) are committed in
+`experiments/validation/ensemble_2026-11-28/`; those of `v0.3.3` in `ensemble_2026-11-20/` and `ensemble_2026-11-24/`
+(identical statistics). The steps below regenerate them. Build first (`./gradlew build`), keep the shipped database, and run from the project root. Step 1 runs
 the model 100 times and takes several hours; the later steps read its output directory.
 
 | Article artefact | Command |
 |---|---|
 | 100-seed runs and the validation table (NSE, Bias, RMSE; MAE and NRMSE in the supplement) | `python experiments/validation/seed_ensemble.py OUT_DIR 100 10` (100 seeds, 10 in parallel; writes `seed_summary.md`; give OUT_DIR as an absolute path) |
 | Emissions on the inventory's July-June year | `python experiments/validation/emissions_year_basis.py OUT_DIR` |
-| Validation figures with the seed band | `python experiments/validation/seed_band_figures.py OUT_DIR --runs OUT_DIR` (from the committed results alone: `python experiments/validation/seed_band_figures.py experiments/validation/ensemble_2026-11-20 ./out`) |
+| Tariff's wholesale term against the primary price (`tariff_wholesale_basis.md`) | `python experiments/validation/tariff_wholesale_basis.py OUT_DIR` |
+| Validation figures with the seed band | `python experiments/validation/seed_band_figures.py OUT_DIR --runs OUT_DIR` (from the committed results alone: `python experiments/validation/seed_band_figures.py experiments/validation/ensemble_2026-11-28 ./out`) |
 | Price duration curves; monthly price on both bases (`price_basis.md`) | `python experiments/validation/seed_price_duration.py OUT_DIR OUT_DIR 100 10` (reruns the seeds with a half-hourly log; needs `psql` on the PATH, or its path in the `PSQL` environment variable) |
 | Recursive emission index: consistency and comparison with NGA Factors and AEMO CDEII | `python experiments/validation/emissions_index.py OUT_DIR OUT_DIR` |
 | Network losses per SPM level (`simulationSettings/network_losses_VIC.csv`) from the AER economic benchmarking RINs | `python scripts/data/network_losses_vic.py DNSP_RIN_DIR TNSP_RIN_DIR simulationSettings/network_losses_VIC.csv` (AER downloads of the five Victorian DNSPs and of AusNet Services (ET)) |
@@ -270,7 +275,7 @@ sampled scenarios run thousands of simulations and take hours. The published run
 Zenodo (see [Data archives](#data-archives)) and are the practical starting point.
 
 GR4SP continues to be developed. The state of the model that reproduces the methods article is
-fixed by the `v0.3.3` tag together with the database snapshot the repository ships (the pre-repair
+fixed by the `v0.3.4` tag together with the database snapshot the repository ships (the pre-repair
 results by the `v0.1-article` tag);
 see [Reproducing the Article's Results](#reproducing-the-articles-results).
 
@@ -352,9 +357,11 @@ fetching rather than citing:
 
 If you use GR4SP, please cite the software using the metadata in [`CITATION.cff`](CITATION.cff).
 
-The version used in the methods article (in preparation) is the release `v0.3.3`, archived on Zenodo:
-[10.5281/zenodo.24520093](https://doi.org/10.5281/zenodo.24520093) (network losses repaired and sourced; otherwise the
-results of `v0.3.2`, [10.5281/zenodo.24487970](https://doi.org/10.5281/zenodo.24487970)). To cite the software regardless of version, use the
+The version used in the methods article (in preparation) is the release `v0.3.4` (R10 fixes: wind outside the
+record in the demand target, scheduled and semi-scheduled units in the market at any size; validation in
+`experiments/validation/ensemble_2026-11-28/`). Its Zenodo DOI is added here once the release is archived. Earlier:
+`v0.3.3`, [10.5281/zenodo.24520093](https://doi.org/10.5281/zenodo.24520093) (network losses repaired and sourced;
+otherwise the results of `v0.3.2`, [10.5281/zenodo.24487970](https://doi.org/10.5281/zenodo.24487970)). To cite the software regardless of version, use the
 concept DOI [10.5281/zenodo.24487969](https://doi.org/10.5281/zenodo.24487969), which always resolves to the latest release.
 Earlier scenario and sensitivity outputs are a separate dataset: <https://doi.org/10.5281/zenodo.4667996>.
 

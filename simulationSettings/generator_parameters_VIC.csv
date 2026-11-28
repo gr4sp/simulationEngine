@@ -70,7 +70,7 @@ Tatura Biomass Generator$,capacityFactor,0.648,"Victorian landfill gas class: NG
 Dandenong PEP$,capacityFactor,0.156,"NGER Dandenong, mean 2,740 MWh/yr 2013-14 to 2017-18 / 2 MW"
 Crown Melbourne$,capacityFactor,0.193,"Victorian small gas engine class: NGER output / capacity of the 4 matched units (AEMO 2020 s. 4.1.2)"
 CARINA WEST H2E$,capacityFactor,0.611,"no Victorian class: average of all matched other non-scheduled units (AEMO 2020 s. 4.1.2)"
-Longford$,capacityFactor,0,"embedded: Esso Longford gas plant's own supply; AEMO 2020 s. 4.1.2 removes units captured by net metering, and the demand record (OpenElectricity) does not include them"
-Qenos Cogeneration Facility$,capacityFactor,0,"embedded: Qenos Altona plant's own supply; AEMO 2020 s. 4.1.2 removes units captured by net metering, and the demand record (OpenElectricity) does not include them"
-Ballarat Base Hospital Plant$,capacityFactor,0,"embedded: hospital backup diesel; AEMO 2020 s. 4.1.2 removes units captured by net metering, and the demand record (OpenElectricity) does not include them"
+Longford$,capacityFactor,0,"embedded: Esso Longford gas plant's own supply; judgement from its owner and site, applying AEMO's rule of removing units captured by net metering of the load they are embedded under (AEMO 2020 s. 4.1.2; AEMO does not publish its list); no NGER output"
+Qenos Cogeneration Facility$,capacityFactor,0,"embedded: Qenos Altona plant's own supply; judgement from its owner and site, applying AEMO's rule of removing units captured by net metering of the load they are embedded under (AEMO 2020 s. 4.1.2; AEMO does not publish its list); no NGER output"
+Ballarat Base Hospital Plant$,capacityFactor,0,"embedded: hospital backup diesel; judgement from its owner and site, applying AEMO's rule of removing units captured by net metering of the load they are embedded under (AEMO 2020 s. 4.1.2; AEMO does not publish its list); no NGER output"
 # --- end of NGER block

@@ -1176,7 +1176,7 @@ public class LoadData implements java.io.Serializable {
          * Load historic Total Consumption per month up to start of Spot market
          * */
 
-        String sql = "SELECT date, total_consumption_gwh, hydro_gwh" +
+        String sql = "SELECT date, total_consumption_gwh, hydro_gwh, wind_gwh" +
                 " FROM  generation_consumption_historic WHERE " +
                 " date <= '" + endDate + "'" +
                 " AND date >= '" + startDate + "' ORDER BY date;";
@@ -1194,6 +1194,7 @@ public class LoadData implements java.io.Serializable {
                 Date d = rs.getDate("date");
                 Double gwh = rs.getDouble("total_consumption_gwh");
                 Double renewable_gwh = rs.getDouble("hydro_gwh");
+                RECORD_WIND_GWH.put(d, rs.getDouble("wind_gwh"));
 
                 //If monthly consumption doesn't exist, create it
                 if (!data.getMonthly_consumption_register().containsKey(d)) {
@@ -1409,6 +1410,11 @@ public class LoadData implements java.io.Serializable {
      * the month's capacity factor in every half-hour (Generator.computeAvailableCapacity, Arena); solar is handled by
      * addOffMarketSolarToHistoricDemand. Needs the generators, so it acts in finishDemandCalibration only.
      */
+    //R10 fix 1 (28 Nov 2026, setting windOutsideRecord): the record's monthly wind (GWh), filled by selectConsumption.
+    //In months where it is 0 (to Nov 2008), the expected output of every wind row, market and off-market, is added to
+    //the month's target. Test: experiments/validation/r10_fix_test_2026-11-28 (branch test/r10-fixes, cf179cd)
+    static final HashMap<Date, Double> RECORD_WIND_GWH = new HashMap<>();
+
     static double unrecordedOffMarketGWh(Gr4spSim data, Date monthStart) {
         String fuels = data.settings.getDemandRecordFuels();
         Vector<Spm> any = data.getSpm_register().get(6);
@@ -1422,7 +1428,12 @@ public class LoadData implements java.io.Serializable {
         c.setTime(monthStart);
         int month = c.get(Calendar.MONTH);
         double mw = 0.0;
+        boolean noRecordedWind = data.settings.getWindOutsideRecord() && RECORD_WIND_GWH.getOrDefault(monthStart, 1.0) <= 0.0;
         for (Generator g : active) {
+            if (noRecordedWind && g.getFuelSourceDescriptor().equalsIgnoreCase("Wind")) {
+                mw += g.getMaxCapacity() * g.getCapacityFactor(month + 1);
+                continue;
+            }
             if (g.getInPrimaryMarket() || g.getInSecondaryMarket() || g.getFuelSourceDescriptor().equalsIgnoreCase("Solar")) continue;
             String fuel = g.getFuelSourceDescriptor();
             if (recorded.contains(fuel) || recorded.contains(fuel + " " + g.getTechTypeDescriptor())) continue;

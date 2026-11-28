@@ -476,7 +476,8 @@ Sources replace three unsourced settings (`ASSUMPTIONS.md`):
   2016). Before, every brown coal unit had 1.23 and every gas unit 0.56 (Newport, a steam plant, is typed OCGT).
 - **Off-market capacity factors**: each small unit's mean NGER output over its capacity; units without history take
   their Victorian class (landfill gas 0.648, small gas engines 0.193); embedded units (Longford, Qenos, the hospital
-  backup diesel) 0 - AEMO's method for other non-scheduled generation (Demand Forecasting Methodology 2020, s. 4.1.2).
+  backup diesel) 0 - a judgement from their owners and sites, applying AEMO's rule for other non-scheduled
+  generation (Demand Forecasting Methodology 2020, s. 4.1.2; AEMO does not publish its list).
   Before, the landfill units took `Default` (0.9: the `Landfill` block never matched the database name `Landfill Gas`),
   Longford 0.30 and Qenos 0.65. Off-market non-rooftop output in 2019 falls from 1,510 to 1,110 GWh.
 - **Battery round-trip efficiency** 0.85 is now sourced: Gannawarra measured 85.0 % (ARENA final report 2021); Ballarat
