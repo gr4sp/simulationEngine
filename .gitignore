@@ -242,3 +242,5 @@ docs/versioning.md
 
 # Run logs of the sensitivity experiments (morris_aby_run.log is 676 MB)
 experiments/sensitivity/results/*.log
+# Half-hourly output of the R9 check run (346 MB; half_hour_output.py run regenerates it)
+experiments/validation/half_hour_output_2026-11-28/on_s1/VICSimDataHalfHour_seed_1.csv

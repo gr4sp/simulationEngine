@@ -97,6 +97,9 @@ public class SpotMarket implements java.io.Serializable{
 
     public double getImportedMW() { return importedMW; }
 
+    //Link of the last import block used, "unserved" when the price cap set the price, "" without imports
+    public String getImportSetter() { return importSetter; }
+
     public void setImportOffers(java.util.List<ImportOffer> offers) {
         importOffers = new ArrayList<>(offers);
         Collections.sort(importOffers);

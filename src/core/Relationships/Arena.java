@@ -267,6 +267,87 @@ public class Arena implements Steppable,  java.io.Serializable  {
      * Capacity factors of each generator vary depending on the season.  Data on max capacity is obtained from
      * the "Generation_Information_VIC" (May 2019)
     */
+    //R9 (28 Nov 2026), settings halfHourOutput: one row per market and 30-minute period after clearing. Output only: it
+    //reads the cleared markets and the generators' available capacity and changes nothing. Fuel groups as in SaveData
+    private static final String[] HH_FUELS = {"Rooftop PV", "Coal", "Water", "Wind", "Gas", "Solar", "Battery", "Other"};
+    private static java.io.PrintWriter halfHourWriter;
+
+    private static int halfHourFuel(Generator g) {
+        String f = g.getFuelSourceDescriptor();
+        if (g.getTechTypeDescriptor().equals("Solar - Rooftop")) return 0;
+        if (f.equals("Brown Coal")) return 1;
+        if (f.equals("Water")) return 2;
+        if (f.equals("Wind")) return 3;
+        if (f.equals("Gas Pipeline")) return 4;
+        if (f.equals("Solar")) return 5;
+        if (f.equals("Battery")) return 6;
+        return 7;
+    }
+
+    private static String num(double v) { return Double.toString(v); }
+
+    private static void halfHourRow(String time, String market, double systemDemandMW, String marketDemandMW,
+                                    String unservedMW, String importsMW, String netExportsMW, double priceMWh,
+                                    String setter, double[] mw, double emissions) {
+        double total = 0;
+        StringBuilder s = new StringBuilder(time).append(',').append(market).append(',').append(num(systemDemandMW))
+                .append(',').append(marketDemandMW).append(',').append(unservedMW).append(',').append(importsMW)
+                .append(',').append(netExportsMW).append(',').append(num(priceMWh)).append(',').append(setter);
+        for (double v : mw) { s.append(',').append(num(v)); total += v; }
+        s.append(',').append(num(emissions)).append(',').append(total > 0 ? num(emissions / (total / 2.0)) : "");
+        halfHourWriter.println(s);
+    }
+
+    private void halfHourMarketRow(String time, SpotMarket spot, double systemDemandMW, double netExportsMW, int year) {
+        double[] mw = new double[HH_FUELS.length];
+        double emissions = 0;
+        String setter = spot.getImportSetter();
+        for (Bid b : spot.getSuccessfulBids()) {
+            Generator g = (Generator) b.asset;
+            mw[halfHourFuel(g)] += b.capacity;
+            emissions += b.capacity / 2.0 * g.getEmissionsFactor(year);
+        }
+        if (setter.isEmpty() && spot.getSuccessfulBids().size() > 0)
+            setter = ((Generator) spot.getSuccessfulBids().get(spot.getSuccessfulBids().size() - 1).asset).getFuelSourceDescriptor();
+        halfHourRow(time, spot.getName(), systemDemandMW, num(spot.getDemand()), num(spot.getUnmetDemand()),
+                num(spot.getImportedMW()), num(netExportsMW), spot.getMarketPrice(), setter, mw, emissions);
+    }
+
+    private synchronized void writeHalfHour(Gr4spSim data, Date currentTime, int year, double systemDemandMW,
+                                            ArrayList<Generator> activeGens, double offMarketPriceMWh) {
+        try {
+            if (halfHourWriter == null) {
+                String sep = java.io.File.separator;
+                String folder = data.settings.folderOutput + sep + "csv" + sep + data.yamlFileName;
+                new java.io.File(folder).mkdirs();
+                halfHourWriter = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter(
+                        folder + sep + data.yamlFileName + "SimDataHalfHour" + data.outputID + ".csv")));
+                StringBuilder h = new StringBuilder("time,market,system demand (MW),market demand (MW),unserved (MW),"
+                        + "imports (MW),net exports (MW),price ($/MWh),price setter");
+                for (String f : HH_FUELS) h.append(',').append(f).append(" (MW)");
+                h.append(",emissions (tCO2-e),emissions intensity (tCO2-e/MWh)");
+                halfHourWriter.println(h);
+                final java.io.PrintWriter w = halfHourWriter;
+                Runtime.getRuntime().addShutdownHook(new Thread(w::close));
+            }
+            String t = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(currentTime);
+            halfHourMarketRow(t, primarySpot, systemDemandMW, data.getNetExportsMW(currentTime), year);
+            if (existsSecondary && secondarySpot != null) halfHourMarketRow(t, secondarySpot, systemDemandMW, 0.0, year);
+            //Off-market output: every unit outside the markets at its available capacity (Arena, off-market loop)
+            double[] mw = new double[HH_FUELS.length];
+            double emissions = 0;
+            for (Generator g : activeGens) {
+                if (g.getInPrimaryMarket() || g.getInSecondaryMarket()) continue;
+                double cap = g.getAvailableCapacity();
+                mw[halfHourFuel(g)] += cap;
+                emissions += cap / 2.0 * g.getEmissionsFactor(year);
+            }
+            halfHourRow(t, "off", systemDemandMW, "", "", "", "", offMarketPriceMWh, "", mw, emissions);
+        } catch (java.io.IOException e) {
+            System.err.println("Cannot write half-hourly output: " + e);
+        }
+    }
+
     //Diagnostic, off by default: -Dgr4sp.offerRuleLog=<csv> writes, per month and active generator, its market, the
     //half-hours in which it offered under each rule of Generator.offerRule() and its generation. Output only.
     private static final String OFFER_RULE_LOG = System.getProperty("gr4sp.offerRuleLog");
@@ -724,6 +805,10 @@ public class Arena implements Steppable,  java.io.Serializable  {
                    avgMonthlyDemandOffSpot = (avgMonthlyDemandOffSpot * num_half_hours ) + availableCapacityOffMarket;
                    avgMonthlyPriceOffSpot = (avgMonthlyPriceOffSpot * num_half_hours ) + priceOffMarket;
                 }
+
+                if (data.settings.getHalfHourOutput() && currentYear >= data.settings.getHalfHourOutputFrom()
+                        && currentYear <= data.settings.getHalfHourOutputTo())
+                    writeHalfHour(data, currentTime, currentYear, totalDemand, activeGens, priceOffMarket);
 
                 //Update the counter on how many steps the spot has been running
                 rounds++;

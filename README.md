@@ -146,6 +146,8 @@ Key parameters:
 | `logLevel` | `"OFF"` / `"WARNING"` / `"ON"` | Simulation logging verbosity |
 | `simulationDates.startDate` | `YYYY-MM-DD` | Simulation start date |
 | `simulationDates.endDate` | `YYYY-MM-DD` | Simulation end date |
+| `halfHourOutput` | `false` (default) / `true` | Also write `csv/VIC/VICSimDataHalfHour_seed_<N>.csv`: per 30-minute period and market (`Primary`, a secondary market if any, `off` for off-market output) the system demand, market demand, unserved energy, imports and net exports (MW), price ($/MWh), price-setting fuel (or the import link, or `unserved`), output by fuel (MW), emissions (tCO2-e) and emissions intensity (tCO2-e/MWh). Output only: every other output is unchanged. About 346 MB for 1999-2050 |
+| `halfHourOutputFrom`, `halfHourOutputTo` | years (default: the whole run) | Calendar years written by `halfHourOutput` (inclusive), to keep the file small |
 
 > **Note:** `folderOutput` is auto-detected from the working directory — do not edit it.
 

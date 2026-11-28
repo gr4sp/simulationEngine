@@ -320,6 +320,12 @@ public class Settings implements java.io.Serializable {
     public boolean importsInMeritOrder = false;
     //With importsInMeritOrder: false keeps the water-value links (hydro neighbours) as last-resort supply after the stack
     public boolean importsInMeritOrderWaterValue = true;
+    //R9 (28 Nov 2026), output only: halfHourOutput true writes csv/<yaml>/<yaml>SimDataHalfHour<outputID>.csv, one row
+    //per market (primary, secondary if any, off-market output) and 30-minute period, for the calendar years
+    //halfHourOutputFrom to halfHourOutputTo (inclusive). Read from the base-year settings file only
+    public boolean halfHourOutput = false;
+    public int halfHourOutputFrom = 0;
+    public int halfHourOutputTo = 9999;
     //Optional CSV (from,priceMWh,source): market price cap from each date on. When set, demand left unmet after the
     //imports is priced at the cap instead of the importPriceFactor rule
     public String shortfallPriceFile;
@@ -740,6 +746,12 @@ public class Settings implements java.io.Serializable {
     public String getShortfallPriceFile() { return shortfallPriceFile; }
 
     public boolean getImportsInMeritOrder() { return importsInMeritOrder; }
+
+    public boolean getHalfHourOutput() { return halfHourOutput; }
+
+    public int getHalfHourOutputFrom() { return halfHourOutputFrom; }
+
+    public int getHalfHourOutputTo() { return halfHourOutputTo; }
 
     public boolean getImportsInMeritOrderWaterValue() { return importsInMeritOrderWaterValue; }
 

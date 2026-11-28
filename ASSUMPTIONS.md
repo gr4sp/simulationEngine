@@ -32,6 +32,7 @@ no effect.
 | Family | Keys (base case value) | Active in the base case | Source | Status |
 |---|---|---|---|---|
 | Run control | `folderOutput`, `reportGeneration`, `logLevel`, `simulationDates.*` (1998-2051, spot market from 1999) | yes | 1999: first AEMO half-hourly demand | decision |
+| Half-hourly output (R9, 28 Nov 2026) | `halfHourOutput` (unset: false), `halfHourOutputFrom` / `To` | no (output only) | the market clears every 30 minutes and these values were computed and discarded; the file writes them. The inputs stay monthly: fuel and carbon prices, hydro budgets, import blocks, availability and outage rates, rooftop additions. Only the price duration curves test half-hourly results against the record | decision; checks in `experiments/validation/half_hour_output_2026-11-28/` |
 | Input files | `carbonPriceFile`, `generatorCorrections`, `generatorParametersFile`, `cpiFile`, `interconnectorFile`, `shortfallPriceFile`, `tariffComponentsFile`, `capacityPathFile`, `netExportsShapeFile`, `solarInstallationsFile` | yes | `INPUTS.md`, one row each | sourced |
 | Repair switches | `shapeDemandUplift`, `outagesPerUnit`, `solarShapeInDemand`, `forecastFromCalibratedDemand`, `rooftopForecastFromModelYield` (all true) | yes | change log C26-C29, C31, N21, C58, N23 | decision |
 | Cost basis | `costPriceYear` 2020 | yes | AEMO 2020 IASR costs are in real 2020 dollars | sourced |
