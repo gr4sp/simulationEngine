@@ -359,7 +359,7 @@ If you use GR4SP, please cite the software using the metadata in [`CITATION.cff`
 
 The version used in the methods article (in preparation) is the release `v0.3.4` (R10 fixes: wind outside the
 record in the demand target, scheduled and semi-scheduled units in the market at any size; validation in
-`experiments/validation/ensemble_2026-11-28/`). Its Zenodo DOI is added here once the release is archived. Earlier:
+`experiments/validation/ensemble_2026-11-28/`), [10.5281/zenodo.24627790](https://doi.org/10.5281/zenodo.24627790). Earlier:
 `v0.3.3`, [10.5281/zenodo.24520093](https://doi.org/10.5281/zenodo.24520093) (network losses repaired and sourced;
 otherwise the results of `v0.3.2`, [10.5281/zenodo.24487970](https://doi.org/10.5281/zenodo.24487970)). To cite the software regardless of version, use the
 concept DOI [10.5281/zenodo.24487969](https://doi.org/10.5281/zenodo.24487969), which always resolves to the latest release.
