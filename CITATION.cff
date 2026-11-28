@@ -42,9 +42,11 @@ keywords:
 license: MIT
 version: 0.3.4
 date-released: '2026-11-28'
-# Until Zenodo archives v0.3.4, the concept DOI (resolves to the latest release); then the DOI of this version.
-doi: 10.5281/zenodo.24487969
+doi: 10.5281/zenodo.24627790
 identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24627790
+    description: Version v0.3.4
   - type: doi
     value: 10.5281/zenodo.24520093
     description: Version v0.3.3
